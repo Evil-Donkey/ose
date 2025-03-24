@@ -48,8 +48,6 @@ export async function POST(req) {
 
     const data = await response.json();
 
-    console.log(data);
-
     if (data.errors) {
       return NextResponse.json({ error: data.errors[0].message }, { status: 400 });
     }

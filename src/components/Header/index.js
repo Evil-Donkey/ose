@@ -2,7 +2,6 @@ import Link from "next/link";
 import Logo from "../Icons/Logo";
 
 const Header = ({ portal }) => {
-    console.log(portal)
     return (
         <div className="flex items-center justify-between mb-10">
             <Link href="/"><Logo /></Link>
