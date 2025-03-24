@@ -110,7 +110,7 @@ export default function SignupForm() {
             })}
           />
           <label>
-            I agree to the website's{" "}
+            I agree to the website&apos;s{" "}
             <a href="/terms-and-conditions" target="_blank" className="text-blue-500">Terms & Conditions</a> and{" "}
             <a href="/privacy-policy" target="_blank" className="text-blue-500">Privacy Policy</a>, and consent to the collection and use of my personal data as outlined in the Privacy Policy.
           </label>

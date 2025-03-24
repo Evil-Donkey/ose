@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import cookie from "cookie";
+import { parse } from "cookie";
 
 export async function GET(req) {
-  const cookies = cookie.parse(req.headers.get("cookie") || "");
+  const cookies = parse(req.headers.get("cookie") || "");
   const authToken = cookies.authToken;
 
   if (!authToken) {

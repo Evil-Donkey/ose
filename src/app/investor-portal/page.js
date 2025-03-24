@@ -17,7 +17,7 @@ export default function InvestorPortal() {
         };
 
         fetchUser();
-    }, []);
+    }, [checkAuthStatus]);
 
     if (loading) {
         return (
