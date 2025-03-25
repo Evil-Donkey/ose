@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { cookies } from 'next/headers';
+import { cookies } from "next/headers";
+import jwt from 'jsonwebtoken';
 
 export async function POST(req) {
   try {
@@ -13,6 +14,7 @@ export async function POST(req) {
           mutation LoginUser($input: LoginInput!) {
             login(input: $input) {
               authToken
+              refreshToken
               user {
                 id
                 username
@@ -23,10 +25,7 @@ export async function POST(req) {
         `,
         variables: {
           input: {
-            credentials: {
-              username,
-              password
-            },
+            credentials: { username, password },
             provider: "PASSWORD",
           },
         },
@@ -45,9 +44,25 @@ export async function POST(req) {
     }
 
     if (data?.data?.login?.authToken) {
-      // ✅ Await `cookies()` before setting the cookie
       const cookieStore = await cookies();
+
+      // ✅ Generate a refresh token (replace with proper implementation)
+      const refreshToken = jwt.sign(
+        { userId: data.data.login.user.id },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: "7d" } // 7 days refresh token validity
+      );
+
+      // ✅ Set cookies
       cookieStore.set("authToken", data.data.login.authToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        path: "/",
+        maxAge: 60 * 60, // 1 hour
+      });
+
+      cookieStore.set("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "Strict",

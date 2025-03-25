@@ -10,6 +10,8 @@ export default function InvestorPortal() {
     const { user, checkAuthStatus } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
 
+    console.log('user: ' + user);
+
     useEffect(() => {
         const fetchUser = async () => {
             await checkAuthStatus();
@@ -17,7 +19,7 @@ export default function InvestorPortal() {
         };
 
         fetchUser();
-    }, [checkAuthStatus]);
+    }, []);
 
     if (loading) {
         return (
