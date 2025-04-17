@@ -1,31 +1,34 @@
-const API_URL = process.env.WORDPRESS_GRAPHQL_ENDPOINT
+const API_URL = process.env.WORDPRESS_GRAPHQL_ENDPOINT;
 
 // Fetch API
 export default async function fetchAPI(query, { variables } = {}) {
-    const headers = { 'Content-Type': 'application/json' }
+  const headers = { 'Content-Type': 'application/json' };
 
-    if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
-        headers[
-            'Authorization'
-        ] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`
-    }
+  if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
+    headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
+  }
 
+  try {
     const res = await fetch(API_URL, {
-        headers,
-        method: 'POST',
-        body: JSON.stringify({
-            query,
-            variables,
-        }),
-        next: { revalidate: 10 }
-    })
+      headers,
+      method: 'POST',
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+      next: { revalidate: 10 }
+    });
 
-    const json = await res.json()
+    const json = await res.json();
 
-    // const json = await JSON.parse(res)
     if (json.errors) {
-        console.error(json.errors)
-        throw new Error('Failed to fetch API')
+      console.error("GraphQL Errors:", json.errors);
+      return null; // Don't throw an error, just return null
     }
-    return json.data
+
+    return json.data;
+  } catch (error) {
+    console.error("Fetch API Error:", error);
+    return null;
+  }
 }

@@ -35,8 +35,8 @@ export default function InvestorPortal() {
     }
 
     return (
-        <div className="container mx-auto p-4">
-            <Header portal={false} />
+        <div className="container mx-auto p-4 pt-50">
+            <Header portal={false}  />
             <h1>Welcome to the Investor Portal</h1>
             <p className="mb-6">Here is your dashboard content...</p>
             <Logout />
