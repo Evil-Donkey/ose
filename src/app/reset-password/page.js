@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import Header from "@/components/Header/index2";
+import Header from "@/components/Header/index";
 
 export default function ResetPassword() {
     const [tokenData, setTokenData] = useState(null);

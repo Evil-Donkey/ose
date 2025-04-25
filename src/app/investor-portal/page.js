@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthContext"; 
 import LoginForm from "../../components/LoginForm";
 import Logout from "../../components/Logout";
-import Header from "../../components/Header/index2";
+import Header from "../../components/Header/index";
 
 export default function InvestorPortal() {
     const { user, checkAuthStatus } = useContext(AuthContext);

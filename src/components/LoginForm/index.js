@@ -2,7 +2,7 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import AuthContext from "../../context/AuthContext";
-import Header from "../Header/index2";
+import Header from "../Header/index";
 
 export default function LoginForm() {
     const { login } = useContext(AuthContext);
