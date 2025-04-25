@@ -4,6 +4,7 @@ import ScrollingPanels from "./ScrollingPanels";
 import InfographicMap from "./InfographicMap";
 import WhatWeDo from "./WhatWeDo";
 import StatsModule from "./StatsModule";
+import InfographicEcosystem from "./InfographicEcosystem";
 
 const PageFlexibleContent = ({ data }) => {
 
@@ -30,6 +31,9 @@ const PageFlexibleContent = ({ data }) => {
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Stats") {
             flexibleContentArray.push(<StatsModule data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_InfographicEcosystem") {
+            flexibleContentArray.push(<InfographicEcosystem data={data} index={i} key={i.toString()} />);
         }
     })}
 

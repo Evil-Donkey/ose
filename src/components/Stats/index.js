@@ -3,7 +3,7 @@ import CountUp from 'react-countup';
 const Stats = ({ data, theme }) => {
     const { title, stats } = data;
 
-    const textColor = theme === 'dark' ? 'text-white' : 'text-darkblue';
+    const textColor = theme === 'dark' ? 'text-white' : 'text-blue-02';
 
     return (
         <div className="flex flex-col">
@@ -23,7 +23,7 @@ const Stats = ({ data, theme }) => {
                             <div key={index} className="flex flex-col text-center items-center">
                                 <div className="flex flex-nowrap">
                                     {preStat && <h4 className="text-9xl text-lightblue">{preStat}</h4>}
-                                    {statValue && <h4 className="text-9xl text-lightblue"><CountUp end={statValue} enableScrollSpy scrollSpyOnce={true} scrollSpyDelay={1000} decimals={decimals} /></h4>}
+                                    {statValue && <h4 className="text-9xl text-lightblue"><CountUp end={statValue} enableScrollSpy scrollSpyOnce={true} scrollSpyDelay={500} decimals={decimals} /></h4>}
                                     {postStat && <h4 className="text-9xl text-lightblue">{postStat}</h4>}
                                 </div>
                                 <div className="text-lg" dangerouslySetInnerHTML={{ __html: description }} />

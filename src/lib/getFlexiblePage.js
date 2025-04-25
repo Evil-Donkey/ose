@@ -83,6 +83,11 @@ const FLEXIBLE_CONTENT_QUERY = `
               }
             }
           }
+          ... on Page_Flexiblecontent_FlexibleContent_InfographicEcosystem {
+            copy
+            fieldGroupName
+            title
+          }
         }
       }
     }
