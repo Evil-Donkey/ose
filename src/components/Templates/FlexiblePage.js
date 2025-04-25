@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import LazyLoadInitializer from "@/lib/lazyLoader";
-import Header from "@/components/Header";
+import Header from "@/components/Header/index";
 import PageFlexibleContent from "@/components/FlexibleContent";
+import Footer from "@/components/Footer/index";
 
 gsap.registerPlugin(ScrollSmoother);
 
@@ -26,6 +27,7 @@ export default function FlexiblePage({ flexibleContent, className, hideNavigatio
       <div id="smooth-wrapper">
         <div id="smooth-content">
           <PageFlexibleContent data={flexibleContent} />
+          <Footer />
         </div>
       </div>
     </div>

@@ -28,6 +28,61 @@ const FLEXIBLE_CONTENT_QUERY = `
               position
             }
           }
+          ... on Page_Flexiblecontent_FlexibleContent_ScrollingPanels {
+            fieldGroupName
+            mainHeading
+            panels {
+              title
+              heading
+              copy
+              backgroundImage {
+                mediaItemUrl
+                altText
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_InfographicMap {
+            copy
+            fieldGroupName
+            heading
+            headings {
+              heading
+              position
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_WhatWeDo {
+            fieldGroupName
+            title
+            columns {
+              copy
+            }
+            headings {
+              heading
+              position
+            }
+            stats {
+              title
+              stats {
+                description
+                postStat
+                preStat
+                statValue
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_Stats {
+            fieldGroupName
+            stats {
+              fieldGroupName
+              title
+              stats {
+                description
+                postStat
+                preStat
+                statValue
+              }
+            }
+          }
         }
       }
     }

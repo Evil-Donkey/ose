@@ -85,7 +85,7 @@ const HeroVideo = ({ data }) => {
                             ))}
                         </h1>
                         <div className="mt-6 hover:-translate-y-1! transition-all duration-500 self-start">
-                            <Button ref={buttonRef}>Watch</Button>
+                            <Button className="opacity-0 translate-y-5" ref={buttonRef}>Watch</Button>
                         </div>
                     </div>
                 </div>

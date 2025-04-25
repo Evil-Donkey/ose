@@ -3,16 +3,14 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Headings from "@/components/Headings";
-import Column from "@/components/Column";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TitleAndCopy = ({ data }) => {
+const Column = ({ copy, theme }) => {
 
     const copyRef = useRef(null);
 
-    const { headings, copy } = data;
+    const textColor = theme === 'dark' ? 'text-white' : 'text-blue-02';
 
     useEffect(() => {
         gsap.to(copyRef.current, {
@@ -32,13 +30,10 @@ const TitleAndCopy = ({ data }) => {
         };
     }, []);
     return (
-        <div className="container mx-auto px-4 lg:px-6 py-20 lg:py-40">
-            <div className="flex flex-col items-end">
-                <Headings headings={headings} />
-                <Column copy={copy} />
-            </div>
+        <div ref={copyRef} className={`w-full md:1/2 lg:w-1/3 mt-4 ${textColor} opacity-0 translate-y-20`}>
+            <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: copy }} />
         </div>
     )
 }
 
-export default TitleAndCopy;
+export default Column;
