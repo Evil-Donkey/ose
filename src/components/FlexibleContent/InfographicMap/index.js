@@ -52,7 +52,7 @@ const InfographicMap = ({ data }) => {
     }, []);
 
     return (
-        <div className="container mx-auto px-4 lg:px-6 py-20">
+        <div className="container mx-auto px-4 md:px-10 py-20">
             <div className="flex flex-col items-center text-center">
                 <h2 className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{heading}</h2>
                 <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02">

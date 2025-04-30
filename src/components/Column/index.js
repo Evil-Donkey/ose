@@ -6,11 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Column = ({ copy, theme }) => {
+const Column = ({ colNumber, copy, theme, fullWidth }) => {
 
     const copyRef = useRef(null);
 
     const textColor = theme === 'dark' ? 'text-white' : 'text-blue-02';
+
+    const colClassLg = colNumber && !fullWidth && colNumber % 2 !== 0 ? 'lg:w-1/3' : '';
 
     useEffect(() => {
         gsap.to(copyRef.current, {
@@ -18,6 +20,7 @@ const Column = ({ copy, theme }) => {
             y: 0,
             duration: 1,
             ease: 'power4.out',
+            stagger: 0.1,
             scrollTrigger: {
                 trigger: copyRef.current,
                 start: 'top 90%',
@@ -30,7 +33,7 @@ const Column = ({ copy, theme }) => {
         };
     }, []);
     return (
-        <div ref={copyRef} className={`w-full md:1/2 lg:w-1/3 mt-4 ${textColor} opacity-0 translate-y-20`}>
+        <div ref={copyRef} className={`w-full ${!fullWidth && 'md:w-1/2'} ${colClassLg} mt-4 ${textColor} opacity-0 translate-y-20`}>
             <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: copy }} />
         </div>
     )

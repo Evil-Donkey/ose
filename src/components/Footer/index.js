@@ -1,10 +1,11 @@
 import Logo from "../Icons/Logo";
 import Button from "../Button";
+import { LinkedIn, X, YouTube } from "../Icons/Social";
 
 const Footer = () => {
     return (
-        <div className="bg-linear-(--bg-gradient) text-white py-16">
-            <div className="container mx-auto px-4 lg:px-6">
+        <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white py-16">
+            <div className="container mx-auto px-4 md:px-10">
 
                 <div className="flex flex-col md:flex-row gap-x-5 justify-between items-center mb-12">
                     <div className="w-full md:w-1/2">
@@ -12,7 +13,12 @@ const Footer = () => {
                             <Logo />
                         </div>
                     </div>
-                    <div className="w-full md:w-1/2 text-end">
+                    <div className="w-full md:w-1/2 justify-end flex gap-x-4">
+                        <div className="flex gap-x-4 items-center">
+                            <YouTube />
+                            <LinkedIn />
+                            <X />
+                        </div>
                         <Button>Investor Portal</Button>
                     </div>
                 </div>
@@ -107,6 +113,25 @@ const Footer = () => {
                             </ul>
                         </div>
                     </div>
+                </div>
+
+                {/* Copyright */}
+                <div className="mt-20 text-xs flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>© 2025 Oxford Science Enterprises</div>
+                    <div className="flex flex-wrap justify-center md:justify-end gap-x-2">
+                        <a href="/sustainability" className="hover:text-lightblue">Sustainability</a>
+                        <span>|</span>
+                        <a href="/terms" className="hover:text-lightblue">Terms & Conditions</a>
+                        <span>|</span>
+                        <a href="/privacy" className="hover:text-lightblue">Privacy policy</a>
+                        <span>|</span>
+                        <a href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</a>
+                        <span>|</span>
+                        <a href="/cookie-policy" className="hover:text-lightblue">Cookie policy</a>
+                    </div>
+                </div>
+                <div className="mt-4 text-xs text-center">
+                    OSE Manager Limited, a wholly owned subsidiary of Oxford Science Enterprises plc, is authorised and regulated by the Financial Conduct Authority.
                 </div>
             </div>
         </div>

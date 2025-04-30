@@ -3,18 +3,33 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Logo from "@/components/Icons/Logo";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const InfographicMap = ({ data }) => {
     const titleRef = useRef([]);
     const copyRef = useRef(null);
+    const infographicRef = useRef(null);
+    const circlesRef = useRef([]);
+    const lineRef = useRef([]);
+    const bottomTextRef = useRef([]);
 
     const { title, copy } = data;
 
+    const timelineData = [
+        { period: "1959 - 1999", count: 22, size: 85 },
+        { period: "2000-2004", count: 32, size: 120 },
+        { period: "2005-2009", count: 23, size: 90 },
+        { period: "2010-2014", count: 28, size: 110 },
+        { period: "2015-2019", count: 82 },
+        { period: "2020-2024", count: "100+" },
+    ];
+
     useEffect(() => {
-        const tl = gsap.timeline();
-        tl.to(titleRef.current, {
+
+        const titleTl = gsap.timeline();
+        titleTl.to(titleRef.current, {
             x: 0,
             opacity: 1,
             duration: 2,
@@ -38,25 +53,133 @@ const InfographicMap = ({ data }) => {
                 scrub: 1.5,
                 invalidateOnRefresh: true
             },
+        })
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: infographicRef.current,
+                start: "top 70%",
+                end: "bottom 70%",
+                toggleActions: "play none none reverse"
+            }
         });
 
+        // Animate circles one by one
+        circlesRef.current.forEach((circle, index) => {
+            tl.fromTo(circle, 
+                { scale: 0, opacity: 0 },
+                { 
+                    scale: 1, 
+                    opacity: 1, 
+                    duration: 0.5,
+                    ease: "back.out(1.7)"
+                },
+                index * 0.2
+            );
+        });
+
+        // Animate the line
+        tl.fromTo(lineRef.current,
+            { scaleY: 0, transformOrigin: "top" },
+            { 
+                scaleY: 1, 
+                duration: 1,
+                ease: "power2.out"
+            }
+        );
+
+        // Animate bottom text
+        tl.fromTo(bottomTextRef.current,
+            { y: 50, opacity: 0 },
+            { 
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.out",
+                stagger: 0.1
+            }
+        );
+
         return () => {
-            // Clean up ScrollTriggers on unmount
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
     }, []);
 
     return (
-        <div className="container mx-auto px-4 lg:px-6 py-20">
-            <div className="flex flex-col items-center text-center">
-                <h2 className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{title}</h2>
-                <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02">
-                    <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: copy }} />
+        <div className="bg-linear-to-t from-black/10 to-black/0">
+            <div className="container mx-auto px-4 md:px-10 py-20">
+                <div className="flex flex-col items-center text-center">
+                    <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>
+                    <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02 opacity-0 translate-y-20">
+                        <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: copy }} />
+                    </div>
+                </div>
+                <div className="flex flex-col my-30">
+                    <div className="w-full md:w-1/4" ref={bottomTextRef}>
+                        <p className="text-blue-02 text-sm"><span className="font-bold">Spinout companies formed</span><br/>
+                        The graphic below highlights the rapid expansion of Oxford's spinout ecosystem, underscoring OSE's impact in bridging research and real-world application. Click to see more detail.</p>
+                    </div>
+                    <div ref={infographicRef} className="relative w-full flex items-center justify-center -space-x-2">
+                        {/* Early years circles */}
+                        <div className="relative flex flex-col md:flex-row items-center -space-x-2">
+                            {timelineData.slice(0, 4).map((item, index) => (
+                                <div key={item.period} className="relative" ref={el => circlesRef.current[index] = el}>
+                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">{item.period}</div>
+                                    <div
+                                        className="relative flex items-center justify-center rounded-full bg-lightblue/50"
+                                        style={{ width: `${item.size}px`, height: `${item.size}px` }}
+                                    >
+                                        <div className="text-4xl text-darkblue">{item.count}</div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Vertical line */}
+                            <div 
+                                ref={el => lineRef.current[0] = el}
+                                className="absolute left-0 top-[100px] w-[2px] h-[200px] bg-[#B8DDE0]"
+                            >
+                                <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[0] = el}>
+                                    <h3 className="font-bold text-xs text-blue-02">Before OSE was established</h3>
+                                    <p className="text-blue-02 text-xs">105 Oxford companies founded over 55 years</p>
+                                </div>
+                            </div>
+
+                            <div 
+                                ref={el => lineRef.current[1] = el}
+                                className="absolute right-1 top-[100px] w-[2px] h-[200px] bg-[#B8DDE0]"
+                            >
+                                <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[1] = el}>
+                                    <div className="w-30 h-auto mb-2">
+                                        <Logo dark />
+                                    </div>
+                                    <h3 className="font-bold text-xs text-blue-02">After OSE was established</h3>
+                                    <p className="text-blue-02 text-xs">180+ Oxford companies founded over 15 years</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Later years circles */}
+                        <div className="flex justify-start items-center -space-x-2 relative">
+                            {timelineData.slice(4).map((item, index) => (
+                                <div key={item.period} className="relative" ref={el => circlesRef.current[index + 4] = el}>
+                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">{item.period}</div>
+                                    <div
+                                        className={`relative flex flex-col items-center justify-center ${index === 1 ? 'w-[280px] h-[280px]' : 'w-[240px] h-[240px]'} rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue`}
+                                    >
+                                        <div className={`${index === 1 ? 'text-8xl' : 'text-8xl'}`}>{item.count}</div>
+                                        {item.count === "100+" && (
+                                            <div className="text-3xl -mt-1">Companies</div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
-            
         </div>
-    )
-}
+    );
+};
 
 export default InfographicMap;

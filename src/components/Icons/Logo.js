@@ -1,4 +1,4 @@
-const Logo = () => {
+const Logo = ({ dark }) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 227.76 83.39">
             <path d="M20.31,13.86s0,0,0,0c.13-.18.27-.36.43-.53.49-.52,1.07-.91,1.68-1.16-.09-1.2-1.08-2.14-2.3-2.14s-2.31,1.03-2.31,2.31c0,.52.18,1.01.47,1.39.67-.11,1.37-.07,2.03.13Z" fill="#00a0cc" fillOpacity="0.45"/>
@@ -6,7 +6,7 @@ const Logo = () => {
             <path d="M78.93,35.18c-.1,0-.2,0-.3.02-.24.64-.62,1.21-1.12,1.69.09.21.17.42.24.64.2.68.25,1.37.17,2.04.31.15.65.24,1.01.24,1.28,0,2.31-1.03,2.31-2.31s-1.03-2.31-2.31-2.31Z" fill="#00a0cc" fillOpacity="0.45"/>
             <path d="M64.21,69.91s0,0,0,0c-.13.18-.27.36-.43.53-.49.52-1.07.91-1.69,1.16.09,1.2,1.08,2.14,2.3,2.14s2.31-1.03,2.31-2.31c0-.52-.18-1.01-.47-1.39-.67.11-1.37.07-2.03-.13Z" fill="#00b1c2" fillOpacity="0.45"/>
             <path d="M28.96,74.91c-.22-.02-.45-.06-.67-.11-.7-.17-1.32-.47-1.85-.88-.61.42-1.01,1.11-1.01,1.91,0,1.28,1.03,2.31,2.31,2.31.96,0,1.78-.58,2.13-1.41-.43-.53-.74-1.15-.9-1.82Z" fill="#00b1c2" fillOpacity="0.45"/>
-            <text transform="translate(96.37 29.1)" fill="#fff" fontFamily="Montserrat-SemiBold, Montserrat" fontSize="17.71px" fontWeight="600">
+            <text transform="translate(96.37 29.1)" fill={`${!dark ? '#fff' : '#0A42A5'}`} fontFamily="Montserrat-SemiBold, Montserrat" fontSize="17.71px" fontWeight="600">
                 <tspan letterSpacing="0.02em" x="0" y="0">OXFORD</tspan>
                 <tspan letterSpacing="0.02em" x="0" y="17.71">SCIENCE</tspan>
                 <tspan letterSpacing="0.02em" x="0" y="35.42">ENTERPRISES</tspan>

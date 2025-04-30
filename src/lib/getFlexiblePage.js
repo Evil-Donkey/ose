@@ -88,6 +88,115 @@ const FLEXIBLE_CONTENT_QUERY = `
             fieldGroupName
             title
           }
+          ... on Page_Flexiblecontent_FlexibleContent_Expertise {
+            fieldGroupName
+            title
+            headings {
+              heading
+              position
+            }
+            columns {
+              copy
+            }
+            expertise {
+              copy
+              title
+              who
+              backgroundImage {
+                mediaItemUrl
+              }
+              photo {
+                altText
+                mediaItemUrl
+                mediaDetails {
+                  height
+                  width
+                }
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_Sectors {
+            copy
+            fieldGroupName
+            title
+            headings {
+              heading
+            }
+            sectors {
+              copy
+              title
+              url {
+                ... on Page {
+                  id
+                  slug
+                  link
+                }
+              }
+              image {
+                mediaItemUrl
+                mediaDetails {
+                  height
+                  width
+                }
+                altText
+              }
+              video {
+                mediaItemUrl
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_Portfolio {
+            copy
+            fieldGroupName
+            portfolio {
+              ... on Portfolio {
+                id
+                title(format: RENDERED)
+                link
+                featuredImage {
+                  node {
+                    altText
+                    mediaItemUrl
+                    mediaDetails {
+                      height
+                      width
+                    }
+                  }
+                }
+                portfolioCategories {
+                  nodes {
+                    name
+                    taxonomyName
+                  }
+                }
+                portfolioFields {
+                  authorName
+                  roleOrCompany
+                }
+              }
+            }
+            title
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_Cta {
+            copy
+            fieldGroupName
+            title
+            cta {
+              smallTitle
+              largeTitle
+              copy
+              ctaLabel
+              ctaUrl
+              backgroundImage {
+                altText
+                mediaDetails {
+                  height
+                  width
+                }
+                mediaItemUrl
+              }
+            }
+          }
         }
       }
     }

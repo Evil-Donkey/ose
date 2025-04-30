@@ -5,6 +5,10 @@ import InfographicMap from "./InfographicMap";
 import WhatWeDo from "./WhatWeDo";
 import StatsModule from "./StatsModule";
 import InfographicEcosystem from "./InfographicEcosystem";
+import Expertise from "./Expertise";
+import Sectors from "./Sectors";
+import Portfolio from "./Portfolio";
+import CTA from "./CTA";
 
 const PageFlexibleContent = ({ data }) => {
 
@@ -34,6 +38,18 @@ const PageFlexibleContent = ({ data }) => {
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_InfographicEcosystem") {
             flexibleContentArray.push(<InfographicEcosystem data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Expertise") {
+            flexibleContentArray.push(<Expertise data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Sectors") {
+            flexibleContentArray.push(<Sectors data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Portfolio") {
+            flexibleContentArray.push(<Portfolio data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cta") {
+            flexibleContentArray.push(<CTA data={data} index={i} key={i.toString()} />);
         }
     })}
 

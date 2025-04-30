@@ -118,7 +118,7 @@ const ScrollingPanels = ({ data }) => {
                                 <div className="absolute top-0 left-0 w-full h-full bg-black/40" />
                             </div>
                         ))}
-                        <div className="container mx-auto px-4 lg:px-6 py-25 md:py-45 relative z-10 text-white flex flex-col h-full">
+                        <div className="container mx-auto px-4 md:px-10 py-25 md:py-45 relative z-10 text-white flex flex-col h-full">
                             <div className="flex flex-col">
                                 <h2 className="uppercase tracking-widest text:lg md:text-xl mb-4 text-center font-medium">{mainHeading}</h2>
                                 <ul className="flex flex-nowrap justify-center gap-4">

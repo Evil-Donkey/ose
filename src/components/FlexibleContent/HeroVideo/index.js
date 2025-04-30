@@ -69,8 +69,8 @@ const HeroVideo = ({ data }) => {
     }, []);
 
     return (
-        <div ref={heroRef} className="pt-60 pb-30 bg-cover bg-no-repeat bg-[url('/footer-bg.jpg')]">
-            <div className="container mx-auto px-4 lg:px-6">
+        <div ref={heroRef} className="pt-60 pb-30 bg-cover bg-center bg-[url('/gradient.png')]">
+            <div className="container mx-auto px-4 md:px-10">
                 <div className="mx-auto relative">
                     <video ref={videoRef} className="w-full rounded-2xl shadow-xl aspect-video opacity-0 scale-125" autoPlay playsInline muted loop>
                         <source src={introMovie.mediaItemUrl} type="video/mp4" />

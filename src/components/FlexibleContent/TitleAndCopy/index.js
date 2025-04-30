@@ -1,40 +1,16 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Headings from "@/components/Headings";
 import Column from "@/components/Column";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const TitleAndCopy = ({ data }) => {
-
-    const copyRef = useRef(null);
 
     const { headings, copy } = data;
 
-    useEffect(() => {
-        gsap.to(copyRef.current, {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: 'power4.out',
-            scrollTrigger: {
-                trigger: copyRef.current,
-                start: 'top 90%',
-                scrub: 1.5
-            },
-        });
-        return () => {
-            // Clean up ScrollTriggers on unmount
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
-    }, []);
     return (
-        <div className="container mx-auto px-4 lg:px-6 py-20 lg:py-40">
-            <div className="flex flex-col items-end">
+        <div className="container mx-auto px-4 md:px-10 py-20 lg:py-40">
+            <div className="flex flex-col">
                 <Headings headings={headings} />
+            </div>
+            <div className="flex flex-col items-end">
                 <Column copy={copy} />
             </div>
         </div>

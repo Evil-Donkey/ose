@@ -33,10 +33,10 @@ const Headings = ({ headings, theme }) => {
     return (
         <>
             {headings.map((item, index) => {
-                const { heading, position } = item;
-                const isEnd = position === 'self-end';
+                const { heading } = item;
+                
                 return (
-                    <h2 key={index} ref={el => headingRef.current[index] = el} className={`text-4xl md:text-8xl/27 ${textColor} opacity-0 ${position} ${isEnd ? 'translate-x-full' : '-translate-x-full'}`}>
+                    <h2 key={index} ref={el => headingRef.current[index] = el} className={`text-4xl md:text-8xl/27 ${textColor} opacity-0 translate-x-full`}>
                         {heading}   
                     </h2>
                 )

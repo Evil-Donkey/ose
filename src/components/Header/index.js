@@ -47,9 +47,9 @@ const Header = ({ portal }) => {
     }
 
     return (
-        <header className={`text-white fixed top-0 left-0 right-0 transition-all duration-500 z-10 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-5 bg-darkblue' : 'py-10'}`}>
+        <header className={`text-white fixed top-0 left-0 right-0 transition-all duration-500 z-10 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-10'}`}>
             {/* <div className={`${styles.mobileMenuBackground} ${isMobileMenuOpen ? styles.mobileMenuBackgroundActive : ''}`} /> */}
-            <div className="container mx-auto px-4 lg:px-6">
+            <div className="container mx-auto px-4 md:px-10">
                 <div className="flex justify-between items-center">
                     <div className="w-75">
                         <div className="text-xl font-bold">

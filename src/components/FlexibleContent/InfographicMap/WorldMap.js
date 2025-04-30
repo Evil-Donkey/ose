@@ -88,15 +88,15 @@ const WorldMap = () => {
             }, "<");
         });
 
+        // roundelTl.to(mapWrapperRef.current, {
+        //     scale: 1000,
+        //     ease: "power2.inOut",
+        //     duration: 5,
+        // }, "-=1.5")
         roundelTl.to(mapWrapperRef.current, {
-            scale: 1000,
-            ease: "power2.inOut",
-            duration: 5,
-        }, "-=1.5")
-        .to(mapWrapperRef.current, {
             autoAlpha: 0,
             duration: .5
-        }, "-=1");
+        }, "-=2");
         
         return () => {
             // Clean up ScrollTriggers on unmount

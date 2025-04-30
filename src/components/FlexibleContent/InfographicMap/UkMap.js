@@ -84,7 +84,7 @@ const UkMap = () => {
         };
     }, []);
     return (
-        <div ref={infographicMapRef} className="flex flex-col items-center justify-center -mt-100 min-h-screen">
+        <div ref={infographicMapRef} className="flex flex-col items-center justify-center -mt-50 min-h-screen">
             <div ref={mapWrapperRef} className="relative w-full lg:w-120 origin-[47%_34%] scale-50 opacity-10">
                 <Image ref={mapImageRef} className="object-contain w-full!" src="/infographic/uk-map.svg" alt="Infographic Map" width={1000} height={500} />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-55 2xl:mt-55 ms-20 2xl:ms-20 rounded-full size-5 opacity-80">
