@@ -117,7 +117,7 @@ const InfographicMap = ({ data }) => {
                 <div className="flex flex-col my-30">
                     <div className="w-full md:w-1/4" ref={bottomTextRef}>
                         <p className="text-blue-02 text-sm"><span className="font-bold">Spinout companies formed</span><br/>
-                        The graphic below highlights the rapid expansion of Oxford's spinout ecosystem, underscoring OSE's impact in bridging research and real-world application. Click to see more detail.</p>
+                        The graphic below highlights the rapid expansion of Oxford&apos;s spinout ecosystem, underscoring OSE&apos;s impact in bridging research and real-world application. Click to see more detail.</p>
                     </div>
                     <div ref={infographicRef} className="relative w-full flex items-center justify-center -space-x-2">
                         {/* Early years circles */}
