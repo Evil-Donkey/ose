@@ -43,7 +43,7 @@ const UkMap = () => {
         const roundelTl = gsap.timeline({
             scrollTrigger: {
                 trigger: mapImageRef.current,
-                start: "top bottom+=100",
+                start: "top top",
                 end: `+=400%`,
                 scrub: 1.5,
                 invalidateOnRefresh: true
@@ -55,7 +55,7 @@ const UkMap = () => {
             opacity: 1,
             ease: "power2.out",
             duration: 5
-        }, '');
+        });
 
         roundelsRef.current.forEach((roundel, index) => {
             const isEven = index % 2 === 0;
@@ -84,8 +84,8 @@ const UkMap = () => {
         };
     }, []);
     return (
-        <div ref={infographicMapRef} className="flex flex-col items-center justify-center -mt-50 min-h-screen">
-            <div ref={mapWrapperRef} className="relative w-full lg:w-120 origin-[47%_34%] scale-50 opacity-10">
+        <div ref={infographicMapRef} className="flex flex-col items-center justify-center -mt-[170%] min-h-screen">
+            <div ref={mapWrapperRef} className="relative w-full lg:w-120 origin-[47%_34%] scale-50 opacity-0">
                 <Image ref={mapImageRef} className="object-contain w-full!" src="/infographic/uk-map.svg" alt="Infographic Map" width={1000} height={500} />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-55 2xl:mt-55 ms-20 2xl:ms-20 rounded-full size-5 opacity-80">
                     {Array.from({ length: 3 }).map((_, index) => (

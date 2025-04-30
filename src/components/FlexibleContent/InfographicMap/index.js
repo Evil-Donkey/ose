@@ -12,8 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const InfographicMap = ({ data }) => {
     const titleRef = useRef([]);
-    const copyRef = useRef(null);
-    const mapsContainerRef = useRef(null);
+    const copyRef = useRef([]);
 
     const { heading, copy, headings } = data;
 
@@ -37,6 +36,7 @@ const InfographicMap = ({ data }) => {
             y: 0,
             duration: 1,
             ease: 'power4.out',
+            stagger: 0.1,
             scrollTrigger: {
                 trigger: copyRef.current,
                 start: 'top 90%',
@@ -54,15 +54,15 @@ const InfographicMap = ({ data }) => {
     return (
         <div className="container mx-auto px-4 md:px-10 py-20">
             <div className="flex flex-col items-center text-center">
-                <h2 className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{heading}</h2>
-                <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02">
+                <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{heading}</h2>
+                <div ref={el => copyRef.current[0] = el} className="w-full md:w-1/2 text-center mt-4 text-blue-02 opacity-0 translate-y-10">
                     <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: copy }} />
                 </div>
             </div>
             
             <div className="flex flex-col md:flex-row gap-8 items-center justify-center text-center mt-8">
-                <Button>View Oxford led innnovations</Button>
-                <Button>View Oxford key statistics</Button>
+                <Button ref={el => copyRef.current[1] = el} className="opacity-0 translate-y-10">View Oxford led innnovations</Button>
+                <Button ref={el => copyRef.current[2] = el} className="opacity-0 translate-y-10">View Oxford key statistics</Button>
             </div>
 
             <WorldMap />

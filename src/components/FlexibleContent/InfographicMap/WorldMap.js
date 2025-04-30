@@ -30,7 +30,7 @@ const WorldMap = () => {
         ScrollTrigger.create({
             trigger: infographicMapRef.current,
             start: "center center",
-            end: `+=400%`,
+            end: `+=500%`,
             pin: true,
             pinSpacing: true,
             onToggle: (self) => {
@@ -45,7 +45,7 @@ const WorldMap = () => {
             scrollTrigger: {
                 trigger: mapImageRef.current,
                 start: "center center",
-                end: `+=500%`,
+                end: `+=400%`,
                 scrub: 1.5,
                 invalidateOnRefresh: true,
                 onUpdate: (self) => {
@@ -53,7 +53,7 @@ const WorldMap = () => {
                     const progress = self.progress;
         
                     // Set a threshold just before mapWrapperRef scale animation
-                    if (progress > 0.55) {
+                    if (progress > 0.95) {
                         if (ringTl.isActive() || ringTl.progress() > 0) {
                             ringTl.progress(0).pause();
                             // ringTl.pause();
@@ -96,7 +96,7 @@ const WorldMap = () => {
         roundelTl.to(mapWrapperRef.current, {
             autoAlpha: 0,
             duration: .5
-        }, "-=2");
+        }, "-=1");
         
         return () => {
             // Clean up ScrollTriggers on unmount
