@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Logo from "@/components/Icons/Logo";
+import { LogoDark } from "@/components/Icons/Logo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -151,7 +151,7 @@ const InfographicMap = ({ data }) => {
                             >
                                 <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[1] = el}>
                                     <div className="w-30 h-auto mb-2">
-                                        <Logo dark />
+                                        <LogoDark />
                                     </div>
                                     <h3 className="font-bold text-xs text-blue-02">After OSE was established</h3>
                                     <p className="text-blue-02 text-xs">180+ Oxford companies founded over 15 years</p>

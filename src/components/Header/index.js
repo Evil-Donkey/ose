@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from "next/link";
-import Logo from "../Icons/Logo";
+import { Logo } from "../Icons/Logo";
 
 const Header = ({ portal }) => {
 

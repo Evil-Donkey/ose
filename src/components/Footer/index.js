@@ -1,4 +1,4 @@
-import Logo from "../Icons/Logo";
+import { Logo } from "../Icons/Logo";
 import Button from "../Button";
 import { LinkedIn, X, YouTube } from "../Icons/Social";
 
