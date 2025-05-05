@@ -17,11 +17,12 @@ const ScrollingPanels = ({ data }) => {
 
     const { mainHeading, panels } = data;
 
+
     useEffect(() => {
         ScrollTrigger.create({
             trigger: panelsWrapperRef.current,
             start: "top top",
-            end: `+=${(panels.length - 1) * 100}%`,
+            end: `+=${(panels.length) * 100}%`,
             pin: true,
             pinSpacing: true
         });
@@ -29,9 +30,9 @@ const ScrollingPanels = ({ data }) => {
         // Set initial opacity for all panels except first
         panels.forEach((_, index) => {
             if (index > 0) {
-                gsap.set(bgRef.current[index], { autoAlpha: 0, scale: 1.2 });
-                gsap.set(panelHeadingRef.current[index], { autoAlpha: 0, x: -100 });
-                gsap.set(panelCopyRef.current[index], { autoAlpha: 0, x: 100 });
+                gsap.set(bgRef.current[index], { xPercent: 100 });
+                gsap.set(panelHeadingRef.current[index], { autoAlpha: 0, xPercent: 200 });
+                gsap.set(panelCopyRef.current[index], { autoAlpha: 0, xPercent: 200 });
             }
         });
 
@@ -39,11 +40,12 @@ const ScrollingPanels = ({ data }) => {
         panels.forEach((_, index) => {
             if (index < panels.length - 1) {
                 const nextIndex = index + 1;
-                const start = `${(index + 0.5) * 100}%`;
-                const end = `${(index + 1.5) * 100}%`;
+                const start = `${(index + 1) * 100}%`;
+                const end = `${(index + 2) * 100}%`;
 
                 // Current panel exit animations
                 const tl = gsap.timeline({
+                    stagger: 0.1,
                     scrollTrigger: {
                         trigger: triggerRef.current,
                         start: start,
@@ -67,35 +69,41 @@ const ScrollingPanels = ({ data }) => {
 
                 // Animate current panel out
                 tl.to(panelHeadingRef.current[index], {
-                    x: -100,
+                    xPercent: -200,
                     autoAlpha: 0,
                     duration: 1,
                     ease: "power2.out"
                 })
+                .to(bgRef.current[index], {
+                    xPercent: -100,
+                    duration: 1,
+                    ease: "power2.out"
+                }, "<")
                 .to(panelCopyRef.current[index], {
-                    x: 100,
+                    xPercent: -200,
                     autoAlpha: 0,
                     duration: 1,
                     ease: "power2.out"
                 }, "<")
                 // Animate next panel in
                 .to(panelHeadingRef.current[nextIndex], {
-                    x: 0,
-                    autoAlpha: 1,
-                    duration: 1,
-                    ease: "power2.out"
-                }, "<")
-                .to(panelCopyRef.current[nextIndex], {
-                    x: 0,
+                    xPercent: 0,
                     autoAlpha: 1,
                     duration: 1,
                     ease: "power2.out"
                 }, "<")
                 .to(bgRef.current[nextIndex], {
+                    // autoAlpha: 1,
+                    xPercent: 0,
+                    // scale: 1,
+                    duration: 1,
+                    ease: "power2.out"
+                }, "<")
+                .to(panelCopyRef.current[nextIndex], {
+                    xPercent: 0,
                     autoAlpha: 1,
-                    scale: 1,
-                    duration: 2,
-                    ease: "power4.out"
+                    duration: 1,
+                    ease: "power2.out"
                 }, "<");
             }
         });
@@ -138,8 +146,8 @@ const ScrollingPanels = ({ data }) => {
                             <div className="flex flex-col relative mt-20">
                                 {panels.map((panel, index) => (
                                     <div key={index} className="flex justify-between absolute top-0 left-0 w-full gap-5">
-                                        <h3 ref={el => panelHeadingRef.current[index] = el} className="text-4xl md:text-8xl/27 w-full md:w-2/5">{panel.heading}</h3>
-                                        <div ref={el => panelCopyRef.current[index] = el} className="w-full md:w-2/5 text-2xl md:text-4xl">
+                                        <h3 ref={el => panelHeadingRef.current[index] = el} className="text-4xl md:text-[7rem]/30 tracking-tight w-full md:w-2/5">{panel.heading}</h3>
+                                        <div ref={el => panelCopyRef.current[index] = el} className="w-full md:w-2/5 text-2xl md:text-3xl lg:text-4xl 2xl:text-[2.5rem]/12 lg:me-12">
                                             <div dangerouslySetInnerHTML={{ __html: panel.copy }} />
                                         </div>
                                     </div>

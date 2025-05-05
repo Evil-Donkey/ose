@@ -10,7 +10,7 @@ const TitleAndCopy = ({ data }) => {
             <div className="flex flex-col">
                 <Headings headings={headings} />
             </div>
-            <div className="flex flex-col items-end">
+            <div className="flex justify-end lg:me-20">
                 <Column copy={copy} />
             </div>
         </div>

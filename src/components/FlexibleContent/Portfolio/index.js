@@ -124,7 +124,7 @@ const Portfolio = ({ data }) => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-                    {visibleItems.map((item, index) => {
+                    {portfolio.map((item, index) => {
                         const isEvenRow = Math.floor(index / 2) % 2 === 0;
                         const isFirstInRow = index % 2 === 0;
 
@@ -188,7 +188,7 @@ const Portfolio = ({ data }) => {
 
                 {currentPage < totalPages && (
                     <div className="flex justify-center mt-16">
-                        <Button onClick={handleLoadMore}>See our portfolio</Button>
+                        <Button>See our portfolio</Button>
                     </div>
                 )}
             </div>

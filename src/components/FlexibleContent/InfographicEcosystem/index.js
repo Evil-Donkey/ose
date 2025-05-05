@@ -107,7 +107,7 @@ const InfographicMap = ({ data }) => {
 
     return (
         <div className="bg-linear-to-t from-black/10 to-black/0">
-            <div className="container mx-auto px-4 md:px-10 py-20">
+            <div className="container mx-auto px-4 md:px-10 py-20 2xl:pb-40">
                 <div className="flex flex-col items-center text-center">
                     <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>
                     <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02 opacity-0 translate-y-20">
@@ -117,9 +117,9 @@ const InfographicMap = ({ data }) => {
                 <div className="flex flex-col my-30">
                     <div className="w-full md:w-1/4" ref={bottomTextRef}>
                         <p className="text-blue-02 text-sm"><span className="font-bold">Spinout companies formed</span><br/>
-                        The graphic below highlights the rapid expansion of Oxford&apos;s spinout ecosystem, underscoring OSE&apos;s impact in bridging research and real-world application. Click to see more detail.</p>
+                        The graphic below highlights the rapid expansion of Oxford&apos;s spinout ecosystem, underscoring OSE&apos;s impact in bridging research and real-world application. Click on the diagram to see the companies formed.</p>
                     </div>
-                    <div ref={infographicRef} className="relative w-full flex items-center justify-center -space-x-2">
+                    <div ref={infographicRef} className="relative w-full flex items-center justify-center -space-x-2 xl:scale-110 2xl:scale-130">
                         {/* Early years circles */}
                         <div className="relative flex flex-col md:flex-row items-center -space-x-2">
                             {timelineData.slice(0, 4).map((item, index) => (

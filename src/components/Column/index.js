@@ -33,8 +33,8 @@ const Column = ({ colNumber, copy, theme, fullWidth }) => {
         };
     }, []);
     return (
-        <div ref={copyRef} className={`w-full ${!fullWidth && 'md:w-1/2'} ${colClassLg} mt-4 ${textColor} opacity-0 translate-y-20`}>
-            <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: copy }} />
+        <div ref={copyRef} className={`w-full ${!fullWidth && 'md:w-2/5'} ${colClassLg} mt-4 ${textColor} opacity-0 translate-y-20`}>
+            <div className="text-lg md:text-xl/8 flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: copy }} />
         </div>
     )
 }

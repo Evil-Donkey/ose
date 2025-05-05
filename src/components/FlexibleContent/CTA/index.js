@@ -79,7 +79,7 @@ const CTA = ({ data }) => {
                         const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, backgroundImage } = cta;
                         return (
                             <div key={index} ref={el => ctaRef.current[index] = el} className="relative overflow-hidden rounded-3xl group p-8 md:p-12 opacity-0 translate-y-20">
-                                {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className="absolute inset-0 object-cover" />}
+                                {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" />}
                                 <div className="relative z-10">
                                     {smallTitle && <p className="text-xs md:text-sm text-white mb-2">{smallTitle}</p>}
                                     {largeTitle && <h3 className="text-3xl md:text-4xl text-white mb-6">{largeTitle}</h3>}

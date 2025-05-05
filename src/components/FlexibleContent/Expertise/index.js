@@ -17,6 +17,8 @@ const Expertise = ({ data }) => {
 
     const expertiseRef = useRef([]);
     const titleRef = useRef([]);
+    const containerRef = useRef(null);
+    const expertiseItemsRef = useRef([]);
 
     const activeItem = expertise[activeIndex];
 
@@ -43,6 +45,7 @@ const Expertise = ({ data }) => {
             scrollTrigger: {
                 trigger: expertiseRef.current,
                 start: 'top 90%',
+                end: 'top center',
                 scrub: 1.5,
                 invalidateOnRefresh: true,
                 toggleActions: "play none none reverse",
@@ -61,7 +64,7 @@ const Expertise = ({ data }) => {
                     {title && <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium text-white opacity-0 translate-x-full">{title}</h3>}
                     {headings && <Headings headings={headings} theme="dark" />}
                     {columns && 
-                        <div className="flex w-full space-x-14 mt-10 justify-end">
+                        <div className="flex w-full space-x-14 mt-10 justify-end lg:pe-20">
                             {columns.map((column, index) => {
                                 return (
                                     <Column key={index} copy={column.copy} colNumber={colNumber} theme="dark" />
@@ -84,7 +87,7 @@ const Expertise = ({ data }) => {
                                     }} />
                                     {/* Main expertise block */}
                                     <div
-                                        className="relative flex flex-col md:flex-row items-center md:items-start p-8 md:p-16 min-h-[400px]">
+                                        className="relative flex flex-col md:flex-row items-center md:items-start p-8 md:p-16 md:min-h-[600px]">
                                         <div className="w-full md:w-1/2 z-10 flex flex-col justify-center items-start">
                                             <h2 className="text-4xl md:text-5xl mb-4">{activeItem.title}</h2>
                                             <div className="text-lg md:text-xl mb-6" dangerouslySetInnerHTML={{ __html: activeItem.copy }} />

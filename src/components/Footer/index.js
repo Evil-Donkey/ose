@@ -1,11 +1,12 @@
 import { Logo } from "../Icons/Logo";
 import Button from "../Button";
 import { LinkedIn, X, YouTube } from "../Icons/Social";
+import GoogleMap from "../GoogleMap";
 
 const Footer = () => {
     return (
-        <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white py-16">
-            <div className="container mx-auto px-4 md:px-10">
+        <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16">
+            <div className="container mx-auto px-4 md:px-10 mb-20">
 
                 <div className="flex flex-col md:flex-row gap-x-5 justify-between items-center mb-12">
                     <div className="w-full md:w-1/2">
@@ -114,7 +115,11 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <GoogleMap />
+
+            <div className="container mx-auto px-4 md:px-10">
                 {/* Copyright */}
                 <div className="mt-20 text-xs flex flex-col md:flex-row justify-between items-center gap-4">
                     <div>© 2025 Oxford Science Enterprises</div>
@@ -130,9 +135,10 @@ const Footer = () => {
                         <a href="/cookie-policy" className="hover:text-lightblue">Cookie policy</a>
                     </div>
                 </div>
-                <div className="mt-4 text-xs text-center">
-                    OSE Manager Limited, a wholly owned subsidiary of Oxford Science Enterprises plc, is authorised and regulated by the Financial Conduct Authority.
-                </div>
+            </div>
+
+            <div className="py-4 mt-4 px-4 md:px-10 text-xs text-center bg-blue-02">
+                OSE Manager Limited, a wholly owned subsidiary of Oxford Science Enterprises plc, is authorised and regulated by the Financial Conduct Authority.
             </div>
         </div>
     );
