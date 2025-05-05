@@ -52,6 +52,7 @@ const ScrollingPanels = ({ data }) => {
                         end: end,
                         toggleActions: "play none none reverse",
                         invalidateOnRefresh: true,
+                        snap: 1 / (panels.length - 1),
                         onEnter: () => {
                             setActivePanelIndex(index + 1);
                         },
@@ -107,6 +108,21 @@ const ScrollingPanels = ({ data }) => {
                 }, "<");
             }
         });
+
+        // const sections = gsap.utils.toArray(".panel");
+
+        // gsap.to(sections, {
+        //     xPercent: -100 * (sections.length - 1),
+        //     ease: "none",
+        //     scrollTrigger: {
+        //         trigger: panelsWrapperRef.current,
+        //         pin: true,
+        //         scrub: 1,
+        //         snap: 1 / (sections.length - 1),
+        //         end: () => `+=${panelsWrapperRef.current.offsetWidth}`,
+        //     }
+        // });
+
         return () => {
             // Clean up ScrollTriggers on unmount
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());

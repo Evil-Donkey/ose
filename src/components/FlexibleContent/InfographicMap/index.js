@@ -72,14 +72,14 @@ const InfographicMap = ({ data }) => {
                 xPercent: -50,
                 ease: "power2.inOut",
                 duration: 2,
-            }, "+=0.4")
+            }, "-=2")
             .to(copyRef.current[1], {
                 scale: .75,
                 duration: 2,
                 opacity: .5,
                 ease: "power2.inOut",
             }, "<");
-            masterTimeline.add(ukMapTimeline.current, "+=.5");
+            masterTimeline.add(ukMapTimeline.current, "-=.3");
         // }
 
         // masterTimelineInit();
