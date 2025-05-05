@@ -66,7 +66,7 @@ const Stats = ({ data, theme }) => {
                                     {statValue && <h4 className="text-9xl text-lightblue"><CountUp end={statValue} enableScrollSpy scrollSpyOnce={true} scrollSpyDelay={500} decimals={decimals} /></h4>}
                                     {postStat && <h4 className="text-9xl text-lightblue">{postStat}</h4>}
                                 </div>
-                                <div className="text-lg" dangerouslySetInnerHTML={{ __html: description }} />
+                                <div className={`text-lg ${textColor}`} dangerouslySetInnerHTML={{ __html: description }} />
                             </div>
                         )
                     })}

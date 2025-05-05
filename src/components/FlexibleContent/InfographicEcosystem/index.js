@@ -124,7 +124,7 @@ const InfographicMap = ({ data }) => {
                         <div className="relative flex flex-col md:flex-row items-center -space-x-2">
                             {timelineData.slice(0, 4).map((item, index) => (
                                 <div key={item.period} className="relative" ref={el => circlesRef.current[index] = el}>
-                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">{item.period}</div>
+                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-02">{item.period}</div>
                                     <div
                                         className="relative flex items-center justify-center rounded-full bg-lightblue/50"
                                         style={{ width: `${item.size}px`, height: `${item.size}px` }}
