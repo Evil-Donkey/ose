@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
+import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,7 +65,7 @@ const CTA = ({ data }) => {
     }, []);
 
     return (
-        <div className="container mx-auto px-4 md:px-10 py-20">
+        <Container className="py-20">
             <div className="flex flex-col items-center text-center">
                 <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>
                 <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02 opacity-0 translate-y-20">
@@ -78,7 +79,7 @@ const CTA = ({ data }) => {
                     {cta.map((cta, index) => {
                         const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, backgroundImage } = cta;
                         return (
-                            <div key={index} ref={el => ctaRef.current[index] = el} className="relative overflow-hidden rounded-3xl group p-8 md:p-12 opacity-0 translate-y-20">
+                            <div key={index} ref={el => ctaRef.current[index] = el} className="relative overflow-hidden rounded-3xl group p-8 2xl:p-12 opacity-0 translate-y-20">
                                 {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" />}
                                 <div className="relative z-10">
                                     {smallTitle && <p className="text-xs md:text-sm text-white mb-2">{smallTitle}</p>}
@@ -93,7 +94,7 @@ const CTA = ({ data }) => {
                     })}
                 </div>
             }
-        </div>
+        </Container>
     )
 };
 

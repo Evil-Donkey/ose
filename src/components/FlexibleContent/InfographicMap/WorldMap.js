@@ -2,12 +2,14 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { useIsMobile } from "@/hooks/isMobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const WorldMap = ({ timeline }) => {
   const ringRefs = useRef([]);
   const roundelRefs = useRef([]);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     timeline.to(ringRefs.current, {
@@ -16,13 +18,12 @@ const WorldMap = ({ timeline }) => {
       duration: 6,
       stagger: {
         each: 1,
-        // repeat: 10,
       },
     }, 0);
 
     roundelRefs.current.forEach((roundel, index) => {
       const isEven = index % 2 === 0;
-      const xDistance = isEven ? -250 : 250;
+      const xDistance = isMobile ? (isEven ? -70 : 100) : (isEven ? -250 : 250);
       const yDistance = 50;
       const startTime = 1 + index;
 
@@ -40,11 +41,11 @@ const WorldMap = ({ timeline }) => {
           duration: 1,
         }, "<+=2");
     });
-  }, []);
+  }, [isMobile]);
 
   return (
-    <div className="flex flex-col items-center justify-center relative w-full scale-90 origin-top">
-      <div className="relative w-full origin-[47%_34.5%]">
+    <div className="flex flex-col items-center justify-center relative w-full scale-150 md:scale-100 lg:scale-60 2xl:scale-90 origin-top">
+      <div className="relative w-full md:origin-[47%_34.5%]">
         <Image
           className="object-contain w-full"
           src="/infographic/world-map.svg"
@@ -52,7 +53,7 @@ const WorldMap = ({ timeline }) => {
           width={1000}
           height={500}
         />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -mt-26 2xl:-mt-32 -ms-9 2xl:-ms-12 rounded-full size-5 opacity-80">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -mt-8 -ms-3.5 md:-mt-26 2xl:-mt-32 md:-ms-9 2xl:-ms-12 rounded-full size-5 opacity-80">
           {Array.from({ length: 3 }).map((_, index) => (
             <div
               key={index}
@@ -66,7 +67,7 @@ const WorldMap = ({ timeline }) => {
         <div
           key={index}
           ref={(el) => (roundelRefs.current[index] = el)}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -mt-26 2xl:-mt-32 -ms-9 2xl:-ms-12 scale-0"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -mt-8 -ms-3.5 md:-mt-26 2xl:-mt-32 md:-ms-9 2xl:-ms-12 scale-0"
         >
           <Image
             src={`/infographic/roundel-${index + 1}.png`}

@@ -1,9 +1,10 @@
 import Link from 'next/link'
+import Container from '../components/Container'
  
 export default function NotFound() {
   return (
     <div>
-        <div className="container mx-auto px-4">
+        <Container>
             <div className="flex justify-between">
                 <div className="w-full lg:w-1/2 mb-5">
                     <h1>Not Found</h1>
@@ -13,7 +14,7 @@ export default function NotFound() {
                     <Link href="/" className='underline'>Return Home</Link>
                 </div>
             </div>
-        </div>
+        </Container>
     </div>
   )
 }

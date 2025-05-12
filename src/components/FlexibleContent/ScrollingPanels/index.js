@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -133,7 +134,7 @@ const ScrollingPanels = ({ data }) => {
         <>
             {panels && 
                 <div className="relative min-h-[100vh]" ref={panelsWrapperRef}>
-                    <div ref={triggerRef} className="h-full">
+                    <div ref={triggerRef} className="h-full flex flex-col justify-center">
                         {panels.map((panel, index) => (
                             <div key={index} ref={el => bgRef.current[index] = el} className="absolute w-full h-full">
                                 {panel.backgroundImage &&
@@ -142,15 +143,15 @@ const ScrollingPanels = ({ data }) => {
                                 <div className="absolute top-0 left-0 w-full h-full bg-black/40" />
                             </div>
                         ))}
-                        <div className="container mx-auto px-4 md:px-10 py-25 md:py-45 relative z-10 text-white flex flex-col h-full">
+                        <Container className="py-30 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
                             <div className="flex flex-col">
                                 <h2 className="uppercase tracking-widest text:lg md:text-xl mb-4 text-center font-medium">{mainHeading}</h2>
-                                <ul className="flex flex-nowrap justify-center gap-4">
+                                <ul className="flex flex-nowrap justify-center gap-2 md:gap-4">
                                     {panels.map((panel, index) => (
                                         <li key={index}>
                                             <h3 
                                                 ref={el => panelTitleRef.current[index] = el} 
-                                                className={`text-2xl md:text-4xl transition-all duration-500 ${index === activePanelIndex ? 'text-lightblue' : ''}`}
+                                                className={`text-xl md:text-3xl 2xl:text-4xl transition-all duration-500 ${index === activePanelIndex ? 'text-lightblue' : ''}`}
                                             >
                                                 {panel.title}
                                             </h3>
@@ -159,17 +160,17 @@ const ScrollingPanels = ({ data }) => {
                                 </ul>
                             </div>
 
-                            <div className="flex flex-col relative mt-20">
+                            <div className="flex flex-col relative mt-10 2xl:mt-20">
                                 {panels.map((panel, index) => (
-                                    <div key={index} className="flex justify-between absolute top-0 left-0 w-full gap-5">
-                                        <h3 ref={el => panelHeadingRef.current[index] = el} className="text-4xl md:text-[7rem]/30 tracking-tight w-full md:w-2/5">{panel.heading}</h3>
-                                        <div ref={el => panelCopyRef.current[index] = el} className="w-full md:w-2/5 text-2xl md:text-3xl lg:text-4xl 2xl:text-[2.5rem]/12 lg:me-12">
+                                    <div key={index} className="flex flex-wrap justify-between absolute top-0 left-0 w-full gap-5">
+                                        <h3 ref={el => panelHeadingRef.current[index] = el} className="text-4xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight w-full lg:w-2/5">{panel.heading}</h3>
+                                        <div ref={el => panelCopyRef.current[index] = el} className="w-full lg:w-2/5 text-2xl md:text-3xl 2xl:text-[2.5rem]/12 lg:me-12">
                                             <div dangerouslySetInnerHTML={{ __html: panel.copy }} />
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </Container>
                     </div>
                 </div>
             }

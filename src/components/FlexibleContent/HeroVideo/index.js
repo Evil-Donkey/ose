@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 // import { SplitText } from "gsap/SplitText";
 import Button from "@/components/Button";
+import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,27 +70,27 @@ const HeroVideo = ({ data }) => {
     }, []);
 
     return (
-        <div ref={heroRef} className="pt-60 pb-30 bg-cover bg-center bg-[url('/gradient.png')]">
-            <div className="container mx-auto px-4 md:px-10">
+        <div ref={heroRef} className="pt-40 2xl:pt-50 pb-30 bg-cover bg-center bg-[url('/gradient.png')] min-h-[100vh] flex flex-col justify-center">
+            <Container>
                 <div className="mx-auto relative">
-                    <video ref={videoRef} className="w-full rounded-2xl shadow-xl aspect-video opacity-0 scale-125" autoPlay playsInline muted loop>
+                    <video ref={videoRef} className="w-full rounded-2xl shadow-xl aspect-3/5 md:aspect-3/4 lg:aspect-6/3 object-cover 2xl:aspect-video opacity-0 scale-125" autoPlay playsInline muted loop>
                         <source src={introMovie.mediaItemUrl} type="video/mp4" />
                     </video>
 
-                    <div className="absolute top-0 md:right-[13%] p-6 flex flex-col justify-center h-full text-white">
-                        <h1 className="text-4xl md:text-8xl/27">
+                    <div className="absolute top-0 right-[13%] p-6 flex flex-col justify-center h-full text-white">
+                        <h1 className="text-6xl/18 md:text-8xl/23 2xl:text-8xl/27">
                             {headings.map((heading, index) => (
                                 <span key={index} className="block overflow-hidden" ref={el => textWrapperRef.current[index] = el}>
                                     <span className="block opacity-0 translate-y-full" ref={el => textRef.current[index] = el}>{heading.heading}</span>
                                 </span>
                             ))}
                         </h1>
-                        <div className="mt-6 hover:-translate-y-1! transition-all duration-500 self-start">
+                        <div className="mt-2 md:mt-6 hover:-translate-y-1! transition-all duration-500 self-start">
                             <Button className="opacity-0 translate-y-5" ref={buttonRef}>Watch</Button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </Container>
         </div>
     )
 }

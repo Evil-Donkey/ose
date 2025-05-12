@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
+import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,7 +116,7 @@ const Portfolio = ({ data }) => {
 
     return (
         <div className="bg-linear-to-t from-black/10 to-black/0">
-            <div className="container mx-auto px-4 md:px-10 py-20">
+            <Container className="py-20">
                 <div className="flex flex-col items-center text-center">
                     <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>
                     <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02 opacity-0 translate-y-20">
@@ -168,7 +169,7 @@ const Portfolio = ({ data }) => {
                                                 </div>
                                             )}
                                             <div>
-                                                <h3 className={`text-4xl md:text-5xl ${isWide ? 'lg:max-w-[50%]' : ''}`}
+                                                <h3 className={`text-4xl 2xl:text-5xl ${isWide ? 'lg:max-w-[50%]' : ''}`}
                                                     dangerouslySetInnerHTML={{ __html: title }} 
                                                 />
                                                 {portfolioFields &&
@@ -191,7 +192,7 @@ const Portfolio = ({ data }) => {
                         <Button>See our portfolio</Button>
                     </div>
                 )}
-            </div>
+            </Container>
         </div>
     )
 };

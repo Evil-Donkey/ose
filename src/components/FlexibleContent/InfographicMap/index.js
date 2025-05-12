@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import WorldMap from "./WorldMap";
 import UkMap from "./UkMap";
 import Headings from "@/components/Headings";
+import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -79,7 +80,7 @@ const InfographicMap = ({ data }) => {
                 opacity: .5,
                 ease: "power2.inOut",
             }, "<");
-            masterTimeline.add(ukMapTimeline.current, "-=.3");
+            masterTimeline.add(ukMapTimeline.current, "-=.4");
         // }
 
         // masterTimelineInit();
@@ -101,7 +102,7 @@ const InfographicMap = ({ data }) => {
 
     return (
         <>
-            <div ref={infographicMapRef} className="container mx-auto px-4 md:px-10 pt-20">
+            <Container ref={infographicMapRef} className="pt-20 min-h-[100vh]">
                 <div className="flex flex-col items-center text-center">
                     <h2
                         ref={titleRef}
@@ -120,23 +121,23 @@ const InfographicMap = ({ data }) => {
                     </div>
                 </div>
 
-                <div ref={mapWrapperRef} className="flex flex-nowrap w-[200%]">
+                <div ref={mapWrapperRef} className="flex flex-nowrap justify-center w-[200%] mt-10 2xl:mt-0">
                     <div
                         ref={(el) => (copyRef.current[1] = el)}
-                        className="flex-shrink-0 flex flex-col items-center justify-center w-full lg:w-1/2 opacity-0 translate-y-10"
+                        className="flex flex-col items-center mt-5 sm:mt-20 md:mt-0 lg:justify-center w-1/2 opacity-0 translate-y-10"
                     >
                         <WorldMap timeline={worldMapTimeline.current} />
                     </div>
-                    <div className="flex-shrink-0 flex flex-col items-center justify-center w-full lg:w-1/2">
+                    <div className="flex flex-col items-center md:justify-center w-1/2">
                         <UkMap timeline={ukMapTimeline.current} />
                     </div>
                 </div>
-            </div>
-            <div className="container mx-auto px-4 md:px-10 pb-20">
+            </Container>
+            <Container className="pb-20">
                 <div className="flex flex-col">
                     <Headings headings={headings} />
                 </div>
-            </div>
+            </Container>
         </>
     );
 };

@@ -2,11 +2,12 @@ import { Logo } from "../Icons/Logo";
 import Button from "../Button";
 import { LinkedIn, X, YouTube } from "../Icons/Social";
 import GoogleMap from "../GoogleMap";
+import Container from "../Container";
 
 const Footer = () => {
     return (
         <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16">
-            <div className="container mx-auto px-4 md:px-10 mb-20">
+            <Container className="mb-20">
 
                 <div className="flex flex-col md:flex-row gap-x-5 justify-between items-center mb-12">
                     <div className="w-full md:w-1/2">
@@ -14,8 +15,8 @@ const Footer = () => {
                             <Logo />
                         </div>
                     </div>
-                    <div className="w-full md:w-1/2 justify-end flex gap-x-4">
-                        <div className="flex gap-x-4 items-center">
+                    <div className="w-full flex-col md:flex-row md:w-1/2 mt-5 md:mt-0 md:justify-end flex gap-x-4">
+                        <div className="flex gap-x-4 items-center mb-5 md:mb-0">
                             <YouTube />
                             <LinkedIn />
                             <X />
@@ -24,10 +25,10 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-x-5">
-                    <div className="w-full lg:w-1/2 flex flex-col md:flex-row gap-x-5">
+                <div className="flex flex-col md:flex-row flex-wrap">
+                    <div className="w-full lg:w-1/2 flex flex-col md:flex-row gap-5 md:mb-10 lg:mb-0">
                         {/* Submit an idea */}
-                        <div className="w-full md:w-1/2">
+                        <div className="w-full md:w-1/2 mb-5 md:mb-0">
                             <h2 className="text-3xl mb-4">Submit an idea</h2>
                             <div className="space-y-4">
                                 <div>
@@ -52,7 +53,7 @@ const Footer = () => {
                         </div>
 
                         {/* Get in touch */}
-                        <div className="w-full md:w-1/2">
+                        <div className="w-full md:w-1/2 mb-5 md:mb-0">
                             <h2 className="text-3xl mb-4">Get in touch</h2>
                             <div className="space-y-4">
                                 <div>
@@ -83,7 +84,7 @@ const Footer = () => {
 
                     <div className="w-full lg:w-1/2 flex flex-col md:flex-row gap-x-5">
                         {/* Site map */}
-                        <div className="w-full md:w-1/3">
+                        <div className="w-full md:w-1/3 mb-5 md:mb-0">
                             <h2 className="text-3xl mb-4">Site map</h2>
                             <ul className="space-y-1">
                                 <li><a href="/why" className="hover:text-lightblue">Why</a></li>
@@ -94,7 +95,7 @@ const Footer = () => {
                         </div>
 
                         {/* Sectors */}
-                        <div className="w-full md:w-1/3">
+                        <div className="w-full md:w-1/3 mb-5 md:mb-0">
                             <h2 className="text-3xl mb-4">Sectors</h2>
                             <ul className="space-y-1">
                                 <li><a href="/sectors/deep-tech" className="hover:text-lightblue">Deep Tech</a></li>
@@ -104,7 +105,7 @@ const Footer = () => {
                         </div>
 
                         {/* OSE */}
-                        <div className="w-full md:w-1/3">
+                        <div className="w-full md:w-1/3 mb-5 md:mb-0">
                             <h2 className="text-3xl mb-4">OSE</h2>
                             <ul className="space-y-1">
                                 <li><a href="/portfolio" className="hover:text-lightblue">Portfolio</a></li>
@@ -115,11 +116,11 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Container>
 
             <GoogleMap />
 
-            <div className="container mx-auto px-4 md:px-10">
+            <Container>
                 {/* Copyright */}
                 <div className="mt-20 text-xs flex flex-col md:flex-row justify-between items-center gap-4">
                     <div>© 2025 Oxford Science Enterprises</div>
@@ -135,7 +136,7 @@ const Footer = () => {
                         <a href="/cookie-policy" className="hover:text-lightblue">Cookie policy</a>
                     </div>
                 </div>
-            </div>
+            </Container>
 
             <div className="py-4 mt-4 px-4 md:px-10 text-xs text-center bg-blue-02">
                 OSE Manager Limited, a wholly owned subsidiary of Oxford Science Enterprises plc, is authorised and regulated by the Financial Conduct Authority.

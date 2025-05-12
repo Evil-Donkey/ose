@@ -62,11 +62,11 @@ const Stats = ({ data, theme }) => {
                         return (
                             <div key={index} ref={el => statRef.current[index] = el} className="flex flex-col text-center items-center opacity-0 -translate-x-full">
                                 <div className="flex flex-nowrap">
-                                    {preStat && <h4 className="text-9xl text-lightblue">{preStat}</h4>}
-                                    {statValue && <h4 className="text-9xl text-lightblue"><CountUp end={statValue} enableScrollSpy scrollSpyOnce={true} scrollSpyDelay={500} decimals={decimals} /></h4>}
-                                    {postStat && <h4 className="text-9xl text-lightblue">{postStat}</h4>}
+                                    {preStat && <h4 className="text-8xl lg:text-[7rem] 2xl:text-9xl text-lightblue">{preStat}</h4>}
+                                    {statValue && <h4 className="text-8xl lg:text-[7rem] 2xl:text-9xl text-lightblue"><CountUp end={statValue} enableScrollSpy scrollSpyOnce={true} scrollSpyDelay={500} decimals={decimals} /></h4>}
+                                    {postStat && <h4 className="text-8xl lg:text-[7rem] 2xl:text-9xl text-lightblue">{postStat}</h4>}
                                 </div>
-                                <div className={`text-lg ${textColor}`} dangerouslySetInnerHTML={{ __html: description }} />
+                                <div className={`text-base 2xl:text-lg ${textColor}`} dangerouslySetInnerHTML={{ __html: description }} />
                             </div>
                         )
                     })}

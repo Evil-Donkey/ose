@@ -7,6 +7,7 @@ import Headings from "@/components/Headings";
 import Column from "@/components/Column";
 import Image from "next/image";
 import Link from "next/link";
+import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,11 +52,11 @@ const Sectors = ({ data }) => {
     }, []);
     return (
         <div className="bg-linear-to-t from-black/10 to-black/0">
-            <div className="container mx-auto px-4 md:px-10 py-20 lg:py-40">
+            <Container className="py-20 2xl:py-40">
                 <div className="flex flex-col">
                     {title && <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h3>}
                 </div>
-                <div className="flex flex-col md:flex-row items-end gap-10 lg:pe-20">
+                <div className="flex flex-col md:flex-row items-end md:gap-10 lg:pe-20">
                     <div className="w-full md:w-2/3">
                         <Headings headings={headings} />
                     </div>
@@ -63,7 +64,7 @@ const Sectors = ({ data }) => {
                         <Column copy={copy} fullWidth={true} />
                     </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-30">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10 md:mt-30">
                     {sectors.map((sector, index) => {
                         const { title, url, image, video, copy } = sector;
                         const link = url?.link ? url.link : "#";
@@ -76,8 +77,8 @@ const Sectors = ({ data }) => {
                                     <h4 className="text-white text-4xl md:text-5xl/13 font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />
                                 </Link>
 
-                                <div className="flex flex-col text-center items-center gap-5 mt-8 px-3 md:px-6 flex-grow-1 justify-between">
-                                    <div className="text-base" dangerouslySetInnerHTML={{ __html: copy }} />
+                                <div className="flex flex-col text-center items-center gap-5 mt-6 2xl:mt-8 px-3 2xl:px-6 flex-grow-1 justify-between">
+                                    <div className="text-[.92rem] 2xl:text-base" dangerouslySetInnerHTML={{ __html: copy }} />
                                     <Link href={link} className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase">
                                         Discover {title}
                                     </Link>
@@ -86,7 +87,7 @@ const Sectors = ({ data }) => {
                         );
                     })}
                 </div>
-            </div>
+            </Container>
         </div>
     )
 }

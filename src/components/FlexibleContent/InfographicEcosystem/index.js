@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LogoDark } from "@/components/Icons/Logo";
+import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,7 @@ const InfographicMap = ({ data }) => {
     const circlesRef = useRef([]);
     const lineRef = useRef([]);
     const bottomTextRef = useRef([]);
+    const ecosystemRef = useRef(null);
 
     const { title, copy } = data;
 
@@ -100,14 +102,41 @@ const InfographicMap = ({ data }) => {
             }
         );
 
+        let mm = gsap.matchMedia();
+
+        mm.add("(max-width: 1023px)", () => {
+            const infographicWidth = infographicRef.current.offsetWidth;
+            const containerWidth = ecosystemRef.current.offsetWidth;
+            const translationDistance = infographicWidth - containerWidth - 100;
+            
+            const ecosystemTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ecosystemRef.current,
+                    start: "bottom bottom",
+                    end: `+=${translationDistance}px`,
+                    pin: true,
+                    pinSpacing: true,
+                    scrub: 1.5,
+                    invalidateOnRefresh: true,
+                }
+            });
+            ecosystemTl.to(infographicRef.current, {
+                x: translationDistance,
+                ease: "power2.out",
+                duration: 1,
+            });
+        });
+        
+        
+
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
     }, []);
 
     return (
-        <div className="bg-linear-to-t from-black/10 to-black/0">
-            <div className="container mx-auto px-4 md:px-10 py-20 2xl:pb-40">
+        <div ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0">
+            <Container className="py-20 2xl:pb-40">
                 <div className="flex flex-col items-center text-center">
                     <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>
                     <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02 opacity-0 translate-y-20">
@@ -119,9 +148,9 @@ const InfographicMap = ({ data }) => {
                         <p className="text-blue-02 text-sm"><span className="font-bold">Spinout companies formed</span><br/>
                         The graphic below highlights the rapid expansion of Oxford&apos;s spinout ecosystem, underscoring OSE&apos;s impact in bridging research and real-world application. Click on the diagram to see the companies formed.</p>
                     </div>
-                    <div ref={infographicRef} className="relative w-full flex items-center justify-center -space-x-2 xl:scale-110 2xl:scale-130">
+                    <div ref={infographicRef} className="relative w-full flex flex-nowrap items-center lg:justify-center -space-x-2 xl:scale-110 2xl:scale-130 mt-15 lg:mt-0">
                         {/* Early years circles */}
-                        <div className="relative flex flex-col md:flex-row items-center -space-x-2">
+                        <div className="relative flex items-center -space-x-2">
                             {timelineData.slice(0, 4).map((item, index) => (
                                 <div key={item.period} className="relative" ref={el => circlesRef.current[index] = el}>
                                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-02">{item.period}</div>
@@ -177,7 +206,7 @@ const InfographicMap = ({ data }) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Container>
         </div>
     );
 };

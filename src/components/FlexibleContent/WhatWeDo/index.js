@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Container from '../../Container';
 
 gsap.registerPlugin(ScrollTrigger);
 import Headings from "@/components/Headings";
@@ -38,12 +39,12 @@ const WhatWeDo = ({ data }) => {
 
     return (
         <div className="text-white bg-cover bg-center bg-[url('/gradient.png')]">
-            <div className="container mx-auto px-4 md:px-10 py-20 lg:py-40">
+            <Container className="py-20 lg:py-40">
                 <div className="flex flex-col">
                     {title && <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium text-white opacity-0 translate-x-full">{title}</h3>}
                     {headings && <Headings headings={headings} theme="dark" />}
                     {columns && 
-                        <div className="flex w-full space-x-14 mt-10">
+                        <div className="flex flex-wrap w-full space-x-14 mt-10">
                             {columns.map((column, index) => {
                                 return (
                                     <Column key={index} copy={column.copy} colNumber={colNumber} theme="dark" />
@@ -57,7 +58,7 @@ const WhatWeDo = ({ data }) => {
                         </div>
                     }
                 </div>
-            </div>
+            </Container>
         </div>
     )
 }

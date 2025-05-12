@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Header from "@/components/Header/index";
+import Container from "@/components/Container";
 
 export default function ResetPassword() {
     const [tokenData, setTokenData] = useState(null);
@@ -69,7 +70,7 @@ export default function ResetPassword() {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <Container>
             <Header />
             <h1 className="text-2xl font-bold mb-4">Reset Password</h1>
             {error ? (
@@ -123,6 +124,6 @@ export default function ResetPassword() {
                     </>
                 )
             )}
-        </div>
+        </Container>
     );
 }

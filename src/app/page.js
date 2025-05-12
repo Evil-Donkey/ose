@@ -2,6 +2,7 @@ import fetchAPI from '../lib/api'
 import generateMetadata from '../lib/generateMetadata'
 import SignupForm from '../components/SignupForm'
 import Header from '../components/Header/index'
+import Container from '../components/Container'
 
 generateMetadata("9");
 
@@ -20,9 +21,9 @@ export default async function Page() {
   const content = data?.page?.content;
 
   return (
-    <div className="container mx-auto p-4">
+    <Container>
       <Header portal={true} />
       <SignupForm />
-    </div>
+    </Container>
   )
 };

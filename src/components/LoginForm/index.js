@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import AuthContext from "../../context/AuthContext";
 import Header from "../Header/index";
+import Container from '../Container';
 
 export default function LoginForm() {
     const { login } = useContext(AuthContext);
@@ -36,7 +37,7 @@ export default function LoginForm() {
     
 
     return (
-        <div className="container mx-auto p-4">
+        <Container>
             <Header portal={false} />
             <h2 className="text-2xl font-bold mb-4 pt-40">Login</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -78,6 +79,6 @@ export default function LoginForm() {
 
             {/* Server error message */}
             {serverError && <p className="text-red-500 mt-2">{serverError}</p>}
-        </div>
+        </Container>
     );
 }
