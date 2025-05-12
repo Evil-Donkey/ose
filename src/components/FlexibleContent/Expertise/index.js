@@ -119,7 +119,7 @@ const Expertise = ({ data }) => {
 
 
                                 {/* Navigation row */}
-                                <div className="flex flex-row flex-nowrap overflow-x-auto px-8 lg:justify-center gap-5 md:gap-10 md:w-full mt-6 mb-4 md:my-6 2xl:my-12">
+                                <div className="flex flex-row flex-nowrap overflow-x-auto lg:overflow-visible px-8 lg:justify-center gap-5 md:gap-10 md:w-full mt-6 mb-4 md:my-6 2xl:my-12">
                                     {expertise.map((item, idx) => (
                                         <button
                                             key={idx}
