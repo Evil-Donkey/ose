@@ -88,7 +88,7 @@ const Story = ({ data }) => {
                             <div className="w-full lg:w-1/2 xl:ps-20 lg:-mt-70 z-10">
                                 <div className="flex flex-col rounded-4xl bg-darkblue/98 pb-10 lg:pb-20">
                                     <div className="flex flex-col text-white p-5 lg:p-10 font-medium">
-                                        <div className="text-9xl/1 mt-12 lg:mt-14">"</div>
+                                        <div className="text-9xl/1 mt-12 lg:mt-14">&quot;</div>
                                         {quote && <div className="text-2xl md:text-[2rem]/10" dangerouslySetInnerHTML={{ __html: quote }} />}
                                         {author && <div className="text-xs md:text-sm font-medium drop-shadow-lg mt-3" dangerouslySetInnerHTML={{ __html: author }} />}
                                     </div>
