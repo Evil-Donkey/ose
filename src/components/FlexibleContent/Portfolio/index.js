@@ -118,10 +118,10 @@ const Portfolio = ({ data }) => {
         <div className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20">
                 <div className="flex flex-col items-center text-center">
-                    <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>
-                    <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02 opacity-0 translate-y-20">
-                        <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: copy }} />
-                    </div>
+                    {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
+                    {copy && <div ref={copyRef} className="w-full md:w-2/5 text-center text-blue-02 opacity-0 translate-y-20">
+                        <div className="text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
+                    </div>}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
@@ -169,7 +169,7 @@ const Portfolio = ({ data }) => {
                                                 </div>
                                             )}
                                             <div>
-                                                <h3 className={`text-4xl 2xl:text-5xl ${isWide ? 'lg:max-w-[50%]' : ''}`}
+                                                <h3 className={`text-3xl md:text-4xl 2xl:text-5xl ${isWide ? 'lg:max-w-[50%]' : ''}`}
                                                     dangerouslySetInnerHTML={{ __html: title }} 
                                                 />
                                                 {portfolioFields &&
@@ -189,7 +189,7 @@ const Portfolio = ({ data }) => {
 
                 {currentPage < totalPages && (
                     <div className="flex justify-center mt-16">
-                        <Button>See our portfolio</Button>
+                        <Button href="/portfolio">See our portfolio</Button>
                     </div>
                 )}
             </Container>

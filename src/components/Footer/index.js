@@ -1,13 +1,13 @@
 import { Logo } from "../Icons/Logo";
 import Button from "../Button";
 import { LinkedIn, X, YouTube } from "../Icons/Social";
-import GoogleMap from "../GoogleMap";
+// import GoogleMap from "../GoogleMap";
 import Container from "../Container";
 
 const Footer = () => {
     return (
         <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16">
-            <Container className="mb-20">
+            <Container className="mb-10 md:mb-20">
 
                 <div className="flex flex-col md:flex-row gap-x-5 justify-between items-center mb-12">
                     <div className="w-full md:w-1/2">
@@ -26,10 +26,10 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-col md:flex-row flex-wrap">
-                    <div className="w-full lg:w-1/2 flex flex-col md:flex-row gap-5 md:mb-10 lg:mb-0">
+                    <div className="w-full lg:w-1/2 flex flex-col md:flex-row md:gap-5 md:mb-10 lg:mb-0">
                         {/* Submit an idea */}
                         <div className="w-full md:w-1/2 mb-5 md:mb-0">
-                            <h2 className="text-3xl mb-4">Submit an idea</h2>
+                            <h2 className="text-3xl mb-4">Get in touch</h2>
                             <div className="space-y-4">
                                 <div>
                                     <h3 className="text-lightblue mb-1">Life Sciences</h3>
@@ -54,7 +54,7 @@ const Footer = () => {
 
                         {/* Get in touch */}
                         <div className="w-full md:w-1/2 mb-5 md:mb-0">
-                            <h2 className="text-3xl mb-4">Get in touch</h2>
+                            <h2 className="text-3xl mb-4 hidden md:block">&nbsp;</h2>
                             <div className="space-y-4">
                                 <div>
                                     <h3 className="text-lightblue mb-1">Investors and co-investors</h3>
@@ -85,12 +85,12 @@ const Footer = () => {
                     <div className="w-full lg:w-1/2 flex flex-col md:flex-row gap-x-5">
                         {/* Site map */}
                         <div className="w-full md:w-1/3 mb-5 md:mb-0">
-                            <h2 className="text-3xl mb-4">Site map</h2>
+                            <h2 className="text-3xl mb-4">OSE</h2>
                             <ul className="space-y-1">
-                                <li><a href="/why" className="hover:text-lightblue">Why</a></li>
-                                <li><a href="/what" className="hover:text-lightblue">What</a></li>
-                                <li><a href="/how" className="hover:text-lightblue">How</a></li>
-                                <li><a href="/who" className="hover:text-lightblue">Who</a></li>
+                                <li><a href="/why" className="hover:text-lightblue">Why we exist</a></li>
+                                <li><a href="/what" className="hover:text-lightblue">What we do</a></li>
+                                <li><a href="/how" className="hover:text-lightblue">How we work</a></li>
+                                <li><a href="/who" className="hover:text-lightblue">Who we are</a></li>
                             </ul>
                         </div>
 
@@ -106,7 +106,7 @@ const Footer = () => {
 
                         {/* OSE */}
                         <div className="w-full md:w-1/3 mb-5 md:mb-0">
-                            <h2 className="text-3xl mb-4">OSE</h2>
+                            <h2 className="text-3xl mb-4">More</h2>
                             <ul className="space-y-1">
                                 <li><a href="/portfolio" className="hover:text-lightblue">Portfolio</a></li>
                                 <li><a href="/stories" className="hover:text-lightblue">Stories</a></li>
@@ -118,27 +118,29 @@ const Footer = () => {
                 </div>
             </Container>
 
-            <GoogleMap />
+            {/* <GoogleMap /> */}
 
-            <Container>
-                {/* Copyright */}
-                <div className="mt-20 text-xs flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div>© 2025 Oxford Science Enterprises</div>
-                    <div className="flex flex-wrap justify-center md:justify-end gap-x-2">
-                        <a href="/sustainability" className="hover:text-lightblue">Sustainability</a>
-                        <span>|</span>
-                        <a href="/terms" className="hover:text-lightblue">Terms & Conditions</a>
-                        <span>|</span>
-                        <a href="/privacy" className="hover:text-lightblue">Privacy policy</a>
-                        <span>|</span>
-                        <a href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</a>
-                        <span>|</span>
-                        <a href="/cookie-policy" className="hover:text-lightblue">Cookie policy</a>
+            <div className="bg-darkblue py-4">
+                <Container>
+                    {/* Copyright */}
+                    <div className="text-xs flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div>© 2025 Oxford Science Enterprises</div>
+                        <div className="flex flex-wrap justify-center md:justify-end gap-x-2">
+                            <a href="/sustainability" className="hover:text-lightblue">Sustainability</a>
+                            <span>|</span>
+                            <a href="/terms" className="hover:text-lightblue">Terms & Conditions</a>
+                            <span>|</span>
+                            <a href="/privacy" className="hover:text-lightblue">Privacy policy</a>
+                            <span>|</span>
+                            <a href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</a>
+                            <span>|</span>
+                            <a href="/cookie-policy" className="hover:text-lightblue">Cookie policy</a>
+                        </div>
                     </div>
-                </div>
-            </Container>
+                </Container>
+            </div>
 
-            <div className="py-4 mt-4 px-4 md:px-10 text-xs text-center bg-blue-02">
+            <div className="py-4 px-4 md:px-10 text-xs text-center bg-blue-02">
                 OSE Manager Limited, a wholly owned subsidiary of Oxford Science Enterprises plc, is authorised and regulated by the Financial Conduct Authority.
             </div>
         </div>

@@ -67,10 +67,10 @@ const CTA = ({ data }) => {
     return (
         <Container className="py-20">
             <div className="flex flex-col items-center text-center">
-                <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>
-                <div ref={copyRef} className="w-full md:w-1/2 text-center mt-4 text-blue-02 opacity-0 translate-y-20">
-                    <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: copy }} />
-                </div>
+                {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
+                {copy && <div ref={copyRef} className="w-full md:w-2/5 text-center text-blue-02 opacity-0 translate-y-20">
+                    <div className="text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
+                </div>}
             </div>
 
             {/* CTA Grid */}
@@ -81,10 +81,12 @@ const CTA = ({ data }) => {
                         return (
                             <div key={index} ref={el => ctaRef.current[index] = el} className="relative overflow-hidden rounded-3xl group p-8 2xl:p-12 opacity-0 translate-y-20">
                                 {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" />}
-                                <div className="relative z-10">
-                                    {smallTitle && <p className="text-xs md:text-sm text-white mb-2">{smallTitle}</p>}
-                                    {largeTitle && <h3 className="text-3xl md:text-4xl text-white mb-6">{largeTitle}</h3>}
-                                    {copy && <div className="text-white mb-8" dangerouslySetInnerHTML={{ __html: copy }} />}
+                                <div className="relative z-10 flex flex-col justify-between h-full">
+                                    <div>
+                                        {smallTitle && <p className="text-xs md:text-sm text-white mb-2">{smallTitle}</p>}
+                                        {largeTitle && <h3 className="text-3xl md:text-4xl 2xl:text-5xl text-white mb-6">{largeTitle}</h3>}
+                                        {copy && <div className="text-white mb-8 text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />}
+                                    </div>
                                     {ctaLabel && <Button href={ctaUrl} variant="light">
                                         {ctaLabel}
                                     </Button>}

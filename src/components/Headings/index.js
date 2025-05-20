@@ -36,7 +36,7 @@ const Headings = ({ headings, theme }) => {
                 const { heading } = item;
                 
                 return (
-                    <h2 key={index} ref={el => headingRef.current[index] = el} className={`text-4xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight ${textColor} opacity-0 translate-x-full`}>
+                    <h2 key={index} ref={el => headingRef.current[index] = el} className={`text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight ${textColor} opacity-0 translate-x-full`}>
                         {heading}   
                     </h2>
                 )

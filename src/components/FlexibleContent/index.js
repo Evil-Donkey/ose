@@ -1,6 +1,6 @@
 import HeroVideo from "./HeroVideo";
 import TitleAndCopy from "./TitleAndCopy";
-import ScrollingPanels from "./ScrollingPanels";
+import FullScreenPanel from "./FullScreenPanel";
 import InfographicMap from "./InfographicMap";
 import WhatWeDo from "./WhatWeDo";
 import StatsModule from "./StatsModule";
@@ -9,6 +9,7 @@ import Expertise from "./Expertise";
 import Sectors from "./Sectors";
 import Portfolio from "./Portfolio";
 import CTA from "./CTA";
+import Story from "./Story";
 
 const PageFlexibleContent = ({ data }) => {
 
@@ -24,8 +25,8 @@ const PageFlexibleContent = ({ data }) => {
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_TitleAndCopy") {
             flexibleContentArray.push(<TitleAndCopy data={data} index={i} key={i.toString()} />);
         }
-        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_ScrollingPanels") {
-            flexibleContentArray.push(<ScrollingPanels data={data} index={i} key={i.toString()} />);
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_FullScreenPanel") {
+            flexibleContentArray.push(<FullScreenPanel data={data} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_InfographicMap") {
             flexibleContentArray.push(<InfographicMap data={data} index={i} key={i.toString()} />);
@@ -50,6 +51,9 @@ const PageFlexibleContent = ({ data }) => {
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cta") {
             flexibleContentArray.push(<CTA data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Story") {
+            flexibleContentArray.push(<Story data={data} index={i} key={i.toString()} />);
         }
     })}
 
