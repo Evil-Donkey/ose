@@ -28,12 +28,12 @@ const PopOut = () => {
         <div className="space-y-8">
           <div>
             <div className="font-medium text-lg">Oxford Researchers</div>
-            <div className="mb-4">Got breakthrough science?<br />Let's build your spinout.</div>
+            <div className="mb-4">Got breakthrough science?<br />Let&apos;s build your spinout.</div>
             <Button href="/contact">START THE CONVERSATION</Button>
           </div>
           <div>
             <div className="font-medium text-lg">Investors</div>
-            <div className="mb-4">Ready to back Oxford's<br />most exciting spinouts?</div>
+            <div className="mb-4">Ready to back Oxford&apos;s<br />most exciting spinouts?</div>
             <Button href="/contact">EMAIL US TODAY</Button>
           </div>
         </div>
