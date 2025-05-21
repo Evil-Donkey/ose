@@ -54,6 +54,7 @@ const CTA = ({ data }) => {
             scrollTrigger: {
                 trigger: ctaRef.current,
                 start: 'top 90%',
+                end: 'top 75%',
                 scrub: 1.5,
                 invalidateOnRefresh: true
             },

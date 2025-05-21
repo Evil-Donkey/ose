@@ -74,7 +74,7 @@ const Footer = () => {
                                         Investors &amp; Co-Investors
                                     </a>
                                 </div>
-                                <div className="mb-5 lg:mb-0">
+                                <div className="mb-5">
                                     <h3 className="text-lightblue hidden lg:block">Media</h3>
                                     <a href="mailto:ose@weareevenhills.com" className="text-sm hover:text-lightblue hidden lg:block">
                                         ose@weareevenhills.com
@@ -83,7 +83,7 @@ const Footer = () => {
                                         Media
                                     </a>
                                 </div>
-                                <div className="mb-5 lg:mb-0">
+                                <div className="mb-5">
                                     <h3 className="text-lightblue">Call</h3>
                                     <a href="tel:01865950000" className="text-sm hover:text-lightblue">
                                         01865 950 000

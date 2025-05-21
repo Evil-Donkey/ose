@@ -70,10 +70,10 @@ const HeroVideo = ({ data }) => {
     }, []);
 
     return (
-        <div ref={heroRef} className="pt-40 pb-10 lg:pb-30 2xl:pt-50 bg-cover bg-center bg-[url('/gradient.png')] min-h-[100vh] flex flex-col justify-center">
-            <Container>
-                <div className="mx-auto relative">
-                    <video ref={videoRef} className="w-full rounded-2xl shadow-xl aspect-3/5 md:aspect-3/4 lg:aspect-6/3 object-cover 2xl:aspect-video opacity-0 scale-125" autoPlay playsInline muted loop>
+        <div ref={heroRef} className="pt-40 pb-10 2xl:pt-50 bg-cover bg-center bg-[url('/gradient.png')] h-[100vh] flex">
+            <Container className="flex-grow-1 h-full">
+                <div className="mx-auto relative h-full">
+                    <video ref={videoRef} className="w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125" autoPlay playsInline muted loop>
                         <source src={introMovie.mediaItemUrl} type="video/mp4" />
                     </video>
 

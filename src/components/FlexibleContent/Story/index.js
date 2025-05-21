@@ -17,7 +17,7 @@ const Story = ({ data }) => {
     const { author, quote, quoteImage } = story;
 
     const titleRef = useRef(null);
-    const copyRef = useRef(null);
+    const copyRef = useRef([]);
 
     useEffect(() => {
         const titleTl = gsap.timeline();
@@ -38,10 +38,11 @@ const Story = ({ data }) => {
             y: 0,
             duration: 1,
             ease: 'power4.out',
+            stagger: 0.1,
             scrollTrigger: {
                 trigger: copyRef.current,
                 start: 'top 90%',
-                end: 'top 75%',
+                // end: 'top 50%',
                 scrub: 1.5,
                 invalidateOnRefresh: true
             },
@@ -68,7 +69,7 @@ const Story = ({ data }) => {
                                 <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">STORIES</h3>
                             </div>
                             <div className="flex flex-col justify-end w-full">
-                                <h2 ref={copyRef} className="text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight w-3/5 lg:w-1/2 opacity-0 -translate-y-full">{title}</h2>
+                                <h2 ref={el => copyRef.current[0] = el} className="text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight w-3/5 lg:w-1/2 opacity-0 translate-y-full">{title}</h2>
                             </div>
                         </Container>
                     </div>
@@ -79,13 +80,13 @@ const Story = ({ data }) => {
                 <Container className="py-10 md:py-25 2xl:py-45">
                     <div className="flex flex-col lg:flex-row gap-10">
                         {content &&
-                            <div className="w-full lg:w-1/2 xl:pe-20 flex flex-col gap-10">
+                            <div ref={el => copyRef.current[1] = el} className="w-full lg:w-1/2 xl:pe-20 flex flex-col gap-10 opacity-0 translate-y-full">
                                 <div className="text-base md:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: content }} />
                                 <Link href={uri} className="font-medium text-lightblue uppercase hover:underline">Read More.</Link>
                             </div>
                         }
                         {quote &&
-                            <div className="w-[115%] lg:w-1/2 lg:-mt-70 z-10 relative">
+                            <div ref={el => copyRef.current[2] = el} className="w-[115%] lg:w-1/2 lg:-mt-70 z-10 relative opacity-0 translate-y-full">
                                 <div className="flex flex-col rounded-4xl bg-darkblue/98 pb-10 lg:pb-20">
                                     <div className="flex flex-col text-white p-5 pe-16 lg:p-10 font-medium">
                                         <div className="text-9xl/1 mt-12 lg:mt-14">&quot;</div>
@@ -100,7 +101,7 @@ const Story = ({ data }) => {
                         }
                     </div>
 
-                    <div className="flex justify-center mt-16">
+                    <div ref={el => copyRef.current[3] = el} className="flex justify-center mt-16 opacity-0 translate-y-full">
                         <Button href="/stories">See all stories</Button>
                     </div>
                 </Container>
