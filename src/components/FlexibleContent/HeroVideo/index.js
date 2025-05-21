@@ -70,15 +70,15 @@ const HeroVideo = ({ data }) => {
     }, []);
 
     return (
-        <div ref={heroRef} className="pt-40 2xl:pt-50 pb-30 bg-cover bg-center bg-[url('/gradient.png')] min-h-[100vh] flex flex-col justify-center">
+        <div ref={heroRef} className="pt-40 pb-10 lg:pb-30 2xl:pt-50 bg-cover bg-center bg-[url('/gradient.png')] min-h-[100vh] flex flex-col justify-center">
             <Container>
                 <div className="mx-auto relative">
                     <video ref={videoRef} className="w-full rounded-2xl shadow-xl aspect-3/5 md:aspect-3/4 lg:aspect-6/3 object-cover 2xl:aspect-video opacity-0 scale-125" autoPlay playsInline muted loop>
                         <source src={introMovie.mediaItemUrl} type="video/mp4" />
                     </video>
 
-                    <div className="absolute top-0 right-[13%] p-6 flex flex-col justify-center h-full text-white">
-                        <h1 className="text-6xl/18 md:text-8xl/23 2xl:text-8xl/27">
+                    <div className="absolute top-0 left-0 lg:left-auto lg:right-[13%] p-6 flex flex-col justify-center h-full text-white">
+                        <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27">
                             {headings.map((heading, index) => (
                                 <span key={index} className="block overflow-hidden" ref={el => textWrapperRef.current[index] = el}>
                                     <span className="block opacity-0 translate-y-full" ref={el => textRef.current[index] = el}>{heading.heading}</span>

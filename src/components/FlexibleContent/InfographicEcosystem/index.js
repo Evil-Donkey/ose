@@ -148,35 +148,37 @@ const InfographicMap = ({ data }) => {
                         <p className="text-blue-02 text-sm"><span className="font-bold">Spinout companies formed</span><br/>
                         The graphic below highlights the rapid expansion of Oxford&apos;s spinout ecosystem, underscoring OSE&apos;s impact in bridging research and real-world application. Click on the diagram to see the companies formed.</p>
                     </div> */}
-                    <div ref={infographicRef} className="relative w-full flex flex-col lg:flex-row gap-55 lg:gap-0 lg:flex-nowrap items-center justify-center -space-x-2 xl:scale-110 2xl:scale-130 mt-15 lg:mt-0">
+                    <div ref={infographicRef} className="relative w-full flex flex-row lg:flex-nowrap items-center justify-center -space-x-2 xl:scale-110 2xl:scale-130 mt-8 lg:mt-0">
                         {/* Early years circles */}
                         <div className="relative flex items-center -space-x-2">
-                            {timelineData.slice(0, 2).map((item, index) => (
-                                <div key={item.period} className="relative" ref={el => circlesRef.current[index] = el}>
-                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-02">{item.period}</div>
-                                    <div
-                                        className="relative flex items-center justify-center rounded-full bg-lightblue/50"
-                                        style={{ width: `${item.size}px`, height: `${item.size}px` }}
-                                    >
-                                        <div className="text-4xl text-darkblue">{item.count}</div>
+                            {/* timelineData.slice(0, 2).map((item, index) => ( */}
+                                <div className="relative" ref={el => circlesRef.current[0] = el}>
+                                    <div className="absolute -top-15.5 lg:-top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-02">2000-2004</div>
+                                    <div className="relative flex items-center justify-center rounded-full bg-lightblue/50 size-15 lg:size-30">
+                                        <div className="text-xl lg:text-4xl text-darkblue">34</div>
                                     </div>
                                 </div>
-                            ))}
+                                <div className="relative" ref={el => circlesRef.current[1] = el}>
+                                    <div className="absolute -top-13 lg:-top-8 left-1/2 -translate-x-1/2 w-10 lg:w-full text-center text-xs text-blue-02">2005-2014</div>
+                                    <div className="relative flex items-center justify-center rounded-full bg-lightblue/50 size-20 lg:size-40">
+                                        <div className="text-3xl lg:text-6xl text-darkblue">52</div>
+                                    </div>
+                                </div>
+                            {/* ))} */}
 
                             {/* Vertical line */}
-                            <div 
+                            {/* <div 
                                 ref={el => lineRef.current[0] = el}
                                 className="absolute left-0 top-[100px] w-[2px] h-[200px] bg-[#B8DDE0]"
                             >
                                 <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[0] = el}>
                                     <h3 className="font-bold text-xs text-blue-02">Before OSE was established</h3>
-                                    {/* <p className="text-blue-02 text-xs">105 Oxford companies founded over 55 years</p> */}
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div 
                                 ref={el => lineRef.current[1] = el}
-                                className="hidden lg:block absolute right-1 top-[100px] w-[2px] h-[200px] bg-[#B8DDE0]"
+                                className="absolute right-1 top-[80px] lg:top-[140px] w-[2px] h-[120px] lg:h-[200px] bg-[#B8DDE0]"
                             >
                                 <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[1] = el}>
                                     <div className="w-30 h-auto mb-2">
@@ -189,8 +191,8 @@ const InfographicMap = ({ data }) => {
                         </div>
 
                         {/* Later years circles */}
-                        <div className="flex flex-col lg:flex-row gap-55 lg:gap-0 justify-start items-center -space-x-2 relative">
-                            {timelineData.slice(2).map((item, index) => (
+                        <div className="flex flex-row justify-start items-center -space-x-2 relative">
+                            {/* {timelineData.slice(2).map((item, index) => (
                                 <div key={item.period} className="relative" ref={el => circlesRef.current[index + 2] = el}>
                                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">{item.period}</div>
                                     <div
@@ -202,18 +204,22 @@ const InfographicMap = ({ data }) => {
                                         )}
                                     </div>
                                 </div>
-                            ))}
-                            <div 
-                                ref={el => lineRef.current[2] = el}
-                                className="lg:hidden absolute left-5 top-[150px] w-[2px] h-[200px] bg-[#B8DDE0]"
-                            >
-                                <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[2] = el}>
-                                    <div className="w-30 h-auto mb-2">
-                                        <LogoDark />
+                            ))} */}
+                                <div className="relative" ref={el => circlesRef.current[2] = el}>
+                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2015-2019</div>
+                                    <div className="relative flex flex-col items-center justify-center size-27 lg:size-60 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue">
+                                        <div className="text-4xl lg:text-7xl">82</div>
                                     </div>
-                                    <h3 className="font-bold text-xs text-blue-02">After OSE was established</h3>
                                 </div>
-                            </div>
+                                <div className="relative" ref={el => circlesRef.current[3] = el}>
+                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2020-2024</div>
+                                    <div
+                                        className="relative flex flex-col items-center justify-center size-38 lg:size-80 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue"
+                                    >
+                                        <div className="text-5xl lg:text-8xl">100+</div>
+                                        <div className="text-lg lg:text-3xl -mt-1">Companies</div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>

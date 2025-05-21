@@ -1,13 +1,5 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from '../../Container';
 import Stats from "../../Stats";
-
-gsap.registerPlugin(ScrollTrigger);
-
 
 const WhatWeDo = ({ data }) => {
     const { stats } = data;

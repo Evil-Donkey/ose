@@ -12,10 +12,23 @@ const FullScreenPanel = ({ data }) => {
     const { heading, copy, backgroundImage } = data;
     const titleRef = useRef(null);
     const copyRef = useRef(null);
+    const backgroundImageRef = useRef(null);
 
     useEffect(() => {
         const titleTl = gsap.timeline();
-        titleTl.to(titleRef.current, {
+        titleTl.to(backgroundImageRef.current, {
+            scale: 1,
+            duration: 2,
+            ease: 'power4.out', 
+            scrollTrigger: {
+                trigger: backgroundImageRef.current,
+                start: 'top bottom',
+                end: 'top top',
+                scrub: 1,
+                invalidateOnRefresh: true
+            },
+        })
+        .to(titleRef.current, {
             y: 0,
             opacity: 1,
             duration: 1,
@@ -26,7 +39,7 @@ const FullScreenPanel = ({ data }) => {
                 scrub: 1.5,
                 invalidateOnRefresh: true
             },
-        })
+        }, "<")
         .to(copyRef.current, {
             opacity: 1,
             y: 0,
@@ -48,8 +61,8 @@ const FullScreenPanel = ({ data }) => {
 
     return (
         <div className="relative min-h-[100vh] h-full w-full">
-            <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
-            <div className="absolute top-0 left-0 w-full h-full bg-black/40" />
+            <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
             <div className="min-h-[100vh] h-full flex flex-col justify-center">
                 <Container className="py-30 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
                     <div className="flex flex-col items-center text-center w-full gap-5">

@@ -63,12 +63,12 @@ const Story = ({ data }) => {
                 }
                 {title &&
                     <div className="lg:min-h-[100vh] h-full">
-                        <Container className="py-10 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full lg:min-h-[100vh] justify-between">
+                        <Container className="py-10 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full lg:min-h-[100vh] justify-between gap-10 lg:gap-0">
                             <div className="flex self-center">
                                 <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">STORIES</h3>
                             </div>
                             <div className="flex flex-col justify-end w-full">
-                                <h2 ref={copyRef} className="text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight w-full lg:w-1/2 opacity-0 -translate-y-full">{title}</h2>
+                                <h2 ref={copyRef} className="text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight w-3/5 lg:w-1/2 opacity-0 -translate-y-full">{title}</h2>
                             </div>
                         </Container>
                     </div>
@@ -85,9 +85,9 @@ const Story = ({ data }) => {
                             </div>
                         }
                         {quote &&
-                            <div className="w-full lg:w-1/2 xl:ps-20 lg:-mt-70 z-10">
+                            <div className="w-[115%] lg:w-1/2 lg:-mt-70 z-10 relative">
                                 <div className="flex flex-col rounded-4xl bg-darkblue/98 pb-10 lg:pb-20">
-                                    <div className="flex flex-col text-white p-5 lg:p-10 font-medium">
+                                    <div className="flex flex-col text-white p-5 pe-16 lg:p-10 font-medium">
                                         <div className="text-9xl/1 mt-12 lg:mt-14">&quot;</div>
                                         {quote && <div className="text-2xl md:text-[2rem]/10" dangerouslySetInnerHTML={{ __html: quote }} />}
                                         {author && <div className="text-xs md:text-sm font-medium drop-shadow-lg mt-3" dangerouslySetInnerHTML={{ __html: author }} />}

@@ -7,6 +7,7 @@ import LazyLoadInitializer from "@/lib/lazyLoader";
 import Header from "@/components/Header/index";
 import PageFlexibleContent from "@/components/FlexibleContent";
 import Footer from "@/components/Footer/index";
+import PopOut from "@/components/PopOut/index";
 
 gsap.registerPlugin(ScrollSmoother);
 
@@ -30,6 +31,7 @@ export default function FlexiblePage({ flexibleContent, className, hideNavigatio
           <Footer />
         </div>
       </div>
+      <PopOut />
     </div>
   );
 } 
