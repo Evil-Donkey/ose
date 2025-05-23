@@ -133,11 +133,13 @@ const InfographicMap = ({ data }) => {
                     </div>
                 </div>
             </Container>
-            <Container className="pb-20">
-                <div className="flex flex-col">
-                    <Headings headings={headings} />
-                </div>
-            </Container>
+            {headings &&
+                <Container className="pb-20">
+                    <div className="flex flex-col">
+                        <Headings headings={headings} />
+                    </div>
+                </Container>
+            }
         </>
     );
 };

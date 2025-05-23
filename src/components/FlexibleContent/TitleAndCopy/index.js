@@ -8,9 +8,11 @@ const TitleAndCopy = ({ data }) => {
 
     return (
         <Container className="py-20 lg:py-40">
-            <div className="flex flex-col">
-                <Headings headings={headings} />
-            </div>
+            {headings &&
+                <div className="flex flex-col">
+                    <Headings headings={headings} />
+                </div>
+            }
             <div className="flex justify-end lg:me-20">
                 <Column copy={copy} />
             </div>

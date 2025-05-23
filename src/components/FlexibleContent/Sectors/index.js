@@ -57,14 +57,18 @@ const Sectors = ({ data }) => {
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
                 </div>
                 <div className="flex flex-col items-center md:gap-10 text-center">
-                    <div className="w-full md:w-2/3">
-                        <Headings headings={headings} />
-                    </div>
-                    <div className="w-full md:w-1/3 lg:-mb-10">
-                        <Column copy={copy} fullWidth={true} />
-                    </div>
+                    {headings &&
+                        <div className="w-full md:w-2/3">
+                            <Headings headings={headings} />
+                        </div>
+                    }
+                    {copy &&
+                        <div className="w-full md:w-1/3 lg:-mb-10">
+                            <Column copy={copy} fullWidth={true} />
+                        </div>
+                    }
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10 md:mt-30">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
                     {sectors.map((sector, index) => {
                         const { title, url, image, video, copy } = sector;
                         const link = url?.link ? url.link : "#";
