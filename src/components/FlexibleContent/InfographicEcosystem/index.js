@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LogoDark } from "@/components/Icons/Logo";
@@ -16,6 +16,10 @@ const InfographicMap = ({ data }) => {
     const lineRef = useRef([]);
     const bottomTextRef = useRef([]);
     const ecosystemRef = useRef(null);
+    const popupRef = useRef(null);
+    const popupBgRef = useRef(null);
+    const popupContentRef = useRef(null);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const { title, copy } = data;
 
@@ -102,40 +106,60 @@ const InfographicMap = ({ data }) => {
             }
         );
 
-        // let mm = gsap.matchMedia();
-
-        // mm.add("(max-width: 1023px)", () => {
-        //     const infographicWidth = infographicRef.current.offsetWidth;
-        //     const containerWidth = ecosystemRef.current.offsetWidth;
-        //     const translationDistance = infographicWidth - containerWidth - 100;
-            
-        //     const ecosystemTl = gsap.timeline({
-        //         scrollTrigger: {
-        //             trigger: ecosystemRef.current,
-        //             start: "bottom bottom",
-        //             end: `+=${translationDistance}px`,
-        //             pin: true,
-        //             pinSpacing: true,
-        //             scrub: 1.5,
-        //             invalidateOnRefresh: true,
-        //         }
-        //     });
-        //     ecosystemTl.to(infographicRef.current, {
-        //         x: translationDistance,
-        //         ease: "power2.out",
-        //         duration: 1,
-        //     });
-        // });
-        
-        
-
         return () => {
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
     }, []);
 
+    useEffect(() => {
+        // Add popup animation
+        if (popupRef.current) {
+            const popupTl = gsap.timeline({ paused: true });
+            
+            popupTl.fromTo(popupRef.current,
+                {
+                    scale: 0,
+                },
+                {
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: "power2.out",
+                }
+            )
+            .fromTo(popupBgRef.current, {
+                scale: 0,
+            }, {
+                scale: 100,
+                duration: 2,
+                ease: "power2.inOut",
+            }, "<")
+            .fromTo(popupContentRef.current, {
+                opacity: 0,
+            }, {
+                opacity: 1,
+                duration: 0.5,
+                ease: "power2.out",
+            }, "<+=.5");
+
+            if (isPopupOpen) {
+                popupTl.play();
+            } else {
+                popupTl.reverse();
+            }
+        }
+    }, [isPopupOpen]);
+
+    const handleCircleClick = () => {
+        setIsPopupOpen(true);
+    };
+
+    const handleClosePopup = () => {
+        setIsPopupOpen(false);
+    };
+
     return (
-        <div ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0">
+        <div ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0 relative flex w-full h-full">
             <Container className="py-20 2xl:pb-40">
                 <div className="flex flex-col items-center text-center">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
@@ -144,37 +168,20 @@ const InfographicMap = ({ data }) => {
                     </div>}
                 </div>
                 <div className="flex flex-col my-10 lg:my-30">
-                    {/* <div className="w-full md:w-1/4" ref={bottomTextRef}>
-                        <p className="text-blue-02 text-sm"><span className="font-bold">Spinout companies formed</span><br/>
-                        The graphic below highlights the rapid expansion of Oxford&apos;s spinout ecosystem, underscoring OSE&apos;s impact in bridging research and real-world application. Click on the diagram to see the companies formed.</p>
-                    </div> */}
                     <div ref={infographicRef} className="relative w-full flex flex-row lg:flex-nowrap items-center justify-center -space-x-2 xl:scale-110 2xl:scale-130 mt-8 lg:mt-0">
-                        {/* Early years circles */}
                         <div className="relative flex items-center -space-x-2">
-                            {/* timelineData.slice(0, 2).map((item, index) => ( */}
-                                <div className="relative" ref={el => circlesRef.current[0] = el}>
-                                    <div className="absolute -top-15.5 lg:-top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-02">2000-2004</div>
-                                    <div className="relative flex items-center justify-center rounded-full bg-lightblue/50 size-15 lg:size-30">
-                                        <div className="text-xl lg:text-4xl text-darkblue">34</div>
-                                    </div>
+                            <div className="relative" ref={el => circlesRef.current[0] = el}>
+                                <div className="absolute -top-15.5 lg:-top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-02">2000-2004</div>
+                                <div className="relative flex items-center justify-center rounded-full bg-lightblue/50 size-15 lg:size-30">
+                                    <div className="text-xl lg:text-4xl text-darkblue">34</div>
                                 </div>
-                                <div className="relative" ref={el => circlesRef.current[1] = el}>
-                                    <div className="absolute -top-13 lg:-top-8 left-1/2 -translate-x-1/2 w-10 lg:w-full text-center text-xs text-blue-02">2005-2014</div>
-                                    <div className="relative flex items-center justify-center rounded-full bg-lightblue/50 size-20 lg:size-40">
-                                        <div className="text-3xl lg:text-6xl text-darkblue">52</div>
-                                    </div>
+                            </div>
+                            <div className="relative" ref={el => circlesRef.current[1] = el}>
+                                <div className="absolute -top-13 lg:-top-8 left-1/2 -translate-x-1/2 w-10 lg:w-full text-center text-xs text-blue-02">2005-2014</div>
+                                <div className="relative flex items-center justify-center rounded-full bg-lightblue/50 size-20 lg:size-40">
+                                    <div className="text-3xl lg:text-6xl text-darkblue">52</div>
                                 </div>
-                            {/* ))} */}
-
-                            {/* Vertical line */}
-                            {/* <div 
-                                ref={el => lineRef.current[0] = el}
-                                className="absolute left-0 top-[100px] w-[2px] h-[200px] bg-[#B8DDE0]"
-                            >
-                                <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[0] = el}>
-                                    <h3 className="font-bold text-xs text-blue-02">Before OSE was established</h3>
-                                </div>
-                            </div> */}
+                            </div>
 
                             <div 
                                 ref={el => lineRef.current[1] = el}
@@ -184,46 +191,50 @@ const InfographicMap = ({ data }) => {
                                     <div className="w-30 h-auto mb-2">
                                         <LogoDark />
                                     </div>
-                                    <h3 className="font-bold text-xs text-blue-02">After OSE was established</h3>
-                                    {/* <p className="text-blue-02 text-xs">180+ Oxford companies founded over 15 years</p> */}
+                                    <h3 className="font-bold text-xs text-blue-02">OSE established 2015</h3>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Later years circles */}
                         <div className="flex flex-row justify-start items-center -space-x-2 relative">
-                            {/* {timelineData.slice(2).map((item, index) => (
-                                <div key={item.period} className="relative" ref={el => circlesRef.current[index + 2] = el}>
-                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">{item.period}</div>
-                                    <div
-                                        className={`relative flex flex-col items-center justify-center ${index === 1 ? 'w-[280px] h-[280px]' : 'w-[240px] h-[240px]'} rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue`}
-                                    >
-                                        <div className={`${index === 1 ? 'text-8xl' : 'text-8xl'}`}>{item.count}</div>
-                                        {item.count === "100+" && (
-                                            <div className="text-3xl -mt-1">Companies</div>
-                                        )}
-                                    </div>
+                            <div className="relative" ref={el => circlesRef.current[2] = el}>
+                                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2015-2019</div>
+                                <div className="relative flex flex-col items-center justify-center size-27 lg:size-60 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue">
+                                    <div className="text-4xl lg:text-7xl">82</div>
                                 </div>
-                            ))} */}
-                                <div className="relative" ref={el => circlesRef.current[2] = el}>
-                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2015-2019</div>
-                                    <div className="relative flex flex-col items-center justify-center size-27 lg:size-60 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue">
-                                        <div className="text-4xl lg:text-7xl">82</div>
-                                    </div>
+                            </div>
+                            <div className="relative" ref={el => circlesRef.current[3] = el}>
+                                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2020-2024</div>
+                                <div 
+                                    onClick={handleCircleClick}
+                                    className="relative flex flex-col items-center justify-center size-38 lg:size-80 transition-all duration-300 hover:scale-105 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue cursor-pointer"
+                                >
+                                    <div className="text-5xl lg:text-8xl">100+</div>
+                                    <div className="text-lg lg:text-3xl -mt-1">Companies</div>
                                 </div>
-                                <div className="relative" ref={el => circlesRef.current[3] = el}>
-                                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2020-2024</div>
-                                    <div
-                                        className="relative flex flex-col items-center justify-center size-38 lg:size-80 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue"
-                                    >
-                                        <div className="text-5xl lg:text-8xl">100+</div>
-                                        <div className="text-lg lg:text-3xl -mt-1">Companies</div>
-                                    </div>
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </Container>
+
+            {/* Popup */}
+            {/* {isPopupOpen && ( */}
+                <div ref={popupRef} className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden w-full h-full">
+                    <div ref={popupBgRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 bg-darkblue origin-center rounded-full"></div>
+                    <div ref={popupContentRef} className="opacity-0 w-full h-full z-50 relative">
+                        <button
+                            onClick={handleClosePopup}
+                            className="absolute top-4 right-4 text-white text-4xl font-bold z-50 cursor-pointer"
+                        >
+                            ×
+                        </button>
+                        <div className="h-full w-full flex items-center justify-center text-white">
+                            <h2 className="text-4xl">Logos Here</h2>
+                        </div>
+                    </div>
+                </div>
+            {/* )} */}
         </div>
     );
 };
