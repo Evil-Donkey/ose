@@ -78,16 +78,20 @@ const HeroVideo = ({ data }) => {
                     </video>
 
                     <div className="absolute top-0 left-0 lg:left-auto lg:right-[13%] p-6 flex flex-col justify-center h-full text-white">
-                        <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27">
-                            {headings.map((heading, index) => (
-                                <span key={index} className="block overflow-hidden" ref={el => textWrapperRef.current[index] = el}>
-                                    <span className="block opacity-0 translate-y-full" ref={el => textRef.current[index] = el}>{heading.heading}</span>
-                                </span>
-                            ))}
-                        </h1>
-                        <div className="mt-2 md:mt-6 hover:-translate-y-1! transition-all duration-500 self-start">
-                            <Button className="opacity-0 translate-y-5" ref={buttonRef}>Watch</Button>
-                        </div>
+                        {headings && (
+                            <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27">
+                                {headings.map((heading, index) => (
+                                    <span key={index} className="block overflow-hidden" ref={el => textWrapperRef.current[index] = el}>
+                                        <span className="block opacity-0 translate-y-full" ref={el => textRef.current[index] = el}>{heading.heading}</span>
+                                    </span>
+                                ))}
+                            </h1>
+                        )}
+                        {fullMovie && (
+                            <div className="mt-2 md:mt-6 hover:-translate-y-1! transition-all duration-500 self-start">
+                                <Button className="opacity-0 translate-y-5" ref={buttonRef}>Watch</Button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </Container>

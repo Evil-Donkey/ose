@@ -10,6 +10,7 @@ import Sectors from "./Sectors";
 import Portfolio from "./Portfolio";
 import CTA from "./CTA";
 import Story from "./Story";
+import OneColumnCopyAlternate from "./OneColumnCopyAlternate";
 
 const PageFlexibleContent = ({ data }) => {
 
@@ -54,6 +55,9 @@ const PageFlexibleContent = ({ data }) => {
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Story") {
             flexibleContentArray.push(<Story data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_OneColumnCopyAlternate") {
+            flexibleContentArray.push(<OneColumnCopyAlternate data={data} index={i} key={i.toString()} />);
         }
     })}
 

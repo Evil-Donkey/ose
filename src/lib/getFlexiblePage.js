@@ -213,6 +213,36 @@ const FLEXIBLE_CONTENT_QUERY = `
               }
             }
           }
+          ... on Page_Flexiblecontent_FlexibleContent_OneColumnCopyAlternate {
+            fieldGroupName
+            backgroundMedia
+            copy
+            ctaLabel
+            ctaLink {
+              ... on Page {
+                id
+                link
+              }
+              ... on Portfolio {
+                id
+                link
+              }
+              ... on Story {
+                id
+                link
+              }
+            }
+            heading
+            headingSize
+            copyLast
+            subheading
+            image {
+              mediaItemUrl
+            }
+            videoMp4 {
+              mediaItemUrl
+            }
+          }
         }
       }
     }

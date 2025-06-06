@@ -1,29 +1,16 @@
-import fetchAPI from '../lib/api'
-import generateMetadata from '../lib/generateMetadata'
-import SignupForm from '../components/SignupForm'
-import Header from '../components/Header/index'
-import Container from '../components/Container'
+import getFlexiblePage from "@/lib/getFlexiblePage";
+import generateMetadataFromLib from "@/lib/generateMetadata";
+import FlexiblePage from "@/components/Templates/FlexiblePage";
 
-generateMetadata("9");
+export async function generateMetadata() {
+  return await generateMetadataFromLib("9");
+}
 
-export default async function Page() {
-
-  const data = await fetchAPI(`
-    query getHomePage {
-      page(id: "9", idType: DATABASE_ID) {
-        content(format: RENDERED)
-        title(format: RENDERED)
-      }
-    }
-  `);
-
-  const title = data?.page?.title;
-  const content = data?.page?.content;
-
-  return (
-    <Container>
-      <Header portal={true} />
-      <SignupForm />
-    </Container>
-  )
-};
+export default async function WhatPage() {
+  const flexibleContent = await getFlexiblePage("9");
+  return <FlexiblePage 
+    flexibleContent={flexibleContent} 
+    hideNavigation={false} 
+    hideHeroVideo={false} 
+  />;
+} 

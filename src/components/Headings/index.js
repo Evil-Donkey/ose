@@ -30,7 +30,7 @@ const Headings = ({ headings, theme }) => {
         };
     }, []);
 
-    return (
+    return headings ? (
         <>
             {headings.map((item, index) => {
                 const { heading } = item;
@@ -42,7 +42,7 @@ const Headings = ({ headings, theme }) => {
                 )
             })}
         </>
-    )
+    ) : null;
 }
 
 export default Headings;
