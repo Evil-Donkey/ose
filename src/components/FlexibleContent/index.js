@@ -11,6 +11,10 @@ import Portfolio from "./Portfolio";
 import CTA from "./CTA";
 import Story from "./Story";
 import OneColumnCopyAlternate from "./OneColumnCopyAlternate";
+import Stories from "./Stories";
+import News from "./News";
+import InspirationalQuotes from "./InspirationalQuotes";
+import Cards from "./Cards";
 
 const PageFlexibleContent = ({ data }) => {
 
@@ -19,6 +23,8 @@ const PageFlexibleContent = ({ data }) => {
     {data && data.forEach((data, i) => {
 
         const { fieldGroupName } = data;
+
+        console.log(fieldGroupName);
 
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_HeroVideo") {
             flexibleContentArray.push(<HeroVideo data={data} index={i} key={i.toString()} />);
@@ -58,6 +64,18 @@ const PageFlexibleContent = ({ data }) => {
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_OneColumnCopyAlternate") {
             flexibleContentArray.push(<OneColumnCopyAlternate data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Stories") {
+            flexibleContentArray.push(<Stories data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_News") {
+            flexibleContentArray.push(<News data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_InspirationalQuotes") {
+            flexibleContentArray.push(<InspirationalQuotes data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cards") {
+            flexibleContentArray.push(<Cards data={data} index={i} key={i.toString()} />);
         }
     })}
 

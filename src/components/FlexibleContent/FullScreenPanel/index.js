@@ -68,7 +68,7 @@ const FullScreenPanel = ({ data }) => {
                     <div className="flex flex-col items-center text-center w-full gap-5">
                         {heading && <h3 ref={titleRef} className="text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight w-full opacity-0 -translate-y-full">{heading}</h3>}
                         {copy && <div ref={copyRef} className="w-full lg:w-3/5 xl:px-17 text-xl md:text-3xl 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
-                            <div dangerouslySetInnerHTML={{ __html: copy }} />
+                            <div className="text-center flex flex-col gap-8 items-center" dangerouslySetInnerHTML={{ __html: copy }} />
                         </div>}
                     </div>
                 </Container>

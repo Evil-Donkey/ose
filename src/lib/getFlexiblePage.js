@@ -243,6 +243,67 @@ const FLEXIBLE_CONTENT_QUERY = `
               mediaItemUrl
             }
           }
+          ... on Page_Flexiblecontent_FlexibleContent_Stories {
+            fieldGroupName
+            stories {
+              ... on Story {
+                id
+                content(format: RENDERED)
+                title(format: RENDERED)
+                link
+                featuredImage {
+                  node {
+                    altText
+                    mediaItemUrl
+                  }
+                }
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_News {
+            fieldGroupName
+            news {
+              ... on Post {
+                id
+                date
+                link
+                title(format: RENDERED)
+                featuredImage {
+                  node {
+                    altText
+                    mediaItemUrl
+                  }
+                }
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_InspirationalQuotes {
+            carousel
+            fieldGroupName
+            title
+            quotes {
+              author
+              quoteOnTheRight
+              quote
+              image {
+                altText
+                mediaItemUrl
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_Cards {
+            fieldGroupName
+            title
+            copy
+            cards {
+              description
+              heading
+              image {
+                altText
+                mediaItemUrl
+              }
+            }
+          }
         }
       }
     }

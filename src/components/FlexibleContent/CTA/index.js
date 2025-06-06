@@ -84,8 +84,8 @@ const CTA = ({ data }) => {
                                 {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" />}
                                 <div className="relative z-10 flex flex-col justify-between h-full">
                                     <div>
-                                        {smallTitle && <p className="text-xs md:text-sm text-white mb-2">{smallTitle}</p>}
-                                        {largeTitle && <h3 className="text-3xl md:text-4xl 2xl:text-5xl text-white mb-6">{largeTitle}</h3>}
+                                        {smallTitle && <p className="text-xs md:text-sm text-white mb-4">{smallTitle}</p>}
+                                        {largeTitle && <h3 className="text-3xl md:text-5xl/13 2xl:text-6xl text-white mb-6">{largeTitle}</h3>}
                                         {copy && <div className="text-white mb-8 text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />}
                                     </div>
                                     {ctaLabel && <Button href={ctaUrl} variant="light">
