@@ -15,6 +15,9 @@ import Stories from "./Stories";
 import News from "./News";
 import InspirationalQuotes from "./InspirationalQuotes";
 import Cards from "./Cards";
+import FullPanelCarousel from "./FullPanelCarousel";
+import FullScreenList from "./FullScreenList";
+import Faqs from "./Faqs";
 
 const PageFlexibleContent = ({ data }) => {
 
@@ -76,6 +79,15 @@ const PageFlexibleContent = ({ data }) => {
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cards") {
             flexibleContentArray.push(<Cards data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_FullPanelCarousel") {
+            flexibleContentArray.push(<FullPanelCarousel data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_FullScreenList") {
+            flexibleContentArray.push(<FullScreenList data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Faqs") {
+            flexibleContentArray.push(<Faqs data={data} index={i} key={i.toString()} />);
         }
     })}
 

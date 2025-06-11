@@ -81,11 +81,14 @@ const CTA = ({ data }) => {
                         const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, backgroundImage } = cta;
                         return (
                             <div key={index} ref={el => ctaRef.current[index] = el} className="relative overflow-hidden rounded-3xl group p-8 2xl:p-12 opacity-0 translate-y-20">
-                                {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" />}
+                                {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className={`absolute inset-0 object-cover ${ctaLabel ? 'group-hover:scale-110' : ''} transition-all duration-300`} />}
+                                {!ctaLabel && <div className="absolute inset-0 bg-black/50" />}
                                 <div className="relative z-10 flex flex-col justify-between h-full">
-                                    <div>
-                                        {smallTitle && <p className="text-xs md:text-sm text-white mb-4">{smallTitle}</p>}
-                                        {largeTitle && <h3 className="text-3xl md:text-5xl/13 2xl:text-6xl text-white mb-6">{largeTitle}</h3>}
+                                    <div className={`flex flex-col ${!ctaLabel ? 'aspect-7/6 justify-between' : ''}`}>
+                                        <div>
+                                            {smallTitle && <p className="text-xs md:text-sm text-white mb-4">{smallTitle}</p>}
+                                            {largeTitle && <h3 className="text-3xl md:text-5xl/13 2xl:text-6xl text-white mb-6">{largeTitle}</h3>}
+                                        </div>
                                         {copy && <div className="text-white mb-8 text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />}
                                     </div>
                                     {ctaLabel && <Button href={ctaUrl} variant="light">

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Logo } from "../Icons/Logo";
 import { IconHamburger, IconClose } from "../Icons/Hamburger";
 import Container from '../Container';
+import { usePathname } from 'next/navigation';
 
 const Header = ({ portal }) => {
 
@@ -13,6 +14,7 @@ const Header = ({ portal }) => {
     const [lastScrollTop, setLastScrollTop] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const delays = ['delay-150', 'delay-300', 'delay-450', 'delay-600'];
+    const pathname = usePathname();
 
     const topNavItems = [
         {
@@ -103,17 +105,39 @@ const Header = ({ portal }) => {
                     <div className={`transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col items-center lg:items-end justify-center lg:justify-start gap-5 lg:gap-0 absolute top-0 left-0 w-svw h-svh lg:h-auto lg:w-auto bg-blue-02 lg:bg-transparent lg:static ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
                         <div className={`flex justify-end transition-all duration-500 ${isHeaderScrolled ? 'mb-1 2xl:mb-3' : 'md:mb-2 2xl:mb-4'}`}>
                             <nav className="lg:space-x-5 flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0">
-                                {topNavItems.map((item, index) => (
-                                    <Link href={item.href} key={index} className={`hover:text-lightblue transition duration-300 lg:opacity-100 lg:translate-x-0 * 150} lg:delay-0 ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}`}>{item.label}</Link>
-                                ))}
+                                {topNavItems.map((item, index) => {
+                                    const isActive = pathname === item.href;
+                                    return (
+                                        <Link
+                                            href={item.href}
+                                            key={index}
+                                            className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 py-2 rounded-xl
+                                                ${isActive ? 'text-lightblue' : 'hover:text-lightblue text-white'}
+                                                ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}`}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    );
+                                })}
                             </nav>
                         </div>
 
                         <div className="flex justify-end">
                             <nav className="lg:space-x-8 2xl:space-x-12 text-lg flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0">
-                                {bottomNavItems.map((item, index) => (
-                                    <Link href={item.href} key={index} className={`text-3xl 2xl:text-4xl hover:text-lightblue transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}`}>{item.label}</Link>
-                                ))}
+                                {bottomNavItems.map((item, index) => {
+                                    const isActive = pathname === item.href;
+                                    return (
+                                        <Link
+                                            href={item.href}
+                                            key={index}
+                                            className={`text-3xl 2xl:text-4xl transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 py-2 rounded-xl
+                                                ${isActive ? 'text-lightblue' : 'hover:text-lightblue text-white'}
+                                                ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}`}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    );
+                                })}
                             </nav>
                         </div>
                     </div>

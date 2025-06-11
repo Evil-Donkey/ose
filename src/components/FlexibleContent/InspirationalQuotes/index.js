@@ -4,6 +4,11 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,36 +61,102 @@ const InspirationalQuotes = ({ data }) => {
 
     return quotes ? (
         <div className="relative">
-            {quotes.map((q, index) => {
-                const { author, quoteOnTheRight, quote, image } = q;
-                return (
-                <div key={index.toString()} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
-                    {image && (
-                        <>
-                            <div ref={el => imageRef.current[index] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />
-                            <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
-                        </>
-                    )}
-                    
-                    <div className="min-h-[100vh] h-full flex flex-col justify-center">
-                        <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "justify-end" : "justify-start"}`}>
-                            <div className="flex flex-col w-full lg:w-1/2 gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
-                                {quote && 
-                                <div className="relative">
-                                    <div className="absolute -top-15 left-0 text-3xl md:text-[120px] font-medium">&quot;</div>
-                                    <div className="pt-5 text-3xl md:text-5xl/13 2xl:text-6xl font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
-                                </div>
-                                }
-                                {author && 
-                                    <div className="w-full mt-5">
-                                        <div className="text-base font-medium" dangerouslySetInnerHTML={{ __html: author }} />
+            {carousel ? (
+                <Swiper
+                    modules={[Navigation, Pagination]}
+                    navigation
+                    pagination={{ clickable: true }}
+                    className="h-full inspirational-quotes-swiper"
+                >
+                    {quotes.map((q, index) => {
+                        const { author, quoteOnTheRight, quote, image } = q;
+                        return (
+                            <SwiperSlide key={index.toString()}>
+                                <div className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+                                    {image && (
+                                        <>
+                                            <div ref={el => imageRef.current[index] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />
+                                            <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
+                                        </>
+                                    )}
+                                    <div className="min-h-[100vh] h-full flex flex-col justify-center">
+                                        <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "justify-end" : "justify-start"}`}>
+                                            <div className="flex flex-col w-full lg:w-1/2 gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
+                                                {quote && 
+                                                <div className="relative">
+                                                    <div className="absolute -top-15 left-0 text-3xl md:text-[120px] font-medium">&quot;</div>
+                                                    <div className="pt-5 text-3xl md:text-[2.5rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
+                                                </div>
+                                                }
+                                                {author && 
+                                                    <div className="w-full mt-5">
+                                                        <div className="text-base font-medium" dangerouslySetInnerHTML={{ __html: author }} />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </Container>
                                     </div>
-                                }
+                                </div>
+                            </SwiperSlide>
+                        )
+                    })}
+                    {/* Custom Swiper pagination styles */}
+                    <style jsx global>{`
+                      .inspirational-quotes-swiper .swiper-pagination {
+                        position: absolute;
+                        bottom: 40px;
+                        left: 0;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        z-index: 50;
+                      }
+                      .inspirational-quotes-swiper .swiper-pagination-bullet {
+                        background: #fff;
+                        opacity: 1;
+                        width: 16px;
+                        height: 16px;
+                        margin: 0 5px !important;
+                        border-radius: 50%;
+                        transition: background 0.2s;
+                      }
+                      .inspirational-quotes-swiper .swiper-pagination-bullet-active {
+                        background: #06acd4;
+                      }
+                    `}</style>
+                </Swiper>
+            ) : (
+                quotes.map((q, index) => {
+                    const { author, quoteOnTheRight, quote, image } = q;
+                    return (
+                        <div key={index.toString()} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+                            {image && (
+                                <>
+                                    <div ref={el => imageRef.current[index] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />
+                                    <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
+                                </>
+                            )}
+                            <div className="min-h-[100vh] h-full flex flex-col justify-center">
+                                <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "justify-end" : "justify-start"}`}>
+                                    <div className="flex flex-col w-full lg:w-1/2 gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
+                                        {quote && 
+                                        <div className="relative">
+                                            <div className="absolute -top-15 left-0 text-3xl md:text-[120px] font-medium">&quot;</div>
+                                            <div className="pt-5 text-3xl md:text-[2.5rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
+                                        </div>
+                                        }
+                                        {author && 
+                                            <div className="w-full mt-5">
+                                                <div className="text-base font-medium" dangerouslySetInnerHTML={{ __html: author }} />
+                                            </div>
+                                        }
+                                    </div>
+                                </Container>
                             </div>
-                        </Container>
-                    </div>
-                </div>
-            )})}
+                        </div>
+                    )
+                })
+            )}
         </div>
     ) : null;
 }

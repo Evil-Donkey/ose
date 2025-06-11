@@ -8,9 +8,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const Stats = ({ data, theme }) => {
-    const { title, stats } = data;
+    const { title, stats, copy } = data;
     const statRef = useRef([]);
     const titleRef = useRef(null);
+    const copyRef = useRef(null);
     const textColor = theme === 'dark' ? 'text-white' : 'text-blue-02';
 
     useEffect(() => {
@@ -22,6 +23,18 @@ const Stats = ({ data, theme }) => {
             stagger: 0.1,
             scrollTrigger: {
                 trigger: titleRef.current,
+                start: 'top 90%',
+                scrub: 1.5,
+                invalidateOnRefresh: true
+            },
+        })
+        gsap.to(copyRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power4.out',
+            scrollTrigger: {
+                trigger: copyRef.current,
                 start: 'top 90%',
                 scrub: 1.5,
                 invalidateOnRefresh: true
@@ -48,6 +61,9 @@ const Stats = ({ data, theme }) => {
     return (
         <div className="flex flex-col">
             {title && <h3 ref={titleRef} className={`uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full ${textColor}`}>{title}</h3>}
+            {copy && <div ref={copyRef} className={`w-full md:w-2/3 text-center opacity-0 translate-y-20 self-center ${textColor}`}>
+                    <div className="text-base md:text-xl flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />
+                </div>}
             {stats && 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10">
                     {stats.map((stat, index) => {

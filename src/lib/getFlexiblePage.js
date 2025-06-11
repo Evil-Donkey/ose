@@ -50,6 +50,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             fieldGroupName
             stats {
               title
+              copy
               stats {
                 description
                 postStat
@@ -295,6 +296,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             fieldGroupName
             title
             copy
+            carousel
             cards {
               description
               heading
@@ -302,6 +304,61 @@ const FLEXIBLE_CONTENT_QUERY = `
                 altText
                 mediaItemUrl
               }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_FullPanelCarousel {
+            fieldGroupName
+            heading
+            slides {
+              copy
+              ctaLabel
+              ctaLink {
+                ... on Post {
+                  id
+                  link
+                }
+                ... on Page {
+                  id
+                  link
+                }
+                ... on Portfolio {
+                  id
+                  link
+                }
+                ... on Story {
+                  id
+                  link
+                }
+              }
+              title
+              backgroundImage {
+                altText
+                mediaItemUrl
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_FullScreenList {
+            copy
+            fieldGroupName
+            heading
+            listCopy
+            listPosition
+            backgroundImage {
+              altText
+              mediaItemUrl
+            }
+            list {
+              description
+              title
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_Faqs {
+            copy
+            fieldGroupName
+            title
+            faqs {
+              answer
+              question
             }
           }
         }
