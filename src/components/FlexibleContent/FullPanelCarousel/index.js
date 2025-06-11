@@ -114,6 +114,7 @@ const FullPanelCarousel = ({ data }) => {
                 modules={[Navigation]}
                 navigation
                 className="h-full"
+                onSlideChange={swiper => setActiveIndex(swiper.activeIndex)}
             >
                 {slides.map((slide, index) => {
                     const { title, copy, ctaLabel, ctaLink, backgroundImage } = slide;
