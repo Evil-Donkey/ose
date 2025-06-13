@@ -1,13 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
 import Container from "../../Container";
-import useGSAPAnimation from "@/hooks/useGSAPAnimation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,7 +17,8 @@ const CTA = ({ data }) => {
 
     const { title, copy, cta } = data;
 
-    const { refreshScrollTrigger } = useGSAPAnimation(() => {
+    // GSAP animations
+    useEffect(() => {
         const tl = gsap.timeline();
         tl.to(titleRef.current, {
             x: 0,
@@ -30,8 +30,7 @@ const CTA = ({ data }) => {
                 trigger: titleRef.current,
                 start: 'top 90%',
                 scrub: 1.5,
-                invalidateOnRefresh: true,
-                id: 'gsap-context-cta-title'
+                invalidateOnRefresh: true
             },
         })
         .to(copyRef.current, {
@@ -43,8 +42,7 @@ const CTA = ({ data }) => {
                 trigger: copyRef.current,
                 start: 'top 90%',
                 scrub: 1.5,
-                invalidateOnRefresh: true,
-                id: 'gsap-context-cta-copy'
+                invalidateOnRefresh: true
             },
         })
         .to(ctaRef.current, {
@@ -58,10 +56,13 @@ const CTA = ({ data }) => {
                 start: 'top 90%',
                 end: 'top 75%',
                 scrub: 1.5,
-                invalidateOnRefresh: true,
-                id: 'gsap-context-cta-buttons'
+                invalidateOnRefresh: true
             },
         });
+
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
     }, []);
 
     return (

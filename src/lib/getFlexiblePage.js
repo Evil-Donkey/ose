@@ -284,10 +284,17 @@ const FLEXIBLE_CONTENT_QUERY = `
             headingSize
             copyLast
             subheading
+            darkOverlay
             image {
               mediaItemUrl
             }
+            imageMobile {
+              mediaItemUrl
+            }
             videoMp4 {
+              mediaItemUrl
+            }
+            videoMp4Mobile {
               mediaItemUrl
             }
           }

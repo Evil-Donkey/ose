@@ -49,7 +49,7 @@ export default function FlexiblePage({ flexibleContent, className, hideNavigatio
 
   return (
     <div className={className}>
-      {/* <LazyLoadInitializer /> */}
+      <LazyLoadInitializer />
       {!hideNavigation && <Header />}
       <div id="smooth-wrapper">
         <div id="smooth-content">
