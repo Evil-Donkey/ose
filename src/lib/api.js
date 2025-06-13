@@ -1,4 +1,4 @@
-const API_URL = process.env.WORDPRESS_GRAPHQL_ENDPOINT;
+const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT;
 
 // Fetch API
 export default async function fetchAPI(query, { variables } = {}) {

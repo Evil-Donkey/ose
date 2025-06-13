@@ -27,11 +27,11 @@ const InspirationalQuotes = ({ data }) => {
             // Image animation
             gsap.to(imageRef.current[index], {
                 scale: 1,
-                duration: 2,
+                // duration: 2,
                 ease: 'power4.out',
                 scrollTrigger: {
                     trigger: imageRef.current[index],
-                    start: 'top bottom',
+                    start: 'top 80%',
                     end: 'top top',
                     scrub: 1,
                     invalidateOnRefresh: true
@@ -69,14 +69,15 @@ const InspirationalQuotes = ({ data }) => {
                     className="h-full inspirational-quotes-swiper"
                 >
                     {quotes.map((q, index) => {
-                        const { author, quoteOnTheRight, quote, image } = q;
+                        const { author, quoteOnTheRight, quote, image, darkOverlay, mobile } = q;
                         return (
                             <SwiperSlide key={index.toString()}>
                                 <div className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
-                                    {image && (
+                                    {(image || mobile) && (
                                         <>
-                                            <div ref={el => imageRef.current[index] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />
-                                            <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
+                                            {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
+                                            {mobile && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
+                                            {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                         </>
                                     )}
                                     <div className="min-h-[100vh] h-full flex flex-col justify-center">
@@ -127,13 +128,14 @@ const InspirationalQuotes = ({ data }) => {
                 </Swiper>
             ) : (
                 quotes.map((q, index) => {
-                    const { author, quoteOnTheRight, quote, image } = q;
+                    const { author, quoteOnTheRight, quote, image, darkOverlay, mobile } = q;
                     return (
                         <div key={index.toString()} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
-                            {image && (
+                            {(image || mobile) && (
                                 <>
-                                    <div ref={el => imageRef.current[index] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />
-                                    <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
+                                    {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
+                                    {mobile && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
+                                    {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                 </>
                             )}
                             <div className="min-h-[100vh] h-full flex flex-col justify-center">

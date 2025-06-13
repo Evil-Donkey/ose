@@ -18,10 +18,23 @@ const Story = ({ data }) => {
 
     const titleRef = useRef(null);
     const copyRef = useRef([]);
+    const imageRef = useRef(null);
 
     useEffect(() => {
         const titleTl = gsap.timeline();
-        titleTl.to(titleRef.current, {
+        titleTl.to(imageRef.current, {
+            scale: 1,
+            // duration: 2,
+            ease: 'power4.out', 
+            scrollTrigger: {
+                trigger: imageRef.current,
+                start: 'top 80%',
+                end: 'top top',
+                scrub: 1,
+                invalidateOnRefresh: true
+            },
+        })
+        .to(titleRef.current, {
             x: 0,
             opacity: 1,
             duration: 1,
@@ -58,7 +71,7 @@ const Story = ({ data }) => {
             <div className="relative w-full lg:min-h-[100vh] h-full">
                 {backgroundImage && 
                     <>
-                        <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }} />
+                        <div ref={imageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage})` }} />
                         <div className="absolute top-0 left-0 w-full h-full bg-black/40" />
                     </>
                 }
@@ -102,7 +115,7 @@ const Story = ({ data }) => {
                     </div>
 
                     <div ref={el => copyRef.current[3] = el} className="flex justify-center mt-16 opacity-0 translate-y-full">
-                        <Button href="/stories">See all stories</Button>
+                        <Button href="/stories">Read more stories</Button>
                     </div>
                 </Container>
             </div>

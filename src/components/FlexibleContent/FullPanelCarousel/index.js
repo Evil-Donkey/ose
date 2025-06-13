@@ -52,7 +52,7 @@ const FullPanelCarousel = ({ data }) => {
                 ease: 'power4.out',
                 scrollTrigger: {
                     trigger: backgroundImageRef.current[index] || slide,
-                    start: 'top bottom',
+                    start: 'top 80%',
                     end: 'top top',
                     scrub: 1,
                     invalidateOnRefresh: true
@@ -145,7 +145,7 @@ const FullPanelCarousel = ({ data }) => {
                                             )}
                                             {ctaLabel && 
                                             <div className="flex flex-col gap-5 mt-4">
-                                                <Button href={ctaLink ? ctaLink.link : "#"} className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase">
+                                                <Button href={ctaLink ? ctaLink.uri : "#"} className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase">
                                                     {ctaLabel}
                                                 </Button>
                                             </div>

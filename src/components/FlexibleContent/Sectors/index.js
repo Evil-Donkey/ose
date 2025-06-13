@@ -71,13 +71,13 @@ const Sectors = ({ data }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
                     {sectors.map((sector, index) => {
                         const { title, url, image, video, copy } = sector;
-                        const link = url?.link ? url.link : "#";
+                        const link = url?.uri ? url.uri : "#";
                         return (
                             <div key={index} ref={el => sectorsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
                                 <Link href={link} className="relative aspect-square overflow-hidden rounded-lg flex text-center items-end justify-center py-10 xl:px-18 group">
                                     <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform duration-300 group-hover:scale-110" />
                                     {video && <video src={video.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />}
-                                    <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/0 pointer-events-none" />
                                     <h4 className="text-white text-4xl md:text-5xl/13 font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />
                                 </Link>
 

@@ -87,7 +87,7 @@ const Faqs = ({ data }) => {
                                     </span>
                                 </button>
                                 <div
-                                    className={`overflow-hidden transition-all duration-300 px-7 ${isOpen ? 'max-h-96 py-4' : 'max-h-0 py-0'}`}
+                                    className={`overflow-hidden transition-all duration-300 px-7 ${isOpen ? 'max-h-96 pt-4 pb-8' : 'max-h-0 py-0'}`}
                                     style={{}}
                                 >
                                     {isOpen && (

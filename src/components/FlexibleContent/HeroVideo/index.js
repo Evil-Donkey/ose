@@ -9,9 +9,8 @@ import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HeroVideo = ({ data }) => {
-    
-    const { fullMovie, introMovie, headings } = data;
+const HeroVideo = ({ data, onVideoPopupOpen }) => {
+    const { fullMovie, introMovie, mobileMovie, headings, desktopImage, mobileImage } = data;
 
     const videoRef = useRef(null);
     const heroRef = useRef(null);
@@ -73,11 +72,25 @@ const HeroVideo = ({ data }) => {
         <div ref={heroRef} className="pt-40 pb-10 2xl:pt-50 bg-cover bg-center bg-[url('/gradient.png')] h-[100vh] flex">
             <Container className="flex-grow-1 h-full">
                 <div className="mx-auto relative h-full">
-                    <video ref={videoRef} className="w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125" autoPlay playsInline muted loop>
-                        <source src={introMovie.mediaItemUrl} type="video/mp4" />
-                    </video>
+                    {introMovie && (   
+                        <video ref={videoRef} className={`w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} autoPlay playsInline muted loop>
+                            <source src={introMovie.mediaItemUrl} type="video/mp4" />
+                        </video>
+                    )}
+                    {mobileMovie && (
+                        <video ref={videoRef} className="w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 lg:hidden" autoPlay playsInline muted loop>
+                            <source src={mobileMovie.mediaItemUrl} type="video/mp4" />
+                        </video>
+                    )}
 
-                    <div className="absolute top-0 left-0 lg:left-auto lg:right-[13%] p-6 flex flex-col justify-center h-full text-white">
+                    {desktopImage && (
+                        <div ref={videoRef} className={`w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />
+                    )}
+                    {mobileImage && (
+                        <div ref={videoRef} className="w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />
+                    )}
+
+                    <div className="absolute top-0 left-0 lg:left-auto lg:right-[13%] p-6 flex flex-col justify-center h-full text-white z-50">
                         {headings && (
                             <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27">
                                 {headings.map((heading, index) => (
@@ -89,7 +102,7 @@ const HeroVideo = ({ data }) => {
                         )}
                         {fullMovie && (
                             <div className="mt-2 md:mt-6 hover:-translate-y-1! transition-all duration-500 self-start">
-                                <Button className="opacity-0 translate-y-5" ref={buttonRef}>Watch</Button>
+                                <Button className="opacity-0 translate-y-5" ref={buttonRef} onClick={() => onVideoPopupOpen(fullMovie)}>Watch</Button>
                             </div>
                         )}
                     </div>

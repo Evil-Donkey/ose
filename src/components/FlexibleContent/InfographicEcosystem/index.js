@@ -5,10 +5,11 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LogoDark } from "@/components/Icons/Logo";
 import Container from "../../Container";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const InfographicMap = ({ data }) => {
+const InfographicMap = ({ data, onPopupOpen }) => {
     const titleRef = useRef([]);
     const copyRef = useRef(null);
     const infographicRef = useRef(null);
@@ -16,12 +17,8 @@ const InfographicMap = ({ data }) => {
     const lineRef = useRef([]);
     const bottomTextRef = useRef([]);
     const ecosystemRef = useRef(null);
-    const popupRef = useRef(null);
-    const popupBgRef = useRef(null);
-    const popupContentRef = useRef(null);
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-    const { title, copy } = data;
+    const { title, copy, spinoutDesktopImage, spinoutMobileImage } = data;
 
     const timelineData = [
         // { period: "1959 - 1999", count: 22, size: 85 },
@@ -33,7 +30,6 @@ const InfographicMap = ({ data }) => {
     ];
 
     useEffect(() => {
-
         const titleTl = gsap.timeline();
         titleTl.to(titleRef.current, {
             x: 0,
@@ -111,55 +107,12 @@ const InfographicMap = ({ data }) => {
         };
     }, []);
 
-    useEffect(() => {
-        // Add popup animation
-        if (popupRef.current) {
-            const popupTl = gsap.timeline({ paused: true });
-            
-            popupTl.fromTo(popupRef.current,
-                {
-                    scale: 0,
-                },
-                {
-                    scale: 1,
-                    opacity: 1,
-                    duration: 0.5,
-                    ease: "power2.out",
-                }
-            )
-            .fromTo(popupBgRef.current, {
-                scale: 0,
-            }, {
-                scale: 100,
-                duration: 2,
-                ease: "power2.inOut",
-            }, "<")
-            .fromTo(popupContentRef.current, {
-                opacity: 0,
-            }, {
-                opacity: 1,
-                duration: 0.5,
-                ease: "power2.out",
-            }, "<+=.5");
-
-            if (isPopupOpen) {
-                popupTl.play();
-            } else {
-                popupTl.reverse();
-            }
-        }
-    }, [isPopupOpen]);
-
     const handleCircleClick = () => {
-        setIsPopupOpen(true);
-    };
-
-    const handleClosePopup = () => {
-        setIsPopupOpen(false);
+        onPopupOpen();
     };
 
     return (
-        <div ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0 relative flex w-full h-full">
+        <div ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0 relative overflow-hidden flex w-full h-full">
             <Container className="py-20 2xl:pb-40">
                 <div className="flex flex-col items-center text-center">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
@@ -217,24 +170,6 @@ const InfographicMap = ({ data }) => {
                     </div>
                 </div>
             </Container>
-
-            {/* Popup */}
-            {/* {isPopupOpen && ( */}
-                <div ref={popupRef} className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden w-full h-full">
-                    <div ref={popupBgRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 bg-darkblue origin-center rounded-full"></div>
-                    <div ref={popupContentRef} className="opacity-0 w-full h-full z-50 relative">
-                        <button
-                            onClick={handleClosePopup}
-                            className="absolute top-4 right-4 text-white text-4xl font-bold z-50 cursor-pointer"
-                        >
-                            ×
-                        </button>
-                        <div className="h-full w-full flex items-center justify-center text-white">
-                            <h2 className="text-4xl">Logos Here</h2>
-                        </div>
-                    </div>
-                </div>
-            {/* )} */}
         </div>
     );
 };

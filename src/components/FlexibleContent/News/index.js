@@ -17,8 +17,6 @@ const News = ({ data }) => {
 
     const { news } = data;
 
-    console.log(news);
-
     useEffect(() => {
         gsap.to(titleRef.current, {
             x: 0,
@@ -59,14 +57,14 @@ const News = ({ data }) => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
                     {news.map((news, index) => {
-                        const { title, link, featuredImage, date } = news;
+                        const { title, featuredImage, date, uri } = news;
                         console.log(date);
                         return (
                             <div key={index} ref={el => newsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
-                                <Link href={link} className="relative aspect-4/5 overflow-hidden rounded-4xl flex text-center items-end justify-center py-10 xl:px-18 group">
+                                <Link href={uri} className="relative aspect-4/5 overflow-hidden rounded-4xl flex text-center items-end justify-center py-10 xl:px-18 group">
                                     <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} fill className="object-cover absolute inset-0 transition-transform duration-300 group-hover:scale-110" />
                                 </Link>
-                                <Link href={link}>
+                                <Link href={uri}>
                                     {date && (
                                         <p className="text-white text-xs md:text-base font-bold drop-shadow-lg z-10 mt-5">
                                             {new Date(date).toLocaleDateString('en-US', {

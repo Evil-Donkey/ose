@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import LazyLoadInitializer from "@/lib/lazyLoader";
@@ -8,10 +8,16 @@ import Header from "@/components/Header/index";
 import PageFlexibleContent from "@/components/FlexibleContent";
 import Footer from "@/components/Footer/index";
 import PopOut from "@/components/PopOut/index";
+import Popup from "@/components/FlexibleContent/InfographicEcosystem/Popup";
+import VideoPopup from "@/components/FlexibleContent/HeroVideo/VideoPopup";
 
 gsap.registerPlugin(ScrollSmoother);
 
 export default function FlexiblePage({ flexibleContent, className, hideNavigation }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupData, setPopupData] = useState(null);
+  const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
+  const [videoPopupData, setVideoPopupData] = useState(null);
 
   useEffect(() => {
     const smoother = ScrollSmoother.create({
@@ -21,17 +27,52 @@ export default function FlexiblePage({ flexibleContent, className, hideNavigatio
     });
   }, []);
 
+  const handlePopupOpen = (data) => {
+    setPopupData(data);
+    setIsPopupOpen(true);
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+    setPopupData(null);
+  };
+
+  const handleVideoPopupOpen = (data) => {
+    setVideoPopupData(data);
+    setIsVideoPopupOpen(true);
+  };
+
+  const handleVideoPopupClose = () => {
+    setIsVideoPopupOpen(false);
+    setVideoPopupData(null);
+  };
+
   return (
     <div className={className}>
       <LazyLoadInitializer />
       {!hideNavigation && <Header />}
       <div id="smooth-wrapper">
         <div id="smooth-content">
-          <PageFlexibleContent data={flexibleContent} />
+          <PageFlexibleContent 
+            data={flexibleContent} 
+            onPopupOpen={handlePopupOpen}
+            onVideoPopupOpen={handleVideoPopupOpen}
+          />
           <Footer />
         </div>
       </div>
       <PopOut />
+      <Popup 
+        isOpen={isPopupOpen}
+        onClose={handlePopupClose}
+        spinoutDesktopImage={popupData?.spinoutDesktopImage}
+        spinoutMobileImage={popupData?.spinoutMobileImage}
+      />
+      <VideoPopup
+        isOpen={isVideoPopupOpen}
+        onClose={handleVideoPopupClose}
+        fullMovie={videoPopupData}
+      />
     </div>
   );
 } 

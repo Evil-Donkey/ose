@@ -22,7 +22,7 @@ const FullScreenList = ({ data }) => {
             ease: 'power4.out', 
             scrollTrigger: {
                 trigger: backgroundImageRef.current,
-                start: 'top bottom',
+                start: 'top 80%',
                 end: 'top top',
                 scrub: 1,
                 invalidateOnRefresh: true
@@ -45,10 +45,11 @@ const FullScreenList = ({ data }) => {
             y: 0,
             duration: 1,
             ease: 'power4.out',
+            stagger: 0.2,
             scrollTrigger: {
                 trigger: copyRef.current,
-                start: 'top 90%',
-                end: 'top 75%',
+                start: 'top 85%',
+                end: 'top 70%',
                 scrub: 1.5,
                 invalidateOnRefresh: true
             },
@@ -62,7 +63,7 @@ const FullScreenList = ({ data }) => {
     return (
         <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
             <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
-            <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-transparent lg:bg-linear-to-b lg:from-black/60 lg:via-black/0 lg:to-black/0" />
             <Container className="py-30 md:py-25 2xl:py-45 relative z-10 flex flex-col h-full">
                 <div className="flex flex-col items-center">
                     {heading && <h2 ref={titleRef} className="w-full text-center uppercase tracking-widest text-white text:lg md:text-xl mb-8 font-medium opacity-0 translate-x-full">{heading}</h2>}

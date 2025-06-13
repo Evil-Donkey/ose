@@ -135,7 +135,7 @@ const Portfolio = ({ data }) => {
 
                         const isSquare = !isWide;
 
-                        const { id, title, link, featuredImage, portfolioCategories, portfolioFields } = item;
+                        const { id, title, featuredImage, portfolioCategories, portfolioFields, uri } = item;
 
                         return (
                             <div 
@@ -151,7 +151,7 @@ const Portfolio = ({ data }) => {
                                         : 'aspect-square'
                                 }`}
                             >
-                                <Link href={link || '#'} className="block group h-full w-full">
+                                <Link href={uri || '#'} className="block group h-full w-full">
                                     <div className="relative h-full w-full overflow-hidden rounded-lg">
                                         {featuredImage?.node && (
                                             <Image

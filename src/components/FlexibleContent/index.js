@@ -18,8 +18,9 @@ import Cards from "./Cards";
 import FullPanelCarousel from "./FullPanelCarousel";
 import FullScreenList from "./FullScreenList";
 import Faqs from "./Faqs";
+import Team from "./Team";
 
-const PageFlexibleContent = ({ data }) => {
+const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen }) => {
 
     let flexibleContentArray = [];
 
@@ -27,10 +28,8 @@ const PageFlexibleContent = ({ data }) => {
 
         const { fieldGroupName } = data;
 
-        console.log(fieldGroupName);
-
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_HeroVideo") {
-            flexibleContentArray.push(<HeroVideo data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<HeroVideo data={data} index={i} key={i.toString()} onVideoPopupOpen={onVideoPopupOpen} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_TitleAndCopy") {
             flexibleContentArray.push(<TitleAndCopy data={data} index={i} key={i.toString()} />);
@@ -48,7 +47,7 @@ const PageFlexibleContent = ({ data }) => {
             flexibleContentArray.push(<StatsModule data={data} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_InfographicEcosystem") {
-            flexibleContentArray.push(<InfographicEcosystem data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<InfographicEcosystem data={data} index={i} key={i.toString()} onPopupOpen={() => onPopupOpen(data)} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Expertise") {
             flexibleContentArray.push(<Expertise data={data} index={i} key={i.toString()} />);
@@ -88,6 +87,9 @@ const PageFlexibleContent = ({ data }) => {
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Faqs") {
             flexibleContentArray.push(<Faqs data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Team") {
+            flexibleContentArray.push(<Team data={data} index={i} key={i.toString()} />);
         }
     })}
 

@@ -13,7 +13,16 @@ const FLEXIBLE_CONTENT_QUERY = `
             introMovie {
               mediaItemUrl
             }
+            mobileMovie {
+              mediaItemUrl
+            }
             fullMovie {
+              mediaItemUrl
+            }
+            desktopImage {
+              mediaItemUrl
+            }
+            mobileImage {
               mediaItemUrl
             }
             headings {
@@ -58,6 +67,23 @@ const FLEXIBLE_CONTENT_QUERY = `
                 statValue
               }
             }
+            investorsHeading
+            investorsDesktopImage {
+              altText
+              mediaItemUrl
+              mediaDetails {
+                height
+                width
+              }
+            }
+            investorsMobileImage {
+              altText
+              mediaItemUrl
+              mediaDetails {
+                height
+                width
+              }
+            }
           }
           ... on Page_Flexiblecontent_FlexibleContent_Stats {
             fieldGroupName
@@ -76,6 +102,22 @@ const FLEXIBLE_CONTENT_QUERY = `
             copy
             fieldGroupName
             title
+            spinoutDesktopImage {
+              mediaItemUrl
+              altText
+              mediaDetails {
+                height
+                width
+              }
+            }
+            spinoutMobileImage {
+              mediaItemUrl
+              altText
+              mediaDetails {
+                height
+                width
+              }
+            }
           }
           ... on Page_Flexiblecontent_FlexibleContent_Expertise {
             fieldGroupName
@@ -119,6 +161,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                   id
                   slug
                   link
+                  uri
                 }
               }
               image {
@@ -142,6 +185,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                 id
                 title(format: RENDERED)
                 link
+                uri
                 featuredImage {
                   node {
                     altText
@@ -223,14 +267,17 @@ const FLEXIBLE_CONTENT_QUERY = `
               ... on Page {
                 id
                 link
+                uri
               }
               ... on Portfolio {
                 id
                 link
+                uri
               }
               ... on Story {
                 id
                 link
+                uri
               }
             }
             heading
@@ -252,6 +299,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                 content(format: RENDERED)
                 title(format: RENDERED)
                 link
+                uri
                 featuredImage {
                   node {
                     altText
@@ -268,6 +316,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                 id
                 date
                 link
+                uri
                 title(format: RENDERED)
                 featuredImage {
                   node {
@@ -284,9 +333,14 @@ const FLEXIBLE_CONTENT_QUERY = `
             title
             quotes {
               author
+              darkOverlay
               quoteOnTheRight
               quote
               image {
+                altText
+                mediaItemUrl
+              }
+              mobile {
                 altText
                 mediaItemUrl
               }
@@ -316,18 +370,22 @@ const FLEXIBLE_CONTENT_QUERY = `
                 ... on Post {
                   id
                   link
+                  uri
                 }
                 ... on Page {
                   id
                   link
+                  uri
                 }
                 ... on Portfolio {
                   id
                   link
+                  uri
                 }
                 ... on Story {
                   id
                   link
+                  uri
                 }
               }
               title
@@ -360,6 +418,9 @@ const FLEXIBLE_CONTENT_QUERY = `
               answer
               question
             }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_Team {
+            fieldGroupName
           }
         }
       }
