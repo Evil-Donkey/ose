@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from "next/link";
-import { Logo } from "../Icons/Logo";
+import LottieLogo from '../LottieLogo';
 import { IconHamburger, IconClose } from "../Icons/Hamburger";
 import Container from '../Container';
 import { usePathname } from 'next/navigation';
@@ -85,9 +85,9 @@ const Header = ({ portal }) => {
     }, [lastScrollTop, isMobileMenuOpen]);
 
     const toggleMobileMenu = () => {
-        console.log('toggleMobileMenu');
         setIsMobileMenuOpen(!isMobileMenuOpen);
     }
+    
 
     return (
         <header className={`text-white fixed top-0 left-0 right-0 transition-all duration-500 z-10 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'}`}>
@@ -97,7 +97,7 @@ const Header = ({ portal }) => {
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}>
                         <div className="text-xl font-bold">
                             <Link href="/">
-                                <Logo />
+                                <LottieLogo />
                             </Link>
                         </div>
                     </div>

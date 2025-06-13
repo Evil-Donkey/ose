@@ -13,7 +13,7 @@ const nextConfig = {
                 port: "",
             },
         ],
-    }
+    },
 };
 
 export default nextConfig;

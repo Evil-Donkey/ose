@@ -58,7 +58,6 @@ const News = ({ data }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
                     {news.map((news, index) => {
                         const { title, featuredImage, date, uri } = news;
-                        console.log(date);
                         return (
                             <div key={index} ref={el => newsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
                                 <Link href={uri} className="relative aspect-4/5 overflow-hidden rounded-4xl flex text-center items-end justify-center py-10 xl:px-18 group">
@@ -74,7 +73,7 @@ const News = ({ data }) => {
                                             }).toUpperCase()}
                                         </p>
                                     )}
-                                    {title && <h4 className="text-white text-xs md:text-base font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />}
+                                    {title && <h4 className="text-white text-base font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />}
                                 </Link>
                             </div>
                         );
