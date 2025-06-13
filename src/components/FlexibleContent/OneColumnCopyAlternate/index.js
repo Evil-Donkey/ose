@@ -70,8 +70,8 @@ const OneColumnCopyAlternate = ({ data }) => {
         <div className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
             {backgroundMedia && (image || imageMobile) && (
                 <>
-                    {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
-                    {imageMobile && <div ref={el => imageRef.current[index] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${imageMobile.mediaItemUrl})` }} />}
+                    {image && <div ref={el => imageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
+                    {imageMobile && <div ref={el => imageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${imageMobile.mediaItemUrl})` }} />}
                     {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${copyLast ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                 </>
             )}
