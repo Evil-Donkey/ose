@@ -9,7 +9,7 @@ const WhatWeDo = ({ data }) => {
     const { stats, investorsHeading, investorsDesktopImage, investorsMobileImage } = data;
 
     const titleRef = useRef(null);
-    const imageRef = useRef(null);
+    const imageRef = useRef([]);
 
     useEffect(() => {
         gsap.to(titleRef.current, {
@@ -54,10 +54,10 @@ const WhatWeDo = ({ data }) => {
                     </div>
                 )}
                 {investorsDesktopImage && (
-                    <Image ref={imageRef} src={investorsDesktopImage.mediaItemUrl} alt={investorsDesktopImage.altText} width={investorsDesktopImage.mediaDetails.width} height={investorsDesktopImage.mediaDetails.height} className={`w-full h-full opacity-0 translate-y-20 ${investorsMobileImage ? "hidden lg:block" : ""}`} />
+                    <Image ref={el => imageRef.current[0] = el} src={investorsDesktopImage.mediaItemUrl} alt={investorsDesktopImage.altText} width={investorsDesktopImage.mediaDetails.width} height={investorsDesktopImage.mediaDetails.height} className={`w-full h-full opacity-0 translate-y-20 ${investorsMobileImage ? "hidden lg:block" : ""}`} />
                 )}
                 {investorsMobileImage && (
-                    <Image ref={imageRef} src={investorsMobileImage.mediaItemUrl} alt={investorsMobileImage.altText} width={investorsMobileImage.mediaDetails.width} height={investorsMobileImage.mediaDetails.height} className="w-full h-full opacity-0 translate-y-20 lg:hidden" />
+                    <Image ref={el => imageRef.current[1] = el} src={investorsMobileImage.mediaItemUrl} alt={investorsMobileImage.altText} width={investorsMobileImage.mediaDetails.width} height={investorsMobileImage.mediaDetails.height} className="w-full h-full opacity-0 translate-y-20 lg:hidden" />
                 )}
             </Container>
         </div>
