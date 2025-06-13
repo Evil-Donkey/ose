@@ -14,7 +14,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     
     const contentRef = useRef([]);
     const imageRef = useRef([]);
-    const videoRef = useRef(null);
+    const videoRef = useRef([]);
 
     const size = headingSize === "small" ? "text-5xl md:text-[4rem]/20 lg:text-[5rem]/22 2xl:text-[6rem]/25" : "text-6xl md:text-[8rem]/30 lg:text-[10rem]/50";
 
@@ -77,8 +77,8 @@ const OneColumnCopyAlternate = ({ data }) => {
             )}
             {backgroundMedia && (videoMp4 || videoMp4Mobile) && 
                 <>
-                    {videoMp4 && <video ref={videoRef} src={videoMp4.mediaItemUrl} autoPlay muted loop className={`absolute inset-0 h-full w-full object-cover scale-180 origin-top ${videoMp4Mobile ? "hidden lg:block" : ""}`} />}
-                    {videoMp4Mobile && <video ref={videoRef} src={videoMp4Mobile.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover scale-180 origin-top lg:hidden" />}
+                    {videoMp4 && <video ref={el => videoRef.current[0] = el} src={videoMp4.mediaItemUrl} autoPlay muted loop className={`absolute inset-0 h-full w-full object-cover scale-180 origin-top ${videoMp4Mobile ? "hidden lg:block" : ""}`} />}
+                    {videoMp4Mobile && <video ref={el => videoRef.current[1] = el} src={videoMp4Mobile.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover scale-180 origin-top lg:hidden" />}
                     <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
                 </>
             }

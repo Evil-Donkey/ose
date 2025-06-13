@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const HeroVideo = ({ data, onVideoPopupOpen }) => {
     const { fullMovie, introMovie, mobileMovie, headings, desktopImage, mobileImage } = data;
 
-    const videoRef = useRef(null);
+    const videoRef = useRef([]);
     const heroRef = useRef(null);
     const textRef = useRef([]);
     const textWrapperRef = useRef([]);
@@ -73,21 +73,21 @@ const HeroVideo = ({ data, onVideoPopupOpen }) => {
             <Container className="flex-grow-1 h-full">
                 <div className="mx-auto relative h-full">
                     {introMovie && (   
-                        <video ref={videoRef} className={`w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} autoPlay playsInline muted loop>
+                        <video ref={el => videoRef.current[0] = el} className={`w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} autoPlay playsInline muted loop>
                             <source src={introMovie.mediaItemUrl} type="video/mp4" />
                         </video>
                     )}
                     {mobileMovie && (
-                        <video ref={videoRef} className="w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 lg:hidden" autoPlay playsInline muted loop>
+                        <video ref={el => videoRef.current[1] = el} className="w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 lg:hidden" autoPlay playsInline muted loop>
                             <source src={mobileMovie.mediaItemUrl} type="video/mp4" />
                         </video>
                     )}
 
                     {desktopImage && (
-                        <div ref={videoRef} className={`w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />
+                        <div ref={el => videoRef.current[2] = el} className={`w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />
                     )}
                     {mobileImage && (
-                        <div ref={videoRef} className="w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />
+                        <div ref={el => videoRef.current[3] = el} className="w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />
                     )}
 
                     <div className="absolute top-0 left-0 lg:left-auto lg:right-[13%] p-6 flex flex-col justify-center h-full text-white z-50">

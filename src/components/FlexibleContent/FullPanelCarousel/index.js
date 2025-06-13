@@ -20,7 +20,6 @@ const FullPanelCarousel = ({ data }) => {
     const headingRef = useRef(null);
     const titleRef = useRef([]);
     const copyRef = useRef([]);
-    const ctaRef = useRef([]);
     const backgroundImageRef = useRef([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
