@@ -66,6 +66,10 @@ const HeroVideo = ({ data, onVideoPopupOpen }) => {
                 scrub: 1.4,
             },
         });
+
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
     }, []);
 
     return (
