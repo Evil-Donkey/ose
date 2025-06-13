@@ -60,10 +60,6 @@ const OneColumnCopyAlternate = ({ data }) => {
                 },
             });
         });
-
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
     }, []);
 
     return (
@@ -83,8 +79,8 @@ const OneColumnCopyAlternate = ({ data }) => {
                 </>
             }
             
-            <div className="min-h-[100vh] h-full flex flex-col justify-center">
-                <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
+            <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
+                <Container className={`h-full py-15 md:py-25 2xl:py-45 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
                     <div className={`flex flex-col w-full lg:w-1/2 gap-5 lg:py-15`}>
                         {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`}>{heading}</h1>}
                         <div className="w-full lg:w-3/4 flex flex-col gap-5">

@@ -44,10 +44,6 @@ const News = ({ data }) => {
                 scrub: 1.5
             },
         });
-        return () => {
-            // Clean up ScrollTriggers on unmount
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
     }, []);
     return (
         <div className="bg-cover bg-center bg-[url('/gradient.png')]">

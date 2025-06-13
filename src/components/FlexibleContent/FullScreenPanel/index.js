@@ -53,10 +53,6 @@ const FullScreenPanel = ({ data }) => {
                 invalidateOnRefresh: true
             },
         }, "<");
-
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
     }, []);
 
     return (
