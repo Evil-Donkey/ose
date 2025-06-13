@@ -400,6 +400,10 @@ const FLEXIBLE_CONTENT_QUERY = `
                 altText
                 mediaItemUrl
               }
+              backgroundImageMobile {
+                altText
+                mediaItemUrl
+              }
             }
           }
           ... on Page_Flexiblecontent_FlexibleContent_FullScreenList {
@@ -409,6 +413,10 @@ const FLEXIBLE_CONTENT_QUERY = `
             listCopy
             listPosition
             backgroundImage {
+              altText
+              mediaItemUrl
+            }
+            backgroundImageMobile {
               altText
               mediaItemUrl
             }

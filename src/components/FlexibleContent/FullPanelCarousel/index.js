@@ -116,15 +116,18 @@ const FullPanelCarousel = ({ data }) => {
                 onSlideChange={swiper => setActiveIndex(swiper.activeIndex)}
             >
                 {slides.map((slide, index) => {
-                    const { title, copy, ctaLabel, ctaLink, backgroundImage } = slide;
+                    const { title, copy, ctaLabel, ctaLink, backgroundImage, backgroundImageMobile } = slide;
                     return (
                         <SwiperSlide key={index}>
                             <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
                                 <div 
                                     ref={el => backgroundImageRef.current[index] = el}
-                                    className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" 
+                                    className={`background-image absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} 
                                     style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} 
                                 />
+                                {backgroundImageMobile && (
+                                    <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
+                                )}
                                 <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
                                 <div className="min-h-[100vh] h-full flex flex-col justify-end">
                                     <Container className="py-30 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">

@@ -9,10 +9,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FullScreenList = ({ data }) => {
 
-    const { heading, copy, backgroundImage, list, listPosition, listCopy } = data;
+    const { heading, copy, backgroundImage, backgroundImageMobile, list, listPosition, listCopy } = data;
     const titleRef = useRef(null);
     const copyRef = useRef([]);
-    const backgroundImageRef = useRef(null);
+    const backgroundImageRef = useRef([]);
 
     useEffect(() => {
         const titleTl = gsap.timeline();
@@ -62,7 +62,8 @@ const FullScreenList = ({ data }) => {
 
     return (
         <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
-            <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
+            <div ref={el => backgroundImageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
+            {backgroundImageMobile && <div ref={el => backgroundImageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />}
             <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-transparent lg:bg-linear-to-b lg:from-black/60 lg:via-black/0 lg:to-black/0" />
             <Container className="py-30 md:py-25 2xl:py-45 relative z-10 flex flex-col h-full">
                 <div className="flex flex-col items-center">
