@@ -5,7 +5,7 @@ const LottieLogo = () => {
 
   return (
     <div>
-      <Lottie animationData={Logo} loop={false} height={400} width={400} />
+      <Lottie animationData={Logo} loop={true} height={400} width={400} />
     </div>
   );
 };
