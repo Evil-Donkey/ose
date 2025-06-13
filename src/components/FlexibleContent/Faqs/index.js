@@ -47,9 +47,9 @@ const Faqs = ({ data }) => {
             },
         });
 
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
+        // return () => {
+        //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        // };
     }, []);
 
     return (

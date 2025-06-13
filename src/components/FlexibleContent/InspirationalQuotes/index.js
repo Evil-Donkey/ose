@@ -54,9 +54,9 @@ const InspirationalQuotes = ({ data }) => {
             });
         });
 
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
+        // return () => {
+        //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        // };
     }, [quotes]);
 
     return quotes ? (

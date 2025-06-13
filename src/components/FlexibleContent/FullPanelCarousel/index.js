@@ -84,9 +84,9 @@ const FullPanelCarousel = ({ data }) => {
             }, "<");
         });
 
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
+        // return () => {
+        //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        // };
     }, [slides]);
 
     return (

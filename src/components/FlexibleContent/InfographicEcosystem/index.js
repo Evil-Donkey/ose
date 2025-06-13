@@ -102,9 +102,9 @@ const InfographicMap = ({ data, onPopupOpen }) => {
             }
         );
 
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
+        // return () => {
+        //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        // };
     }, []);
 
     const handleCircleClick = () => {

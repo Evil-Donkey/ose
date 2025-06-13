@@ -61,10 +61,9 @@ const Cards = ({ data }) => {
                 scrub: 1.5
             },
         });
-        return () => {
-            // Clean up ScrollTriggers on unmount
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
+        // return () => {
+        //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        // };
     }, []);
     return (
         <div className="bg-linear-to-t from-black/10 to-black/0">
