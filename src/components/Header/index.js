@@ -127,7 +127,7 @@ const Header = ({ portal }) => {
                                 {bottomNavItems.map((item, index) => {
                                     const isActive = pathname === item.href;
                                     return (
-                                        <a
+                                        <Link
                                             href={item.href}
                                             key={index}
                                             className={`text-3xl 2xl:text-4xl transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 py-2 rounded-xl
@@ -135,7 +135,7 @@ const Header = ({ portal }) => {
                                                 ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}`}
                                         >
                                             {item.label}
-                                        </a>
+                                        </Link>
                                     );
                                 })}
                             </nav>
