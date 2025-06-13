@@ -4,6 +4,7 @@ import fetchAPI from '../lib/api'
 import Script from 'next/script'
 import GoogleAnalytics from '../lib/googleAnalytics'
 import "./globals.css";
+import GSAPLayout from '@/components/GSAPLayout';
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -20,7 +21,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${montserrat.variable}`}>
         <AuthProvider>
-          {children}
+          <GSAPLayout>
+            {children}
+          </GSAPLayout>
         </AuthProvider>
         {/* <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} /> */}
       </body>
