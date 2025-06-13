@@ -78,7 +78,7 @@ const Cards = ({ data }) => {
                         <div ref={copyRef} className="w-full md:w-1/3 lg:-mb-10 opacity-0 translate-y-5" dangerouslySetInnerHTML={{ __html: copy }} />
                     </div>
                 }
-                <div className="relative w-full mt-25">
+                <div className="relative w-full md:mt-25">
                     {carousel ? (
                         <Swiper
                             modules={[Navigation, Pagination]}

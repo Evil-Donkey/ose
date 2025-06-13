@@ -80,12 +80,12 @@ const InspirationalQuotes = ({ data }) => {
                                             {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                         </>
                                     )}
-                                    <div className="min-h-[100vh] h-full flex flex-col justify-center">
+                                    <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
                                         <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "justify-end" : "justify-start"}`}>
                                             <div className="flex flex-col w-full lg:w-1/2 gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                                 {quote && 
                                                 <div className="relative">
-                                                    <div className="absolute -top-15 left-0 text-3xl md:text-[120px] font-medium">&quot;</div>
+                                                    <div className="absolute -top-15 left-0 text-[120px]/36 md:text-[120px] font-medium">&quot;</div>
                                                     <div className="pt-5 text-3xl md:text-[2.5rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
                                                 </div>
                                                 }
@@ -138,12 +138,12 @@ const InspirationalQuotes = ({ data }) => {
                                     {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                 </>
                             )}
-                            <div className="min-h-[100vh] h-full flex flex-col justify-center">
-                                <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "justify-end" : "justify-start"}`}>
+                            <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
+                                <Container className={`h-full py-15 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "justify-end" : "justify-start"}`}>
                                     <div className="flex flex-col w-full lg:w-1/2 gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                         {quote && 
                                         <div className="relative">
-                                            <div className="absolute -top-15 left-0 text-3xl md:text-[120px] font-medium">&quot;</div>
+                                            <div className="absolute -top-15 left-0 text-[120px]/36 md:text-[120px] font-medium">&quot;</div>
                                             <div className="pt-5 text-3xl md:text-[2.5rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
                                         </div>
                                         }

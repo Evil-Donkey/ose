@@ -91,7 +91,7 @@ const FullPanelCarousel = ({ data }) => {
 
     return (
         <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
-            {heading && <h2 ref={headingRef} className="text-white uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
+            {heading && <h2 ref={headingRef} className="text-white uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
             <div className="absolute top-45 left-1/2 transform -translate-x-1/2 z-50">
                 <div className="flex space-x-4">
                     {slides.map((slide, index) => (
@@ -130,7 +130,7 @@ const FullPanelCarousel = ({ data }) => {
                                 )}
                                 <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
                                 <div className="min-h-[100vh] h-full flex flex-col justify-end">
-                                    <Container className="py-30 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
+                                    <Container className="py-15 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
                                         <div className="flex flex-col w-full gap-5">
                                             {title && (
                                                 <h3 ref={el => titleRef.current[index] = el} className="slide-title text-5xl md:text-[6rem]/20 lg:text-[8rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-y-full">
