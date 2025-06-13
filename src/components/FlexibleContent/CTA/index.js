@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
 import Container from "../../Container";
-
-gsap.registerPlugin(ScrollTrigger);
+import useScrollTrigger from "@/hooks/useScrollTrigger";
 
 const CTA = ({ data }) => {
     const titleRef = useRef([]);
@@ -17,8 +15,7 @@ const CTA = ({ data }) => {
 
     const { title, copy, cta } = data;
 
-    // GSAP animations
-    useEffect(() => {
+    const animationFunction = () => {
         const tl = gsap.timeline();
         tl.to(titleRef.current, {
             x: 0,
@@ -59,11 +56,9 @@ const CTA = ({ data }) => {
                 invalidateOnRefresh: true
             },
         });
+    };
 
-        return () => {
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
-    }, []);
+    useScrollTrigger(animationFunction);
 
     return (
         <Container className="py-20">

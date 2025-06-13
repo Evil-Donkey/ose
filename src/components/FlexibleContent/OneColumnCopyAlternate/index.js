@@ -10,10 +10,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const OneColumnCopyAlternate = ({ data }) => {
 
-    const { heading, headingSize, subheading, copy, ctaLabel, ctaLink, videoMp4, image, copyLast, backgroundMedia } = data;
+    const { heading, headingSize, subheading, copy, ctaLabel, ctaLink, videoMp4, videoMp4Mobile, image, imageMobile, copyLast, backgroundMedia, darkOverlay } = data;
     
     const contentRef = useRef([]);
-    const imageRef = useRef(null);
+    const imageRef = useRef([]);
     const videoRef = useRef(null);
 
     const size = headingSize === "small" ? "text-5xl md:text-[4rem]/20 lg:text-[5rem]/22 2xl:text-[6rem]/25" : "text-6xl md:text-[8rem]/30 lg:text-[10rem]/50";
@@ -68,15 +68,17 @@ const OneColumnCopyAlternate = ({ data }) => {
 
     return (
         <div className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
-            {backgroundMedia && image && (
+            {backgroundMedia && (image || imageMobile) && (
                 <>
-                    <div ref={imageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />
-                    <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
+                    {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
+                    {imageMobile && <div ref={el => imageRef.current[index] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${imageMobile.mediaItemUrl})` }} />}
+                    {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${copyLast ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                 </>
             )}
-            {backgroundMedia && videoMp4 && 
+            {backgroundMedia && (videoMp4 || videoMp4Mobile) && 
                 <>
-                    <video ref={videoRef} src={videoMp4.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover scale-180 origin-top" />
+                    {videoMp4 && <video ref={videoRef} src={videoMp4.mediaItemUrl} autoPlay muted loop className={`absolute inset-0 h-full w-full object-cover scale-180 origin-top ${videoMp4Mobile ? "hidden lg:block" : ""}`} />}
+                    {videoMp4Mobile && <video ref={videoRef} src={videoMp4Mobile.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover scale-180 origin-top lg:hidden" />}
                     <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
                 </>
             }
