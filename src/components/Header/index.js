@@ -96,9 +96,9 @@ const Header = ({ portal }) => {
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}>
                         <div className="text-xl font-bold">
-                            <Link href="/">
+                            <a href="/">
                                 <LottieLogo />
-                            </Link>
+                            </a>
                         </div>
                     </div>
 

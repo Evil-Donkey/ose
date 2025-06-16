@@ -396,6 +396,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                 }
               }
               title
+              imageOverlay
               backgroundImage {
                 altText
                 mediaItemUrl

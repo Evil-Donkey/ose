@@ -30,7 +30,7 @@ body {
 
 .swiper-button-next,
 .swiper-button-prev {
-  @apply bg-lightblue text-white md:w-11! md:h-11! rounded-full flex items-center justify-center shadow-lg transition-colors after:text-2xl! right-2! md:right-20! md:left-auto!;
+  @apply bg-lightblue text-white md:w-11! md:h-11! rounded-full hidden! md:flex! items-center justify-center shadow-lg transition-colors after:text-2xl! right-2! md:right-20! md:left-auto!;
 }
 .swiper-button-prev {
   @apply md:-mt-7!;

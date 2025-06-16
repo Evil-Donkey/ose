@@ -62,8 +62,7 @@ const Popup = ({ isOpen, onClose, spinoutDesktopImage, spinoutMobileImage }) => 
                     </svg>
                 </button>
                 <div className="h-full w-full flex flex-col items-center justify-center text-white gap-10">
-                    <h2 className="text-4xl">OSE Spinout</h2>
-                    <div className="w-full p-4 lg:w-1/2 max-h-[80vh]">
+                    <div className="w-full p-10 md:p-20 max-h-full">
                         {spinoutDesktopImage && <Image src={spinoutDesktopImage.mediaItemUrl} alt={spinoutDesktopImage.altText} width={spinoutDesktopImage.mediaDetails.width} height={spinoutDesktopImage.mediaDetails.height} className={spinoutMobileImage ? "hidden lg:block" : ""} />}
                         {spinoutMobileImage && <Image src={spinoutMobileImage.mediaItemUrl} alt={spinoutMobileImage.altText} width={spinoutMobileImage.mediaDetails.width} height={spinoutMobileImage.mediaDetails.height} className={spinoutDesktopImage ? "lg:hidden" : ""} />}
                     </div>

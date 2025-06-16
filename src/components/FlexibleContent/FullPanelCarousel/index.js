@@ -91,7 +91,7 @@ const FullPanelCarousel = ({ data }) => {
 
     return (
         <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
-            {heading && <h2 ref={headingRef} className="text-white uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
+            {heading && <h2 ref={headingRef} className="text-white uppercase tracking-widest text:lg md:text-xl px-8 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
             <div className="absolute top-45 left-1/2 transform -translate-x-1/2 z-50">
                 <div className="flex space-x-4">
                     {slides.map((slide, index) => (
@@ -116,7 +116,7 @@ const FullPanelCarousel = ({ data }) => {
                 onSlideChange={swiper => setActiveIndex(swiper.activeIndex)}
             >
                 {slides.map((slide, index) => {
-                    const { title, copy, ctaLabel, ctaLink, backgroundImage, backgroundImageMobile } = slide;
+                    const { title, copy, ctaLabel, ctaLink, backgroundImage, backgroundImageMobile, imageOverlay } = slide;
                     return (
                         <SwiperSlide key={index}>
                             <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
@@ -128,7 +128,7 @@ const FullPanelCarousel = ({ data }) => {
                                 {backgroundImageMobile && (
                                     <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
                                 )}
-                                <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
+                                {imageOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
                                 <div className="min-h-[100vh] h-full flex flex-col justify-end">
                                     <Container className="py-15 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
                                         <div className="flex flex-col w-full gap-5">
