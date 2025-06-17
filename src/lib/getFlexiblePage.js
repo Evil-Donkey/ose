@@ -41,6 +41,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             fieldGroupName
             heading
             copy
+            darkOverlay
             backgroundImage {
               mediaItemUrl
               altText

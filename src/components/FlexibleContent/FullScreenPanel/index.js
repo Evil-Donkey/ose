@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FullScreenPanel = ({ data }) => {
 
-    const { heading, copy, backgroundImage } = data;
+    const { heading, copy, backgroundImage, darkOverlay } = data;
     const titleRef = useRef(null);
     const copyRef = useRef(null);
     const backgroundImageRef = useRef(null);
@@ -58,7 +58,7 @@ const FullScreenPanel = ({ data }) => {
     return (
         <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
             <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
-            <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />
+            {darkOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
             <div className="min-h-[100vh] h-full flex flex-col justify-center">
                 <Container className="py-30 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
                     <div className="flex flex-col items-center text-center w-full gap-5">

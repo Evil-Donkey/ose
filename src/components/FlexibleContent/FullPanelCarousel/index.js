@@ -126,7 +126,7 @@ const FullPanelCarousel = ({ data }) => {
                                     style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} 
                                 />
                                 {backgroundImageMobile && (
-                                    <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
+                                    <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
                                 )}
                                 {imageOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
                                 <div className="min-h-[100vh] h-full flex flex-col justify-end">

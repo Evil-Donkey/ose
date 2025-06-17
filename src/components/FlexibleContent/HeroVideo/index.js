@@ -69,7 +69,7 @@ const HeroVideo = ({ data, onVideoPopupOpen }) => {
     }, []);
 
     return (
-        <div ref={heroRef} className="pt-40 pb-10 2xl:pt-50 bg-cover bg-center bg-[url('/gradient.png')] h-[100vh] flex">
+        <div ref={heroRef} className="pt-40 pb-20 md:pb-10 2xl:pt-50 bg-cover bg-center bg-[url('/gradient.png')] h-[100vh] flex">
             <Container className="flex-grow-1 h-full">
                 <div className="mx-auto relative h-full">
                     {introMovie && (   

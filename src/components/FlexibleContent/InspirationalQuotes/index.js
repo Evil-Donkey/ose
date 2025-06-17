@@ -76,12 +76,12 @@ const InspirationalQuotes = ({ data }) => {
                                     {(image || mobile) && (
                                         <>
                                             {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
-                                            {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
+                                            {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
                                             {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                         </>
                                     )}
                                     <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
-                                        <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "justify-end" : "items-end md:items-start justify-start"}`}>
+                                        <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-start justify-end" : "items-end md:items-start justify-start"}`}>
                                             <div className="flex flex-col w-full lg:w-1/2 gap-3 md:gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                                 {quote && 
                                                 <div className="relative">
@@ -134,12 +134,12 @@ const InspirationalQuotes = ({ data }) => {
                             {(image || mobile) && (
                                 <>
                                     {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
-                                    {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
+                                    {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
                                     {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                 </>
                             )}
                             <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
-                                <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "justify-end" : "items-end md:items-start justify-start"}`}>
+                                <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-start justify-end" : "items-end md:items-start justify-start"}`}>
                                     <div className="flex flex-col w-full lg:w-1/2 gap-3 md:gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                         {quote && 
                                         <div className="relative">

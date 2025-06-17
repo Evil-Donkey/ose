@@ -72,7 +72,7 @@ const Story = ({ data }) => {
                 {backgroundImage && 
                     <>
                         <div ref={imageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage})` }} />
-                        <div className="absolute top-0 left-0 w-full h-full bg-black/40" />
+                        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/40 to-black/0" />
                     </>
                 }
                 {title &&
