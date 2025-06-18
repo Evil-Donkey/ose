@@ -84,7 +84,7 @@ const CTA = ({ data }) => {
                                 {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className={`absolute inset-0 object-cover ${ctaLabel ? 'group-hover:scale-110' : ''} transition-all duration-300`} />}
                                 {!ctaLabel && <div className="absolute inset-0 bg-black/50" />}
                                 <div className="relative z-10 flex flex-col justify-between h-full">
-                                    <div className={`flex flex-col ${!ctaLabel ? 'aspect-7/6 justify-between' : ''}`}>
+                                    <div className={`flex flex-col ${!ctaLabel ? 'md:aspect-7/6 justify-between' : ''}`}>
                                         <div>
                                             {smallTitle && <p className="text-xs md:text-sm text-white mb-4">{smallTitle}</p>}
                                             {largeTitle && <h3 className="text-3xl md:text-5xl/13 2xl:text-6xl text-white mb-6">{largeTitle}</h3>}
