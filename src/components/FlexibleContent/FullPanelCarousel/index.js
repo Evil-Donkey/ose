@@ -16,6 +16,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FullPanelCarousel = ({ data }) => {
     const { heading, slides } = data;
+    const componentRef = useRef(null);
     const swiperRef = useRef(null);
     const headingRef = useRef([]);
     const titleRef = useRef([]);
@@ -23,6 +24,61 @@ const FullPanelCarousel = ({ data }) => {
     const paginationRef = useRef([]);
     const backgroundImageRef = useRef([]);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [expandedSlides, setExpandedSlides] = useState({});
+    const [parsedContent, setParsedContent] = useState({});
+    const [isClient, setIsClient] = useState(false);
+
+    // Function to scroll to top of component
+    const scrollToTop = () => {
+        componentRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    };
+
+    // Function to parse HTML and extract first paragraph
+    const parseCopyContent = (copy) => {
+        if (!copy) return { firstParagraph: '', remainingContent: '' };
+        
+        // Create a temporary div to parse HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = copy;
+        
+        const paragraphs = tempDiv.querySelectorAll('p');
+        
+        if (paragraphs.length === 0) {
+            return { firstParagraph: copy, remainingContent: '' };
+        }
+        
+        const firstParagraph = paragraphs[0].outerHTML;
+        const remainingParagraphs = Array.from(paragraphs).slice(1);
+        const remainingContent = remainingParagraphs.map(p => p.outerHTML).join('');
+        
+        return { firstParagraph, remainingContent };
+    };
+
+    // Function to toggle accordion
+    const toggleAccordion = (slideIndex) => {
+        setExpandedSlides(prev => ({
+            ...prev,
+            [slideIndex]: !prev[slideIndex]
+        }));
+        // setTimeout(() => {
+        //     scrollToTop();
+        // }, 600);
+    };
+
+    // Parse content on client side only
+    useEffect(() => {
+        setIsClient(true);
+        const content = {};
+        slides.forEach((slide, index) => {
+            if (slide.copy) {
+                content[index] = parseCopyContent(slide.copy);
+            }
+        });
+        setParsedContent(content);
+    }, [slides]);
 
     useEffect(() => {
         const titleTl = gsap.timeline();
@@ -104,9 +160,9 @@ const FullPanelCarousel = ({ data }) => {
     }, [slides]);
 
     return (
-        <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
+        <div ref={componentRef} className="relative min-h-[100vh] h-full w-full overflow-hidden">
             {heading && <h2 ref={el => headingRef.current[0] = el} className="text-white uppercase tracking-widest text-lg md:text-xl px-15 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
-            <div className="absolute top-50 md:top-45 left-1/2 transform -translate-x-1/2 z-50">
+            <div className="absolute top-25 md:top-25 left-1/2 transform -translate-x-1/2 z-50">
                 <div className="flex space-x-2 md:space-x-4">
                     {slides.map((slide, index) => (
                         <button
@@ -115,6 +171,7 @@ const FullPanelCarousel = ({ data }) => {
                             onClick={() => {
                                 swiperRef.current?.swiper?.slideTo(index);
                                 setActiveIndex(index);
+                                setExpandedSlides({});
                             }}
                             className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full ${activeIndex === index ? 'text-lightblue' : 'text-white'}`}
                         >
@@ -128,25 +185,31 @@ const FullPanelCarousel = ({ data }) => {
                 modules={[Pagination]}
                 pagination={{ clickable: true }}
                 className="h-full full-panel-carousel-swiper"
-                onSlideChange={swiper => setActiveIndex(swiper.activeIndex)}
+                onSlideChange={swiper => {
+                    setActiveIndex(swiper.activeIndex);
+                    setExpandedSlides({});
+                }}
             >
                 {slides.map((slide, index) => {
-                    const { title, copy, ctaLabel, ctaLink, backgroundImage, backgroundImageMobile, imageOverlay } = slide;
+                    const { title, copy, backgroundImage, backgroundImageMobile, imageOverlay, accordionCopy, accordionList } = slide;
+                    const slideContent = parsedContent[index] || { firstParagraph: copy, remainingContent: '' };
+                    const isExpanded = expandedSlides[index];
+                    
                     return (
                         <SwiperSlide key={index}>
                             <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
                                 <div 
                                     ref={el => backgroundImageRef.current[index] = el}
-                                    className={`background-image absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} 
+                                    className={`background-image absolute top-0 left-0 w-full h-full bg-cover bg-top-right scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} 
                                     style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} 
                                 />
                                 {backgroundImageMobile && (
                                     <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
                                 )}
                                 {imageOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
-                                <div className="min-h-[100vh] h-full flex flex-col justify-end">
+                                <div className="min-h-[100vh] h-full flex flex-col justify-center">
                                     <Container className="py-15 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
-                                        <div className="flex flex-col w-full gap-5">
+                                        <div className={`flex flex-col w-full gap-5 ${isExpanded ? 'pt-30' : ''}`}>
                                             {title && (
                                                 <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[8rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-y-full">
                                                     {title}
@@ -154,18 +217,46 @@ const FullPanelCarousel = ({ data }) => {
                                             )}
                                             {copy && (
                                                 <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-2/5 text-2xl md:text-3xl 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
-                                                    <div 
-                                                        className="flex flex-col gap-8" 
-                                                        dangerouslySetInnerHTML={{ __html: copy }} 
-                                                    />
+                                                    <div className="flex flex-col gap-8">
+                                                        {/* First paragraph always visible */}
+                                                        <div dangerouslySetInnerHTML={{ __html: slideContent.firstParagraph }} />
+                                                        
+                                                        {/* Remaining content with smooth transition - only show on client */}
+                                                        {isClient && slideContent.remainingContent && (
+                                                            <div 
+                                                                className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                                                                    isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                                                                }`}
+                                                            >
+                                                                <div dangerouslySetInnerHTML={{ __html: slideContent.remainingContent }} />
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             )}
-                                            {ctaLabel && 
-                                            <div className="flex flex-col gap-5 mt-4">
-                                                <Button href={ctaLink ? ctaLink.uri : "#"} className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase">
-                                                    {ctaLabel}
-                                                </Button>
-                                            </div>
+                                            {(accordionCopy || accordionList) && (
+                                                <div 
+                                                    className={`transition-all duration-500 ease-in-out flex flex-col gap-5 text-lg md:text-xl ${
+                                                        isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                                                    }`}
+                                                >
+                                                    {accordionCopy && <div className="mt-15" dangerouslySetInnerHTML={{ __html: accordionCopy }} />}
+                                                    {accordionList && <ul className="list-disc columns-1 lg:columns-2 lg:gap-20">
+                                                        {accordionList.map((item, index) => (
+                                                            <li className="mb-5" key={index}>{item.listItem}</li>
+                                                        ))}
+                                                    </ul>}
+                                                </div>
+                                            )}
+                                            {(accordionList || (isClient && slideContent.remainingContent)) && 
+                                                <div className="flex flex-col gap-5 z-50">
+                                                    <Button 
+                                                        onClick={() => toggleAccordion(index)}
+                                                        className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase"
+                                                    >
+                                                        {isExpanded ? 'Read less' : 'Read more'}
+                                                    </Button>
+                                                </div>
                                             }
                                         </div>
                                     </Container>

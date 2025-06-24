@@ -373,28 +373,9 @@ const FLEXIBLE_CONTENT_QUERY = `
             heading
             slides {
               copy
-              ctaLabel
-              ctaLink {
-                ... on Post {
-                  id
-                  link
-                  uri
-                }
-                ... on Page {
-                  id
-                  link
-                  uri
-                }
-                ... on Portfolio {
-                  id
-                  link
-                  uri
-                }
-                ... on Story {
-                  id
-                  link
-                  uri
-                }
+              accordionCopy
+              accordionList {
+                listItem
               }
               title
               imageOverlay
