@@ -102,7 +102,7 @@ const Story = ({ data }) => {
                             <div ref={el => copyRef.current[2] = el} className="w-[115%] lg:w-1/2 lg:-mt-70 z-10 relative opacity-0 translate-y-full">
                                 <div className="flex flex-col rounded-4xl bg-darkblue/98 pb-10 lg:pb-20">
                                     <div className="flex flex-col text-white p-5 pe-16 lg:p-10 font-medium">
-                                        <div className="text-9xl/1 mt-12 lg:mt-14">&quot;</div>
+                                        {quote && <div className="bg-[url('/quote.svg')] bg-contain bg-center bg-no-repeat w-10 h-10 md:w-15 md:h-15 mb-3" />}
                                         {quote && <div className="text-2xl md:text-[2rem]/10" dangerouslySetInnerHTML={{ __html: quote }} />}
                                         {author && <div className="text-xs md:text-sm font-medium drop-shadow-lg mt-3" dangerouslySetInnerHTML={{ __html: author }} />}
                                     </div>

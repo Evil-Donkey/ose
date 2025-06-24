@@ -46,3 +46,7 @@ body {
 .swiper-button-prev::after {
   @apply text-5xl font-bold text-white;
 }
+
+.faqs-section ul {
+  @apply list-disc list-inside;
+}

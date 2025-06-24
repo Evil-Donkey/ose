@@ -26,7 +26,7 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-row flex-wrap font-medium">
-                    <div className="w-1/2 flex flex-col lg:flex-row lg:gap-5 lg:mb-10 lg:mb-0 pe-4 lg:pe-0">
+                    <div className="w-1/2 flex flex-col lg:flex-row lg:gap-5 lg:mb-0 pe-4 lg:pe-0">
                         {/* Submit an idea */}
                         <div className="w-full lg:w-1/2 lg:mb-0">
                             <h2 className="text-3xl mb-4">Get in touch</h2>

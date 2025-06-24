@@ -61,7 +61,7 @@ const FullScreenList = ({ data }) => {
     }, []);
 
     return (
-        <div className="relative min-h-[100vh] h-full w-full overflow-hidden flex flex-col justify-end md:justify-start">
+        <div className={`relative min-h-[100vh] h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-start' : 'justify-start'}`}>
             <div ref={el => backgroundImageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
             {backgroundImageMobile && <div ref={el => backgroundImageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />}
             <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-transparent lg:bg-linear-to-b lg:from-black/60 lg:via-black/0 lg:to-black/0" />

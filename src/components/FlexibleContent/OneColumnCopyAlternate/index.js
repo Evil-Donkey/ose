@@ -16,7 +16,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     const imageRef = useRef([]);
     const videoRef = useRef([]);
 
-    const size = headingSize === "small" ? "text-5xl md:text-[4rem]/20 lg:text-[5rem]/22 2xl:text-[6rem]/25" : "text-6xl md:text-[8rem]/30 lg:text-[10rem]/50";
+    const size = headingSize === "small" ? "text-5xl md:text-[4rem]/20 lg:text-[5rem]/22 2xl:text-[6rem]/25" : "text-8xl md:text-[8rem]/30 lg:text-[10rem]/50";
 
     useEffect(() => {
         const titleTl = gsap.timeline();

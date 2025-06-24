@@ -152,7 +152,10 @@ const InfographicMap = ({ data, onPopupOpen }) => {
                         <div className="flex flex-row justify-start items-center -space-x-2 relative">
                             <div className="relative" ref={el => circlesRef.current[2] = el}>
                                 <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2015-2019</div>
-                                <div className="relative flex flex-col items-center justify-center size-27 lg:size-60 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue">
+                                <div 
+                                    onClick={handleCircleClick}
+                                    className="relative flex flex-col items-center justify-center size-27 lg:size-60 transition-all duration-300 hover:scale-105 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue cursor-pointer"
+                                >
                                     <div className="text-4xl lg:text-7xl">82</div>
                                 </div>
                             </div>

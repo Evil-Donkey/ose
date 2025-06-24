@@ -4,22 +4,23 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import Container from "../../Container";
 import Button from "@/components/Button";
 
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FullPanelCarousel = ({ data }) => {
     const { heading, slides } = data;
     const swiperRef = useRef(null);
-    const headingRef = useRef(null);
+    const headingRef = useRef([]);
     const titleRef = useRef([]);
     const copyRef = useRef([]);
+    const paginationRef = useRef([]);
     const backgroundImageRef = useRef([]);
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -39,6 +40,19 @@ const FullPanelCarousel = ({ data }) => {
                 invalidateOnRefresh: true
             },
         })
+        .to(paginationRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 2,
+            ease: 'power4.out',
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: paginationRef.current,
+                start: 'top 90%',
+                scrub: 1.5,
+                invalidateOnRefresh: true
+            },
+        }, "<");
         
         // Create animations for each slide
         slides.forEach((_, index) => {
@@ -91,17 +105,18 @@ const FullPanelCarousel = ({ data }) => {
 
     return (
         <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
-            {heading && <h2 ref={headingRef} className="text-white uppercase tracking-widest text:lg md:text-xl px-8 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
-            <div className="absolute top-45 left-1/2 transform -translate-x-1/2 z-50">
-                <div className="flex space-x-4">
+            {heading && <h2 ref={el => headingRef.current[0] = el} className="text-white uppercase tracking-widest text-lg md:text-xl px-15 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
+            <div className="absolute top-50 md:top-45 left-1/2 transform -translate-x-1/2 z-50">
+                <div className="flex space-x-2 md:space-x-4">
                     {slides.map((slide, index) => (
                         <button
                             key={index}
+                            ref={el => paginationRef.current[index] = el}
                             onClick={() => {
                                 swiperRef.current?.swiper?.slideTo(index);
                                 setActiveIndex(index);
                             }}
-                            className={`text-2xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors ${activeIndex === index ? 'text-lightblue' : 'text-white'}`}
+                            className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full ${activeIndex === index ? 'text-lightblue' : 'text-white'}`}
                         >
                             {slide.title}
                         </button>
@@ -110,9 +125,9 @@ const FullPanelCarousel = ({ data }) => {
             </div>
             <Swiper
                 ref={swiperRef}
-                modules={[Navigation]}
-                navigation
-                className="h-full"
+                modules={[Pagination]}
+                pagination={{ clickable: true }}
+                className="h-full full-panel-carousel-swiper"
                 onSlideChange={swiper => setActiveIndex(swiper.activeIndex)}
             >
                 {slides.map((slide, index) => {
@@ -133,12 +148,12 @@ const FullPanelCarousel = ({ data }) => {
                                     <Container className="py-15 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
                                         <div className="flex flex-col w-full gap-5">
                                             {title && (
-                                                <h3 ref={el => titleRef.current[index] = el} className="slide-title text-5xl md:text-[6rem]/20 lg:text-[8rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-y-full">
+                                                <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[8rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-y-full">
                                                     {title}
                                                 </h3>
                                             )}
                                             {copy && (
-                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-2/5 text-xl md:text-3xl 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
+                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-2/5 text-2xl md:text-3xl 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                                     <div 
                                                         className="flex flex-col gap-8" 
                                                         dangerouslySetInnerHTML={{ __html: copy }} 
@@ -160,6 +175,30 @@ const FullPanelCarousel = ({ data }) => {
                     )
                 })}
             </Swiper>
+            {/* Custom Swiper pagination styles */}
+            <style jsx global>{`
+                .full-panel-carousel-swiper .swiper-pagination {
+                position: absolute;
+                bottom: 40px;
+                left: 0;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                z-index: 50;
+                }
+                .full-panel-carousel-swiper .swiper-pagination-bullet {
+                background: #fff;
+                opacity: 1;
+                width: 16px;
+                height: 16px;
+                margin: 0 5px !important;
+                border-radius: 50%;
+                transition: background 0.2s;
+                }
+                .full-panel-carousel-swiper .swiper-pagination-bullet-active {
+                background: #06acd4;
+                }
+            `}</style>
         </div>
     );
 };
