@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import Button from '../Button';
 
-const PopOut = () => {
+const PopOut = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  console.log(data);
+
+  // Use WordPress data if available, otherwise fall back to default content
+  const popoutLabel = data?.popoutLabel || 'WORK WITH US';
+  const popoutContent = data?.popoutContent || [];
 
   return (
     <div className={`flex flex-col md:flex-row fixed bottom-0 md:bottom-auto right-1/2 translate-x-1/2 md:right-0 md:top-1/2 md:-translate-y-1/2 z-50 transition-transform duration-300 ${isOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-82 md:translate-x-92.5'}`}>
@@ -21,7 +27,7 @@ const PopOut = () => {
             <path d="M9 5l7 7-7 7" />
           </svg>
         </span>
-        <span className="tracking-widest font-medium mb-2">WORK WITH US</span>
+        <span className="tracking-widest font-medium mb-2 uppercase">{popoutLabel}</span>
       </button>
 
       <button
@@ -37,21 +43,18 @@ const PopOut = () => {
             <path d="M9 5l7 7-7 7" />
           </svg>
         </span>
-        <span className="tracking-widest font-medium">WORK WITH US</span>
+        <span className="tracking-widest font-medium uppercase">{popoutLabel}</span>
       </button>
       {/* Sliding Panel */}
       <div className="bg-darkblue text-white shadow-lg w-[370px] max-w-full p-8 flex flex-col justify-center">
         <div className="space-y-8">
-          <div>
-            <div className="font-medium text-lg">Oxford Researchers</div>
-            <div className="mb-4">Got breakthrough science?<br />Let&apos;s build your spinout.</div>
-            <Button href="/contact">START THE CONVERSATION</Button>
-          </div>
-          <div>
-            <div className="font-medium text-lg">Investors</div>
-            <div className="mb-4">Ready to back Oxford&apos;s<br />most exciting spinouts?</div>
-            <Button href="/contact">EMAIL US TODAY</Button>
-          </div>
+          {popoutContent.map((content, index) => (
+            <div key={index}>
+              <div className="font-medium text-lg">{content.heading}</div>
+              <div className="mb-4" dangerouslySetInnerHTML={{ __html: content.copy }} />
+              <Button href={content.ctaUrl}>{content.ctaLabel}</Button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

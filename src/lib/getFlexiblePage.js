@@ -61,6 +61,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             stats {
               title
               copy
+              credits
               stats {
                 description
                 postStat
@@ -205,7 +206,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                 }
                 portfolioFields {
                   authorName
-                  roleOrCompany
+                  portfolioTitle
                 }
               }
             }
@@ -245,6 +246,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                   }
                 }
                 story {
+                  secondCopyBlock
                   author
                   quote
                   quoteImage {
@@ -286,6 +288,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             copyLast
             subheading
             darkOverlay
+            credits
             image {
               mediaItemUrl
             }

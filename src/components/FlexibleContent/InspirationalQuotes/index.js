@@ -75,7 +75,7 @@ const InspirationalQuotes = ({ data }) => {
                                         <>
                                             {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
                                             {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
-                                            {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
+                                            {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${quoteOnTheRight ? "lg:left-auto lg:right-0" : ""} w-full lg:w-3/5 h-3/5 lg:h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                         </>
                                     )}
                                     <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
@@ -133,7 +133,7 @@ const InspirationalQuotes = ({ data }) => {
                                 <>
                                     {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
                                     {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
-                                    {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
+                                    {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${quoteOnTheRight ? "lg:left-auto lg:right-0" : ""} w-full lg:w-3/5 h-3/5 lg:h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                 </>
                             )}
                             <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">

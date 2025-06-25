@@ -169,15 +169,15 @@ const Portfolio = ({ data }) => {
                                                 </div>
                                             )}
                                             <div>
-                                                <h3 className={`text-3xl md:text-4xl 2xl:text-5xl ${isWide ? 'lg:max-w-[50%]' : ''}`}
-                                                    dangerouslySetInnerHTML={{ __html: title }} 
-                                                />
-                                                {portfolioFields &&
-                                                    <div className="text-xs md:text-sm font-medium drop-shadow-lg mt-3">
-                                                        {portfolioFields.authorName}<br/>
-                                                        {portfolioFields.roleOrCompany}
+                                                {(title || portfolioFields) &&
+                                                    <div className="text-xs md:text-base font-medium drop-shadow-lg mb-2">
+                                                        {portfolioFields.authorName}
+                                                        {title}
                                                     </div>
                                                 }
+                                                <h3 className={`text-3xl md:text-4xl 2xl:text-5xl ${isWide ? 'lg:max-w-[50%]' : ''}`}
+                                                    dangerouslySetInnerHTML={{ __html: portfolioFields.portfolioTitle }} 
+                                                />
                                             </div>
                                         </div>
                                     </div>

@@ -13,7 +13,7 @@ import VideoPopup from "@/components/FlexibleContent/HeroVideo/VideoPopup";
 
 gsap.registerPlugin(ScrollSmoother);
 
-export default function FlexiblePage({ flexibleContent, className, hideNavigation }) {
+export default function FlexiblePage({ flexibleContent, className, hideNavigation, popOutData, footerData }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState(null);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
@@ -58,10 +58,10 @@ export default function FlexiblePage({ flexibleContent, className, hideNavigatio
             onPopupOpen={handlePopupOpen}
             onVideoPopupOpen={handleVideoPopupOpen}
           />
-          <Footer />
+          <Footer data={footerData} />
         </div>
       </div>
-      <PopOut />
+      <PopOut data={popOutData} />
       <Popup 
         isOpen={isPopupOpen}
         onClose={handlePopupClose}

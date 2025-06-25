@@ -4,7 +4,9 @@ import { LinkedIn, X, YouTube } from "../Icons/Social";
 // import GoogleMap from "../GoogleMap";
 import Container from "../Container";
 
-const Footer = () => {
+const Footer = ({ data }) => {
+    const { copyright, address, deepTechEmail, healthTechEmail, investorsEmail, lifeSciencesEmail, mediaEmail, telephone } = data;
+
     return (
         <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16">
             <Container className="mb-10 lg:mb-20">
@@ -33,28 +35,28 @@ const Footer = () => {
                             <div className="lg:space-y-4">
                                 <div>
                                     <h3 className="text-lightblue hidden lg:block">Life Sciences</h3>
-                                    <a href="mailto:lifesciences@oxfordsciences.com" className="text-sm hover:text-lightblue hidden lg:block">
-                                        lifesciences@oxfordsciences.com
+                                    <a href={`mailto:${lifeSciencesEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
+                                        {lifeSciencesEmail}
                                     </a>
-                                    <a href="mailto:lifesciences@oxfordsciences.com" className="text-sm hover:text-lightblue lg:hidden">
+                                    <a href={`mailto:${lifeSciencesEmail}`} className="text-sm hover:text-lightblue lg:hidden">
                                         Life Sciences
                                     </a>
                                 </div>
                                 <div>
                                     <h3 className="text-lightblue hidden lg:block">Health Tech</h3>
-                                    <a href="mailto:healthtech@oxfordsciences.com" className="text-sm hover:text-lightblue hidden lg:block">
-                                        healthtech@oxfordsciences.com
+                                    <a href={`mailto:${healthTechEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
+                                        {healthTechEmail}
                                     </a>
-                                    <a href="mailto:healthtech@oxfordsciences.com" className="text-sm hover:text-lightblue lg:hidden">
+                                    <a href={`mailto:${healthTechEmail}`} className="text-sm hover:text-lightblue lg:hidden">
                                         Health Tech
                                     </a>
                                 </div>
                                 <div>
                                     <h3 className="text-lightblue hidden lg:block">Deep Tech</h3>
-                                    <a href="mailto:deeptech@oxfordsciences.com" className="text-sm hover:text-lightblue hidden lg:block">
-                                        deeptech@oxfordsciences.com
+                                    <a href={`mailto:${deepTechEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
+                                        {deepTechEmail}
                                     </a>
-                                    <a href="mailto:deeptech@oxfordsciences.com" className="text-sm hover:text-lightblue lg:hidden">
+                                    <a href={`mailto:${deepTechEmail}`} className="text-sm hover:text-lightblue lg:hidden">
                                         Deep Tech
                                     </a>
                                 </div>
@@ -67,31 +69,31 @@ const Footer = () => {
                             <div className="lg:space-y-4">
                                 <div>
                                     <h3 className="text-lightblue hidden lg:block">Investors &amp; Co-Investors</h3>
-                                    <a href="mailto:investors@oxfordsciences.com" className="text-sm hover:text-lightblue hidden lg:block">
-                                        investors@oxfordsciences.com
+                                    <a href={`mailto:${investorsEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
+                                        {investorsEmail}
                                     </a>
-                                    <a href="mailto:investors@oxfordsciences.com" className="text-sm hover:text-lightblue lg:hidden">
+                                    <a href={`mailto:${investorsEmail}`} className="text-sm hover:text-lightblue lg:hidden">
                                         Investors &amp; Co-Investors
                                     </a>
                                 </div>
                                 <div className="mb-5">
                                     <h3 className="text-lightblue hidden lg:block">Media</h3>
-                                    <a href="mailto:ose@weareevenhills.com" className="text-sm hover:text-lightblue hidden lg:block">
-                                        ose@weareevenhills.com
+                                    <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
+                                        {mediaEmail}
                                     </a>
-                                    <a href="mailto:ose@weareevenhills.com" className="text-sm hover:text-lightblue lg:hidden">
+                                    <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue lg:hidden">
                                         Media
                                     </a>
                                 </div>
                                 <div className="mb-5">
                                     <h3 className="text-lightblue">Call</h3>
-                                    <a href="tel:01865950000" className="text-sm hover:text-lightblue">
-                                        01865 950 000
+                                    <a href={`tel:${telephone}`} className="text-sm hover:text-lightblue">
+                                        {telephone}
                                     </a>
                                 </div>
                                 <div className="mb-8 lg:mb-0">
                                     <h3 className="text-lightblue">Address</h3>
-                                    <p className="text-sm">46 Woodstock Road, Oxford, OX2 6HT</p>
+                                    <p className="text-sm">{address}</p>
                                 </div>
                                 <div>
                                     <div className="flex flex-row gap-x-2 items-center mb-5 lg:mb-0 lg:hidden">
@@ -162,9 +164,11 @@ const Footer = () => {
                 </Container>
             </div>
 
-            <div className="py-4 px-4 lg:px-10 text-xs text-center bg-blue-02">
-                OSE Manager Limited, a wholly owned subsidiary of Oxford Science Enterprises plc, is authorised and regulated by the Financial Conduct Authority.
-            </div>
+            {copyright && (
+                <div className="py-4 px-4 lg:px-10 text-xs text-center bg-blue-02">
+                    OSE Manager Limited, a wholly owned subsidiary of Oxford Science Enterprises plc, is authorised and regulated by the Financial Conduct Authority.
+                </div>
+            )}
         </div>
     );
 };

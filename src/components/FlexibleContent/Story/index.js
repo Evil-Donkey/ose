@@ -14,7 +14,7 @@ const Story = ({ data }) => {
 
     const { content, title, story, featuredImage, uri } = data.story;
     const backgroundImage = featuredImage.node.mediaItemUrl || null;
-    const { author, quote, quoteImage } = story;
+    const { author, quote, quoteImage, secondCopyBlock } = story;
 
     const titleRef = useRef(null);
     const copyRef = useRef([]);
@@ -95,7 +95,10 @@ const Story = ({ data }) => {
                         {content &&
                             <div ref={el => copyRef.current[1] = el} className="w-full lg:w-1/2 xl:pe-20 flex flex-col gap-10 opacity-0 translate-y-full">
                                 <div className="text-base md:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: content }} />
-                                <Link href={uri} className="font-medium text-lightblue uppercase hover:underline">Read More.</Link>
+                                {secondCopyBlock &&
+                                    <div className="text-base md:text-lg hidden lg:flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock }} />
+                                }
+                                <Link href={uri} className="hidden lg:flex font-medium text-lightblue uppercase hover:underline">Read More.</Link>
                             </div>
                         }
                         {quote &&
@@ -112,6 +115,12 @@ const Story = ({ data }) => {
                                 </div>
                             </div>
                         }
+                        {secondCopyBlock && (
+                            <>
+                                <div className="text-base md:text-lg lg:hidden flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock }} />
+                                <Link href={uri} className="lg:hidden font-medium text-lightblue uppercase hover:underline">Read More.</Link>
+                            </>
+                        )}
                     </div>
 
                     <div ref={el => copyRef.current[3] = el} className="flex justify-center mt-16 opacity-0 translate-y-full">

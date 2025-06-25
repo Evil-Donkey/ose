@@ -21,6 +21,7 @@ const FullPanelCarousel = ({ data }) => {
     const headingRef = useRef([]);
     const titleRef = useRef([]);
     const copyRef = useRef([]);
+    const paginationWrapperRef = useRef(null);
     const paginationRef = useRef([]);
     const backgroundImageRef = useRef([]);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -160,10 +161,10 @@ const FullPanelCarousel = ({ data }) => {
     }, [slides]);
 
     return (
-        <div ref={componentRef} className="relative min-h-[100vh] h-full w-full overflow-hidden">
+        <div ref={componentRef} className="relative min-h-[100vh] h-full w-full">
             {heading && <h2 ref={el => headingRef.current[0] = el} className="text-white uppercase tracking-widest text-lg md:text-xl px-15 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
-            <div className="absolute top-25 md:top-25 left-1/2 transform -translate-x-1/2 z-50">
-                <div className="flex space-x-2 md:space-x-4">
+            <div className={`absolute top-25 md:top-25 left-1/2 w-full transform -translate-x-1/2 z-50`}>
+                <div className="flex justify-center space-x-2 md:space-x-4">
                     {slides.map((slide, index) => (
                         <button
                             key={index}
@@ -200,16 +201,16 @@ const FullPanelCarousel = ({ data }) => {
                             <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
                                 <div 
                                     ref={el => backgroundImageRef.current[index] = el}
-                                    className={`background-image absolute top-0 left-0 w-full h-full bg-cover bg-top-right scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} 
+                                    className={`background-image absolute top-0 left-0 w-full h-full bg-[100%_auto] bg-fixed bg-top-right scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} 
                                     style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} 
                                 />
                                 {backgroundImageMobile && (
-                                    <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
+                                    <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-top-right lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
                                 )}
                                 {imageOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
-                                <div className="min-h-[100vh] h-full flex flex-col justify-center">
+                                <div className="min-h-[100vh] h-full flex flex-col justify-start pt-40">
                                     <Container className="py-15 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
-                                        <div className={`flex flex-col w-full gap-5 ${isExpanded ? 'pt-30' : ''}`}>
+                                        <div className="flex flex-col w-full gap-5">
                                             {title && (
                                                 <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[8rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-y-full">
                                                     {title}

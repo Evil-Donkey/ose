@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const OneColumnCopyAlternate = ({ data }) => {
 
-    const { heading, headingSize, subheading, copy, ctaLabel, ctaLink, videoMp4, videoMp4Mobile, image, imageMobile, copyLast, backgroundMedia, darkOverlay } = data;
+    const { heading, headingSize, subheading, copy, ctaLabel, ctaLink, videoMp4, videoMp4Mobile, image, imageMobile, copyLast, backgroundMedia, darkOverlay, credits } = data;
     
     const contentRef = useRef([]);
     const imageRef = useRef([]);
@@ -68,7 +68,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                 <>
                     {image && <div ref={el => imageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
                     {imageMobile && <div ref={el => imageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${imageMobile.mediaItemUrl})` }} />}
-                    {darkOverlay && <div className={`absolute top-0 left-0 w-full h-full bg-gradient-to-t ${copyLast ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
+                    {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${copyLast ? "lg:left-auto lg:right-0" : ""} w-full h-3/5 lg:h-full bg-gradient-to-t ${copyLast ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                 </>
             )}
             {backgroundMedia && (videoMp4 || videoMp4Mobile) && 
@@ -84,7 +84,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                     <div className={`flex flex-col w-full lg:w-1/2 gap-5 lg:py-15`}>
                         {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`}>{heading}</h1>}
                         <div className="w-full lg:w-3/4 flex flex-col gap-5">
-                            {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
+                            {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl lg:text-[1.8rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                 <div dangerouslySetInnerHTML={{ __html: subheading }} />
                             </div>}
                             {copy && <div ref={el => contentRef.current[2] = el} className="text-base md:text-xl flex flex-col gap-4 opacity-0 translate-y-5">
@@ -101,6 +101,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                                 </div>
                             }
                         </div>
+                        {credits && <div className={`lg:hidden text-xs 2xl:text-sm lg:text-end mt-10 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
                     </div>
                     {!backgroundMedia && image && (
                         <div className="w-full lg:w-1/2 h-60 lg:h-auto overflow-hidden rounded-2xl">
@@ -113,6 +114,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                         </div>
                     }
                 </Container>
+                {credits && <div className={`hidden lg:block absolute bottom-15 right-15 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
             </div>
         </div>
     )

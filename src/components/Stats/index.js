@@ -8,7 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const Stats = ({ data, theme }) => {
-    const { title, stats, copy } = data;
+    const { title, stats, copy, credits } = data;
     const statRef = useRef([]);
     const titleRef = useRef(null);
     const copyRef = useRef(null);
@@ -88,6 +88,7 @@ const Stats = ({ data, theme }) => {
                     })}
                 </div>
             }
+            {credits && <div className={`text-xs 2xl:text-sm text-center mt-20 ${textColor}`} dangerouslySetInnerHTML={{ __html: credits }} />}
         </div>
     )
 }
