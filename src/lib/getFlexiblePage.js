@@ -31,6 +31,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_TitleAndCopy {
             copy
+            id
             fieldGroupName
             headings {
               heading
@@ -39,6 +40,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_FullScreenPanel {
             fieldGroupName
+            id
             heading
             copy
             darkOverlay
@@ -58,6 +60,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_WhatWeDo {
             fieldGroupName
+            id
             stats {
               title
               copy
@@ -89,6 +92,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Stats {
             fieldGroupName
+            id
             stats {
               fieldGroupName
               title
@@ -103,6 +107,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_InfographicEcosystem {
             copy
             fieldGroupName
+            id
             title
             spinoutDesktopImage {
               mediaItemUrl
@@ -124,6 +129,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_Expertise {
             fieldGroupName
             title
+            id
             headings {
               heading
               position
@@ -152,6 +158,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             copy
             fieldGroupName
             title
+            id
             headings {
               heading
             }
@@ -182,6 +189,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_Portfolio {
             copy
             fieldGroupName
+            id
             portfolio {
               ... on Portfolio {
                 id
@@ -215,6 +223,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_Cta {
             copy
             fieldGroupName
+            id
             title
             cta {
               smallTitle
@@ -234,6 +243,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Story {
             fieldGroupName
+            id
             story {
               ... on Story {
                 id
@@ -263,6 +273,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_OneColumnCopyAlternate {
             fieldGroupName
+            id
             backgroundMedia
             copy
             ctaLabel
@@ -304,6 +315,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Stories {
             fieldGroupName
+            id
             stories {
               ... on Story {
                 id
@@ -322,6 +334,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_News {
             fieldGroupName
+            id
             news {
               ... on Post {
                 id
@@ -339,6 +352,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             }
           }
           ... on Page_Flexiblecontent_FlexibleContent_InspirationalQuotes {
+            id
             carousel
             fieldGroupName
             title
@@ -359,6 +373,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Cards {
             fieldGroupName
+            id
             title
             copy
             carousel
@@ -373,6 +388,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_FullPanelCarousel {
             fieldGroupName
+            id
             heading
             slides {
               copy
@@ -393,6 +409,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             }
           }
           ... on Page_Flexiblecontent_FlexibleContent_FullScreenList {
+            id
             copy
             fieldGroupName
             heading
@@ -412,6 +429,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             }
           }
           ... on Page_Flexiblecontent_FlexibleContent_Faqs {
+            id
             copy
             fieldGroupName
             title
@@ -422,6 +440,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Team {
             fieldGroupName
+            id
           }
         }
       }
