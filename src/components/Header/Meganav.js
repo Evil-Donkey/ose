@@ -1,6 +1,7 @@
 import React from 'react';
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import Container from '../Container';
+import Link from 'next/link';
 
 const Meganav = ({ isHeaderScrolled, heading, anchorLinks = [], pagePath, pageLinks }) => {
   return (
@@ -28,9 +29,9 @@ const Meganav = ({ isHeaderScrolled, heading, anchorLinks = [], pagePath, pageLi
                                         />
                                     </g>
                                 </svg>
-                                <a href={`${pagePath}#${formatSectionLabel(sectionLabel)}`} className="hover:text-lightblue transition-colors text-xl font-medium">
+                                <Link href={`${pagePath}#${formatSectionLabel(sectionLabel)}`} className="hover:text-lightblue transition-colors text-xl font-medium">
                                     {sectionLabel}
-                                </a>
+                                </Link>
                             </li>
                         ))}
                     </ul>

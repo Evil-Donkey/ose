@@ -162,7 +162,7 @@ const FullPanelCarousel = ({ data }) => {
     }, [slides]);
 
     return (
-        <div id={formatSectionLabel(sectionLabel)} ref={componentRef} className="relative min-h-[100vh] h-full w-full">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} ref={componentRef} className="relative min-h-[100vh] h-full w-full">
             {heading && <h2 ref={el => headingRef.current[0] = el} className="text-white uppercase tracking-widest text-lg md:text-xl px-15 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
             <div className={`absolute top-25 md:top-25 left-1/2 w-full transform -translate-x-1/2 z-50`}>
                 <div className="flex justify-center space-x-2 md:space-x-4">
@@ -243,9 +243,9 @@ const FullPanelCarousel = ({ data }) => {
                                                     }`}
                                                 >
                                                     {accordionCopy && <div className="mt-15" dangerouslySetInnerHTML={{ __html: accordionCopy }} />}
-                                                    {accordionList && <ul className="list-disc columns-1 lg:columns-2 lg:gap-20 pl-4 lg:mb-5">
+                                                    {accordionList && <ul className="list-disc columns-1 lg:columns-2 lg:gap-40 pl-4 lg:mb-5">
                                                         {accordionList.map((item, index) => (
-                                                            <li className="mb-5" key={index}>{item.listItem}</li>
+                                                            <li className="mb-5 break-inside-avoid" key={index}>{item.listItem}</li>
                                                         ))}
                                                     </ul>}
                                                 </div>

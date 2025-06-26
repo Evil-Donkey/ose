@@ -77,7 +77,7 @@ const Expertise = ({ data }) => {
     }, []);
 
     return (
-        <div id={formatSectionLabel(sectionLabel)} className="text-white bg-cover bg-center bg-[url('/gradient.png')]">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="text-white bg-cover bg-center bg-[url('/gradient.png')]">
             <Container className="py-20 2xl:py-40">
                 <div className="flex flex-col">
                     {title && <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium text-white opacity-0 translate-x-full">{title}</h3>}

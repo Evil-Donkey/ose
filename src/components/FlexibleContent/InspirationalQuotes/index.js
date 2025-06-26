@@ -60,7 +60,7 @@ const InspirationalQuotes = ({ data }) => {
     }, [quotes]);
 
     return quotes ? (
-        <div id={formatSectionLabel(sectionLabel)} className="relative">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative">
             {carousel ? (
                 <Swiper
                     modules={[Pagination]}
@@ -79,9 +79,9 @@ const InspirationalQuotes = ({ data }) => {
                                             {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${quoteOnTheRight ? "lg:left-auto lg:right-0" : ""} w-full lg:w-3/5 h-3/5 lg:h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                         </>
                                     )}
-                                    <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
-                                        <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-start justify-end" : "items-end md:items-start justify-start"}`}>
-                                            <div className="flex flex-col w-full lg:w-1/2 gap-3 md:gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
+                                    <div className="min-h-[100vh] h-full flex flex-col items-center justify-end lg:justify-center">
+                                        <Container className={`h-full py-30 md:py-15 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-center justify-end" : "items-end md:items-center justify-start"}`}>
+                                            <div className="flex flex-col w-full lg:w-1/2 gap-3 md:gap-5 lg:pt-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                                 {quote && 
                                                 <div className="relative">
                                                     <div className="absolute -top-10 md:-top-15 left-0 bg-[url('/quote.svg')] bg-contain bg-center bg-no-repeat w-10 h-10 md:w-15 md:h-15" />
@@ -104,7 +104,7 @@ const InspirationalQuotes = ({ data }) => {
                     <style jsx global>{`
                       .inspirational-quotes-swiper .swiper-pagination {
                         position: absolute;
-                        bottom: 40px;
+                        bottom: 60px;
                         left: 0;
                         width: 100%;
                         display: flex;
@@ -138,7 +138,7 @@ const InspirationalQuotes = ({ data }) => {
                                 </>
                             )}
                             <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
-                                <Container className={`h-full py-30 md:py-25 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-start justify-end" : "items-end md:items-start justify-start"}`}>
+                                <Container className={`h-full py-30 md:py-20 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-start justify-end" : "items-end md:items-start justify-start"}`}>
                                     <div className="flex flex-col w-full lg:w-1/2 gap-3 md:gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                         {quote && 
                                         <div className="relative">

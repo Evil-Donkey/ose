@@ -89,7 +89,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
     }
 
     return (
-        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-500 z-10 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'} ${activeMeganav ? '' : ''}`}>
+        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-500 z-10 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'} ${activeMeganav ? 'bg-darkblue! bg-none' : ''}`}>
             <Container>
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
@@ -144,7 +144,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                                     {item.label}
                                                 </a>
                                                 {/* Meganav dropdown */}
-                                                {/* {activeMeganav === item.label && (
+                                                {activeMeganav === item.label && (
                                                     <div style={{ position: 'fixed', left: 0, top: '100px', width: '100vw', zIndex: 9999 }}>
                                                         <Meganav
                                                             heading={item.meganavHeading}
@@ -154,7 +154,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                                             pageLinks={item.meganavPageLinks}
                                                         />
                                                     </div>
-                                                )} */}
+                                                )}
                                             </div>
                                         );
                                     })}

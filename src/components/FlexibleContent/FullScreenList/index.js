@@ -62,7 +62,7 @@ const FullScreenList = ({ data }) => {
     }, []);
 
     return (
-        <div id={formatSectionLabel(sectionLabel)} className={`relative min-h-[100vh] h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-start' : 'justify-start'}`}>
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={`relative min-h-[100vh] h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-start' : 'justify-start'}`}>
             <div ref={el => backgroundImageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
             {backgroundImageMobile && <div ref={el => backgroundImageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />}
             <div className="absolute top-0 left-0 w-full h-1/2 bg-transparent bg-linear-to-b from-black/70 to-black/0" />
