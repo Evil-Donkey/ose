@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
       <body className={`${montserrat.variable}`}>
         <AuthProvider>
           <HeaderWithMeganavLinks />
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense>
             <ScrollToHashOnRouteChange />
             {children}
           </Suspense>
