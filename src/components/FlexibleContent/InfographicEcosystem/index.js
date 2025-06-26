@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LogoDark } from "@/components/Icons/Logo";
 import Container from "../../Container";
-import Image from "next/image";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,7 +18,7 @@ const InfographicMap = ({ data, onPopupOpen }) => {
     const bottomTextRef = useRef([]);
     const ecosystemRef = useRef(null);
 
-    const { title, copy } = data;
+    const { title, copy, sectionLabel } = data;
 
     const timelineData = [
         // { period: "1959 - 1999", count: 22, size: 85 },
@@ -112,7 +112,7 @@ const InfographicMap = ({ data, onPopupOpen }) => {
     };
 
     return (
-        <div ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0 relative overflow-hidden flex w-full h-full">
+        <div id={formatSectionLabel(sectionLabel)} ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0 relative overflow-hidden flex w-full h-full">
             <Container className="py-20 2xl:pb-40">
                 <div className="flex flex-col items-center text-center">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}

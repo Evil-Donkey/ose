@@ -7,12 +7,13 @@ import Container from "../../Container";
 import Link from "next/link";
 import Image from "next/image";
 import Button from "../../Button";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Story = ({ data }) => {
 
-    const { content, title, story, featuredImage, uri } = data.story;
+    const { content, title, story, featuredImage, uri, sectionLabel } = data.story;
     const backgroundImage = featuredImage.node.mediaItemUrl || null;
     const { author, quote, quoteImage, secondCopyBlock } = story;
 
@@ -67,7 +68,7 @@ const Story = ({ data }) => {
     }, []);
 
     return (
-        <div>
+        <div id={formatSectionLabel(sectionLabel)}>
             <div className="relative w-full lg:min-h-[100vh] h-full">
                 {backgroundImage && 
                     <>

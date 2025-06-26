@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Button from "@/components/Button";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +14,7 @@ const Stories = ({ data }) => {
     const titleRef = useRef([]);
     const ctaRef = useRef([]);
 
-    const { stories } = data;
+    const { stories, sectionLabel } = data;
 
     // GSAP animations
     useEffect(() => {
@@ -52,7 +53,7 @@ const Stories = ({ data }) => {
     }, []);
 
     return (
-        <Container className="py-20">
+        <Container id={formatSectionLabel(sectionLabel)} className="py-20">
             <div className="flex flex-col items-center text-center">
                 <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">Stories</h2>
             </div>

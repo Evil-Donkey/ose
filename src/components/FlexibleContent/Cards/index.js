@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import Link from "next/link";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 import Container from "../../Container";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -20,7 +20,7 @@ const Cards = ({ data }) => {
     const copyRef = useRef([]);
     const titleRef = useRef([]);
 
-    const { title, cards, copy, carousel } = data;
+    const { title, cards, copy, carousel, sectionLabel } = data;
 
     useEffect(() => {
         gsap.to(titleRef.current, {
@@ -66,7 +66,7 @@ const Cards = ({ data }) => {
         // };
     }, []);
     return (
-        <div className="bg-linear-to-t from-black/10 to-black/0">
+        <div id={formatSectionLabel(sectionLabel)} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20 2xl:py-40">
                 {title && 
                     <div className="flex flex-col">

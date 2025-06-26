@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import getTeamMembers from '@/lib/getTeamMembers';
 import Container from '../../Container';
 import Link from 'next/link';
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 const Team = ({ data }) => {
 
@@ -11,7 +12,9 @@ const Team = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
-
+  
+  const { sectionLabel } = data;
+  
   useEffect(() => {
     async function fetchData() {
       try {
@@ -54,7 +57,7 @@ const Team = ({ data }) => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="bg-linear-to-t from-black/10 to-black/0">
+    <div id={formatSectionLabel(sectionLabel)} className="bg-linear-to-t from-black/10 to-black/0">
         <Container className="py-20 2xl:py-40">
             <div className="flex flex-col md:flex-row gap-8">
             {/* Sidebar */}

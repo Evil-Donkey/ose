@@ -5,12 +5,13 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
 import Button from "../../Button";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const OneColumnCopyAlternate = ({ data }) => {
 
-    const { heading, headingSize, subheading, copy, ctaLabel, ctaLink, videoMp4, videoMp4Mobile, image, imageMobile, copyLast, backgroundMedia, darkOverlay, credits } = data;
+    const { heading, headingSize, subheading, copy, ctaLabel, ctaLink, videoMp4, videoMp4Mobile, image, imageMobile, copyLast, backgroundMedia, darkOverlay, credits, sectionLabel } = data;
     
     const contentRef = useRef([]);
     const imageRef = useRef([]);
@@ -63,7 +64,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     }, []);
 
     return (
-        <div className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+        <div id={formatSectionLabel(sectionLabel)} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
             {backgroundMedia && (image || imageMobile) && (
                 <>
                     {image && <div ref={el => imageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
@@ -82,7 +83,7 @@ const OneColumnCopyAlternate = ({ data }) => {
             <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
                 <Container className={`h-full py-15 md:py-25 2xl:py-45 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
                     <div className={`flex flex-col w-full lg:w-1/2 gap-5 lg:py-15`}>
-                        {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`}>{heading}</h1>}
+                        {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />}
                         <div className="w-full lg:w-3/4 flex flex-col gap-5">
                             {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl lg:text-[1.8rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                 <div dangerouslySetInnerHTML={{ __html: subheading }} />

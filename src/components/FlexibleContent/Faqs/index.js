@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,7 +12,7 @@ const Faqs = ({ data }) => {
     const titleRef = useRef([]);
     const copyRef = useRef([]);
 
-    const { title, copy, faqs } = data;
+    const { title, copy, faqs, sectionLabel } = data;
 
     // Accordion state
     const [openIndex, setOpenIndex] = useState(null);
@@ -53,7 +54,7 @@ const Faqs = ({ data }) => {
     }, []);
 
     return (
-        <div className="relative min-h-[100vh] h-full w-full overflow-hidden faqs-section">
+        <div id={formatSectionLabel(sectionLabel)} className="relative min-h-[100vh] h-full w-full overflow-hidden faqs-section">
             <Container className="py-20 2xl:pb-40">
                 <div className="flex flex-col items-center text-center">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}

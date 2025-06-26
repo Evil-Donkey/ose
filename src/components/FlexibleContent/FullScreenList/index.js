@@ -4,12 +4,13 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FullScreenList = ({ data }) => {
 
-    const { heading, copy, backgroundImage, backgroundImageMobile, list, listPosition, listCopy } = data;
+    const { heading, copy, backgroundImage, backgroundImageMobile, list, listPosition, listCopy, sectionLabel } = data;
     const titleRef = useRef(null);
     const copyRef = useRef([]);
     const backgroundImageRef = useRef([]);
@@ -61,7 +62,7 @@ const FullScreenList = ({ data }) => {
     }, []);
 
     return (
-        <div className={`relative min-h-[100vh] h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-start' : 'justify-start'}`}>
+        <div id={formatSectionLabel(sectionLabel)} className={`relative min-h-[100vh] h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-start' : 'justify-start'}`}>
             <div ref={el => backgroundImageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
             {backgroundImageMobile && <div ref={el => backgroundImageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />}
             <div className="absolute top-0 left-0 w-full h-1/2 bg-transparent bg-linear-to-b from-black/70 to-black/0" />

@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,7 +16,7 @@ const News = ({ data }) => {
     const newsRef = useRef([]);
     const titleRef = useRef([]);
 
-    const { news } = data;
+    const { news, sectionLabel } = data;
 
     useEffect(() => {
         gsap.to(titleRef.current, {
@@ -46,7 +47,7 @@ const News = ({ data }) => {
         });
     }, []);
     return (
-        <div className="bg-cover bg-center bg-[url('/gradient.png')]">
+        <div id={formatSectionLabel(sectionLabel)} className="bg-cover bg-center bg-[url('/gradient.png')]">
             <Container className="py-20 2xl:py-40">
                 <div className="flex flex-col">
                     <h2 ref={titleRef} className="text-white uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">News</h2>

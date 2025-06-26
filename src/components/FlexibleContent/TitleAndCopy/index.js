@@ -1,13 +1,14 @@
 import Headings from "@/components/Headings";
 import Column from "@/components/Column";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 const TitleAndCopy = ({ data }) => {
 
-    const { headings, copy } = data;
+    const { headings, copy, sectionLabel } = data;
 
     return (
-        <Container className="py-20 lg:py-40">
+        <Container id={formatSectionLabel(sectionLabel)} className="py-20 lg:py-40">
             {headings &&
                 <div className="flex flex-col">
                     <Headings headings={headings} />

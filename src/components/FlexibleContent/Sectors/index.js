@@ -8,6 +8,7 @@ import Column from "@/components/Column";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +17,7 @@ const Sectors = ({ data }) => {
     const sectorsRef = useRef([]);
     const titleRef = useRef([]);
 
-    const { title, headings, copy, sectors } = data;
+    const { title, headings, copy, sectors, sectionLabel } = data;
 
     useEffect(() => {
         gsap.to(titleRef.current, {
@@ -51,7 +52,7 @@ const Sectors = ({ data }) => {
         };
     }, []);
     return (
-        <div className="bg-linear-to-t from-black/10 to-black/0">
+        <div id={formatSectionLabel(sectionLabel)} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20 2xl:py-40">
                 <div className="flex flex-col">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}

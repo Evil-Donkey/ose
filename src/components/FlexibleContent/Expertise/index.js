@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 import Container from "../../Container";
 import { useIsMobile } from "@/hooks/isMobile";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -17,7 +18,7 @@ import 'swiper/css/pagination';
 gsap.registerPlugin(ScrollTrigger);
 
 const Expertise = ({ data }) => {
-    const { title, columns, headings, expertise } = data;
+    const { title, columns, headings, expertise, sectionLabel } = data;
     const colNumber = columns.length;
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -76,7 +77,7 @@ const Expertise = ({ data }) => {
     }, []);
 
     return (
-        <div className="text-white bg-cover bg-center bg-[url('/gradient.png')]">
+        <div id={formatSectionLabel(sectionLabel)} className="text-white bg-cover bg-center bg-[url('/gradient.png')]">
             <Container className="py-20 2xl:py-40">
                 <div className="flex flex-col">
                     {title && <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium text-white opacity-0 translate-x-full">{title}</h3>}

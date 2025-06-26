@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import Link from "next/link";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 import Button from "@/components/Button";
 import Container from "../../Container";
 
@@ -15,7 +15,7 @@ const CTA = ({ data }) => {
     const copyRef = useRef(null);
     const ctaRef = useRef([]);
 
-    const { title, copy, cta } = data;
+    const { title, copy, cta, sectionLabel } = data;
 
     // GSAP animations
     useEffect(() => {
@@ -66,7 +66,7 @@ const CTA = ({ data }) => {
     }, []);
 
     return (
-        <Container className="py-20">
+        <Container id={formatSectionLabel(sectionLabel)} className="py-20">
             <div className="flex flex-col items-center text-center">
                 {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
                 {copy && <div ref={copyRef} className="w-full md:w-2/5 text-center text-blue-02 opacity-0 translate-y-20">

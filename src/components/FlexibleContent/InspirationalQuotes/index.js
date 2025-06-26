@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -13,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const InspirationalQuotes = ({ data }) => {
 
-    const { title, quotes, carousel } = data;
+    const { title, quotes, carousel, sectionLabel } = data;
     
     const contentRef = useRef([]);
     const imageRef = useRef([]);
@@ -59,7 +60,7 @@ const InspirationalQuotes = ({ data }) => {
     }, [quotes]);
 
     return quotes ? (
-        <div className="relative">
+        <div id={formatSectionLabel(sectionLabel)} className="relative">
             {carousel ? (
                 <Swiper
                     modules={[Pagination]}

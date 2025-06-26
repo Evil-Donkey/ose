@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import Container from "../../Container";
 import Button from "@/components/Button";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -15,7 +16,7 @@ import 'swiper/css/pagination';
 gsap.registerPlugin(ScrollTrigger);
 
 const FullPanelCarousel = ({ data }) => {
-    const { heading, slides } = data;
+    const { heading, slides, sectionLabel } = data;
     const componentRef = useRef(null);
     const swiperRef = useRef(null);
     const headingRef = useRef([]);
@@ -161,7 +162,7 @@ const FullPanelCarousel = ({ data }) => {
     }, [slides]);
 
     return (
-        <div ref={componentRef} className="relative min-h-[100vh] h-full w-full">
+        <div id={formatSectionLabel(sectionLabel)} ref={componentRef} className="relative min-h-[100vh] h-full w-full">
             {heading && <h2 ref={el => headingRef.current[0] = el} className="text-white uppercase tracking-widest text-lg md:text-xl px-15 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
             <div className={`absolute top-25 md:top-25 left-1/2 w-full transform -translate-x-1/2 z-50`}>
                 <div className="flex justify-center space-x-2 md:space-x-4">

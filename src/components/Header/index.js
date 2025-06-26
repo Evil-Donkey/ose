@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 import Meganav from './Meganav';
 import { useIsMobile } from '@/hooks/isMobile';
 
-const Header = ({ portal, meganavLinks = {} }) => {
+const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
     const [isScrollingUp, setIsScrollingUp] = useState(true);
     const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
     const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -18,7 +18,7 @@ const Header = ({ portal, meganavLinks = {} }) => {
     const isMobile = typeof window !== 'undefined' ? window.innerWidth < 1024 : false;
     const [activeMeganav, setActiveMeganav] = useState(null);
 
-    console.log('meganavLinks', meganavLinks);
+    console.log('meganavData', meganavData);
 
     const topNavItems = [
         { label: 'Portfolio', href: '/portfolio' },
@@ -32,25 +32,29 @@ const Header = ({ portal, meganavLinks = {} }) => {
             label: 'Why', 
             href: '/why',
             meganavHeading: 'Why We Exist',
-            meganavLinks: meganavLinks?.Why || []
+            meganavLinks: meganavLinks?.Why || [],
+            meganavPageLinks: meganavData?.Why?.pageLinks || null
         },
         { 
             label: 'What', 
             href: '/what',
-            meganavHeading: 'What We Do',
-            meganavLinks: meganavLinks?.What || []
+            meganavHeading: 'What<br/>We Do',
+            meganavLinks: meganavLinks?.What || [],
+            meganavPageLinks: meganavData?.What?.pageLinks || null
         },
         { 
             label: 'How', 
             href: '/how',
             meganavHeading: 'How We Work',
-            meganavLinks: meganavLinks?.How || []
+            meganavLinks: meganavLinks?.How || [],
+            meganavPageLinks: meganavData?.How?.pageLinks || null
         },
         { 
             label: 'Who', 
             href: '/who',
             meganavHeading: 'Who We Are',
-            meganavLinks: meganavLinks?.Who || []
+            meganavLinks: meganavLinks?.Who || [],
+            meganavPageLinks: meganavData?.Who?.pageLinks || null
         }
     ];
 
@@ -85,7 +89,7 @@ const Header = ({ portal, meganavLinks = {} }) => {
     }
 
     return (
-        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-500 z-10 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'} ${activeMeganav ? '' : ''}`}>
+        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-500 z-10 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'} ${activeMeganav ? 'bg-darkblue! bg-none' : ''}`}>
             <Container>
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
@@ -100,7 +104,7 @@ const Header = ({ portal, meganavLinks = {} }) => {
                         className="flex-grow"
                         onMouseLeave={!isMobile ? () => setActiveMeganav(null) : undefined}
                     >
-                        <div className={`transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col items-center lg:items-end justify-center lg:justify-start gap-5 lg:gap-0 absolute top-0 left-0 w-svw h-svh lg:h-auto lg:w-auto bg-blue-02 lg:bg-transparent lg:static ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+                        <div className={`transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col items-center lg:items-end justify-center lg:justify-start gap-5 lg:gap-0 absolute top-0 left-0 w-svw h-svh lg:h-auto lg:w-auto bg-blue-02 lg:bg-transparent lg:static ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-none'}`}>
                             <div className={`flex justify-end transition-all duration-500 order-last lg:order-first ${isHeaderScrolled ? 'mb-1 2xl:mb-3' : 'md:mb-2 2xl:mb-4'}`}>
                                 <nav className="lg:space-x-5 flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0">
                                     {topNavItems.map((item, index) => {
@@ -140,13 +144,17 @@ const Header = ({ portal, meganavLinks = {} }) => {
                                                     {item.label}
                                                 </a>
                                                 {/* Meganav dropdown */}
-                                                {/* {activeMeganav === item.label && (
-                                                    <Meganav
-                                                        heading={item.meganavHeading}
-                                                        anchorLinks={item.meganavLinks}
-                                                        isHeaderScrolled={isHeaderScrolled}
-                                                    />
-                                                )} */}
+                                                {activeMeganav === item.label && (
+                                                    <div style={{ position: 'fixed', left: 0, top: '100px', width: '100vw', zIndex: 9999 }}>
+                                                        <Meganav
+                                                            heading={item.meganavHeading}
+                                                            anchorLinks={item.meganavLinks}
+                                                            isHeaderScrolled={isHeaderScrolled}
+                                                            pagePath={item.href}
+                                                            pageLinks={item.meganavPageLinks}
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
                                         );
                                     })}

@@ -4,12 +4,13 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FullScreenPanel = ({ data }) => {
 
-    const { heading, copy, backgroundImage, darkOverlay } = data;
+    const { heading, copy, backgroundImage, darkOverlay, sectionLabel } = data;
     const titleRef = useRef(null);
     const copyRef = useRef(null);
     const backgroundImageRef = useRef(null);
@@ -56,7 +57,7 @@ const FullScreenPanel = ({ data }) => {
     }, []);
 
     return (
-        <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
+        <div id={formatSectionLabel(sectionLabel)} className="relative min-h-[100vh] h-full w-full overflow-hidden">
             <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
             {darkOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
             <div className="min-h-[100vh] h-full flex flex-col justify-center">

@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button";
 import Container from "../../Container";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,7 +20,7 @@ const Portfolio = ({ data }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
 
-    const { title, copy, portfolio } = data;
+    const { title, copy, portfolio, sectionLabel } = data;
     const totalPages = Math.ceil(portfolio.length / itemsPerPage);
     const visibleItems = portfolio.slice(0, currentPage * itemsPerPage);
 
@@ -115,7 +116,7 @@ const Portfolio = ({ data }) => {
     }, [currentPage]);
 
     return (
-        <div className="bg-linear-to-t from-black/10 to-black/0">
+        <div id={formatSectionLabel(sectionLabel)} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20">
                 <div className="flex flex-col items-center text-center">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}

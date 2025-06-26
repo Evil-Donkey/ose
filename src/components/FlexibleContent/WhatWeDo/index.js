@@ -4,9 +4,10 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 const WhatWeDo = ({ data }) => {
-    const { stats, investorsHeading, investorsDesktopImage, investorsMobileImage } = data;
+    const { stats, investorsHeading, investorsDesktopImage, investorsMobileImage, sectionLabel } = data;
 
     const titleRef = useRef(null);
     const imageRef = useRef([]);
@@ -43,7 +44,7 @@ const WhatWeDo = ({ data }) => {
     }, []);
 
     return (
-        <div className="text-white bg-cover bg-center bg-[url('/mobile-gradient.jpg')] lg:bg-[url('/desktop-gradient.jpg')]">
+        <div id={formatSectionLabel(sectionLabel)} className="text-white bg-cover bg-center bg-[url('/mobile-gradient.jpg')] lg:bg-[url('/desktop-gradient.jpg')]">
             <Container className="py-20 lg:py-40">
                 <div className="flex flex-col">
                     {stats && <Stats data={stats} theme="dark" />}
