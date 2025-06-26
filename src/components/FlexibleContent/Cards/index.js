@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -19,8 +19,15 @@ const Cards = ({ data }) => {
     const cardsRef = useRef([]);
     const copyRef = useRef([]);
     const titleRef = useRef([]);
+    const tabsRef = useRef([]);
 
-    const { title, cards, copy, carousel, sectionLabel } = data;
+    const { title, cards, copy, carousel, sectionLabel, tabs } = data;
+
+    const uniqueFields = [
+        ...new Set(cards.flatMap(card => Array.isArray(card.field) ? card.field : [card.field]))
+    ];
+
+    const [activeTab, setActiveTab] = useState(uniqueFields[0] || '');
 
     useEffect(() => {
         gsap.to(titleRef.current, {
@@ -61,10 +68,26 @@ const Cards = ({ data }) => {
                 scrub: 1.5
             },
         });
+        gsap.to(tabsRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power4.out',
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: tabsRef.current,
+                start: 'top 90%',
+                end: 'top center',
+                scrub: 1.5
+            },
+        });
         // return () => {
         //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         // };
+
     }, []);
+
+
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20 2xl:py-40">
@@ -78,8 +101,63 @@ const Cards = ({ data }) => {
                         <div ref={copyRef} className="w-full md:w-1/3 lg:-mb-10 opacity-0 translate-y-5" dangerouslySetInnerHTML={{ __html: copy }} />
                     </div>
                 }
+                {tabs && (
+                    <div className="flex items-center text-center justify-center gap-10 mt-20">
+                        {uniqueFields.map((field, index) => (
+                            <button
+                                key={index}
+                                ref={el => tabsRef.current[index] = el}
+                                className={`opacity-0 translate-y-20 focus:outline-none transition-colors cursor-pointer ${activeTab === field ? 'text-lightblue font-medium' : 'text-blue-02 hover:text-darkblue'}`}
+                                onClick={() => setActiveTab(field)}
+                                type="button"
+                            >
+                                <h3 className="text-lg">{field.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase())}</h3>
+                            </button>
+                        ))}
+                    </div>
+                )}
                 <div className="relative w-full md:mt-25">
-                    {carousel ? (
+                    {
+                    tabs ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
+                            {(() => {
+                                const filteredCards = cards?.filter(card => {
+                                    const cardFields = Array.isArray(card.field) ? card.field : [card.field];
+                                    return cardFields.includes(activeTab);
+                                }) || [];
+                                
+                                return filteredCards.length > 0 ? filteredCards.map((card, index) => {
+                                    const { heading, description, image } = card;
+                                    return (
+                                        <div key={index}>
+                                            <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col">
+                                                <div className="relative overflow-hidden rounded-lg min-h-[200px]">
+                                                    <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                                </div>
+                                                {heading && <h4 className="text-lg font-medium mt-4" dangerouslySetInnerHTML={{ __html: heading }} />}
+                                                {description && <div className="text-sm" dangerouslySetInnerHTML={{ __html: description }} />}
+                                            </div>
+                                        </div>
+                                    );
+                                }) : (
+                                    <div className="col-span-full text-center py-10">
+                                        <p>No cards found for "{activeTab}". Showing all cards:</p>
+                                        {cards?.map((card, index) => {
+                                            const { heading, description, image, field } = card;
+                                            return (
+                                                <div key={index} className="mt-4 p-4 border rounded">
+                                                    <p><strong>Field:</strong> "{field}"</p>
+                                                    <p><strong>Active Tab:</strong> "{activeTab}"</p>
+                                                    <p><strong>Match:</strong> {field === activeTab ? 'YES' : 'NO'}</p>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                );
+                            })()}
+                        </div>
+                    ) : 
+                    carousel ? (
                         <Swiper
                             modules={[Navigation, Pagination]}
                             pagination={{ clickable: true }}

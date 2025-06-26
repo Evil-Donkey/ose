@@ -377,9 +377,11 @@ const FLEXIBLE_CONTENT_QUERY = `
             title
             copy
             carousel
+            tabs
             cards {
               description
               heading
+              field
               image {
                 altText
                 mediaItemUrl
