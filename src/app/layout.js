@@ -4,6 +4,7 @@ import GoogleAnalytics from '../lib/googleAnalytics'
 import "./globals.css";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import ScrollToHashOnRouteChange from "@/components/ScrollToHashOnRouteChange";
+import { Suspense } from 'react';
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -19,10 +20,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${montserrat.variable}`}>
-        <ScrollToHashOnRouteChange />
         <AuthProvider>
           <HeaderWithMeganavLinks />
-          {children}
+          <Suspense fallback={<div>Loading...</div>}>
+            <ScrollToHashOnRouteChange />
+            {children}
+          </Suspense>
         </AuthProvider>
         {/* <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} /> */}
       </body>
