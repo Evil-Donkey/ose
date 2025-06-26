@@ -139,21 +139,7 @@ const Cards = ({ data }) => {
                                             </div>
                                         </div>
                                     );
-                                }) : (
-                                    <div className="col-span-full text-center py-10">
-                                        <p>No cards found for "{activeTab}". Showing all cards:</p>
-                                        {cards?.map((card, index) => {
-                                            const { heading, description, image, field } = card;
-                                            return (
-                                                <div key={index} className="mt-4 p-4 border rounded">
-                                                    <p><strong>Field:</strong> "{field}"</p>
-                                                    <p><strong>Active Tab:</strong> "{activeTab}"</p>
-                                                    <p><strong>Match:</strong> {field === activeTab ? 'YES' : 'NO'}</p>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                );
+                                }) : null;
                             })()}
                         </div>
                     ) : 
