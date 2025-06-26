@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
   return (
-    <Container className="flex px-8 py-20">
+    <Container className="flex">
         <div className="w-1/2 pr-18 flex items-start">
             <h2 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27" dangerouslySetInnerHTML={{ __html: heading }} />
         </div>

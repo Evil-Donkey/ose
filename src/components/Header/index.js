@@ -100,7 +100,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
       }, []);
 
     return (
-        <header className={`text-white fixed top-0 left-0 right-0 transition duration-300 z-100 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'} ${activeMeganav ? 'bg-darkblue! bg-none' : ''}`}>
+        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-300 z-100 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'}`}>
             <Container>
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
@@ -156,8 +156,8 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                                 </a>
                                                 {/* Meganav dropdown */}
                                                 <div
-                                                className={`absolute left-0 ${isHeaderScrolled ? 'lg:top-[110px] 2xl:top-[130px]' : 'lg:top-[140px] 2xl:top-[160px]'} w-full bg-darkblue text-white z-30 rounded-b-3xl transition-opacity duration-300 ${
-                                                    activeMeganav === item.label ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                                                className={`absolute left-0 top-0 px-8 pt-40 2xl:pt-50 pb-20 w-full bg-darkblue text-white rounded-b-3xl -z-1 transition-opacity duration-300 ${
+                                                    activeMeganav === item.label ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-full'
                                                 }`}
                                                 >
                                                     <Meganav
