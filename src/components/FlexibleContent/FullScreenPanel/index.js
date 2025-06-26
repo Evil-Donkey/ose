@@ -57,7 +57,7 @@ const FullScreenPanel = ({ data }) => {
     }, []);
 
     return (
-        <div id={formatSectionLabel(sectionLabel)} className="relative min-h-[100vh] h-full w-full overflow-hidden">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[100vh] h-full w-full overflow-hidden">
             <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
             {darkOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
             <div className="min-h-[100vh] h-full flex flex-col justify-center">

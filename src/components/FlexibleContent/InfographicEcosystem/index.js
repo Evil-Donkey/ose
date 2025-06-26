@@ -112,7 +112,7 @@ const InfographicMap = ({ data, onPopupOpen }) => {
     };
 
     return (
-        <div id={formatSectionLabel(sectionLabel)} ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0 relative overflow-hidden flex w-full h-full">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} ref={ecosystemRef} className="bg-linear-to-t from-black/10 to-black/0 relative overflow-hidden flex w-full h-full">
             <Container className="py-20 2xl:pb-40">
                 <div className="flex flex-col items-center text-center">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}

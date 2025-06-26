@@ -64,7 +64,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     }, []);
 
     return (
-        <div id={formatSectionLabel(sectionLabel)} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
             {backgroundMedia && (image || imageMobile) && (
                 <>
                     {image && <div ref={el => imageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}

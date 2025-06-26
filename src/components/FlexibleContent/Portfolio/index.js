@@ -116,7 +116,7 @@ const Portfolio = ({ data }) => {
     }, [currentPage]);
 
     return (
-        <div id={formatSectionLabel(sectionLabel)} className="bg-linear-to-t from-black/10 to-black/0">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20">
                 <div className="flex flex-col items-center text-center">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}

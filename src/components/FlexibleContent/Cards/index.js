@@ -66,7 +66,7 @@ const Cards = ({ data }) => {
         // };
     }, []);
     return (
-        <div id={formatSectionLabel(sectionLabel)} className="bg-linear-to-t from-black/10 to-black/0">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20 2xl:py-40">
                 {title && 
                     <div className="flex flex-col">

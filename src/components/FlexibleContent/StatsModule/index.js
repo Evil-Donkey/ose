@@ -7,7 +7,7 @@ const StatsModule = ({ data }) => {
     const { stats, sectionLabel } = data;
 
     return (
-        <Container id={formatSectionLabel(sectionLabel)} className="py-20 lg:py-40">
+        <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="py-20 lg:py-40">
             <Stats data={stats} />
         </Container>
     )

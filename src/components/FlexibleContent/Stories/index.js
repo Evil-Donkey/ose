@@ -53,7 +53,7 @@ const Stories = ({ data }) => {
     }, []);
 
     return (
-        <Container id={formatSectionLabel(sectionLabel)} className="py-20">
+        <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="py-20">
             <div className="flex flex-col items-center text-center">
                 <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">Stories</h2>
             </div>

@@ -68,7 +68,7 @@ const Story = ({ data }) => {
     }, []);
 
     return (
-        <div id={formatSectionLabel(sectionLabel)}>
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}>
             <div className="relative w-full lg:min-h-[100vh] h-full">
                 {backgroundImage && 
                     <>

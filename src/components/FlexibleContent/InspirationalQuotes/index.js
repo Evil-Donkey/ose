@@ -61,6 +61,11 @@ const InspirationalQuotes = ({ data }) => {
 
     return quotes ? (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative">
+            {title &&
+                <div className="flex flex-col items-center text-center mb-10 absolute top-10 left-0 w-full z-10">
+                    <h2 className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium text-white">{title}</h2>
+                </div>
+            }
             {carousel ? (
                 <Swiper
                     modules={[Pagination]}

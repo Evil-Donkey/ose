@@ -47,7 +47,7 @@ const News = ({ data }) => {
         });
     }, []);
     return (
-        <div id={formatSectionLabel(sectionLabel)} className="bg-cover bg-center bg-[url('/gradient.png')]">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-cover bg-center bg-[url('/gradient.png')]">
             <Container className="py-20 2xl:py-40">
                 <div className="flex flex-col">
                     <h2 ref={titleRef} className="text-white uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">News</h2>
