@@ -7,12 +7,12 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
   return (
     <Container className="flex">
         <div className="w-1/2 pr-18 flex items-start">
-            <h2 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27" dangerouslySetInnerHTML={{ __html: heading }} />
+            <h2 className="text-[5rem]/23" dangerouslySetInnerHTML={{ __html: heading }} />
         </div>
         
         <div className="w-1/2 flex gap-10 justify-between">
             <div className="w-1/3">
-                <ul className="space-y-4">
+                <ul className="space-y-3">
                     {anchorLinks.map(({ sectionLabel }) => (
                         <li key={formatSectionLabel(sectionLabel)} className="flex gap-2 items-start">
                             <svg
@@ -21,7 +21,7 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
                                 width={16}
                                 height={16}
                                 fill="none"
-                                className="mt-1 flex-shrink-0 min-w-[16px] min-h-[16px]"
+                                className="mt-2 flex-shrink-0 min-w-[16px] min-h-[16px]"
                             >
                                 <g>
                                     <path
@@ -34,7 +34,7 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
                             </svg>
                             <Link
                                 href={`${pagePath}#${formatSectionLabel(sectionLabel)}`}
-                                className="hover:text-lightblue transition-colors text-xl font-medium"
+                                className="hover:text-lightblue transition-colors text-lg font-medium"
                             >
                                 {sectionLabel}
                             </Link>
@@ -47,7 +47,7 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
                 {pageLinks && pageLinks.links && pageLinks.links.length > 0 && (
                     <div>
                         {pageLinks.heading && (
-                            <div className="text-lightblue text-xl mb-4 font-medium">{pageLinks.heading}</div>
+                            <div className="text-lightblue text-lg mb-4 font-medium">{pageLinks.heading}</div>
                         )}
                         <ul className="space-y-2">
                             {pageLinks.links.map((linkObj, idx) => (
@@ -71,7 +71,7 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
                                     </svg>
                                     <a
                                         href={linkObj.link?.link || '#'}
-                                        className="hover:text-lightblue transition-colors text-xl font-medium"
+                                        className="hover:text-lightblue transition-colors text-lg font-medium"
                                     >
                                         {linkObj.label}
                                     </a>

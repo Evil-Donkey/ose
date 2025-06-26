@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import LazyLoadInitializer from "@/lib/lazyLoader";
-import Header from "@/components/Header/index";
+// import Header from "@/components/Header/index";
 import PageFlexibleContent from "@/components/FlexibleContent";
 import Footer from "@/components/Footer/index";
 import PopOut from "@/components/PopOut/index";

@@ -100,7 +100,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
       }, []);
 
     return (
-        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-300 z-100 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'}`}>
+        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-300 z-99 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'}`}>
             <Container>
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
