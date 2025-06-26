@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import Container from "@/components/Container";
 
 const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
     const popupRef = useRef(null);
@@ -68,7 +69,7 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
                     </svg>
                 </button>
                 <div className="h-full w-full flex items-center justify-center">
-                    <div className="w-full max-w-4xl mx-4">
+                    <Container>
                         <video 
                             ref={videoRef}
                             className="w-full rounded-2xl shadow-xl"
@@ -77,7 +78,7 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
                         >
                             <source src={fullMovie.mediaItemUrl} type="video/mp4" />
                         </video>
-                    </div>
+                    </Container>
                 </div>
             </div>
         </div>
