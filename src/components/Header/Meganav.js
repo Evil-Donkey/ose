@@ -7,7 +7,7 @@ const Meganav = ({ isHeaderScrolled, heading, anchorLinks = [], pagePath, pageLi
     <div
       className={`fixed left-0 ${isHeaderScrolled ? 'top-[110px]' : 'top-[140px]'} w-full bg-darkblue text-white z-30 rounded-b-3xl`}
     >
-        <Container className="flex p-8 pb-20">
+        <Container className="flex px-8 pb-20 pt-10">
             
             <div className="w-1/2 pr-18 flex items-start">
                 <h2 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27" dangerouslySetInnerHTML={{ __html: heading }} />
