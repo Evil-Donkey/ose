@@ -67,7 +67,7 @@ const Story = ({ data }) => {
     }, []);
 
     return (
-        <>
+        <div>
             <div className="relative w-full lg:min-h-[100vh] h-full">
                 {backgroundImage && 
                     <>
@@ -128,7 +128,7 @@ const Story = ({ data }) => {
                     </div>
                 </Container>
             </div>
-        </>
+        </div>
     )
 }
 

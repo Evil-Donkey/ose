@@ -13,7 +13,7 @@ import VideoPopup from "@/components/FlexibleContent/HeroVideo/VideoPopup";
 
 gsap.registerPlugin(ScrollSmoother);
 
-export default function FlexiblePage({ flexibleContent, className, hideNavigation, popOutData, footerData }) {
+export default function FlexiblePage({ flexibleContent, className, hideNavigation, popOutData, footerData, meganavHeading }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState(null);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
@@ -47,10 +47,15 @@ export default function FlexiblePage({ flexibleContent, className, hideNavigatio
     setVideoPopupData(null);
   };
 
+  // Extract anchor links from flexibleContent (only blocks with an id)
+  const meganavLinks = Array.isArray(flexibleContent)
+    ? flexibleContent.filter(block => block && block.id).map(block => ({ id: block.id }))
+    : [];
+
   return (
     <div className={className}>
       <LazyLoadInitializer />
-      {!hideNavigation && <Header />}
+      {/* {!hideNavigation && <Header />} */}
       <div id="smooth-wrapper">
         <div id="smooth-content">
           <PageFlexibleContent 

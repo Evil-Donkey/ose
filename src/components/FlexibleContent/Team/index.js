@@ -5,7 +5,8 @@ import getTeamMembers from '@/lib/getTeamMembers';
 import Container from '../../Container';
 import Link from 'next/link';
 
-const Team = () => {
+const Team = ({ data }) => {
+
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

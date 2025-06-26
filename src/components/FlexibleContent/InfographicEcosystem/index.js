@@ -18,7 +18,7 @@ const InfographicMap = ({ data, onPopupOpen }) => {
     const bottomTextRef = useRef([]);
     const ecosystemRef = useRef(null);
 
-    const { title, copy, spinoutDesktopImage, spinoutMobileImage } = data;
+    const { title, copy } = data;
 
     const timelineData = [
         // { period: "1959 - 1999", count: 22, size: 85 },
@@ -149,22 +149,18 @@ const InfographicMap = ({ data, onPopupOpen }) => {
                             </div>
                         </div>
 
-                        <div className="flex flex-row justify-start items-center -space-x-2 relative">
+                        <div onClick={handleCircleClick} className="flex flex-row justify-start items-center -space-x-2 relative group">
                             <div className="relative" ref={el => circlesRef.current[2] = el}>
                                 <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2015-2019</div>
                                 <div 
-                                    onClick={handleCircleClick}
-                                    className="relative flex flex-col items-center justify-center size-27 lg:size-60 transition-all duration-300 hover:scale-105 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue cursor-pointer"
+                                    className="relative flex flex-col items-center justify-center size-27 lg:size-60 transition-all duration-300 group-hover:scale-105 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue cursor-pointer"
                                 >
                                     <div className="text-4xl lg:text-7xl">82</div>
                                 </div>
                             </div>
                             <div className="relative" ref={el => circlesRef.current[3] = el}>
                                 <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full text-center text-xs text-blue-900">2020-2024</div>
-                                <div 
-                                    onClick={handleCircleClick}
-                                    className="relative flex flex-col items-center justify-center size-38 lg:size-80 transition-all duration-300 hover:scale-105 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue cursor-pointer"
-                                >
+                                <div className="relative flex flex-col items-center justify-center size-38 lg:size-80 transition-all duration-300 group-hover:scale-105 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue cursor-pointer">
                                     <div className="text-5xl lg:text-8xl">100+</div>
                                     <div className="text-lg lg:text-3xl -mt-1">Companies</div>
                                 </div>

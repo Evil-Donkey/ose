@@ -31,7 +31,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_TitleAndCopy {
             copy
-            id
+            sectionLabel
             fieldGroupName
             headings {
               heading
@@ -40,7 +40,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_FullScreenPanel {
             fieldGroupName
-            id
+            sectionLabel
             heading
             copy
             darkOverlay
@@ -60,7 +60,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_WhatWeDo {
             fieldGroupName
-            id
+            sectionLabel
             stats {
               title
               copy
@@ -92,7 +92,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Stats {
             fieldGroupName
-            id
+            sectionLabel
             stats {
               fieldGroupName
               title
@@ -107,7 +107,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_InfographicEcosystem {
             copy
             fieldGroupName
-            id
+            sectionLabel
             title
             spinoutDesktopImage {
               mediaItemUrl
@@ -129,7 +129,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_Expertise {
             fieldGroupName
             title
-            id
+            sectionLabel
             headings {
               heading
               position
@@ -157,8 +157,8 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_Sectors {
             copy
             fieldGroupName
+            sectionLabel
             title
-            id
             headings {
               heading
             }
@@ -189,7 +189,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_Portfolio {
             copy
             fieldGroupName
-            id
+            sectionLabel
             portfolio {
               ... on Portfolio {
                 id
@@ -223,7 +223,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_Cta {
             copy
             fieldGroupName
-            id
+            sectionLabel
             title
             cta {
               smallTitle
@@ -243,7 +243,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Story {
             fieldGroupName
-            id
+            sectionLabel
             story {
               ... on Story {
                 id
@@ -273,7 +273,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_OneColumnCopyAlternate {
             fieldGroupName
-            id
+            sectionLabel
             backgroundMedia
             copy
             ctaLabel
@@ -315,7 +315,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Stories {
             fieldGroupName
-            id
+            sectionLabel
             stories {
               ... on Story {
                 id
@@ -334,7 +334,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_News {
             fieldGroupName
-            id
+            sectionLabel
             news {
               ... on Post {
                 id
@@ -352,9 +352,9 @@ const FLEXIBLE_CONTENT_QUERY = `
             }
           }
           ... on Page_Flexiblecontent_FlexibleContent_InspirationalQuotes {
-            id
             carousel
             fieldGroupName
+            sectionLabel
             title
             quotes {
               author
@@ -373,7 +373,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Cards {
             fieldGroupName
-            id
+            sectionLabel
             title
             copy
             carousel
@@ -388,7 +388,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_FullPanelCarousel {
             fieldGroupName
-            id
+            sectionLabel
             heading
             slides {
               copy
@@ -409,9 +409,9 @@ const FLEXIBLE_CONTENT_QUERY = `
             }
           }
           ... on Page_Flexiblecontent_FlexibleContent_FullScreenList {
-            id
-            copy
             fieldGroupName
+            sectionLabel
+            copy
             heading
             listCopy
             listPosition
@@ -429,7 +429,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             }
           }
           ... on Page_Flexiblecontent_FlexibleContent_Faqs {
-            id
+            sectionLabel
             copy
             fieldGroupName
             title
@@ -440,7 +440,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Team {
             fieldGroupName
-            id
+            sectionLabel
           }
         }
       }

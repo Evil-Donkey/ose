@@ -4,8 +4,6 @@ import Button from '../Button';
 const PopOut = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(data);
-
   // Use WordPress data if available, otherwise fall back to default content
   const popoutLabel = data?.popoutLabel || 'WORK WITH US';
   const popoutContent = data?.popoutContent || [];

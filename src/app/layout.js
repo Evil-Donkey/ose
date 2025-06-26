@@ -2,6 +2,7 @@ import { AuthProvider } from "../context/AuthContext";
 import { Montserrat } from "next/font/google";
 import GoogleAnalytics from '../lib/googleAnalytics'
 import "./globals.css";
+import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${montserrat.variable}`}>
         <AuthProvider>
+          <HeaderWithMeganavLinks />
           {children}
         </AuthProvider>
         {/* <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} /> */}

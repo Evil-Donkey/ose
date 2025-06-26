@@ -208,16 +208,16 @@ const FullPanelCarousel = ({ data }) => {
                                     <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-top-right lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
                                 )}
                                 {imageOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
-                                <div className="min-h-[100vh] h-full flex flex-col justify-start pt-40">
+                                <div className="min-h-[100vh] h-full flex flex-col justify-start pt-40 pb-10 lg:pb-0">
                                     <Container className="py-15 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
                                         <div className="flex flex-col w-full gap-5">
                                             {title && (
-                                                <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[8rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-y-full">
+                                                <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[8rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-x-3 -translate-y-full">
                                                     {title}
                                                 </h3>
                                             )}
                                             {copy && (
-                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-2/5 text-2xl md:text-3xl 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
+                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-1/3 text-2xl md:text-[1.6rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                                     <div className="flex flex-col gap-8">
                                                         {/* First paragraph always visible */}
                                                         <div dangerouslySetInnerHTML={{ __html: slideContent.firstParagraph }} />
@@ -238,11 +238,11 @@ const FullPanelCarousel = ({ data }) => {
                                             {(accordionCopy || accordionList) && (
                                                 <div 
                                                     className={`transition-all duration-500 ease-in-out flex flex-col gap-5 text-lg md:text-xl ${
-                                                        isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                                                        isExpanded ? 'max-h-[1500px] lg:max-h-96 opacity-100' : 'max-h-0 opacity-0'
                                                     }`}
                                                 >
                                                     {accordionCopy && <div className="mt-15" dangerouslySetInnerHTML={{ __html: accordionCopy }} />}
-                                                    {accordionList && <ul className="list-disc columns-1 lg:columns-2 lg:gap-20">
+                                                    {accordionList && <ul className="list-disc columns-1 lg:columns-2 lg:gap-20 pl-4 lg:mb-5">
                                                         {accordionList.map((item, index) => (
                                                             <li className="mb-5" key={index}>{item.listItem}</li>
                                                         ))}
@@ -262,6 +262,7 @@ const FullPanelCarousel = ({ data }) => {
                                         </div>
                                     </Container>
                                 </div>
+                                {isExpanded && <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-blue-02/80 to-blue-02/0" />}
                             </div>
                         </SwiperSlide>
                     )

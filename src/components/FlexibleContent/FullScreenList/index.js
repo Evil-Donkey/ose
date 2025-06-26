@@ -64,7 +64,7 @@ const FullScreenList = ({ data }) => {
         <div className={`relative min-h-[100vh] h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-start' : 'justify-start'}`}>
             <div ref={el => backgroundImageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
             {backgroundImageMobile && <div ref={el => backgroundImageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />}
-            <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-transparent lg:bg-linear-to-b lg:from-black/60 lg:via-black/0 lg:to-black/0" />
+            <div className="absolute top-0 left-0 w-full h-1/2 bg-transparent bg-linear-to-b from-black/70 to-black/0" />
             <Container className="py-15 md:py-25 2xl:py-45 relative z-10 flex flex-col h-full">
                 <div className="flex flex-col items-center">
                     {heading && <h2 ref={titleRef} className="w-full text-center uppercase tracking-widest text-white text:lg md:text-xl mb-8 font-medium opacity-0 translate-x-full">{heading}</h2>}
