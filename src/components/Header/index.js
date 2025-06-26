@@ -6,7 +6,7 @@ import { IconHamburger, IconClose } from "../Icons/Hamburger";
 import Container from '../Container';
 import { usePathname } from 'next/navigation';
 import Meganav from './Meganav';
-import { useIsMobile } from '@/hooks/isMobile';
+import { useRouter } from 'next/router';
 
 const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
     const [isScrollingUp, setIsScrollingUp] = useState(true);
@@ -17,8 +17,6 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
     const pathname = usePathname();
     const isMobile = typeof window !== 'undefined' ? window.innerWidth < 1024 : false;
     const [activeMeganav, setActiveMeganav] = useState(null);
-
-    console.log('meganavData', meganavData);
 
     const topNavItems = [
         { label: 'Portfolio', href: '/portfolio' },
@@ -88,8 +86,21 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     }
 
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        // Wait for the page to render
+        setTimeout(() => {
+          if (window.location.hash) {
+            const el = document.getElementById(window.location.hash.substring(1));
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        }, 100); // Delay to ensure DOM is ready
+      }, []);
+
     return (
-        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-500 z-10 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'} ${activeMeganav ? '' : ''}`}>
+        <header className={`text-white fixed top-0 left-0 right-0 transition duration-300 z-100 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'} ${activeMeganav ? 'bg-darkblue! bg-none' : ''}`}>
             <Container>
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
@@ -144,17 +155,19 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                                     {item.label}
                                                 </a>
                                                 {/* Meganav dropdown */}
-                                                {/* {activeMeganav === item.label && (
-                                                    <div style={{ position: 'fixed', left: 0, top: '100px', width: '100vw', zIndex: 9999 }}>
-                                                        <Meganav
-                                                            heading={item.meganavHeading}
-                                                            anchorLinks={item.meganavLinks}
-                                                            isHeaderScrolled={isHeaderScrolled}
-                                                            pagePath={item.href}
-                                                            pageLinks={item.meganavPageLinks}
-                                                        />
-                                                    </div>
-                                                )} */}
+                                                <div
+                                                className={`absolute left-0 ${isHeaderScrolled ? 'lg:top-[110px] 2xl:top-[130px]' : 'lg:top-[140px] 2xl:top-[160px]'} w-full bg-darkblue text-white z-30 rounded-b-3xl transition-opacity duration-300 ${
+                                                    activeMeganav === item.label ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                                                }`}
+                                                >
+                                                    <Meganav
+                                                        heading={item.meganavHeading}
+                                                        anchorLinks={item.meganavLinks}
+                                                        isHeaderScrolled={isHeaderScrolled}
+                                                        pagePath={item.href}
+                                                        pageLinks={item.meganavPageLinks}
+                                                    />
+                                                </div>
                                             </div>
                                         );
                                     })}

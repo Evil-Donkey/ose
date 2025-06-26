@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import GoogleAnalytics from '../lib/googleAnalytics'
 import "./globals.css";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import ScrollToHashOnRouteChange from "@/components/ScrollToHashOnRouteChange";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${montserrat.variable}`}>
+        <ScrollToHashOnRouteChange />
         <AuthProvider>
           <HeaderWithMeganavLinks />
           {children}
