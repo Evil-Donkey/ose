@@ -11,7 +11,7 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
         </div>
         
         <div className="w-1/2 flex gap-10 justify-between">
-            <div className="w-1/3">
+            <div className="w-1/2">
                 <ul className="space-y-3">
                     {anchorLinks.map(({ sectionLabel }) => (
                         <li key={formatSectionLabel(sectionLabel)} className="flex gap-2 items-start">
@@ -43,7 +43,7 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
                 </ul>
             </div>
             
-            <div className="w-1/3">
+            <div className="w-1/2">
                 {pageLinks && pageLinks.links && pageLinks.links.length > 0 && (
                     <div>
                         {pageLinks.heading && (

@@ -82,7 +82,7 @@ const OneColumnCopyAlternate = ({ data }) => {
             
             <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
                 <Container className={`h-full py-15 md:py-25 2xl:py-45 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
-                    <div className={`flex flex-col w-full lg:w-1/2 gap-5 lg:py-15`}>
+                    <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-4/5 xl:w-2/3 2xl:w-1/2" : "lg:w-1/2"} gap-5 lg:py-15`}>
                         {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />}
                         <div className="w-full lg:w-3/4 flex flex-col gap-5">
                             {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl lg:text-[1.8rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">

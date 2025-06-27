@@ -70,6 +70,21 @@ const FullPanelCarousel = ({ data }) => {
         // }, 600);
     };
 
+    // Update Swiper when accordion state changes
+    useEffect(() => {
+        if (swiperRef.current?.swiper) {
+            // Small delay to ensure DOM has updated
+            const timer = setTimeout(() => {
+                swiperRef.current.swiper.update();
+                // Force a resize event to ensure proper recalculation
+                swiperRef.current.swiper.updateSize();
+                swiperRef.current.swiper.updateSlides();
+            }, 100);
+            
+            return () => clearTimeout(timer);
+        }
+    }, [expandedSlides]);
+
     // Parse content on client side only
     useEffect(() => {
         setIsClient(true);
