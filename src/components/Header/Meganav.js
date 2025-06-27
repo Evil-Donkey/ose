@@ -6,12 +6,12 @@ import Link from 'next/link';
 const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
   return (
     <Container className="flex">
-        <div className="w-1/2 pr-18 flex items-start">
+        <div className="w-2/5 2xl:w-1/2 pr-18 flex items-start">
             <h2 className="text-[5rem]/23" dangerouslySetInnerHTML={{ __html: heading }} />
         </div>
         
-        <div className="w-1/2 flex gap-10 justify-between">
-            <div className="w-1/2">
+        <div className="w-3/5 2xl:w-1/2 flex gap-10 justify-end lg:ps-5 xl:ps-65 2xl:ps-30">
+            <div className={`${pageLinks && pageLinks.links && pageLinks.links.length > 0 ? 'w-1/2' : 'w-auto'}`}>
                 <ul className="space-y-3">
                     {anchorLinks.map(({ sectionLabel }) => (
                         <li key={formatSectionLabel(sectionLabel)} className="flex gap-2 items-start">
@@ -43,8 +43,8 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
                 </ul>
             </div>
             
-            <div className="w-1/2">
-                {pageLinks && pageLinks.links && pageLinks.links.length > 0 && (
+            {pageLinks && pageLinks.links && pageLinks.links.length > 0 && (
+                <div className="w-1/2">
                     <div>
                         {pageLinks.heading && (
                             <div className="text-lightblue text-lg mb-4 font-medium">{pageLinks.heading}</div>
@@ -79,8 +79,8 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
                             ))}
                         </ul>
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     </Container>
   );
