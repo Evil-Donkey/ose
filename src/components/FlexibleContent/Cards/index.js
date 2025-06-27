@@ -98,7 +98,7 @@ const Cards = ({ data }) => {
                 }
                 {copy && 
                     <div className="flex flex-col items-center md:gap-10 text-center">
-                        <div ref={copyRef} className="w-full md:w-1/3 lg:-mb-10 opacity-0 translate-y-5" dangerouslySetInnerHTML={{ __html: copy }} />
+                        <div ref={copyRef} className={`w-full ${tabs ? 'md:w-2/3' : 'md:w-1/3'} lg:-mb-10 opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: copy }} />
                     </div>
                 }
                 {tabs && (
@@ -107,7 +107,7 @@ const Cards = ({ data }) => {
                             <button
                                 key={index}
                                 ref={el => tabsRef.current[index] = el}
-                                className={`opacity-0 translate-y-20 focus:outline-none transition-colors cursor-pointer ${activeTab === field ? 'text-lightblue font-medium' : 'text-blue-02 hover:text-darkblue'}`}
+                                className={`opacity-0 translate-y-20 focus:outline-none transition-colors cursor-pointer ${activeTab === field ? 'text-lightblue font-medium underline' : 'text-blue-02 hover:text-darkblue'}`}
                                 onClick={() => setActiveTab(field)}
                                 type="button"
                             >

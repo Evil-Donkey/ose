@@ -5,7 +5,7 @@ import { LinkedIn, X, YouTube } from "../Icons/Social";
 import Container from "../Container";
 
 const Footer = ({ data }) => {
-    const { copyright, address, deepTechEmail, healthTechEmail, investorsEmail, lifeSciencesEmail, mediaEmail, telephone } = data;
+    const { copyright, address, investorsEmail, oxfordAcademicsEmail, mediaEmail, telephone } = data;
 
     return (
         <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16">
@@ -34,39 +34,14 @@ const Footer = ({ data }) => {
                             <h2 className="text-3xl mb-4">Get in touch</h2>
                             <div className="lg:space-y-4">
                                 <div>
-                                    <h3 className="text-lightblue hidden lg:block">Life Sciences</h3>
-                                    <a href={`mailto:${lifeSciencesEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
-                                        {lifeSciencesEmail}
+                                    <h3 className="text-lightblue hidden lg:block">Oxford Academics &amp; Researchers</h3>
+                                    <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
+                                        {oxfordAcademicsEmail}
                                     </a>
-                                    <a href={`mailto:${lifeSciencesEmail}`} className="text-sm hover:text-lightblue lg:hidden">
-                                        Life Sciences
-                                    </a>
-                                </div>
-                                <div>
-                                    <h3 className="text-lightblue hidden lg:block">Health Tech</h3>
-                                    <a href={`mailto:${healthTechEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
-                                        {healthTechEmail}
-                                    </a>
-                                    <a href={`mailto:${healthTechEmail}`} className="text-sm hover:text-lightblue lg:hidden">
-                                        Health Tech
+                                    <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue lg:hidden">
+                                        Oxford Academics &amp; Researchers
                                     </a>
                                 </div>
-                                <div>
-                                    <h3 className="text-lightblue hidden lg:block">Deep Tech</h3>
-                                    <a href={`mailto:${deepTechEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
-                                        {deepTechEmail}
-                                    </a>
-                                    <a href={`mailto:${deepTechEmail}`} className="text-sm hover:text-lightblue lg:hidden">
-                                        Deep Tech
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Get in touch */}
-                        <div className="w-full lg:w-1/2 mb-5 lg:mb-0">
-                            <h2 className="text-3xl mb-4 hidden lg:block">&nbsp;</h2>
-                            <div className="lg:space-y-4">
                                 <div>
                                     <h3 className="text-lightblue hidden lg:block">Investors &amp; Co-Investors</h3>
                                     <a href={`mailto:${investorsEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
@@ -76,6 +51,13 @@ const Footer = ({ data }) => {
                                         Investors &amp; Co-Investors
                                     </a>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Get in touch */}
+                        <div className="w-full lg:w-1/2 mb-5 lg:mb-0">
+                            <h2 className="text-3xl mb-4 hidden lg:block">&nbsp;</h2>
+                            <div className="lg:space-y-4">
                                 <div className="mb-5">
                                     <h3 className="text-lightblue hidden lg:block">Media</h3>
                                     <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue hidden lg:block">

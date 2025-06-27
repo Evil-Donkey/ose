@@ -54,3 +54,6 @@ body {
 .faqs-section ul {
   @apply list-disc list-inside;
 }
+.swiper-slide {
+  @apply h-auto!;
+}

@@ -6,10 +6,8 @@ const FOOTER_DATA_QUERY = `
       globalSettings {
         copyright
         address
-        deepTechEmail
-        healthTechEmail
+        oxfordAcademicsEmail
         investorsEmail
-        lifeSciencesEmail
         mediaEmail
         telephone
       }
