@@ -6,7 +6,7 @@ import { IconHamburger, IconClose } from "../Icons/Hamburger";
 import Container from '../Container';
 import { usePathname } from 'next/navigation';
 import Meganav from './Meganav';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
     const [isScrollingUp, setIsScrollingUp] = useState(true);
@@ -106,9 +106,9 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
                         <div className="text-xl font-bold">
                             {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                            <a href="/">
+                            <Link href="/">
                                 <LottieLogo />
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div
@@ -121,7 +121,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                     {topNavItems.map((item, index) => {
                                         const isActive = pathname === item.href;
                                         return (
-                                            <a
+                                            <Link
                                                 href={item.href}
                                                 key={index}
                                                 className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 py-2 rounded-xl
@@ -129,7 +129,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                                     ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}`}
                                             >
                                                 {item.label}
-                                            </a>
+                                            </Link>
                                         );
                                     })}
                                 </nav>
@@ -144,7 +144,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                                 onMouseEnter={!isMobile ? () => setActiveMeganav(item.label) : undefined}
                                                 onMouseLeave={!isMobile ? () => setActiveMeganav(null) : undefined}
                                             >
-                                                <a
+                                                <Link
                                                     href={item.href}
                                                     className={`text-3xl 2xl:text-4xl transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 rounded-xl pt-2
                                                         ${isActive ? 'text-lightblue' : 'hover:text-lightblue text-white'}
@@ -153,7 +153,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                                         `}
                                                 >
                                                     {item.label}
-                                                </a>
+                                                </Link>
                                                 {/* Meganav dropdown */}
                                                 <div
                                                 className={`absolute left-0 top-0 px-8 pt-40 2xl:pt-50 pb-20 w-full bg-darkblue text-white rounded-b-3xl -z-1 transition-opacity duration-300 ${

@@ -27,9 +27,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html {
+/* html {
   scroll-behavior: smooth !important;
- }
+ } */
 
 
 .swiper-button-next,
