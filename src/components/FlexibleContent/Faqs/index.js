@@ -72,7 +72,7 @@ const Faqs = ({ data }) => {
                                 ref={el => copyRef.current[idx + 1] = el}
                             >
                                 <button
-                                    className="w-full flex items-center justify-between px-7 py-6 cursor-pointer focus:outline-none text-left text-xl md:text-2xl font-medium"
+                                    className="w-full flex items-center justify-between px-7 py-6 cursor-pointer focus:outline-none text-left text-xl 2xl:text-2xl font-medium"
                                     onClick={() => setOpenIndex(isOpen ? null : idx)}
                                     aria-expanded={isOpen}
                                 >
@@ -92,7 +92,7 @@ const Faqs = ({ data }) => {
                                     style={{}}
                                 >
                                     {isOpen && (
-                                        <div className="text-base md:text-lg font-normal leading-relaxed">
+                                        <div className="text-lg 2xl:text-lg font-normal leading-relaxed">
                                             <div className="flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: faq.answer }} />
                                         </div>
                                     )}

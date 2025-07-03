@@ -62,7 +62,7 @@ const FullScreenList = ({ data }) => {
     }, []);
 
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={`relative min-h-[100vh] ${list ? '2xl:min-h-auto' : ''} h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-center' : 'justify-start'}`}>
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={`relative min-h-[90vh] ${list ? '2xl:min-h-auto' : ''} h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-center' : 'justify-start'}`}>
             <div ref={el => backgroundImageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
             {backgroundImageMobile && <div ref={el => backgroundImageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />}
             <div className="absolute top-0 left-0 w-full h-1/2 bg-transparent bg-linear-to-b from-black/70 to-black/0" />
@@ -83,8 +83,8 @@ const FullScreenList = ({ data }) => {
                                         <li 
                                         key={index} 
                                         className="flex flex-col mb-5 ps-4 relative before:content-[''] before:absolute before:left-0 before:top-3 before:w-2 before:h-2 before:rounded-full before:bg-lightblue">
-                                            <h3 className="text-2xl font-medium">{item.title}</h3>
-                                            <div className="text-base md:text-xl" dangerouslySetInnerHTML={{ __html: item.description }} />
+                                            <h3 className="text-lg 2xl:text-2xl font-medium">{item.title}</h3>
+                                            <div className="text-base 2xl:text-xl" dangerouslySetInnerHTML={{ __html: item.description }} />
                                         </li>
                                     ))}
                                 </ul>

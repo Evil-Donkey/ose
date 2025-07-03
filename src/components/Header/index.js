@@ -7,6 +7,7 @@ import Container from '../Container';
 import { usePathname } from 'next/navigation';
 import Meganav from './Meganav';
 import Link from 'next/link';
+import formatSectionLabel from '@/lib/formatSectionLabel';
 
 const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
     const [isScrollingUp, setIsScrollingUp] = useState(true);
@@ -100,7 +101,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
       }, []);
 
     return (
-        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-300 z-99 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'py-4 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'py-7 2xl:py-10'}`}>
+        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-300 z-99 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'pt-2 pb-3 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'pt-7 pb-7 2xl:py-10'}`}>
             <Container>
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
@@ -116,17 +117,19 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                         onMouseLeave={!isMobile ? () => setActiveMeganav(null) : undefined}
                     >
                         <div className={`transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col items-center lg:items-end justify-center lg:justify-start gap-5 lg:gap-0 absolute top-0 left-0 w-svw h-svh lg:h-auto lg:w-auto bg-blue-02 lg:bg-transparent lg:static ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-none'}`}>
-                            <div className={`flex justify-end transition-all duration-500 order-last lg:order-first ${isHeaderScrolled ? 'mb-1 2xl:mb-3' : 'md:mb-2 2xl:mb-4'}`}>
-                                <nav className="lg:space-x-5 flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0">
+                            <div className={`flex justify-end transition-all duration-500 order-last lg:order-first ${isHeaderScrolled ? 'mb-0 2xl:mb-3' : 'md:mb-2 2xl:mb-4'}`}>
+                                <nav className={`${isHeaderScrolled ? 'lg:space-x-2' : 'xl:space-x-5'} flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0`}>
                                     {topNavItems.map((item, index) => {
                                         const isActive = pathname === item.href;
                                         return (
                                             <Link
                                                 href={item.href}
                                                 key={index}
-                                                className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 py-2 rounded-xl
+                                                className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 pt-2 rounded-xl
                                                     ${isActive ? 'text-lightblue' : 'hover:text-lightblue text-white'}
-                                                    ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}`}
+                                                    ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}
+                                                    ${isHeaderScrolled ? 'pb-1' : 'pb-2'}
+                                                `}
                                             >
                                                 {item.label}
                                             </Link>
@@ -146,19 +149,20 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                             >
                                                 <Link
                                                     href={item.href}
-                                                    className={`text-3xl 2xl:text-4xl transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 rounded-xl pt-2
+                                                    className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 rounded-xl pt-2
                                                         ${isActive ? 'text-lightblue' : 'hover:text-lightblue text-white'}
                                                         ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}
-                                                        ${isHeaderScrolled ? 'pb-6 2xl:pb-7' : 'pb-9 2xl:pb-10'}
-                                                        `}
+                                                        ${isHeaderScrolled ? 'pb-6 2xl:pb-7 text-2xl' : 'pb-9 2xl:pb-10 text-3xl 2xl:text-4xl'}
+                                                    `}
                                                 >
                                                     {item.label}
                                                 </Link>
                                                 {/* Meganav dropdown */}
                                                 <div
-                                                    className={`absolute left-0 top-0 px-8 pt-40 2xl:pt-50 pb-20 w-full bg-darkblue text-white rounded-b-3xl -z-1 transition-opacity duration-300 ${
-                                                        activeMeganav === item.label ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-full'
-                                                    }`}
+                                                    className={`absolute left-0 top-0 px-8 2xl:pt-50 pb-20 w-full bg-darkblue text-white rounded-b-3xl -z-1 transition-opacity duration-300 
+                                                    ${activeMeganav === item.label ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-full'}
+                                                    ${isHeaderScrolled ? 'pt-30' : 'pt-40'}
+                                                    `}
                                                 >
                                                     <Meganav
                                                         heading={item.meganavHeading}
@@ -167,6 +171,81 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
                                                         pagePath={item.href}
                                                         pageLinks={item.meganavPageLinks}
                                                     />
+                                                </div>
+                                                
+                                                <div className={`flex gap-10 absolute pt-12 ps-2
+                                                    ${activeMeganav === item.label ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-full'}                                 
+                                                `}>
+                                                    <div className={`${item.meganavPageLinks && item.meganavPageLinks.links && item.meganavPageLinks.links.length > 0 ? 'w-1/2' : 'w-auto'}`}>
+                                                        <ul className="space-y-3">
+                                                            {item.meganavLinks.map(({ sectionLabel }) => (
+                                                                <li key={formatSectionLabel(sectionLabel)} className="flex gap-2 items-start">
+                                                                    <svg
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 7.7 9.8"
+                                                                        width={16}
+                                                                        height={16}
+                                                                        fill="none"
+                                                                        className="mt-1 2xl:mt-2 flex-shrink-0 min-w-[16px] min-h-[16px]"
+                                                                    >
+                                                                        <g>
+                                                                            <path
+                                                                                d="M3.9 9.3V.5M3.9 9.3L.5 6M3.9 9.3l3.4-3.3"
+                                                                                stroke="#fff"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"
+                                                                            />
+                                                                        </g>
+                                                                    </svg>
+                                                                    <Link
+                                                                        href={`${item.href}#${formatSectionLabel(sectionLabel)}`}
+                                                                        className="hover:text-lightblue transition-colors text-base 2xl:text-lg font-medium"
+                                                                    >
+                                                                        {sectionLabel}
+                                                                    </Link>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                    
+                                                    {item.meganavPageLinks && item.meganavPageLinks.links && item.meganavPageLinks.links.length > 0 && (
+                                                        <div className="w-1/2">
+                                                            <div>
+                                                                {item.meganavPageLinks.heading && (
+                                                                    <div className="text-lightblue text-lg mb-4 font-medium">{item.meganavPageLinks.heading}</div>
+                                                                )}
+                                                                <ul className="space-y-2">
+                                                                    {item.meganavPageLinks.links.map((linkObj, idx) => (
+                                                                        <li key={idx} className="flex gap-2">
+                                                                            <svg
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                                width="16"
+                                                                                height="13"
+                                                                                viewBox="0 0 9.75 7.73"
+                                                                                fill="none"
+                                                                                className="mt-1 2xl:mt-2 flex-shrink-0 min-w-[16px] min-h-[16px]"
+                                                                                >
+                                                                                <g>
+                                                                                    <path
+                                                                                    d="M9.25 3.87H0.5M9.25 3.87l-3.28 3.37M9.25 3.87L5.97 0.5"
+                                                                                    stroke="#fff"
+                                                                                    strokeLinecap="round"
+                                                                                    strokeLinejoin="round"
+                                                                                    />
+                                                                                </g>
+                                                                            </svg>
+                                                                            <a
+                                                                                href={linkObj.link?.link || '#'}
+                                                                                className="hover:text-lightblue transition-colors text-base 2xl:text-lg font-medium"
+                                                                            >
+                                                                                {linkObj.label}
+                                                                            </a>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         );

@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import Container from "../../Container";
 import Button from "@/components/Button";
+import Modal from "@/components/Modal";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 
 // Import Swiper styles
@@ -22,55 +23,48 @@ const FullPanelCarousel = ({ data }) => {
     const headingRef = useRef([]);
     const titleRef = useRef([]);
     const copyRef = useRef([]);
-    const paginationWrapperRef = useRef(null);
     const paginationRef = useRef([]);
     const backgroundImageRef = useRef([]);
     const [activeIndex, setActiveIndex] = useState(0);
-    const [expandedSlides, setExpandedSlides] = useState({});
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
     const [parsedContent, setParsedContent] = useState({});
     const [isClient, setIsClient] = useState(false);
 
-    // Function to scroll to top of component
-    const scrollToTop = () => {
-        componentRef.current?.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-        });
-    };
-
     // Function to parse HTML and extract first paragraph
-    const parseCopyContent = (copy) => {
-        if (!copy) return { firstParagraph: '', remainingContent: '' };
+    // const parseCopyContent = (copy) => {
+    //     if (!copy) return { firstParagraph: '', remainingContent: '' };
         
-        // Create a temporary div to parse HTML
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = copy;
+    //     // Create a temporary div to parse HTML
+    //     const tempDiv = document.createElement('div');
+    //     tempDiv.innerHTML = copy;
         
-        const paragraphs = tempDiv.querySelectorAll('p');
+    //     const paragraphs = tempDiv.querySelectorAll('p');
         
-        if (paragraphs.length === 0) {
-            return { firstParagraph: copy, remainingContent: '' };
-        }
+    //     if (paragraphs.length === 0) {
+    //         return { firstParagraph: copy, remainingContent: '' };
+    //     }
         
-        const firstParagraph = paragraphs[0].outerHTML;
-        const remainingParagraphs = Array.from(paragraphs).slice(1);
-        const remainingContent = remainingParagraphs.map(p => p.outerHTML).join('');
+    //     const firstParagraph = paragraphs[0].outerHTML;
+    //     const remainingParagraphs = Array.from(paragraphs).slice(1);
+    //     const remainingContent = remainingParagraphs.map(p => p.outerHTML).join('');
         
-        return { firstParagraph, remainingContent };
+    //     return { firstParagraph, remainingContent };
+    // };
+
+    // Function to open modal with content
+    const openModal = (slide) => {
+        setModalContent(slide);
+        setModalOpen(true);
     };
 
-    // Function to toggle accordion
-    const toggleAccordion = (slideIndex) => {
-        setExpandedSlides(prev => ({
-            ...prev,
-            [slideIndex]: !prev[slideIndex]
-        }));
-        // setTimeout(() => {
-        //     scrollToTop();
-        // }, 600);
+    // Function to close modal
+    const closeModal = () => {
+        setModalOpen(false);
+        setModalContent(null);
     };
 
-    // Update Swiper when accordion state changes
+    // Update Swiper when modal state changes
     useEffect(() => {
         if (swiperRef.current?.swiper) {
             // Small delay to ensure DOM has updated
@@ -83,19 +77,19 @@ const FullPanelCarousel = ({ data }) => {
             
             return () => clearTimeout(timer);
         }
-    }, [expandedSlides]);
+    }, [modalOpen]);
 
     // Parse content on client side only
-    useEffect(() => {
-        setIsClient(true);
-        const content = {};
-        slides.forEach((slide, index) => {
-            if (slide.copy) {
-                content[index] = parseCopyContent(slide.copy);
-            }
-        });
-        setParsedContent(content);
-    }, [slides]);
+    // useEffect(() => {
+    //     setIsClient(true);
+    //     const content = {};
+    //     slides.forEach((slide, index) => {
+    //         if (slide.copy) {
+    //             content[index] = parseCopyContent(slide.copy);
+    //         }
+    //     });
+    //     setParsedContent(content);
+    // }, [slides]);
 
     useEffect(() => {
         const titleTl = gsap.timeline();
@@ -177,7 +171,7 @@ const FullPanelCarousel = ({ data }) => {
     }, [slides]);
 
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} ref={componentRef} className="relative min-h-[100vh] h-full w-full">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} ref={componentRef} className="relative min-h-[90vh] h-full w-full">
             {heading && <h2 ref={el => headingRef.current[0] = el} className="text-white uppercase tracking-widest text-lg md:text-xl px-15 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
             <div className={`absolute top-25 md:top-25 left-1/2 w-full transform -translate-x-1/2 z-50`}>
                 <div className="flex justify-center space-x-2 md:space-x-4">
@@ -188,7 +182,6 @@ const FullPanelCarousel = ({ data }) => {
                             onClick={() => {
                                 swiperRef.current?.swiper?.slideTo(index);
                                 setActiveIndex(index);
-                                setExpandedSlides({});
                             }}
                             className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full ${activeIndex === index ? 'text-lightblue' : 'text-white'}`}
                         >
@@ -204,17 +197,15 @@ const FullPanelCarousel = ({ data }) => {
                 className="h-full full-panel-carousel-swiper"
                 onSlideChange={swiper => {
                     setActiveIndex(swiper.activeIndex);
-                    setExpandedSlides({});
                 }}
             >
                 {slides.map((slide, index) => {
                     const { title, copy, backgroundImage, backgroundImageMobile, imageOverlay, accordionCopy, accordionList } = slide;
                     const slideContent = parsedContent[index] || { firstParagraph: copy, remainingContent: '' };
-                    const isExpanded = expandedSlides[index];
                     
                     return (
                         <SwiperSlide key={index}>
-                            <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
+                            <div className="relative min-h-[90vh] h-full w-full overflow-hidden">
                                 <div 
                                     ref={el => backgroundImageRef.current[index] = el}
                                     className={`background-image absolute top-0 left-0 w-full h-full bg-[100%_auto] bg-fixed bg-top-right scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} 
@@ -224,21 +215,19 @@ const FullPanelCarousel = ({ data }) => {
                                     <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-top-right lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
                                 )}
                                 {imageOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
-                                <div className="min-h-[100vh] h-full flex flex-col justify-start pt-40 pb-10 lg:pb-0">
+                                <div className="min-h-[90vh] h-full flex flex-col justify-start pt-40 pb-10 lg:pb-0">
                                     <Container className="py-15 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full">
                                         <div className="flex flex-col w-full gap-5">
                                             {title && (
-                                                <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[8rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-x-3 -translate-y-full">
+                                                <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[7rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-x-3 -translate-y-full">
                                                     {title}
                                                 </h3>
                                             )}
                                             {copy && (
-                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-1/3 text-2xl md:text-[1.6rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
-                                                    <div className="flex flex-col gap-8">
-                                                        {/* First paragraph always visible */}
+                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-1/3 text-2xl md:text-[1.2rem]/7 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
+                                                    <div className="flex flex-col gap-8" dangerouslySetInnerHTML={{ __html: copy }} />
+                                                    {/* <div className="flex flex-col gap-8">
                                                         <div dangerouslySetInnerHTML={{ __html: slideContent.firstParagraph }} />
-                                                        
-                                                        {/* Remaining content with smooth transition - only show on client */}
                                                         {isClient && slideContent.remainingContent && (
                                                             <div 
                                                                 className={`overflow-hidden transition-all duration-500 ease-in-out ${
@@ -248,37 +237,24 @@ const FullPanelCarousel = ({ data }) => {
                                                                 <div dangerouslySetInnerHTML={{ __html: slideContent.remainingContent }} />
                                                             </div>
                                                         )}
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             )}
-                                            {(accordionCopy || accordionList) && (
-                                                <div 
-                                                    className={`transition-all duration-500 ease-in-out flex flex-col gap-5 text-lg md:text-xl ${
-                                                        isExpanded ? 'max-h-[1500px] lg:max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                                                    }`}
-                                                >
-                                                    {accordionCopy && <div className="mt-15" dangerouslySetInnerHTML={{ __html: accordionCopy }} />}
-                                                    {accordionList && <ul className="list-disc columns-1 lg:columns-2 lg:gap-40 pl-4 lg:mb-5">
-                                                        {accordionList.map((item, index) => (
-                                                            <li className="mb-5 break-inside-avoid" key={index}>{item.listItem}</li>
-                                                        ))}
-                                                    </ul>}
-                                                </div>
-                                            )}
-                                            {(accordionList || (isClient && slideContent.remainingContent)) && 
+
+                                            {(accordionCopy || accordionList) && 
                                                 <div className="flex flex-col gap-5 z-50">
                                                     <Button 
-                                                        onClick={() => toggleAccordion(index)}
+                                                        onClick={() => openModal(slide)}
                                                         className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase"
                                                     >
-                                                        {isExpanded ? 'Read less' : 'Read more'}
+                                                        Read more
                                                     </Button>
                                                 </div>
                                             }
                                         </div>
                                     </Container>
                                 </div>
-                                {isExpanded && <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-blue-02/80 to-blue-02/0" />}
+                                {/* {isExpanded && <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-blue-02/80 to-blue-02/0" />} */}
                             </div>
                         </SwiperSlide>
                     )
@@ -308,6 +284,30 @@ const FullPanelCarousel = ({ data }) => {
                 background: #06acd4;
                 }
             `}</style>
+
+            {/* Modal */}
+            <Modal 
+                isOpen={modalOpen} 
+                onClose={closeModal}
+                title={modalContent?.title}
+            >
+                {modalContent && (
+                    <div className="flex flex-col gap-8 text-lg">
+                        {modalContent.accordionCopy && (
+                            <div dangerouslySetInnerHTML={{ __html: modalContent.accordionCopy }} />
+                        )}
+                        {modalContent.accordionList && (
+                            <ul className="list-disc columns-1 lg:columns-2 lg:gap-40 pl-4 space-y-2">
+                                {modalContent.accordionList.map((item, index) => (
+                                    <li className="mb-3 break-inside-avoid" key={index}>
+                                        {item.listItem}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 };

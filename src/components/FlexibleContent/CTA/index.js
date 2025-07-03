@@ -87,7 +87,7 @@ const CTA = ({ data }) => {
                                     <div className={`flex flex-col ${!ctaLabel ? 'md:aspect-7/6 justify-end' : ''}`}>
                                         <div>
                                             {smallTitle && <p className="text-xs md:text-sm text-white mb-4">{smallTitle}</p>}
-                                            {largeTitle && <h3 className="text-3xl md:text-5xl/13 2xl:text-6xl text-white mb-6">{largeTitle}</h3>}
+                                            {largeTitle && <h3 className="text-3xl md:text-4xl/11 2xl:text-6xl text-white mb-6">{largeTitle}</h3>}
                                         </div>
                                         {copy && <div className="text-white mb-8 text-base md:text-xl flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />}
                                     </div>

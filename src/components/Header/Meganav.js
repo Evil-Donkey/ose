@@ -10,7 +10,7 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
             <h2 className="text-[5rem]/23" dangerouslySetInnerHTML={{ __html: heading }} />
         </div>
         
-        <div className="w-3/5 2xl:w-1/2 flex gap-10 justify-end lg:ps-5 xl:ps-65 2xl:ps-30">
+        {/* <div className="w-3/5 2xl:w-1/2 flex gap-10 lg:ps-5 xl:ps-65 2xl:ps-30">
             <div className={`${pageLinks && pageLinks.links && pageLinks.links.length > 0 ? 'w-1/2' : 'w-auto'}`}>
                 <ul className="space-y-3">
                     {anchorLinks.map(({ sectionLabel }) => (
@@ -81,7 +81,7 @@ const Meganav = ({ heading, anchorLinks = [], pagePath, pageLinks }) => {
                     </div>
                 </div>
             )}
-        </div>
+        </div> */}
     </Container>
   );
 };

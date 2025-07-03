@@ -17,7 +17,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     const imageRef = useRef([]);
     const videoRef = useRef([]);
 
-    const size = headingSize === "small" ? "text-5xl md:text-[3.5rem]/17 lg:text-[4rem]/20 2xl:text-[4.5rem]/22" : "text-8xl md:text-[8rem]/30 lg:text-[10rem]/50";
+    const size = headingSize === "small" ? "text-5xl md:text-[3.5rem]/17 lg:text-[4rem]/20 2xl:text-[4.5rem]/22" : "text-8xl md:text-[8rem]/30 2xl:text-[10rem]/50";
     
     useEffect(() => {
         const titleTl = gsap.timeline();
@@ -64,7 +64,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     }, []);
 
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[90vh] h-full w-full overflow-hidden bg-white">
             {backgroundMedia && (image || imageMobile) && (
                 <>
                     {image && <div ref={el => imageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
@@ -80,8 +80,8 @@ const OneColumnCopyAlternate = ({ data }) => {
                 </>
             }
             
-            <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
-                <Container className={`h-full py-15 md:py-25 2xl:py-45 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
+            <div className="min-h-[90vh] h-full flex flex-col justify-end lg:justify-center">
+                <Container className={`h-full py-15 md:py-15 2xl:py-25 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
                     <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-4/5 xl:w-2/3 2xl:w-1/2" : "lg:w-1/2"} gap-5 lg:py-15`}>
                         {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />}
                         <div className="w-full lg:w-3/4 flex flex-col gap-5">

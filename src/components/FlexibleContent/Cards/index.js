@@ -97,7 +97,7 @@ const Cards = ({ data }) => {
                     </div>
                 }
                 {copy && 
-                    <div className="flex flex-col items-center md:gap-10 text-center">
+                    <div className="flex flex-col items-center md:gap-10 text-center text-base md:text-xl">
                         <div ref={copyRef} className={`w-full ${tabs ? 'md:w-2/3' : 'md:w-1/3'} lg:-mb-10 opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: copy }} />
                     </div>
                 }

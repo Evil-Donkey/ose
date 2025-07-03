@@ -76,7 +76,7 @@ const InspirationalQuotes = ({ data }) => {
                         const { author, quoteOnTheRight, quote, image, darkOverlay, mobile } = q;
                         return (
                             <SwiperSlide key={index.toString()} className="h-auto!">
-                                <div className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+                                <div className="relative min-h-[90vh] h-full w-full overflow-hidden bg-white">
                                     {(image || mobile) && (
                                         <>
                                             {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
@@ -84,13 +84,13 @@ const InspirationalQuotes = ({ data }) => {
                                             {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${quoteOnTheRight ? "lg:left-auto lg:right-0" : ""} w-full lg:w-3/5 h-3/5 lg:h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                         </>
                                     )}
-                                    <div className="min-h-[100vh] h-full flex flex-col items-center justify-end lg:justify-center">
+                                    <div className="min-h-[90vh] h-full flex flex-col items-center justify-end lg:justify-center">
                                         <Container className={`h-full py-30 md:py-15 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-center justify-end" : "items-end md:items-center justify-start"}`}>
                                             <div className="flex flex-col w-full lg:w-1/2 gap-3 md:gap-5 lg:pt-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                                 {quote && 
                                                 <div className="relative">
                                                     <div className="absolute -top-10 md:-top-15 left-0 bg-[url('/quote.svg')] bg-contain bg-center bg-no-repeat w-10 h-10 md:w-15 md:h-15" />
-                                                    <div className="pt-5 text-2xl md:text-[2.5rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
+                                                    <div className="pt-5 text-2xl md:text-[2rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
                                                 </div>
                                                 }
                                                 {author && 
@@ -134,7 +134,7 @@ const InspirationalQuotes = ({ data }) => {
                 quotes.map((q, index) => {
                     const { author, quoteOnTheRight, quote, image, darkOverlay, mobile } = q;
                     return (
-                        <div key={index.toString()} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+                        <div key={index.toString()} className="relative min-h-[90vh] h-full w-full overflow-hidden bg-white">
                             {(image || mobile) && (
                                 <>
                                     {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
@@ -142,13 +142,13 @@ const InspirationalQuotes = ({ data }) => {
                                     {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${quoteOnTheRight ? "lg:left-auto lg:right-0" : ""} w-full lg:w-3/5 h-3/5 lg:h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                 </>
                             )}
-                            <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
+                            <div className="min-h-[90vh] h-full flex flex-col justify-end lg:justify-center">
                                 <Container className={`h-full py-30 md:py-20 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-start justify-end" : "items-end md:items-start justify-start"}`}>
                                     <div className="flex flex-col w-full lg:w-1/2 gap-3 md:gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                         {quote && 
                                         <div className="relative">
                                             <div className="absolute -top-10 md:-top-15 left-0 bg-[url('/quote.svg')] bg-contain bg-center bg-no-repeat w-10 h-10 md:w-15 md:h-15" />
-                                            <div className="pt-5 text-2xl md:text-[2.5rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
+                                            <div className="pt-5 text-2xl md:text-[2rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
                                         </div>
                                         }
                                         {author && 

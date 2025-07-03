@@ -83,7 +83,7 @@ const Sectors = ({ data }) => {
                                 </Link>
 
                                 <div className="flex flex-col text-center items-center gap-5 mt-6 2xl:mt-8 px-3 md:px-8 xl:px-12 flex-grow-1 justify-between">
-                                    <div className="text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
+                                    <div className="text-base 2xl:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
                                     <Link href={link} className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase">
                                         Discover {title}
                                     </Link>

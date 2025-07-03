@@ -69,7 +69,7 @@ const Story = ({ data }) => {
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}>
-            <div className="relative w-full lg:min-h-[100vh] h-full">
+            <div className="relative w-full lg:min-h-[90vh] h-full">
                 {backgroundImage && 
                     <>
                         <div ref={imageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage})` }} />
@@ -77,13 +77,13 @@ const Story = ({ data }) => {
                     </>
                 }
                 {title &&
-                    <div className="lg:min-h-[100vh] h-full">
-                        <Container className="py-10 md:py-25 2xl:py-45 relative z-10 text-white flex flex-col h-full lg:min-h-[100vh] justify-between gap-10 lg:gap-0">
+                    <div className="lg:min-h-[90vh] h-full">
+                        <Container className="py-10 md:py-15 2xl:py-25 relative z-10 text-white flex flex-col h-full lg:min-h-[90vh] justify-between gap-10 lg:gap-0">
                             <div className="flex self-center">
                                 <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">STORIES</h3>
                             </div>
                             <div className="flex flex-col justify-end w-full">
-                                <h2 ref={el => copyRef.current[0] = el} className="text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 tracking-tight w-3/5 lg:w-1/2 opacity-0 translate-y-full">{title}</h2>
+                                <h2 ref={el => copyRef.current[0] = el} className="text-5xl md:text-[4rem]/20 lg:text-[5rem]/25 2xl:text-[7rem]/30 tracking-tight w-3/5 lg:w-1/2 opacity-0 translate-y-full">{title}</h2>
                             </div>
                         </Container>
                     </div>
@@ -95,11 +95,11 @@ const Story = ({ data }) => {
                     <div className="flex flex-col lg:flex-row gap-10">
                         {content &&
                             <div ref={el => copyRef.current[1] = el} className="w-full lg:w-1/2 xl:pe-20 flex flex-col gap-10 opacity-0 translate-y-full">
-                                <div className="text-base md:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: content }} />
+                                <div className="text-base 2xl:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: content }} />
                                 {secondCopyBlock &&
-                                    <div className="text-base md:text-lg hidden lg:flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock }} />
+                                    <div className="text-base 2xl:text-lg hidden lg:flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock }} />
                                 }
-                                <Link href={uri} className="hidden lg:flex font-medium text-lightblue uppercase hover:underline">Read More.</Link>
+                                <Link href={uri} className="hidden lg:flex font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline">Read More.</Link>
                             </div>
                         }
                         {quote &&
@@ -118,8 +118,8 @@ const Story = ({ data }) => {
                         }
                         {secondCopyBlock && (
                             <>
-                                <div className="text-base md:text-lg lg:hidden flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock }} />
-                                <Link href={uri} className="lg:hidden font-medium text-lightblue uppercase hover:underline">Read More.</Link>
+                                <div className="text-base 2xl:text-lg lg:hidden flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock }} />
+                                <Link href={uri} className="lg:hidden font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline">Read More.</Link>
                             </>
                         )}
                     </div>
