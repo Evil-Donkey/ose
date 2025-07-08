@@ -3,6 +3,7 @@ import Button from "../Button";
 import { LinkedIn, X, YouTube } from "../Icons/Social";
 // import GoogleMap from "../GoogleMap";
 import Container from "../Container";
+import Link from "next/link";
 
 const Footer = ({ data }) => {
     const { copyright, address, investorsEmail, oxfordAcademicsEmail, mediaEmail, telephone } = data;
@@ -93,10 +94,10 @@ const Footer = ({ data }) => {
                         <div className="w-full lg:w-1/3 mb-5 lg:mb-0">
                             <h2 className="text-3xl mb-4">OSE</h2>
                             <ul>
-                                <li><a href="/why" className="hover:text-lightblue">Why we exist</a></li>
-                                <li><a href="/what" className="hover:text-lightblue">What we do</a></li>
-                                <li><a href="/how" className="hover:text-lightblue">How we work</a></li>
-                                <li><a href="/who" className="hover:text-lightblue">Who we are</a></li>
+                                <li><Link href="/why" className="hover:text-lightblue">Why we exist</Link></li>
+                                <li><Link href="/what" className="hover:text-lightblue">What we do</Link></li>
+                                <li><Link href="/how" className="hover:text-lightblue">How we work</Link></li>
+                                <li><Link href="/who" className="hover:text-lightblue">Who we are</Link></li>
                             </ul>
                         </div>
 
@@ -104,9 +105,9 @@ const Footer = ({ data }) => {
                         <div className="w-full lg:w-1/3 mb-5 lg:mb-0">
                             <h2 className="text-3xl mb-4">Sectors</h2>
                             <ul>
-                                <li><a href="/sectors/deep-tech" className="hover:text-lightblue">Deep Tech</a></li>
-                                <li><a href="/sectors/life-sciences" className="hover:text-lightblue">Life Sciences</a></li>
-                                <li><a href="/sectors/health-tech" className="hover:text-lightblue">Health Tech</a></li>
+                                <li><Link href="/sectors/deep-tech" className="hover:text-lightblue">Deep Tech</Link></li>
+                                <li><Link href="/sectors/life-sciences" className="hover:text-lightblue">Life Sciences</Link></li>
+                                <li><Link href="/sectors/health-tech" className="hover:text-lightblue">Health Tech</Link></li>
                             </ul>
                         </div>
 
@@ -114,10 +115,10 @@ const Footer = ({ data }) => {
                         <div className="w-full lg:w-1/3 mb-5 lg:mb-0">
                             <h2 className="text-3xl mb-4">More</h2>
                             <ul>
-                                <li><a href="/portfolio" className="hover:text-lightblue">Portfolio</a></li>
-                                <li><a href="/stories" className="hover:text-lightblue">Stories</a></li>
-                                <li><a href="/news" className="hover:text-lightblue">News</a></li>
-                                <li><a href="/contact" className="hover:text-lightblue">Contact</a></li>
+                                <li><Link href="/portfolio" className="hover:text-lightblue">Portfolio</Link></li>
+                                <li><Link href="/stories" className="hover:text-lightblue">Stories</Link></li>
+                                <li><Link href="/news" className="hover:text-lightblue">News</Link></li>
+                                <li><Link href="/contact" className="hover:text-lightblue">Contact</Link></li>
                             </ul>
                         </div>
                     </div>
@@ -132,13 +133,13 @@ const Footer = ({ data }) => {
                     <div className="text-xs flex flex-col lg:flex-row justify-between items-center gap-4">
                         <div>© 2025 Oxford Science Enterprises</div>
                         <div className="flex flex-wrap justify-center lg:justify-end gap-x-1">
-                            <a href="/sustainability" className="hover:text-lightblue">Sustainability</a>
+                            <Link href="/sustainability" className="hover:text-lightblue">Sustainability</Link>
                             <span>|</span>
-                            <a href="/terms" className="hover:text-lightblue">Terms & Conditions</a>
+                            <Link href="/terms" className="hover:text-lightblue">Terms & Conditions</Link>
                             <span>|</span>
-                            <a href="/privacy" className="hover:text-lightblue">Privacy policy</a>
+                            <Link href="/privacy" className="hover:text-lightblue">Privacy policy</Link>
                             <span>|</span>
-                            <a href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</a>
+                            <Link href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</Link>
                             {/* <span>|</span>
                             <a href="/cookie-policy" className="hover:text-lightblue">Cookie policy</a> */}
                         </div>
