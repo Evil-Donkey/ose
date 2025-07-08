@@ -4,16 +4,15 @@ import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import LazyLoadInitializer from "@/lib/lazyLoader";
-// import Header from "@/components/Header/index";
 import PageFlexibleContent from "@/components/FlexibleContent";
-import Footer from "@/components/Footer/index";
 import PopOut from "@/components/PopOut/index";
 import Popup from "@/components/FlexibleContent/InfographicEcosystem/Popup";
 import VideoPopup from "@/components/FlexibleContent/HeroVideo/VideoPopup";
+import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 
 gsap.registerPlugin(ScrollSmoother);
 
-export default function FlexiblePage({ flexibleContent, className, hideNavigation, popOutData, footerData, meganavHeading }) {
+export default function FlexiblePage({ flexibleContent, className, popOutData }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState(null);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
@@ -47,15 +46,10 @@ export default function FlexiblePage({ flexibleContent, className, hideNavigatio
     setVideoPopupData(null);
   };
 
-  // Extract anchor links from flexibleContent (only blocks with an id)
-  const meganavLinks = Array.isArray(flexibleContent)
-    ? flexibleContent.filter(block => block && block.id).map(block => ({ id: block.id }))
-    : [];
-
   return (
     <div className={className}>
       <LazyLoadInitializer />
-      {/* {!hideNavigation && <Header />} */}
+      <HeaderWithMeganavLinks />
       <div id="smooth-wrapper">
         <div id="smooth-content">
           <PageFlexibleContent 
@@ -63,7 +57,6 @@ export default function FlexiblePage({ flexibleContent, className, hideNavigatio
             onPopupOpen={handlePopupOpen}
             onVideoPopupOpen={handleVideoPopupOpen}
           />
-          <Footer data={footerData} />
         </div>
       </div>
       <PopOut data={popOutData} />

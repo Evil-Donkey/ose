@@ -28,8 +28,6 @@ const FullPanelCarousel = ({ data }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState(null);
-    const [parsedContent, setParsedContent] = useState({});
-    const [isClient, setIsClient] = useState(false);
 
     // Function to parse HTML and extract first paragraph
     // const parseCopyContent = (copy) => {
@@ -201,7 +199,6 @@ const FullPanelCarousel = ({ data }) => {
             >
                 {slides.map((slide, index) => {
                     const { title, copy, backgroundImage, backgroundImageMobile, imageOverlay, accordionCopy, accordionList } = slide;
-                    const slideContent = parsedContent[index] || { firstParagraph: copy, remainingContent: '' };
                     
                     return (
                         <SwiperSlide key={index}>
@@ -224,7 +221,7 @@ const FullPanelCarousel = ({ data }) => {
                                                 </h3>
                                             )}
                                             {copy && (
-                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-1/3 text-2xl md:text-[1.2rem]/7 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
+                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-3/7 text-2xl md:text-[1.2rem]/7 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                                     <div className="flex flex-col gap-8" dangerouslySetInnerHTML={{ __html: copy }} />
                                                     {/* <div className="flex flex-col gap-8">
                                                         <div dangerouslySetInnerHTML={{ __html: slideContent.firstParagraph }} />
@@ -290,6 +287,7 @@ const FullPanelCarousel = ({ data }) => {
                 isOpen={modalOpen} 
                 onClose={closeModal}
                 title={modalContent?.title}
+                darkMode={true}
             >
                 {modalContent && (
                     <div className="flex flex-col gap-8 text-lg">

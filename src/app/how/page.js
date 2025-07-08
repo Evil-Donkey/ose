@@ -1,8 +1,7 @@
 import getFlexiblePage from "@/lib/getFlexiblePage";
 import generateMetadataFromLib from "@/lib/generateMetadata";
 import getPopOutData from "@/lib/getPopOutData";
-import getFooterData from "@/lib/getFooterData";
-import FlexiblePage from "@/components/Templates/FlexiblePage";
+import FlexiblePageClient from "@/components/Templates/FlexiblePageClient";
 
 export async function generateMetadata() {
   return await generateMetadataFromLib("241");
@@ -11,12 +10,10 @@ export async function generateMetadata() {
 export default async function HowPage() {
   const flexibleContent = await getFlexiblePage("241");
   const popOutData = await getPopOutData();
-  const footerData = await getFooterData();
-  return <FlexiblePage 
-    flexibleContent={flexibleContent} 
-    hideNavigation={false} 
-    hideHeroVideo={false} 
-    popOutData={popOutData}
-    footerData={footerData}
-  />;
+  return (
+    <FlexiblePageClient 
+      flexibleContent={flexibleContent} 
+      popOutData={popOutData}
+    />
+  );
 } 

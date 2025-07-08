@@ -9,7 +9,7 @@ import Meganav from './Meganav';
 import Link from 'next/link';
 import formatSectionLabel from '@/lib/formatSectionLabel';
 
-const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
+const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
     const [isScrollingUp, setIsScrollingUp] = useState(true);
     const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
     const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -101,7 +101,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {} }) => {
       }, []);
 
     return (
-        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-300 z-99 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'pt-2 pb-3 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'pt-7 pb-7 2xl:py-10'}`}>
+        <header className={`text-white fixed top-0 left-0 right-0 transition-transform transition-padding duration-300 z-99 w-full ${isScrollingUp ? '' : '-translate-y-full'} ${isHeaderScrolled ? 'pt-2 pb-3 2xl:py-5 bg-cover bg-center bg-[url("/gradient.png")]' : 'pt-7 pb-7 2xl:py-10'} ${fixed ? 'bg-[url("/gradient.png")]! bg-cover bg-center' : ''}`}>
             <Container>
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 

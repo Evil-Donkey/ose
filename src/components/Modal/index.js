@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-const Modal = ({ isOpen, onClose, children, title }) => {
+const Modal = ({ isOpen, onClose, children, title, darkMode }) => {
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -43,15 +43,15 @@ const Modal = ({ isOpen, onClose, children, title }) => {
             />
             
             {/* Modal */}
-            <div className="relative bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+            <div className={`relative ${darkMode ? 'bg-darkblue text-white' : 'bg-white text-blue-02'} rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl p-4`}>
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between px-6 py-4">
                     {title && (
-                        <h2 className="text-2xl font-semibold text-gray-900">{title}</h2>
+                        <h2 className={`text-5xl 2xl:text-8xl ${darkMode ? 'text-white' : 'text-blue-02'}`}>{title}</h2>
                     )}
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-gray-600 transition-colors p-2 -m-2 cursor-pointer"
+                        className="text-white hover:text-white transition-colors p-2 -m-2 cursor-pointer"
                         aria-label="Close modal"
                     >
                         <svg
@@ -71,7 +71,7 @@ const Modal = ({ isOpen, onClose, children, title }) => {
                 </div>
                 
                 {/* Content */}
-                <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                <div className="px-6 py-4 overflow-y-auto max-h-[calc(90vh-120px)]">
                     {children}
                 </div>
             </div>
