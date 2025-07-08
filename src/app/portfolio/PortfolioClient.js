@@ -345,7 +345,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                   <div className="relative z-10 p-6 flex flex-col h-full justify-end text-white">
                     {item.portfolioFields?.logo?.mediaItemUrl ? (
                       <img
-                        src={item.portfolioFields.logo.mediaItemUrl}
+                        src={item.portfolioFields.logoThumbnail?.mediaItemUrl || item.portfolioFields.logo.mediaItemUrl}
                         alt={item.portfolioFields.logo.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
                         className="mb-4 absolute top-4 left-3 w-auto object-contain"
                       />

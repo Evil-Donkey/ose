@@ -20,6 +20,10 @@ const PORTFOLIO_ITEMS_QUERY = `
             altText
             mediaItemUrl
           }
+          logoThumbnail {
+            altText
+            mediaItemUrl
+          }
           gridThumbnail {
             altText
             mediaItemUrl
