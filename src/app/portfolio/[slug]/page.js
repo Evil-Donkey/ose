@@ -8,7 +8,9 @@ import Button from "@/components/Button";
 export default async function PortfolioSinglePage({ params }) {
   const { slug } = await params;
   const items = await getPortfolioItems();
-  const item = items.find(i => i.slug === slug);
+  // Sort items alphabetically by title for navigation
+  const sortedItems = items.slice().sort((a, b) => a.title.localeCompare(b.title));
+  const item = sortedItems.find(i => i.slug === slug);
 
   const { title, content, featuredImage, portfolioFields, portfolioCategories, portfolioStages } = item;
   const { logo, portfolioTitle, websiteUrl, linkedinUrl, xUrl } = portfolioFields;
@@ -106,13 +108,13 @@ export default async function PortfolioSinglePage({ params }) {
                                         </div>
                                     )}
                                     {xUrl && (
-                                        <div className="flex items-center gap-3 text-darkblue">
+                                        <div className="flex items-center gap-3 text-blue-02">
                                             <XIcon />
                                             <a href={`https://x.com/${xUrl.replace(/^@/, "")}`} target="_blank" rel="noopener noreferrer" className="hover:underline">@{xUrl.replace(/^@/, "")}</a>
                                         </div>
                                     )}
                                     {linkedinUrl && (
-                                        <div className="flex items-center gap-3 text-darkblue">
+                                        <div className="flex items-center gap-3 text-blue-02">
                                             <LinkedInIcon />
                                             <a href={linkedinUrl.startsWith('http') ? linkedinUrl : `https://linkedin.com/in/${linkedinUrl}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{linkedinUrl.replace(/^https?:\/\//, "")}</a>
                                         </div>
@@ -125,9 +127,9 @@ export default async function PortfolioSinglePage({ params }) {
 
                 {/* TO DO: Add navigation here */}
                 {(() => {
-                    const currentIndex = items.findIndex(i => i.slug === slug);
-                    const prev = currentIndex > 0 ? items[currentIndex - 1] : null;
-                    const next = currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
+                    const currentIndex = sortedItems.findIndex(i => i.slug === slug);
+                    const prev = currentIndex > 0 ? sortedItems[currentIndex - 1] : null;
+                    const next = currentIndex < sortedItems.length - 1 ? sortedItems[currentIndex + 1] : null;
                     return (
                         <div className="grid grid-cols-2 gap-8 mt-16">
                             <div className="justify-self-end">

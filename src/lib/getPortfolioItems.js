@@ -2,7 +2,7 @@ import fetchAPI from "./api";
 
 const PORTFOLIO_ITEMS_QUERY = `
   query Portfolio {
-    allPortfolio {
+    allPortfolio(first: 1000) {
       nodes {
         title(format: RENDERED)
         content(format: RENDERED)

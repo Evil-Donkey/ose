@@ -324,7 +324,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
         </div>
         {/* Portfolio grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-20">
-          {filteredItems.map((item, idx) => {
+          {filteredItems.slice().sort((a, b) => a.title.localeCompare(b.title)).map((item, idx) => {
             const gridThumb = item.portfolioFields?.gridThumbnail?.mediaItemUrl;
             const featuredImg = item.featuredImage?.node?.mediaItemUrl;
             const bgImage = gridThumb || featuredImg || '';
@@ -347,7 +347,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                       <img
                         src={item.portfolioFields.logoThumbnail?.mediaItemUrl || item.portfolioFields.logo.mediaItemUrl}
                         alt={item.portfolioFields.logo.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
-                        className="mb-4 absolute top-4 left-3 w-auto object-contain"
+                        className="mb-4 absolute top-4 left-3 w-2/3 object-contain"
                       />
                     ) : (
                       <h2 className="text-xl font-bold text-white drop-shadow mb-2" dangerouslySetInnerHTML={{ __html: item.title }} />

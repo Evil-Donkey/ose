@@ -221,7 +221,7 @@ const FullPanelCarousel = ({ data }) => {
                                                 </h3>
                                             )}
                                             {copy && (
-                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-3/7 text-2xl md:text-[1.2rem]/7 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
+                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-3/7 text-xl md:text-[1.2rem]/7 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                                     <div className="flex flex-col gap-8" dangerouslySetInnerHTML={{ __html: copy }} />
                                                     {/* <div className="flex flex-col gap-8">
                                                         <div dangerouslySetInnerHTML={{ __html: slideContent.firstParagraph }} />
