@@ -134,47 +134,37 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
         {/* Filter UI */}
         <div className="w-full xl:w-2/3 mx-auto relative z-50">
 
-            {/* Clear Filters Button */}
-            <div className="w-full flex justify-between mb-5">
-                
-                {/* CURRENTLY FUNDRAISING TOGGLE */}
-                <div className="flex items-center gap-2 lg:gap-4">
-                  <button
-                    type="button"
-                    aria-pressed={fundraisingOnly}
-                    onClick={() => setFundraisingOnly(v => !v)}
-                    className={`relative w-16 h-8 rounded-full transition-colors duration-200 focus:outline-none cursor-pointer ${fundraisingOnly ? 'bg-[#00A0CC]' : 'bg-gray-300'}`}
-                  >
-                    {/* ON/OFF text */}
-                    {fundraisingOnly ? (
-                      <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-bold text-white select-none">ON</span>
-                    ) : (
-                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-white select-none">OFF</span>
-                    )}
-                    <span
-                      className={`absolute top-1/2 -translate-y-1/2 right-2 w-6 h-6 rounded-full bg-white shadow transition-all duration-200 ${fundraisingOnly ? 'translate-x-1' : '-translate-x-7'}`}
-                    />
-                  </button>
-                  <span className="text-sm font-bold uppercase text-blue-02">Currently Fundraising</span>
-                </div>
-
+          {/* Clear Filters Button */}
+          <div className="w-full flex justify-between mb-5">
+              
+              {/* CURRENTLY FUNDRAISING TOGGLE */}
+              <div className="flex items-center gap-2 lg:gap-4">
                 <button
-                    className="text-sm font-bold uppercase text-blue-02 cursor-pointer transition-all duration-300 hover:text-darkblue"
-                    onClick={() => {
-                    setSelectedCategory(null);
-                    setSelectedStage(null);
-                    setOpenDropdown(null);
-                    }}
+                  type="button"
+                  aria-pressed={fundraisingOnly}
+                  onClick={() => setFundraisingOnly(v => !v)}
+                  className={`relative w-16 h-8 rounded-full transition-colors duration-200 focus:outline-none cursor-pointer ${fundraisingOnly ? 'bg-[#00A0CC]' : 'bg-gray-300'}`}
                 >
-                    Clear Filters
+                  {/* ON/OFF text */}
+                  {fundraisingOnly ? (
+                    <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-bold text-white select-none">ON</span>
+                  ) : (
+                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-white select-none">OFF</span>
+                  )}
+                  <span
+                    className={`absolute top-1/2 -translate-y-1/2 right-2 w-6 h-6 rounded-full bg-white shadow transition-all duration-200 ${fundraisingOnly ? 'translate-x-1' : '-translate-x-7'}`}
+                  />
                 </button>
-            </div>
+                <span className="text-sm font-bold uppercase text-blue-02">Currently Fundraising</span>
+              </div>
+          </div>
 
-            <div className="w-full flex justify-between mb-3">
-                <h3 className="text-sm font-bold uppercase text-blue-02">Filter by sector:</h3>
-                <h3 className="text-sm font-bold uppercase text-blue-02">Filter by stage:</h3>
-            </div>
-          <div className="w-full flex flex-row gap-4 mb-10 justify-between text-left flex-nowrap max-lg:overflow-auto">
+          <div className="w-full flex justify-between mb-3">
+              <h3 className="text-sm font-bold uppercase text-blue-02">Filter by sector:</h3>
+              <h3 className="text-sm font-bold uppercase text-blue-02 hidden lg:block">Filter by stage:</h3>
+          </div>
+
+          <div className="w-full flex flex-col lg:flex-row gap-4 mb-3 justify-between text-left">
             {/* Sector filters */}
             {groupedCategories.slice(0, 3).map((parent, idx) => {
               const dropdownKey = `sector-${idx}`;
@@ -184,6 +174,8 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
               const allOptions = [parent, ...parent.children];
               // Find selected option
               const selectedOption = allOptions.find(opt => opt.id === selectedCategory) || allOptions[0];
+              // For Deep Tech, set opacity-100 if parent or any child is selected
+              const isDeepTechActive = selectedCategory === parent.id || parent.children.some(child => child.id === selectedCategory);
               // For the first filter (with children), use dropdown like stage filter
               if (idx === 0 && hasChildren) {
                 return (
@@ -193,12 +185,16 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                   >
                     <div
                       ref={el => (dropdownButtonRefs.current[dropdownKey] = el)}
-                      className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap ${isOpen ? "z-10 rounded-t-xl" : "rounded-xl"}`}
+                      className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap hover:opacity-100 ${isOpen ? "z-10 rounded-t-xl" : "rounded-xl"} ${isDeepTechActive ? "opacity-100" : "opacity-80"}`}
                       onClick={() => setOpenDropdown(isOpen ? null : dropdownKey)}
                     >
-                      <span>{selectedOption.name}</span>
+                      <span>Deep Tech</span>
                       <span>
-                        <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedCategory && allOptions.some(opt => opt.id === selectedCategory) ? "bg-white" : ""}`}></span>
+                        <span className={`ml-2 -mr-2 w-9 h-5 flex items-center justify-center`}>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
+                            <path fillRule="evenodd" d="M12 15.5a.75.75 0 01-.53-.22l-5-5a.75.75 0 111.06-1.06L12 13.69l4.47-4.47a.75.75 0 111.06 1.06l-5 5a.75.75 0 01-.53.22z" clipRule="evenodd" />
+                          </svg>
+                        </span>
                       </span>
                     </div>
                     {isOpen && (
@@ -208,13 +204,13 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                             {allOptions.map(opt => (
                               <div
                                 key={opt.id}
-                                className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${selectedCategory === opt.id ? "bg-white text-[#00A0CC] font-bold" : ""}`}
+                                className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${(selectedCategory === opt.id) ? "bg-white text-[#00A0CC] font-bold opacity-100" : "opacity-80"}`}
                                 onMouseDown={e => {
                                   e.stopPropagation();
                                   setSelectedCategory(opt.id);
                                 }}
                               >
-                                <span>{opt.name}</span>
+                                <span>{opt.name === 'Deep Tech' ? 'All' : opt.name}</span>
                                 <span>
                                     <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedCategory === opt.id ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
                                 </span>
@@ -227,13 +223,13 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                           {allOptions.map(opt => (
                             <div
                               key={opt.id}
-                              className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${selectedCategory === opt.id ? "bg-white text-[#00A0CC] font-bold" : ""}`}
+                              className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${(selectedCategory === opt.id) ? "bg-white text-[#00A0CC] font-bold opacity-100" : "opacity-80"}`}
                               onMouseDown={e => {
                                 e.stopPropagation();
                                 setSelectedCategory(opt.id);
                               }}
                             >
-                              <span>{opt.name}</span>
+                              <span>{opt.name === 'Deep Tech' ? 'All' : opt.name}</span>
                               <span>
                                   <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedCategory === opt.id ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
                               </span>
@@ -252,7 +248,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                   className="flex-1"
                 >
                   <div
-                    className={`bg-[#00A0CC] rounded-xl p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap`}
+                    className={`bg-[#00A0CC] rounded-xl p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap hover:opacity-100 ${selectedCategory !== parent.id ? "opacity-80" : "opacity-100"}`}
                     onClick={() => {
                       setSelectedCategory(parent.id);
                       setOpenDropdown(null);
@@ -267,21 +263,42 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
               );
             })}
             {/* Stage filter */}
+            <div className="w-full flex justify-between mt-3 lg:hidden">
+              <h3 className="text-sm font-bold uppercase text-blue-02">Filter by stage:</h3>
+          </div>
             <div className="relative flex-1" >
               <div
                 ref={el => (dropdownButtonRefs.current["stage"] = el)}
                 className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap ${openDropdown === "stage" ? "z-10 rounded-t-xl" : "rounded-xl"}`}
                 onClick={() => setOpenDropdown(openDropdown === "stage" ? null : "stage")}
               >
-                <span>{sortedStages.find(stage => stage.id === selectedStage)?.name || sortedStages[0]?.name}</span>
+                {/* <span>{sortedStages.find(stage => stage.id === selectedStage)?.name || sortedStages[0]?.name}</span> */}
+                <span>Stage</span>
                 <span>
-                    <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedStage ? "bg-white" : ""}`}></span>
+                <span className={`ml-2 -mr-2 w-9 h-5 flex items-center justify-center`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
+                        <path fillRule="evenodd" d="M12 15.5a.75.75 0 01-.53-.22l-5-5a.75.75 0 111.06-1.06L12 13.69l4.47-4.47a.75.75 0 111.06 1.06l-5 5a.75.75 0 01-.53.22z" clipRule="evenodd" />
+                      </svg>
+                    </span>
                 </span>
               </div>
               {openDropdown === "stage" && (
                 isMobileDropdown ? (
                   <DropdownPortal dropdownKey={"stage"}>
                     <div className="bg-[#00A0CC] text-white rounded-b-xl shadow-lg overflow-hidden">
+                      <div
+                        key="all"
+                        className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${selectedStage === null ? "bg-white text-[#00A0CC] font-bold" : ""}`}
+                        onMouseDown={e => {
+                          e.stopPropagation();
+                          setSelectedStage(null);
+                        }}
+                      >
+                        <span>All</span>
+                        <span>
+                          <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedStage === null ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
+                        </span>
+                      </div>
                       {sortedStages.map(stage => (
                         <div
                           key={stage.id}
@@ -301,6 +318,20 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                   </DropdownPortal>
                 ) : (
                   <div className="absolute left-0 right-0 bg-[#00A0CC] text-white rounded-b-xl shadow-lg overflow-hidden">
+                    {/* Add All and when clicked reset the stage filter */}
+                    <div
+                      key="all"
+                      className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${selectedStage === null ? "bg-white text-[#00A0CC] font-bold" : ""}`}
+                      onMouseDown={e => {
+                        e.stopPropagation();
+                        setSelectedStage(null);
+                      }}
+                    >
+                      <span>All</span>
+                      <span>
+                        <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedStage === null ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
+                      </span>
+                    </div>
                     {sortedStages.map(stage => (
                       <div
                         key={stage.id}
@@ -320,6 +351,19 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                 )
               )}
             </div>
+          </div>
+
+          <div className="w-full flex justify-end mb-10">
+            <button
+                className="text-sm font-bold uppercase text-blue-02/50 cursor-pointer transition-all duration-300 hover:text-darkblue"
+                onClick={() => {
+                setSelectedCategory(null);
+                setSelectedStage(null);
+                setOpenDropdown(null);
+                }}
+            >
+                Clear Filters
+            </button>
           </div>
         </div>
         {/* Portfolio grid */}
