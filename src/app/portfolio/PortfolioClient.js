@@ -188,7 +188,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                       className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap hover:opacity-100 ${isOpen ? "z-10 rounded-t-xl" : "rounded-xl"} ${isDeepTechActive ? "opacity-100" : "opacity-80"}`}
                       onClick={() => setOpenDropdown(isOpen ? null : dropdownKey)}
                     >
-                      <span>Deep Tech</span>
+                      <span>{selectedOption.name}</span>
                       <span>
                         <span className={`ml-2 -mr-2 w-9 h-5 flex items-center justify-center`}>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
@@ -229,7 +229,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                                 setSelectedCategory(opt.id);
                               }}
                             >
-                              <span>{opt.name === 'Deep Tech' ? 'All' : opt.name}</span>
+                              <span>{opt.name === 'Deep Tech' ? 'All Deep Tech' : opt.name}</span>
                               <span>
                                   <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedCategory === opt.id ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
                               </span>
@@ -272,8 +272,8 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                 className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap ${openDropdown === "stage" ? "z-10 rounded-t-xl" : "rounded-xl"}`}
                 onClick={() => setOpenDropdown(openDropdown === "stage" ? null : "stage")}
               >
-                {/* <span>{sortedStages.find(stage => stage.id === selectedStage)?.name || sortedStages[0]?.name}</span> */}
-                <span>Stage</span>
+                <span>{sortedStages.find(stage => stage.id === selectedStage)?.name || 'All Stages'}</span>
+                {/* <span>Stage</span> */}
                 <span>
                 <span className={`ml-2 -mr-2 w-9 h-5 flex items-center justify-center`}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
@@ -294,7 +294,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                           setSelectedStage(null);
                         }}
                       >
-                        <span>All</span>
+                        <span>All Stages</span>
                         <span>
                           <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedStage === null ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
                         </span>
@@ -327,7 +327,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                         setSelectedStage(null);
                       }}
                     >
-                      <span>All</span>
+                      <span>All Stages</span>
                       <span>
                         <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedStage === null ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
                       </span>
