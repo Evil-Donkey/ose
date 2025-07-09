@@ -132,7 +132,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
         </div>
 
         {/* Filter UI */}
-        <div className="w-full xl:w-2/3 mx-auto relative z-50">
+        <div className="w-full mx-auto relative z-50">
 
           {/* Clear Filters Button */}
           <div className="w-full flex justify-between mb-5">
@@ -188,7 +188,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                       className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap hover:opacity-100 ${isOpen ? "z-10 rounded-t-xl" : "rounded-xl"} ${isDeepTechActive ? "opacity-100" : "opacity-80"}`}
                       onClick={() => setOpenDropdown(isOpen ? null : dropdownKey)}
                     >
-                      <span>{selectedOption.name}</span>
+                      <span>{selectedOption.name === 'Deep Tech' ? 'All Deep Tech' : selectedOption.name}</span>
                       <span>
                         <span className={`ml-2 -mr-2 w-9 h-5 flex items-center justify-center`}>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
