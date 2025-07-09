@@ -13,6 +13,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
     const [isScrollingUp, setIsScrollingUp] = useState(true);
     const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
     const [lastScrollTop, setLastScrollTop] = useState(0);
+    const [hideThreshold, setHideThreshold] = useState(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const delays = ['delay-150', 'delay-300', 'delay-450', 'delay-600'];
     const pathname = usePathname();
@@ -61,13 +62,20 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
         const handleScroll = () => {
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            if (currentScrollTop >= maxScroll) {
-                // setIsScrollingUp(true);
-            } else if (currentScrollTop > lastScrollTop && currentScrollTop > 200) {
+            
+            // When scrolling down and past 200px, hide the nav and set the threshold
+            if (currentScrollTop > lastScrollTop && currentScrollTop > 200) {
                 setIsScrollingUp(false);
-            } else {
-                setIsScrollingUp(true);
+                setHideThreshold(currentScrollTop);
+            } 
+            // When scrolling up, only show nav if we've scrolled up more than 300px from where it was hidden
+            else if (currentScrollTop < lastScrollTop) {
+                const scrollUpDistance = hideThreshold - currentScrollTop;
+                if (scrollUpDistance >= 300 || currentScrollTop <= 200) {
+                    setIsScrollingUp(true);
+                }
             }
+            
             if (currentScrollTop > 0) {
                 setIsHeaderScrolled(true);
             } else {
@@ -152,7 +160,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                     className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 rounded-xl pt-2
                                                         ${isActive ? 'text-lightblue' : 'hover:text-lightblue text-white'}
                                                         ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}
-                                                        ${isHeaderScrolled ? 'pb-6 2xl:pb-7 text-2xl' : 'pb-9 2xl:pb-10 text-3xl 2xl:text-4xl'}
+                                                        ${isHeaderScrolled ? 'pb-3 2xl:pb-7 text-2xl' : 'pb-9 2xl:pb-10 text-3xl 2xl:text-4xl'}
                                                     `}
                                                 >
                                                     {item.label}

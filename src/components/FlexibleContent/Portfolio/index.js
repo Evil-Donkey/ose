@@ -119,13 +119,13 @@ const Portfolio = ({ data }) => {
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20">
                 <div className="flex flex-col items-center text-center">
-                    {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
+                    {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
                     {copy && <div ref={copyRef} className="w-full md:w-2/5 text-center text-blue-02 opacity-0 translate-y-20">
                         <div className="text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
                     </div>}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10 2xl:mt-16">
                     {portfolio.map((item, index) => {
                         const isEvenRow = Math.floor(index / 2) % 2 === 0;
                         const isFirstInRow = index % 2 === 0;

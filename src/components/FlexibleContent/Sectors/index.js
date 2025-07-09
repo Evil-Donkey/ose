@@ -55,7 +55,7 @@ const Sectors = ({ data }) => {
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20 2xl:py-40">
                 <div className="flex flex-col">
-                    {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
+                    {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
                 </div>
                 <div className="flex flex-col items-center md:gap-10 text-center">
                     {headings &&

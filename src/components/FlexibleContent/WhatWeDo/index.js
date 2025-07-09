@@ -45,7 +45,7 @@ const WhatWeDo = ({ data }) => {
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="text-white bg-cover bg-center bg-[url('/mobile-gradient.jpg')] lg:bg-[url('/desktop-gradient.jpg')]">
-            <Container className="py-20 lg:py-40">
+            <Container className="py-20 2xl:py-40">
                 <div className="flex flex-col">
                     {stats && <Stats data={stats} theme="dark" />}
                 </div>

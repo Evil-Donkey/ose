@@ -116,7 +116,7 @@ const Cards = ({ data }) => {
                         ))}
                     </div>
                 )}
-                <div className="relative w-full md:mt-25">
+                <div className="relative w-full 2xl:mt-25">
                     {
                     tabs ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
@@ -201,8 +201,8 @@ const Cards = ({ data }) => {
                             {cards.map((card, index) => {
                                 const { heading, description, image } = card;
                                 return (
-                                    <div key={index} ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col min-h-[450px]">
-                                        <div className="relative overflow-hidden rounded-lg flex flex-col text-center items-center p-10 h-full justify-end">
+                                    <div key={index} ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col min-h-[370px] 2xl:min-h-[450px]">
+                                        <div className="relative overflow-hidden rounded-lg flex flex-col text-center items-center p-6 2xl:p-10 h-full justify-end">
                                             <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
                                             <div className="absolute inset-0 bg-black/30 pointer-events-none" />
                                             {heading && <h4 className="text-white text-3xl font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: heading }} />}

@@ -76,7 +76,7 @@ const CTA = ({ data }) => {
 
             {/* CTA Grid */}
             {cta &&
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-5 2xl:mt-12">
                     {cta.map((cta, index) => {
                         const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, backgroundImage } = cta;
                         return (

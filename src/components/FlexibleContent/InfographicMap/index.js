@@ -102,7 +102,7 @@ const InfographicMap = ({ data }) => {
 
     return (
         <>
-            <Container ref={infographicMapRef} className="pt-20 min-h-[90vh]">
+            <Container ref={infographicMapRef} className="pt-20 min-h-[100vh]">
                 <div className="flex flex-col items-center text-center">
                     <h2
                         ref={titleRef}

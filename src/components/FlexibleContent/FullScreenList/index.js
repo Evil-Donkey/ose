@@ -62,11 +62,11 @@ const FullScreenList = ({ data }) => {
     }, []);
 
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={`relative min-h-[90vh] ${list ? '2xl:min-h-auto' : ''} h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-center' : 'justify-start'}`}>
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={`relative min-h-[100vh] ${list ? '2xl:min-h-auto' : ''} h-full w-full overflow-hidden flex flex-col ${list ? 'justify-end md:justify-center' : 'justify-start'}`}>
             <div ref={el => backgroundImageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
             {backgroundImageMobile && <div ref={el => backgroundImageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />}
             <div className="absolute top-0 left-0 w-full h-1/2 bg-transparent bg-linear-to-b from-black/70 to-black/0" />
-            <Container className="py-15 md:py-25 2xl:py-45 relative z-10 flex flex-col h-full">
+            <Container className="py-15 2xl:py-45 relative z-10 flex flex-col h-full">
                 <div className="flex flex-col items-center">
                     {heading && <h2 ref={titleRef} className="w-full text-center uppercase tracking-widest text-white text:lg md:text-xl mb-8 font-medium opacity-0 translate-x-full">{heading}</h2>}
                     {copy && <div ref={el => copyRef.current[0] = el} className="w-full md:w-3/5 text-center text-white opacity-0 translate-y-20">
@@ -74,7 +74,7 @@ const FullScreenList = ({ data }) => {
                     </div>}
                 </div>
                 {list &&
-                    <div ref={el => copyRef.current[1] = el}  className={`flex mt-15 opacity-0 translate-y-20 ${listPosition}`}>
+                    <div ref={el => copyRef.current[1] = el}  className={`flex mt-5 2xl:mt-15 opacity-0 translate-y-20 ${listPosition}`}>
                         <div className="rounded-lg overflow-hidden bg-white p-8 w-full lg:w-2/5">
                             {listCopy && <div className="text-base md:text-xl flex flex-col gap-4 mb-5" dangerouslySetInnerHTML={{ __html: listCopy }} />}
                             {list.length > 0 &&

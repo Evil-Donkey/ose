@@ -120,7 +120,7 @@ const InfographicMap = ({ data, onPopupOpen }) => {
                         <div className="text-base md:text-xl flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />
                     </div>}
                 </div>
-                <div className="flex flex-col my-10 lg:my-30">
+                <div className="flex flex-col my-10 lg:my-20 2xl:my-30">
                     <div ref={infographicRef} className="relative w-full flex flex-row lg:flex-nowrap items-center justify-center -space-x-2 xl:scale-110 2xl:scale-130 mt-8 lg:mt-0">
                         <div className="relative flex items-center -space-x-2">
                             <div className="relative" ref={el => circlesRef.current[0] = el}>
@@ -138,7 +138,7 @@ const InfographicMap = ({ data, onPopupOpen }) => {
 
                             <div 
                                 ref={el => lineRef.current[1] = el}
-                                className="absolute right-1 top-[80px] lg:top-[140px] w-[2px] h-[120px] lg:h-[200px] bg-[#B8DDE0]"
+                                className="absolute right-1 top-[80px] lg:top-[120px] 2xl:top-[140px] w-[2px] h-[120px] lg:h-[160px] 2xl:h-[200px] bg-[#B8DDE0]"
                             >
                                 <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[1] = el}>
                                     <div className="w-30 h-auto mb-2">
