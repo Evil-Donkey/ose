@@ -22,7 +22,6 @@ const Footer = ({ data }) => {
                         <div className="gap-x-4 items-center mb-5 lg:mb-0 hidden lg:flex">
                             <YouTube />
                             <LinkedIn />
-                            <X />
                         </div>
                         <Button href="/investor-portal" className="text-sm lg:text-base">Investor Portal</Button>
                     </div>
@@ -82,7 +81,6 @@ const Footer = ({ data }) => {
                                     <div className="flex flex-row gap-x-2 items-center mb-5 lg:mb-0 lg:hidden">
                                         <YouTube />
                                         <LinkedIn />
-                                        <X />
                                     </div>
                                 </div>
                             </div>

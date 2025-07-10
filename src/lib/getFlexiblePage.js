@@ -329,6 +329,9 @@ const FLEXIBLE_CONTENT_QUERY = `
                     mediaItemUrl
                   }
                 }
+                story {
+                  cardExcerpt
+                }
               }
             }
           }

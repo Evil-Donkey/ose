@@ -55,14 +55,14 @@ const Stories = ({ data }) => {
     return (
         <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="py-20">
             <div className="flex flex-col items-center text-center">
-                <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">Stories</h2>
+                <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 text-center font-medium opacity-0 translate-x-full">Stories</h2>
             </div>
 
             {/* CTA Grid */}
             {stories &&
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
                     {stories.map((story, index) => {
-                        const { title, content, featuredImage, uri } = story;
+                        const { title, content, featuredImage, uri, story: { cardExcerpt } } = story;
                         return (
                             <div key={index} ref={el => ctaRef.current[index] = el} className="relative overflow-hidden rounded-3xl group p-8 2xl:p-12 opacity-0 translate-y-20 min-h-[500px]">
                                 {featuredImage && 
@@ -74,7 +74,7 @@ const Stories = ({ data }) => {
                                 <div className="relative z-10 flex flex-col justify-between h-full">
                                     <div>
                                         {title && <h3 className="text-3xl md:text-5xl/13 2xl:text-6xl text-white mb-6">{title}</h3>}
-                                        {content && <div className="text-white mb-8 text-base md:text-xl" dangerouslySetInnerHTML={{ __html: content.split(' ').slice(0, 20).join(' ') + ' ...' }} />}
+                                        {(cardExcerpt || content) && <div className="text-white mb-8 text-base md:text-xl" dangerouslySetInnerHTML={{ __html: cardExcerpt || content.split(' ').slice(0, 20).join(' ') + ' ...' }} />}
                                     </div>
                                     <Button href={uri} variant="light">
                                         Read more

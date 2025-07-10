@@ -103,7 +103,7 @@ export default async function PortfolioSinglePage({ params }) {
                                 <div className="flex flex-col gap-3 text-lg">
                                     {websiteUrl && (
                                         <div className="flex items-center gap-3 text-blue-02">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="9.243mm" height="9.225mm" viewBox="0 0 26.2 26.15">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26.2 26.15">
                                               <g id="Layer_1-2" data-name="Layer 1">
                                                 <path fill="#03a1cc" d="M12.42,13.78v5.45c-1.23.04-2.46.2-3.67.48-.42.1-.93.3-1.32.38-.05.01-.13.03-.17.01-.33-1.03-.6-2.09-.78-3.16-.17-1.04-.24-2.09-.3-3.14h6.23Z"/>
                                                 <path fill="#03a1cc" d="M12.42,6.93v5.45h-6.23c.08-2.14.41-4.27,1.08-6.31.06-.02.11-.01.17.01.43.09.9.28,1.35.38,1.19.27,2.41.43,3.63.47"/>

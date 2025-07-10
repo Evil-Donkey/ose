@@ -181,10 +181,10 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                     />
                                                 </div>
                                                 
-                                                <div className={`flex gap-10 absolute pt-12 ps-2
+                                                <div className={`flex gap-10 absolute pt-12 ps-2 w-full 2xl:w-auto
                                                     ${activeMeganav === item.label ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-full'}                                 
                                                 `}>
-                                                    <div className={`${item.meganavPageLinks && item.meganavPageLinks.links && item.meganavPageLinks.links.length > 0 ? 'w-1/2' : 'w-auto'}`}>
+                                                    <div className={`${item.meganavPageLinks && item.meganavPageLinks.links && item.meganavPageLinks.links.length > 0 ? 'w-auto 2xl:w-1/2' : 'w-auto'}`}>
                                                         <ul className="space-y-3">
                                                             {item.meganavLinks.map(({ sectionLabel }) => (
                                                                 <li key={formatSectionLabel(sectionLabel)} className="flex gap-2 items-start">
@@ -207,7 +207,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                     </svg>
                                                                     <Link
                                                                         href={`${item.href}#${formatSectionLabel(sectionLabel)}`}
-                                                                        className="hover:text-lightblue transition-colors text-base 2xl:text-lg font-medium"
+                                                                        className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
                                                                     >
                                                                         {sectionLabel}
                                                                     </Link>
@@ -220,7 +220,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                         <div className="w-1/2">
                                                             <div>
                                                                 {item.meganavPageLinks.heading && (
-                                                                    <div className="text-lightblue text-lg mb-4 font-medium">{item.meganavPageLinks.heading}</div>
+                                                                    <div className="text-lightblue text-sm 2xl:text-lg mb-4 font-medium">{item.meganavPageLinks.heading}</div>
                                                                 )}
                                                                 <ul className="space-y-2">
                                                                     {item.meganavPageLinks.links.map((linkObj, idx) => (
@@ -244,7 +244,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                             </svg>
                                                                             <a
                                                                                 href={linkObj.link?.link || '#'}
-                                                                                className="hover:text-lightblue transition-colors text-base 2xl:text-lg font-medium"
+                                                                                className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
                                                                             >
                                                                                 {linkObj.label}
                                                                             </a>

@@ -102,7 +102,7 @@ const Story = ({ data }) => {
                                 <h3 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full transition-all duration-1000">STORIES</h3>
                             </div>
                             <div className="flex flex-col justify-end w-full">
-                                <h2 ref={mainTitleRef} className="text-5xl md:text-[4rem]/20 2xl:text-[7rem]/30 tracking-tight w-3/5 lg:w-1/2 opacity-0 translate-y-20 transition-all duration-1000">{title}</h2>
+                                <h2 ref={mainTitleRef} className="text-[2.5rem]/12 md:text-[3.3rem]/16 2xl:text-[7rem]/30 tracking-tight w-4/5 lg:w-1/2 opacity-0 translate-y-20 transition-all duration-1000">{title}</h2>
                             </div>
                         </Container>
                     </div>

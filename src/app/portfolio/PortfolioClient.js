@@ -155,7 +155,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                     className={`absolute top-1/2 -translate-y-1/2 right-2 w-6 h-6 rounded-full bg-white shadow transition-all duration-200 ${fundraisingOnly ? 'translate-x-1' : '-translate-x-7'}`}
                   />
                 </button>
-                <span className="text-sm font-bold uppercase text-blue-02">Actively Fundraising</span>
+                <span className="text-sm font-bold uppercase text-blue-02">Actively Raising</span>
               </div>
           </div>
 
