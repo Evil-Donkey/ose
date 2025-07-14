@@ -128,12 +128,15 @@ const Cards = ({ data }) => {
                                 
                                 return filteredCards.length > 0 ? filteredCards.map((card, index) => {
                                     const { heading, description, image } = card;
+                                    console.log(image);
                                     return (
                                         <div key={index}>
                                             <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col">
-                                                <div className="relative overflow-hidden rounded-lg min-h-[200px]">
-                                                    <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
-                                                </div>
+                                                {image && (
+                                                    <div className="relative overflow-hidden rounded-lg min-h-[200px]">
+                                                        <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                                    </div>
+                                                )}
                                                 {heading && <h4 className="text-lg font-medium mt-4" dangerouslySetInnerHTML={{ __html: heading }} />}
                                                 {description && <div className="text-sm" dangerouslySetInnerHTML={{ __html: description }} />}
                                             </div>
@@ -160,9 +163,11 @@ const Cards = ({ data }) => {
                                 return (
                                     <SwiperSlide key={index}>
                                         <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col">
-                                            <div className="relative overflow-hidden rounded-lg min-h-[400px]">
-                                                <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
-                                            </div>
+                                            {image && (
+                                                <div className="relative overflow-hidden rounded-lg min-h-[400px]">
+                                                    <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                                </div>
+                                            )}
                                             {heading && <h4 className="text-lg font-medium mt-4" dangerouslySetInnerHTML={{ __html: heading }} />}
                                             {description && <div className="text-sm" dangerouslySetInnerHTML={{ __html: description }} />}
                                         </div>
@@ -203,7 +208,9 @@ const Cards = ({ data }) => {
                                 return (
                                     <div key={index} ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col min-h-[370px] 2xl:min-h-[450px]">
                                         <div className="relative overflow-hidden rounded-lg flex flex-col text-center items-center p-6 2xl:p-10 h-full justify-end">
-                                            <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                            {image && (
+                                                <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                            )}
                                             <div className="absolute inset-0 bg-black/30 pointer-events-none" />
                                             {heading && <h4 className="text-white text-3xl font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: heading }} />}
                                             {description && <div className="text-white text-base z-10 mt-3" dangerouslySetInnerHTML={{ __html: description }} />}

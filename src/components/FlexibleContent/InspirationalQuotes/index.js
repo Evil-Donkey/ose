@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Button from "../../Button";
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -14,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const InspirationalQuotes = ({ data }) => {
 
-    const { title, quotes, carousel, sectionLabel } = data;
+    const { title, quotes, carousel, sectionLabel, ctaLabel, ctaUrl } = data;
     
     const contentRef = useRef([]);
     const imageRef = useRef([]);
@@ -146,10 +147,10 @@ const InspirationalQuotes = ({ data }) => {
                                 <Container className={`h-full py-30 md:py-20 2xl:py-45 relative z-10 text-white flex gap-10 lg:gap-25 ${quoteOnTheRight ? "items-end md:items-start justify-end" : "items-end md:items-start justify-start"}`}>
                                     <div className="flex flex-col w-full lg:w-1/2 gap-3 md:gap-5 lg:py-15 opacity-0 translate-y-5" ref={el => contentRef.current[index] = el}>
                                         {quote && 
-                                        <div className="relative">
-                                            <div className="absolute -top-10 md:-top-15 left-0 bg-[url('/quote.svg')] bg-contain bg-center bg-no-repeat w-10 h-10 2xl:w-15 2xl:h-15" />
-                                            <div className="2xl:pt-5 text-2xl md:text-[1.6rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
-                                        </div>
+                                            <div className="relative">
+                                                <div className="absolute -top-10 md:-top-15 left-0 bg-[url('/quote.svg')] bg-contain bg-center bg-no-repeat w-10 h-10 2xl:w-15 2xl:h-15" />
+                                                <div className="2xl:pt-5 text-2xl md:text-[1.6rem] 2xl:text-[3rem] font-medium" dangerouslySetInnerHTML={{ __html: quote }} />
+                                            </div>
                                         }
                                         {author && 
                                             <div className="w-full md:mt-5">
@@ -158,6 +159,11 @@ const InspirationalQuotes = ({ data }) => {
                                         }
                                     </div>
                                 </Container>
+                                {(ctaLabel && ctaUrl) && (
+                                    <div className="mt-2 md:mt-6 hover:-translate-y-1! transition-all duration-500 relative z-10 flex justify-center">
+                                        <Button href={ctaUrl}>{ctaLabel || "Find out more"}</Button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )

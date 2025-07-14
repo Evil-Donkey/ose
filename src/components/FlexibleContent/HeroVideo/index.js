@@ -9,8 +9,8 @@ import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HeroVideo = ({ data, onVideoPopupOpen }) => {
-    const { fullMovie, introMovie, mobileMovie, headings, desktopImage, mobileImage } = data;
+const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
+    const { fullMovie, introMovie, mobileMovie, headings, desktopImage, mobileImage, copyOnTheLeft, ctaLabel } = data;
 
     const videoRef = useRef([]);
     const heroRef = useRef(null);
@@ -69,8 +69,9 @@ const HeroVideo = ({ data, onVideoPopupOpen }) => {
     }, []);
 
     return (
-        <div ref={heroRef} className="pt-40 pb-40 md:pb-10 2xl:pt-50 bg-cover bg-center bg-[url('/gradient.png')] h-[100vh] flex">
+        <div ref={heroRef} className={`pb-40 md:pb-10  ${!title ? "bg-cover bg-center bg-[url('/gradient.png')] pt-40 2xl:pt-50 h-[100vh]" : "pt-50 2xl:pt-60"} flex`}>
             <Container className="flex-grow-1 h-full">
+                {title && <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27 text-darkblue mb-15 text-center">{title}</h1>}
                 <div className="mx-auto relative h-full">
                     {introMovie && (   
                         <video ref={el => videoRef.current[0] = el} className={`w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} autoPlay playsInline muted loop>
@@ -90,7 +91,7 @@ const HeroVideo = ({ data, onVideoPopupOpen }) => {
                         <div ref={el => videoRef.current[3] = el} className="w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />
                     )}
 
-                    <div className="absolute top-0 left-0 lg:left-auto lg:right-[13%] p-6 flex flex-col justify-center h-full text-white z-50">
+                    <div className={`absolute top-0 left-0 ${!copyOnTheLeft ? "lg:left-auto lg:right-[13%]" : ""} p-6 flex flex-col justify-center h-full text-white z-50`}>
                         {headings && (
                             <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27">
                                 {headings.map((heading, index) => (
@@ -102,7 +103,7 @@ const HeroVideo = ({ data, onVideoPopupOpen }) => {
                         )}
                         {fullMovie && (
                             <div className="mt-2 md:mt-6 hover:-translate-y-1! transition-all duration-500 self-start">
-                                <Button className="opacity-0 translate-y-5" ref={buttonRef} onClick={() => onVideoPopupOpen(fullMovie)}>Watch</Button>
+                                <Button className="opacity-0 translate-y-5" ref={buttonRef} onClick={() => onVideoPopupOpen(fullMovie)}>{ctaLabel || "Watch"}</Button>
                             </div>
                         )}
                     </div>

@@ -2,10 +2,9 @@ import { AuthProvider } from "../context/AuthContext";
 import { Montserrat } from "next/font/google";
 import GoogleAnalytics from '../lib/googleAnalytics'
 import "./globals.css";
-import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
-import ScrollToHashOnRouteChange from "@/components/ScrollToHashOnRouteChange";
-import getFooterData from "@/lib/getFooterData";
-import Footer from "@/components/Footer";
+import ScrollToHashOnRouteChange from "../components/ScrollToHashOnRouteChange";
+import getFooterData from "../lib/getFooterData";
+import Footer from "../components/Footer";
 import { Suspense } from 'react';
 
 const montserrat = Montserrat({

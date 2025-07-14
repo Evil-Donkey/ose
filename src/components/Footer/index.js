@@ -1,7 +1,6 @@
 import { Logo } from "../Icons/Logo";
 import Button from "../Button";
-import { LinkedIn, X, YouTube } from "../Icons/Social";
-// import GoogleMap from "../GoogleMap";
+import { LinkedIn, YouTube } from "../Icons/Social";
 import Container from "../Container";
 import Link from "next/link";
 

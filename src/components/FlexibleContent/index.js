@@ -20,7 +20,7 @@ import FullScreenList from "./FullScreenList";
 import Faqs from "./Faqs";
 import Team from "./Team";
 
-const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen }) => {
+const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen, title }) => {
 
     let flexibleContentArray = [];
 
@@ -29,7 +29,7 @@ const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen }) => {
         const { fieldGroupName } = data;
 
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_HeroVideo") {
-            flexibleContentArray.push(<HeroVideo data={data} index={i} key={i.toString()} onVideoPopupOpen={onVideoPopupOpen} />);
+            flexibleContentArray.push(<HeroVideo data={data} index={i} key={i.toString()} onVideoPopupOpen={onVideoPopupOpen} title={title} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_TitleAndCopy") {
             flexibleContentArray.push(<TitleAndCopy data={data} index={i} key={i.toString()} />);

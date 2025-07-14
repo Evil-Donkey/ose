@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import Button from "../../Button";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,7 +18,7 @@ const Sectors = ({ data }) => {
     const sectorsRef = useRef([]);
     const titleRef = useRef([]);
 
-    const { title, headings, copy, sectors, sectionLabel } = data;
+    const { title, headings, copy, sectors, sectionLabel, bottomHeading, ctaLabel, ctaUrl } = data;
 
     useEffect(() => {
         gsap.to(titleRef.current, {
@@ -75,23 +76,46 @@ const Sectors = ({ data }) => {
                         const link = url?.uri ? url.uri : "#";
                         return (
                             <div key={index} ref={el => sectorsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
-                                <Link href={link} className="relative aspect-square overflow-hidden rounded-lg flex text-center items-end justify-center py-10 xl:px-18 group">
-                                    <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform duration-300 group-hover:scale-110" />
-                                    {video && <video src={video.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />}
-                                    <div className="absolute inset-0 bg-gradient-to-t w-full h-3/5 bottom-0 top-auto from-black/60 to-black/0 pointer-events-none" />
-                                    <h4 className="text-white text-4xl md:text-5xl/13 font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />
-                                </Link>
-
-                                <div className="flex flex-col text-center items-center gap-5 mt-6 2xl:mt-8 px-3 md:px-8 xl:px-12 flex-grow-1 justify-between">
-                                    <div className="text-base 2xl:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
-                                    <Link href={link} className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase">
-                                        Discover {title}
+                                {url ? (    
+                                    <Link href={link} className="relative aspect-square overflow-hidden rounded-lg flex text-center items-end justify-center py-10 xl:px-18 group">
+                                        <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform duration-300 group-hover:scale-110" />
+                                        {video && <video src={video.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />}
+                                        <div className="absolute inset-0 bg-gradient-to-t w-full h-3/5 bottom-0 top-auto from-black/60 to-black/0 pointer-events-none" />
+                                        <h4 className="text-white text-4xl md:text-5xl/13 font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />
                                     </Link>
+                                ) : (
+                                    <div className="relative aspect-square overflow-hidden rounded-lg flex items-end py-10 px-10 xl:ps-10 xl:pe-18">
+                                        <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0" />
+                                        {video && <video src={video.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />}
+                                        <div className="absolute inset-0 bg-gradient-to-t w-full h-3/5 bottom-0 top-auto from-black/60 to-black/0 pointer-events-none" />
+                                        <h4 className="text-white text-4xl md:text-5xl/13 font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />
+                                    </div>
+                                )}
+
+                                <div className={`flex flex-col ${url ? "text-center px-3 md:px-8 xl:px-12" : "px-10"} items-center gap-5 mt-6 2xl:mt-8 flex-grow-1 justify-between`}>
+                                    <div className="text-base 2xl:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
+                                    {url && (
+                                        <Link href={link} className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase">
+                                            Discover {title}
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                         );
                     })}
                 </div>
+
+                {bottomHeading && (
+                    <div className="mt-20 mb-10 2xl:mb-15 flex justify-center">
+                        <h2 className="text-center text-2xl md:text-5xl 2xl:text-6xl leading-tight font-medium text-darkblue" dangerouslySetInnerHTML={{ __html: bottomHeading }} />
+                    </div>
+                )}
+
+                {(ctaLabel && ctaUrl) && (
+                    <div className="mt-2 md:mt-6 mb-10 hover:-translate-y-1! transition-all duration-500 relative z-10 flex justify-center">
+                        <Button href={ctaUrl}>{ctaLabel || "Find out more"}</Button>
+                    </div>
+                )}
             </Container>
         </div>
     )

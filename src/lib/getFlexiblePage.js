@@ -28,6 +28,8 @@ const FLEXIBLE_CONTENT_QUERY = `
             headings {
               heading
             }
+              copyOnTheLeft
+              ctaLabel
           }
           ... on Page_Flexiblecontent_FlexibleContent_TitleAndCopy {
             copy
@@ -41,8 +43,12 @@ const FLEXIBLE_CONTENT_QUERY = `
           ... on Page_Flexiblecontent_FlexibleContent_FullScreenPanel {
             fieldGroupName
             sectionLabel
+            mainTitle
+            autoHeight
             heading
             copy
+            ctaLabel
+            ctaUrl
             darkOverlay
             backgroundImage {
               mediaItemUrl
@@ -185,6 +191,9 @@ const FLEXIBLE_CONTENT_QUERY = `
                 mediaItemUrl
               }
             }
+            bottomHeading
+            ctaLabel
+            ctaUrl
           }
           ... on Page_Flexiblecontent_FlexibleContent_Portfolio {
             copy
@@ -359,6 +368,8 @@ const FLEXIBLE_CONTENT_QUERY = `
             fieldGroupName
             sectionLabel
             title
+            ctaLabel
+            ctaUrl
             quotes {
               author
               darkOverlay
