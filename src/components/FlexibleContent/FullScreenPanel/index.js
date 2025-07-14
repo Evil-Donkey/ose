@@ -71,7 +71,7 @@ const FullScreenPanel = ({ data }) => {
                         </div>}
                     </div>
                     {(ctaLabel && ctaUrl) && (
-                        <div className="mt-2 md:mt-12 hover:-translate-y-1! transition-all duration-500 relative z-10 flex justify-center">
+                        <div className="mt-8 md:mt-12 hover:-translate-y-1! transition-all duration-500 relative z-10 flex justify-center">
                             <Button href={ctaUrl}>{ctaLabel || "Find out more"}</Button>
                         </div>
                     )}

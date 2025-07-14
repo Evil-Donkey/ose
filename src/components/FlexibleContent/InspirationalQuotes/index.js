@@ -160,7 +160,7 @@ const InspirationalQuotes = ({ data }) => {
                                     </div>
                                 </Container>
                                 {(ctaLabel && ctaUrl) && (
-                                    <div className="mt-2 md:mt-6 hover:-translate-y-1! transition-all duration-500 relative z-10 flex justify-center">
+                                    <div className="mb-8 md:mt-6 hover:-translate-y-1! transition-all duration-500 relative z-10 flex justify-center">
                                         <Button href={ctaUrl}>{ctaLabel || "Find out more"}</Button>
                                     </div>
                                 )}
