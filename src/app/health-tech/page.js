@@ -5,12 +5,12 @@ import getPopOutData from "@/lib/getPopOutData";
 import FlexiblePageClient from "@/components/Templates/FlexiblePageClient";
 
 export async function generateMetadata() {
-  return await generateMetadataFromLib("1247");
+  return await generateMetadataFromLib("1249");
 }
 
 export default async function HowPage() {
-  const flexibleContent = await getFlexiblePage("1247");
-  const { title } = await getPageTitleAndContent("1247");
+  const flexibleContent = await getFlexiblePage("1249");
+  const { title } = await getPageTitleAndContent("1249");
   const popOutData = await getPopOutData();
 
   return (

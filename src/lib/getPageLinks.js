@@ -11,14 +11,20 @@ const PAGE_LINKS_QUERY = `
             ... on Page {
               id
               link
+              slug
+              uri
             }
             ... on Portfolio {
               id
               link
+              slug
+              uri
             }
             ... on Story {
               id
               link
+              slug
+              uri
             }
           }
         }
