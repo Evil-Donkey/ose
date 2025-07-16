@@ -19,6 +19,9 @@ import FullPanelCarousel from "./FullPanelCarousel";
 import FullScreenList from "./FullScreenList";
 import Faqs from "./Faqs";
 import Team from "./Team";
+import StoryCopy from "./StoryCopy";
+import StoryImage from "./StoryImage";
+import StoryQuote from "./StoryQuote";
 
 const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen, title }) => {
 
@@ -90,6 +93,15 @@ const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen, title }) => 
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Team") {
             flexibleContentArray.push(<Team data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Story_Story_FlexibleContent_CopyBlock") {
+            flexibleContentArray.push(<StoryCopy data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Story_Story_FlexibleContent_ImageBlock") {
+            flexibleContentArray.push(<StoryImage data={data} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Story_Story_FlexibleContent_QuoteBlock") {
+            flexibleContentArray.push(<StoryQuote data={data} index={i} key={i.toString()} />);
         }
     })}
 

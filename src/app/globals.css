@@ -57,3 +57,7 @@ body {
 .swiper-slide {
   @apply h-auto!;
 }
+
+.single-story-content h3 {
+  @apply text-base -mb-4 uppercase text-darkblue font-bold;
+}

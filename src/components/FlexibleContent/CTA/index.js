@@ -10,7 +10,7 @@ import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CTA = ({ data }) => {
+const CTA = ({ data, storiesData }) => {
     const titleRef = useRef([]);
     const copyRef = useRef(null);
     const ctaRef = useRef([]);
@@ -19,6 +19,21 @@ const CTA = ({ data }) => {
 
     // GSAP animations
     useEffect(() => {
+        // If storiesData is provided, only run animations when it's available
+        // If storiesData is not provided (used outside stories page), run immediately
+        if (storiesData !== undefined && !storiesData) return;
+
+        // Kill existing ScrollTriggers for this component
+        ScrollTrigger.getAll().forEach(trigger => {
+            if (trigger.vars.trigger && (
+                trigger.vars.trigger === titleRef.current ||
+                trigger.vars.trigger === copyRef.current ||
+                (Array.isArray(ctaRef.current) && ctaRef.current.includes(trigger.vars.trigger))
+            )) {
+                trigger.kill();
+            }
+        });
+
         const tl = gsap.timeline();
         tl.to(titleRef.current, {
             x: 0,
@@ -60,10 +75,9 @@ const CTA = ({ data }) => {
             },
         });
 
-        // return () => {
-        //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        // };
-    }, []);
+        // Refresh ScrollTrigger to recalculate positions
+        ScrollTrigger.refresh();
+    }, [storiesData]); // Re-run when stories data changes
 
     return (
         <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="py-20">

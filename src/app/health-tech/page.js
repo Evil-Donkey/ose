@@ -18,6 +18,7 @@ export default async function HowPage() {
       flexibleContent={flexibleContent} 
       popOutData={popOutData}
       title={title}
+      titleInHero={true}
       fixedHeader={true}
     />
   );

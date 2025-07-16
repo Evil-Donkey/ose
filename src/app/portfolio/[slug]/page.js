@@ -5,6 +5,23 @@ import Image from "next/image";
 import { X as XIcon, LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import Button from "@/components/Button";
 
+export async function generateMetadata({ params }) {
+    const resolvedParams = await params;
+    const items = await getPortfolioItems();
+    const item = items.find(s => s.slug === resolvedParams.slug);
+    
+    if (!item) {
+      return {
+        title: 'Portfolio Item Not Found',
+      };
+    }
+  
+    return {
+      title: item.title,
+      description: item.content ? item.content.replace(/<[^>]*>/g, '').substring(0, 160) : '',
+    };
+  }
+
 export default async function PortfolioSinglePage({ params }) {
   const { slug } = await params;
   const items = await getPortfolioItems();
@@ -144,7 +161,7 @@ export default async function PortfolioSinglePage({ params }) {
                     </div>
                 </div>
 
-                {/* TO DO: Add navigation here */}
+                
                 {(() => {
                     const currentIndex = sortedItems.findIndex(i => i.slug === slug);
                     const prev = currentIndex > 0 ? sortedItems[currentIndex - 1] : null;

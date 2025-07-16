@@ -10,6 +10,23 @@ const FOOTER_DATA_QUERY = `
         investorsEmail
         mediaEmail
         telephone
+        ctaTitle
+        ctaCopy
+        cta {
+          copy
+          ctaLabel
+          ctaUrl
+          largeTitle
+          smallTitle
+          backgroundImage {
+            altText
+            mediaDetails {
+              height
+              width
+            }
+            mediaItemUrl
+          }
+        }
       }
     }
   }

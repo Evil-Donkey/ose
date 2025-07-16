@@ -12,7 +12,7 @@ import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 
 gsap.registerPlugin(ScrollSmoother);
 
-export default function FlexiblePage({ flexibleContent, className, popOutData, title, fixedHeader }) {
+export default function FlexiblePage({ flexibleContent, className, popOutData, title, titleInHero, content, fixedHeader }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState(null);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
@@ -50,11 +50,19 @@ export default function FlexiblePage({ flexibleContent, className, popOutData, t
     <div className={className}>
       <LazyLoadInitializer />
       <HeaderWithMeganavLinks fixed={fixedHeader} />
+
+      {!titleInHero && title && (
+        <div className="pt-50 2xl:pt-60 text-center flex flex-col items-center gap-5 mb-20">
+          <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27 text-darkblue text-center">{title}</h1>
+          {content && <div className="w-full xl:px-17 lg:w-200 text-xl md:text-2xl" dangerouslySetInnerHTML={{ __html: content }} />}
+        </div>
+      )}
+
       <div id="smooth-wrapper">
         <div id="smooth-content">
           <PageFlexibleContent 
             data={flexibleContent} 
-            title={title}
+            title={titleInHero ? title : null}
             onPopupOpen={handlePopupOpen}
             onVideoPopupOpen={handleVideoPopupOpen}
           />
