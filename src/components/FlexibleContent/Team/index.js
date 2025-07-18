@@ -132,7 +132,7 @@ const Team = ({ data }) => {
     .filter(member =>
       member.teamCategories.nodes.some(cat => cat.slug === selectedCategory)
     )
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+    // .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   if (loading) return <Container id={componentId}><div>Loading…</div></Container>;
   if (error) return <Container id={componentId}><div>{error}</div></Container>;
