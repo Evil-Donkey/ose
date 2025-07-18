@@ -6,6 +6,7 @@ import Link from "next/link";
 import ReactDOM from "react-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSearchParams } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,6 +20,7 @@ function groupCategories(categories) {
 }
 
 export default function PortfolioClient({ title, content, portfolioItems, categories, stages }) {
+  const searchParams = useSearchParams();
   const groupedCategories = useMemo(() => groupCategories(categories), [categories]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedStage, setSelectedStage] = useState(null);
@@ -31,6 +33,30 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   const [dropdownPosition, setDropdownPosition] = useState({});
   const dropdownButtonRefs = useRef({});
   const [isMobileDropdown, setIsMobileDropdown] = useState(false);
+
+  // Parse URL parameters and set initial filter
+  useEffect(() => {
+    const filterParam = searchParams.get('filter');
+    
+    if (filterParam === null) {
+      // No filter parameter, keep current selection
+      return;
+    }
+    
+    if (filterParam === '') {
+      // Empty filter parameter, clear selection
+      setSelectedCategory(null);
+      return;
+    }
+    
+    // Find category by slug
+    const targetCategory = categories.find(cat => cat.slug === filterParam);
+    if (targetCategory) {
+      setSelectedCategory(targetCategory.id);
+    }
+  }, [searchParams, categories]);
+
+
 
   // When opening a dropdown, measure its button position
   useEffect(() => {

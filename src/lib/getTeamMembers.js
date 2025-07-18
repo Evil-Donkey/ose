@@ -2,7 +2,7 @@ import fetchAPI from "./api";
 
 const TEAM_MEMBERS_QUERY = `
   {
-    allTeam {
+    allTeam(first: 1000) {
         nodes {
             teamMember {
                 role

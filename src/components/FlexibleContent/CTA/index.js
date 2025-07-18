@@ -21,7 +21,7 @@ const CTA = ({ data, storiesData }) => {
     useEffect(() => {
         // If storiesData is provided, only run animations when it's available
         // If storiesData is not provided (used outside stories page), run immediately
-        if (storiesData !== undefined && !storiesData) return;
+        // if (storiesData !== undefined && !storiesData) return;
 
         // Kill existing ScrollTriggers for this component
         ScrollTrigger.getAll().forEach(trigger => {

@@ -216,12 +216,12 @@ const FullPanelCarousel = ({ data }) => {
                                     <Container className="py-5 2xl:py-45 relative z-10 text-white flex flex-col justify-center h-full">
                                         <div className="flex flex-col w-full gap-5">
                                             {title && (
-                                                <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[7rem]/25 2xl:text-[10rem]/30 tracking-tight w-full opacity-0 -translate-x-3 -translate-y-full">
+                                                <h3 ref={el => titleRef.current[index] = el} className="slide-title text-9xl md:text-[6rem]/20 lg:text-[7rem]/25 tracking-tight w-full opacity-0 -translate-x-3 -translate-y-full">
                                                     {title}
                                                 </h3>
                                             )}
                                             {copy && (
-                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-3/7 text-xl md:text-[1.2rem]/7 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
+                                                <div ref={el => copyRef.current[index] = el} className="slide-copy w-full lg:w-3/7 text-xl md:text-[1.2rem]/7 opacity-0 translate-y-5">
                                                     <div className="flex flex-col gap-8" dangerouslySetInnerHTML={{ __html: copy }} />
                                                     {/* <div className="flex flex-col gap-8">
                                                         <div dangerouslySetInnerHTML={{ __html: slideContent.firstParagraph }} />
@@ -239,7 +239,7 @@ const FullPanelCarousel = ({ data }) => {
                                             )}
 
                                             {(accordionCopy || accordionList) && 
-                                                <div className="flex flex-col gap-5 z-50">
+                                                <div className="flex flex-col gap-5 z-50 mt-8">
                                                     <Button 
                                                         onClick={() => openModal(slide)}
                                                         className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase"
@@ -295,13 +295,24 @@ const FullPanelCarousel = ({ data }) => {
                             <div dangerouslySetInnerHTML={{ __html: modalContent.accordionCopy }} />
                         )}
                         {modalContent.accordionList && (
-                            <ul className="list-disc columns-1 lg:columns-2 lg:gap-40 pl-4 space-y-2">
-                                {modalContent.accordionList.map((item, index) => (
-                                    <li className="mb-3 break-inside-avoid" key={index}>
-                                        {item.listItem}
-                                    </li>
-                                ))}
-                            </ul>
+                            <div className="lg:grid lg:grid-cols-2 lg:gap-10">
+                                {/* First column - gets more items */}
+                                <ul className="list-disc marker:text-lightblue pl-4 space-y-2">
+                                    {modalContent.accordionList.slice(0, Math.ceil(modalContent.accordionList.length * 0.6)).map((item, index) => (
+                                        <li className="mb-3 text-pretty" key={index}>
+                                            {item.listItem}
+                                        </li>
+                                    ))}
+                                </ul>
+                                {/* Second column - gets remaining items */}
+                                <ul className="list-disc marker:text-lightblue pl-4 space-y-2">
+                                    {modalContent.accordionList.slice(Math.ceil(modalContent.accordionList.length * 0.6)).map((item, index) => (
+                                        <li className="mb-3 text-pretty" key={Math.ceil(modalContent.accordionList.length * 0.6) + index}>
+                                            {item.listItem}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         )}
                     </div>
                 )}

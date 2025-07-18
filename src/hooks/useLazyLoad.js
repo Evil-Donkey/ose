@@ -16,7 +16,9 @@ const useLazyLoad = () => {
     const handleHashChange = () => {
       const hash = window.location.hash;
       if (hash) {
-        const targetElement = document.querySelector(hash);
+        // Extract just the element ID from the hash, removing query parameters
+        const elementId = hash.split('?')[0];
+        const targetElement = document.querySelector(elementId);
         if (targetElement) {
           // Find all lazy items within the target section
           const sectionLazyItems = targetElement.querySelectorAll('.lazy__item');

@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, children, title, darkMode }) => {
     if (!isOpen) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center lg:p-4">
             {/* Backdrop */}
             <div 
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm"
@@ -43,19 +43,19 @@ const Modal = ({ isOpen, onClose, children, title, darkMode }) => {
             />
             
             {/* Modal */}
-            <div className={`relative ${darkMode ? 'bg-darkblue text-white' : 'bg-white text-blue-02'} rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl p-4`}>
+            <div className={`relative ${darkMode ? 'bg-darkblue text-white' : 'bg-white text-blue-02'} lg:rounded-2xl max-w-4xl w-full h-full lg:max-h-[90vh] overflow-hidden shadow-2xl p-4`}>
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4">
                     {title && (
-                        <h2 className={`text-5xl 2xl:text-8xl ${darkMode ? 'text-white' : 'text-blue-02'}`}>{title}</h2>
+                        <h2 className={`text-5xl 2xl:text-6xl ${darkMode ? 'text-white' : 'text-blue-02'}`}>{title}</h2>
                     )}
                     <button
                         onClick={onClose}
-                        className="text-white hover:text-white transition-colors p-2 -m-2 cursor-pointer"
+                        className="text-white hover:text-white transition-colors -m-4 -mt-8 cursor-pointer"
                         aria-label="Close modal"
                     >
                         <svg
-                            className="w-6 h-6"
+                            className="w-8 h-8"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -63,7 +63,7 @@ const Modal = ({ isOpen, onClose, children, title, darkMode }) => {
                             <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                strokeWidth={2}
+                                strokeWidth={1}
                                 d="M6 18L18 6M6 6l12 12"
                             />
                         </svg>

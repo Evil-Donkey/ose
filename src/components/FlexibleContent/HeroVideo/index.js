@@ -69,10 +69,9 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
     }, []);
 
     return (
-        <div ref={heroRef} className={`pb-40 md:pb-10  ${!title ? "bg-cover bg-center bg-[url('/gradient.png')] pt-40 2xl:pt-50 h-[100vh]" : "pt-50 2xl:pt-60"} flex`}>
+        <div ref={heroRef} className={`pb-40 md:pb-10 h-[100vh] ${!title ? "bg-cover bg-center bg-[url('/gradient.png')] pt-40 2xl:pt-50" : "pt-50 2xl:pt-60"} flex`}>
             <Container className="flex-grow-1 h-full">
-                {title && <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27 text-darkblue mb-15 text-center">{title}</h1>}
-                <div className={`mx-auto relative h-full aspect-5/7 lg:aspect-auto`}>
+                <div className={`mx-auto relative h-full`}>
                     {introMovie && (   
                         <video ref={el => videoRef.current[0] = el} className={`w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} autoPlay playsInline muted loop>
                             <source src={introMovie.mediaItemUrl} type="video/mp4" />

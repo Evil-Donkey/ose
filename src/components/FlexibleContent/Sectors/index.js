@@ -18,7 +18,7 @@ const Sectors = ({ data }) => {
     const sectorsRef = useRef([]);
     const titleRef = useRef([]);
 
-    const { title, headings, copy, sectors, sectionLabel, bottomHeading, ctaLabel, ctaUrl } = data;
+    const { title, headings, copy, copyFullWidth, sectors, sectionLabel, bottomHeading, ctaLabel, ctaUrl } = data;
 
     useEffect(() => {
         gsap.to(titleRef.current, {
@@ -65,7 +65,7 @@ const Sectors = ({ data }) => {
                         </div>
                     }
                     {copy &&
-                        <div className="w-full md:w-1/3 lg:-mb-10">
+                        <div className={`w-full ${copyFullWidth ? "md:w-3/5" : "md:w-1/3"}`}>
                             <Column copy={copy} fullWidth={true} />
                         </div>
                     }
@@ -112,7 +112,7 @@ const Sectors = ({ data }) => {
                 )}
 
                 {(ctaLabel && ctaUrl) && (
-                    <div className="mt-2 md:mt-6 mb-10 hover:-translate-y-1! transition-all duration-500 relative z-10 flex justify-center">
+                    <div className="mt-2 md:mt-12 mb-10 hover:-translate-y-1! transition-all duration-500 relative z-10 flex justify-center">
                         <Button href={ctaUrl}>{ctaLabel || "Find out more"}</Button>
                     </div>
                 )}

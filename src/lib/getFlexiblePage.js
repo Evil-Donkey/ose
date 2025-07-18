@@ -162,6 +162,7 @@ const FLEXIBLE_CONTENT_QUERY = `
           }
           ... on Page_Flexiblecontent_FlexibleContent_Sectors {
             copy
+            copyFullWidth
             fieldGroupName
             sectionLabel
             title
