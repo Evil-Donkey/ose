@@ -127,12 +127,12 @@ const Team = ({ data }) => {
       return orderA - orderB;
     });
 
-  // Filter members by selected category and sort by date (least recent to most recent)
+  // Filter members by selected category and reverse the order (already sorted by MENU_ORDER)
   const filteredMembers = members
     .filter(member =>
       member.teamCategories.nodes.some(cat => cat.slug === selectedCategory)
     )
-    // .sort((a, b) => new Date(a.date) - new Date(b.date));
+    .reverse();
 
   if (loading) return <Container id={componentId}><div>Loading…</div></Container>;
   if (error) return <Container id={componentId}><div>{error}</div></Container>;
