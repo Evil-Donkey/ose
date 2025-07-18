@@ -69,13 +69,13 @@ const FullScreenList = ({ data }) => {
             <Container className="py-15 2xl:py-45 relative z-10 flex flex-col h-full">
                 <div className="flex flex-col items-center">
                     {heading && <h2 ref={titleRef} className="w-full text-center uppercase tracking-widest text-white text:lg md:text-xl mb-8 font-medium opacity-0 translate-x-full">{heading}</h2>}
-                    {copy && <div ref={el => copyRef.current[0] = el} className="w-full md:w-3/5 text-center text-white opacity-0 translate-y-20">
+                    {copy && <div ref={el => copyRef.current[0] = el} className="w-full md:w-180 text-center text-white opacity-0 translate-y-20">
                         <div className="text-base md:text-xl flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />
                     </div>}
                 </div>
                 {list &&
                     <div ref={el => copyRef.current[1] = el}  className={`flex mt-5 2xl:mt-15 opacity-0 translate-y-20 ${listPosition}`}>
-                        <div className="rounded-lg overflow-hidden bg-white p-8 w-full lg:w-2/5">
+                        <div className="rounded-lg overflow-hidden bg-white p-8 w-full lg:w-2/3 xl:w-2/5">
                             {listCopy && <div className="text-base md:text-xl flex flex-col gap-4 mb-5" dangerouslySetInnerHTML={{ __html: listCopy }} />}
                             {list.length > 0 &&
                                 <ul className="list-disc list-inside">

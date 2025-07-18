@@ -8,7 +8,7 @@ import InfographicEcosystem from "./InfographicEcosystem";
 import Expertise from "./Expertise";
 import Sectors from "./Sectors";
 import Portfolio from "./Portfolio";
-import CTA from "./CTA";
+// import CTA from "./CTA";
 import Story from "./Story";
 import OneColumnCopyAlternate from "./OneColumnCopyAlternate";
 import Stories from "./Stories";
@@ -61,9 +61,9 @@ const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen, title }) => 
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Portfolio") {
             flexibleContentArray.push(<Portfolio data={data} index={i} key={i.toString()} />);
         }
-        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cta") {
-            flexibleContentArray.push(<CTA data={data} index={i} key={i.toString()} />);
-        }
+        // if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cta") {
+        //     flexibleContentArray.push(<CTA data={data} index={i} key={i.toString()} />);
+        // }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Story") {
             flexibleContentArray.push(<Story data={data} index={i} key={i.toString()} />);
         }

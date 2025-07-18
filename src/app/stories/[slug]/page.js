@@ -8,7 +8,7 @@ import Button from "@/components/Button";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import getFooterData from "@/lib/getFooterData";
-import CTA from "@/components/FlexibleContent/CTA";
+import CTA from "@/components/CTA";
 
 gsap.registerPlugin(ScrollTrigger);
 

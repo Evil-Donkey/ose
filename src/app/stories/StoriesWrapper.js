@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import StoriesClient from "./StoriesClient";
-import CTA from "@/components/FlexibleContent/CTA";
+import CTA from "@/components/CTA";
 
 export default function StoriesWrapper({ types, stories, ctaData }) {
   const [storiesData, setStoriesData] = useState(null);
