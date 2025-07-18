@@ -9,6 +9,7 @@ const TEAM_MEMBERS_QUERY = `
             }
             title(format: RENDERED)
             uri
+            date
             featuredImage {
                 node {
                     altText
