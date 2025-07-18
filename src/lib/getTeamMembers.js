@@ -24,6 +24,7 @@ const TEAM_MEMBERS_QUERY = `
                 nodes {
                     name
                     slug
+                    customOrder
                 }
             }
         }

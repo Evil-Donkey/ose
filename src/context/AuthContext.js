@@ -8,6 +8,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [passwordVerified, setPasswordVerified] = useState(false);
   const router = useRouter();
 
   // Function to check authentication status
@@ -75,6 +76,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAuthStatus(); // Check authentication on mount
+    
+    // Check if password was already verified in this session
+    const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
+    if (isPasswordVerified) {
+      setPasswordVerified(true);
+    }
   }, []);
 
   // Login function
@@ -127,7 +134,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, checkAuthStatus, handleAuthError }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      logout, 
+      checkAuthStatus, 
+      handleAuthError,
+      passwordVerified,
+      setPasswordVerified
+    }}>
       {children}
     </AuthContext.Provider>
   );

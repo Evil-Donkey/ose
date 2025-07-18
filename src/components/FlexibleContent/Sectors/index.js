@@ -73,7 +73,8 @@ const Sectors = ({ data }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
                     {sectors.map((sector, index) => {
                         const { title, url, image, video, copy } = sector;
-                        const link = url?.uri ? url.uri : "#";
+                        console.log(url);
+                        const link = url ? url : "#";
                         return (
                             <div key={index} ref={el => sectorsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
                                 {url ? (    

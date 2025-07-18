@@ -172,14 +172,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             sectors {
               copy
               title
-              url {
-                ... on Page {
-                  id
-                  slug
-                  link
-                  uri
-                }
-              }
+              url
               image {
                 mediaItemUrl
                 mediaDetails {

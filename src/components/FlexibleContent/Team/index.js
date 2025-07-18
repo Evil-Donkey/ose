@@ -58,6 +58,12 @@ const Team = ({ data }) => {
               .flatMap(member => member.teamCategories?.nodes)
               .find(cat => cat.slug === slug);
             return cat;
+          })
+          .sort((a, b) => {
+            // Sort by customOrder from lowest to highest
+            const orderA = a.customOrder || 0;
+            const orderB = b.customOrder || 0;
+            return orderA - orderB;
           });
         
         // Check for filter parameter in hash first
@@ -113,6 +119,12 @@ const Team = ({ data }) => {
         .flatMap(member => member.teamCategories?.nodes)
         .find(cat => cat.slug === slug);
       return cat;
+    })
+    .sort((a, b) => {
+      // Sort by customOrder from lowest to highest
+      const orderA = a.customOrder || 0;
+      const orderB = b.customOrder || 0;
+      return orderA - orderB;
     });
 
   // Filter members by selected category and sort by date (least recent to most recent)
