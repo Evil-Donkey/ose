@@ -1,0 +1,195 @@
+'use client'
+
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import Button from "@/components/Button";
+import Link from "next/link";
+
+const Form = () => {
+
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const onSubmit = async (data) => {
+        setIsSubmitting(true);
+        setError("");
+        setSuccess(false);
+
+        console.log("Form data being submitted:", data);
+
+        const formData = new FormData();
+
+        // Contact Form 7 required fields
+        formData.append("_wpcf7", process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568");
+        formData.append("_wpcf7_version", "6.0.5");
+        formData.append("_wpcf7_locale", "en_UK");
+        formData.append("_wpcf7_unit_tag", `wpcf7-f${process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568"}-p1566-o1`);
+        formData.append("_wpcf7_container_post", "1566");
+
+        // Form fields - match exactly with WordPress Contact Form 7 field names
+        formData.append("first-name", data.firstName);
+        formData.append("last-name", data.lastName);
+        formData.append("email", data.email);
+        formData.append("connection", data.connection);
+        formData.append("university-department", data.universityDepartment || "");
+        formData.append("summary", data.summary);
+        
+        // Handle sectors as comma-separated string for text field
+        let sectorsValue = "";
+        if (data.sectors) {
+            if (Array.isArray(data.sectors)) {
+                sectorsValue = data.sectors.join(", ");
+            } else {
+                sectorsValue = data.sectors;
+            }
+        }
+        
+        // Validate that at least one sector is selected
+        if (!sectorsValue) {
+            setError("Please select at least one sector");
+            setIsSubmitting(false);
+            return;
+        }
+        
+        // Send sectors as a single comma-separated string
+        formData.append("sectors", sectorsValue);
+
+        // Debug: Log the FormData contents
+        console.log("FormData contents:");
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        try {
+            const endpoint = `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/contact-form-7/v1/contact-forms/${process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568"}/feedback`;
+            console.log("Submitting to endpoint:", endpoint);
+
+            const response = await fetch(endpoint, {
+                method: "POST",
+                body: formData,
+            });
+
+            console.log("Response status:", response.status);
+            console.log("Response headers:", [...response.headers.entries()]);
+
+            const result = await response.json();
+            console.log("Response result:", result);
+
+            if (result.status === "mail_sent") {
+                setSuccess(true);
+            } else {
+                // Handle different types of errors
+                let errorMessage = "Submission failed. Please try again.";
+                
+                if (result.messages && result.messages.validation_error) {
+                    errorMessage = result.messages.validation_error.join(", ");
+                } else if (result.messages && result.messages.mail_failed) {
+                    errorMessage = result.messages.mail_failed.join(", ");
+                } else if (result.message) {
+                    errorMessage = result.message;
+                }
+                
+                setError(errorMessage);
+            }
+        } catch (err) {
+            console.error("Form submission error:", err);
+            setError("An error occurred. Please try again later.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex -mx-4 flex-col md:flex-row flex-wrap">
+        <div className="md:w-1/2 flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="firstName" className="text-sm">First Name*</label>
+            <input type="text" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("firstName", { required: "First name is required" })} />
+            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
+        </div>
+
+        <div className="md:w-1/2 flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="lastName" className="text-sm">Last Name*</label>
+            <input type="text" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("lastName", { required: "Last name is required" })} />
+            {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
+        </div>
+
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="email" className="text-sm">Email*</label>
+            <input type="email" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("email", { 
+                required: "Email is required",
+                pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address"
+                }
+            })} />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+        </div>
+
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="connection" className="text-sm">Connection to Oxford*</label>
+            <select className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("connection", { required: "Connection to Oxford is required" })} defaultValue="">
+                <option value="" disabled>Select</option>
+                <option value="Option 1">Option 1</option>
+                <option value="Option 2">Option 2</option>
+                <option value="Option 3">Option 3</option>
+            </select>
+            {errors.connection && <p className="text-red-500 text-sm">{errors.connection.message}</p>}
+        </div>
+
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <div className="text-sm font-bold">Research &amp; Business Idea Submission</div>
+            <label htmlFor="universityDepartment" className="text-sm">University Department (if applicable)</label>
+            <input type="text" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("universityDepartment")} />
+            {errors.universityDepartment && <p className="text-red-500 text-sm">{errors.universityDepartment.message}</p>}
+        </div>
+        
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="summary" className="text-sm">Brief summary of your research or business idea*</label>
+            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("summary", { required: "Summary of your research or business idea is required" })} />
+            {errors.summary && <p className="text-red-500 text-sm">{errors.summary.message}</p>}
+        </div>
+
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="sectors" className="text-sm">Relevant Sector (Select all that apply)*</label>
+            <div className="flex flex-col gap-2">
+                <label className="flex items-center gap-2 text-sm">
+                    <input type="checkbox" {...register("sectors")} value="Deep Tech" />
+                    <span>Deep Tech</span>
+                </label>
+                <label className="flex items-center gap-2 text-sm">
+                    <input type="checkbox" {...register("sectors")} value="Health Tech" />
+                    <span>Health Tech</span>
+                </label>
+                <label className="flex items-center gap-2 text-sm">
+                    <input type="checkbox" {...register("sectors")} value="Life Sciences" />
+                    <span>Life Sciences</span>
+                </label>
+                {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
+            </div>
+        </div>
+
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="privacyPolicy" className="text-white rounded-md bg-blue-02 p-4 flex items-start gap-2 text-sm">
+                <input type="checkbox" className="mt-1" {...register("privacyPolicy", { required: "You must accept the Privacy Policy" })} />
+                <span>By submitting this form, I agree to the <Link href="/privacy-policy">Privacy Policy</Link> and consent to the collection, use, and storage of my information as described.</span>
+            </label>
+            {errors.privacyPolicy && <p className="text-red-500 text-sm">{errors.privacyPolicy.message}</p>}
+        </div>
+
+        <div className="w-full flex flex-col items-end gap-2 px-4">
+            <Button disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit your idea"}
+            </Button>
+        </div>
+
+        <div className="w-full flex flex-col gap-2 mt-5 mt-md-0 px-4">
+            {success && <p className="text-white font-medium">Form submitted successfully!</p>}
+            {error && <p className="text-red-500 font-medium">{error}</p>}
+        </div>
+    </form>
+  );
+}
+
+export default Form;
