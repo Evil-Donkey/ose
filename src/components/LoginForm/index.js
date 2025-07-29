@@ -1,13 +1,16 @@
 "use client";
+
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import AuthContext from "../../context/AuthContext";
-import Header from "../Header/index";
-import Container from '../Container';
+import Button from "@/components/Button";
+import Container from "@/components/Container";
+import { Spinner } from "@/components/Icons/Spinner";
 
-export default function LoginForm() {
+export default function LoginForm({ title, content }) {
     const { login } = useContext(AuthContext);
     const [serverError, setServerError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         register,
@@ -17,6 +20,7 @@ export default function LoginForm() {
 
     const onSubmit = async (formData) => {
         setServerError(null);
+        setIsLoading(true);
         try {
             const response = await login({ username: formData.username, password: formData.password });
     
@@ -32,53 +36,72 @@ export default function LoginForm() {
             } else {
                 setServerError("Please check your details and try again.");
             }
+        } finally {
+            setIsLoading(false);
         }
     };
     
 
     return (
-        <Container>
-            <Header portal={false} />
-            <h2 className="text-2xl font-bold mb-4 pt-40">Login</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                {/* Username / Email */}
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Username or Email"
-                        {...register("username", {
-                            required: "Username or email is required",
-                        })}
-                        className="border border-gray-300 rounded-md p-2 w-full"
-                    />
-                    {errors.username && <p className="text-red-500">{errors.username.message}</p>}
+        <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
+            <div className="w-full lg:w-2/5">
+                {title && <h1 className="text-4xl lg:text-6xl mb-4">{title}</h1>}
+                {content && <div className="text-base flex flex-col gap-4 lg:w-2/3" dangerouslySetInnerHTML={{ __html: content }} />}
+            </div>
+            <div className="w-full lg:w-2/5">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                    {/* Username / Email */}
+                    <div className="w-full flex flex-col gap-2 mb-3">
+                        <label htmlFor="username" className="text-sm">Email*</label>
+                        <input
+                            type="text"
+                            placeholder="Email"
+                            {...register("username", {
+                                required: "Username or email is required",
+                            })}
+                            className="bg-white text-blue-02 rounded-sm p-2"
+                        />
+                        {errors.username && <p className="text-red-500">{errors.username.message}</p>}
+                    </div>
+
+                    {/* Password */}
+                    <div className="w-full flex flex-col gap-2 mb-5">
+                        <label htmlFor="password" className="text-sm">Password*</label>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            {...register("password", {
+                                required: "Password is required",
+                                minLength: {
+                                    value: 6,
+                                    message: "Password must be at least 6 characters",
+                                },
+                            })}
+                            className="bg-white text-blue-02 rounded-sm p-2"
+                        />
+                        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+                    </div>
+
+                    {/* Submit Button */}
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading ? (
+                            <div className="flex items-center gap-2">
+                                <Spinner size={16} />
+                                <span>Entering...</span>
+                            </div>
+                        ) : (
+                            "Enter"
+                        )}
+                    </Button>
+                </form>
+
+                {/* Server error message */}
+                {serverError && <p className="text-red-500 mt-2">{serverError}</p>}
+
+                <div className="flex flex-col gap-2 mt-8">
+                    <p className="text-sm">If you require assistance, please contact:<br/> <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a></p>
                 </div>
-
-                {/* Password */}
-                <div>
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        {...register("password", {
-                            required: "Password is required",
-                            minLength: {
-                                value: 6,
-                                message: "Password must be at least 6 characters",
-                            },
-                        })}
-                        className="border border-gray-300 rounded-md p-2 w-full"
-                    />
-                    {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-                </div>
-
-                {/* Submit Button */}
-                <button type="submit" className="bg-blue-500 text-white rounded-md p-2 w-full cursor-pointer">
-                    Log In
-                </button>
-            </form>
-
-            {/* Server error message */}
-            {serverError && <p className="text-red-500 mt-2">{serverError}</p>}
+            </div>
         </Container>
     );
 }

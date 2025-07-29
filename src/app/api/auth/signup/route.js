@@ -5,7 +5,7 @@ export async function POST(req) {
   const username = email.split('@')[0];
 
   try {
-    const response = await fetch(process.env.WORDPRESS_GRAPHQL_ENDPOINT, {
+    const response = await fetch(process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

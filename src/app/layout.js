@@ -7,6 +7,7 @@ import getFooterData from "../lib/getFooterData";
 import Footer from "../components/Footer";
 import PasswordWrapper from "../components/PasswordOverlay/PasswordWrapper";
 import { Suspense } from 'react';
+import LayoutClient from "../components/LayoutClient";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -26,10 +27,13 @@ export default async function RootLayout({ children }) {
         <AuthProvider>
           <PasswordWrapper>
             <Suspense>
-              <ScrollToHashOnRouteChange />
-              {children}
+              <LayoutClient footerData={footerData}>
+                <div className="min-h-screen">
+                  <ScrollToHashOnRouteChange />
+                  {children}
+                </div>
+              </LayoutClient>
             </Suspense>
-            <Footer data={footerData} />
           </PasswordWrapper>
         </AuthProvider>
         {/* <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} /> */}

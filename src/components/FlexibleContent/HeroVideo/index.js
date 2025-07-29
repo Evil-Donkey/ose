@@ -100,16 +100,16 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                                 ))}
                             </h1>
                         )}
-                        {fullMovie && (
-                            <div className="mt-2 md:mt-6 hover:-translate-y-1! transition-all duration-500 self-start">
-                                <Button className="opacity-0 translate-y-5" ref={buttonRef} onClick={() => onVideoPopupOpen(fullMovie)}>{ctaLabel || "Watch"}</Button>
+                        {ctaLabel && (
+                            <div ref={buttonRef} className="mt-8 opacity-0 translate-y-5">
+                                <Button onClick={() => onVideoPopupOpen(fullMovie)}>{ctaLabel}</Button>
                             </div>
                         )}
                     </div>
                 </div>
             </Container>
         </div>
-    )
-}
+    );
+};
 
 export default HeroVideo;

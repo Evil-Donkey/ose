@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Container from "@/components/Container";
 import { formatDate } from "@/lib/formatDate";
 
-const News = ({ newsItems, newsCategories }) => {
-    const pathname = usePathname();
+const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
+  const pathname = usePathname();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -34,18 +33,14 @@ const News = ({ newsItems, newsCategories }) => {
 
   // Filter news items based on selected category
   const filteredNewsItems = selectedCategory 
-    ? newsItems.filter(item => 
-        item.categories?.nodes?.some(cat => cat.slug === selectedCategory)
+    ? portfolioNewsItems.filter(item => 
+        item.portfolioNewsCategories?.nodes?.some(cat => cat.slug === selectedCategory)
       )
-    : newsItems;
-
-  // Get the first item for hero section
-  const heroItem = filteredNewsItems[0];
-  const gridItems = filteredNewsItems.slice(1);
+    : portfolioNewsItems;
 
   // Get category name for display
   const getCategoryName = (item) => {
-    return item.categories?.nodes?.[0]?.name || 'News';
+    return item.portfolioNewsCategories?.nodes?.[0]?.name || 'Portfolio News';
   };
 
   return (
@@ -67,7 +62,7 @@ const News = ({ newsItems, newsCategories }) => {
                 <span className="text-sm">
                     {selectedCategory === null 
                     ? 'Show All' 
-                    : newsCategories.find(cat => cat.slug === selectedCategory)?.name || 'Show All'
+                    : portfolioNewsCategories.find(cat => cat.slug === selectedCategory)?.name || 'Show All'
                     }
                 </span>
                 <svg 
@@ -88,7 +83,7 @@ const News = ({ newsItems, newsCategories }) => {
                     >
                     Show All
                     </button>
-                    {newsCategories
+                    {portfolioNewsCategories
                     .filter(category => category.slug !== 'uncategorized')
                     .map((category) => (
                         <button
@@ -105,82 +100,49 @@ const News = ({ newsItems, newsCategories }) => {
             </div>
         </div>
 
-        {/* Hero Section - First News Item */}
-        {heroItem && (
-          <div className="mb-16">
-            <Link href={`/news/${heroItem.slug}`} className="block group">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
-                {/* Image Section */}
-                <div className="relative h-80 lg:h-full min-h-[470px] rounded-xl overflow-hidden">
-                  {heroItem.featuredImage?.node?.mediaItemUrl ? (
-                    <Image
-                      src={heroItem.featuredImage.node.mediaItemUrl}
-                      alt={heroItem.featuredImage.node.altText || heroItem.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-600 flex items-center justify-center">
-                      <span className="text-gray-400">No Image</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Content Section */}
-                <div className="lg:px-12 flex flex-col">
-                  <div className="space-y-4">
-                    {/* Category Tag */}
-                    <span className="inline-block bg-lightblue-02 text-blue-02 px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
-                      {getCategoryName(heroItem)}
-                    </span>
-
-                    {/* Date */}
-                    <p className="text-white text-sm font-medium">
-                      {formatDate(heroItem.date)}
-                    </p>
-
-                    {/* Title */}
-                    <h1 className="text-2xl lg:text-3xl xl:text-4xl leading-tight">
-                      {heroItem.title}
-                    </h1>
-
-                    {/* Short Description */}
-                    {heroItem.news?.shortDescription && (
-                      <p className="text-white text-base leading-relaxed">
-                        {heroItem.news.shortDescription}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        )}
-
         {/* Grid Section - Remaining News Items */}
-        {gridItems.length > 0 && (
+        {filteredNewsItems.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {gridItems.map((item, index) => (
-              <Link key={item.databaseId || index} href={`/news/${item.slug}`} className="block group">
-                <div className="transition-all duration-300 hover:-translate-y-1">
-                  {/* Image */}
-                  <div className="relative aspect-4/5 rounded-xl overflow-hidden">
-                    {item.featuredImage?.node?.mediaItemUrl ? (
-                      <Image
-                        src={item.featuredImage.node.mediaItemUrl}
-                        alt={item.featuredImage.node.altText || item.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-600 flex items-center justify-center">
-                        <span className="text-gray-400 text-sm">No Image</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="py-4">
+            {filteredNewsItems.map((item, index) => {
+              // Calculate row and position within row
+              const row = Math.floor(index / 3);
+              const positionInRow = index % 3;
+              const isEvenRow = row % 2 === 0;
+              
+              // Determine column span and background color
+              let colSpan = "lg:col-span-1";
+              let bgColor = "";
+              
+              if (isEvenRow) {
+                // Even rows: first item spans 2 cols, others span 1
+                if (positionInRow === 0) {
+                  colSpan = "lg:col-span-2";
+                  bgColor = "bg-white"; // White background
+                } else if (positionInRow === 1) {
+                  bgColor = "bg-blue-02"; // Dark blue background
+                } else {
+                  bgColor = "bg-lightblue"; // Light blue background
+                }
+              } else {
+                // Odd rows: first two items span 1 col each, last item spans 2 cols
+                if (positionInRow === 0) {
+                  bgColor = "bg-blue-02"; // Dark blue background
+                } else if (positionInRow === 1) {
+                  bgColor = "bg-lightblue"; // Light blue background
+                } else {
+                  colSpan = "lg:col-span-2";
+                  bgColor = "bg-white"; // White background
+                }
+              }
+              
+              return (
+                <Link 
+                  key={item.databaseId || index} 
+                  href={item.portfolioNews.url} 
+                  target="_blank" 
+                  className={`block group p-5 lg:p-8 rounded-2xl ${bgColor} ${colSpan} transition-all duration-300 hover:-translate-y-1`}
+                >
+                  <div>
                     <div className="space-y-2">
                       {/* Category Tag */}
                       <span className="inline-block bg-lightblue text-blue-02 px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
@@ -188,23 +150,25 @@ const News = ({ newsItems, newsCategories }) => {
                       </span>
 
                       {/* Date */}
-                      <p className="text-white text-xs font-medium">
+                      <p className={`text-xs font-medium mt-3 ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
                         {formatDate(item.date)}
                       </p>
 
                       {/* Title */}
-                      <h3 className="text-white text-sm leading-tight overflow-hidden" style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical'
-                      }}>
+                      <h1 className={`${bgColor === 'bg-white' ? 'text-2xl lg:text-3xl' : 'text-sm'} leading-tight overflow-hidden ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
                         {item.title}
-                      </h3>
+                      </h1>
+
+                      {item.portfolioNews.hashtag && (
+                        <span className={`${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'} text-xs font-medium tracking-wide mt-5 block`}>
+                          {item.portfolioNews.hashtag}
+                        </span>
+                      )}
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         )}
 
@@ -221,4 +185,4 @@ const News = ({ newsItems, newsCategories }) => {
   );
 };
 
-export default News;
+export default PortfolioNews;

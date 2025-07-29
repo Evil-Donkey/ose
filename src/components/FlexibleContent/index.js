@@ -1,3 +1,4 @@
+import { memo } from "react";
 import HeroVideo from "./HeroVideo";
 import TitleAndCopy from "./TitleAndCopy";
 import FullScreenPanel from "./FullScreenPanel";
@@ -23,85 +24,93 @@ import StoryCopy from "./StoryCopy";
 import StoryImage from "./StoryImage";
 import StoryQuote from "./StoryQuote";
 
-const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen, title }) => {
+const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }) => {
+    if (!data) {
+        return (
+            <div className="space-y-8">
+                <div className="h-96 bg-gray-100 rounded-lg animate-pulse"></div>
+                <div className="h-64 bg-gray-100 rounded-lg animate-pulse"></div>
+                <div className="h-80 bg-gray-100 rounded-lg animate-pulse"></div>
+            </div>
+        );
+    }
 
     let flexibleContentArray = [];
 
-    {data && data.forEach((data, i) => {
-
-        const { fieldGroupName } = data;
+    {data && data.forEach((item, i) => {
+        const { fieldGroupName } = item;
 
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_HeroVideo") {
-            flexibleContentArray.push(<HeroVideo data={data} index={i} key={i.toString()} onVideoPopupOpen={onVideoPopupOpen} title={title} />);
+            flexibleContentArray.push(<HeroVideo data={item} index={i} key={i.toString()} onVideoPopupOpen={onVideoPopupOpen} title={title} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_TitleAndCopy") {
-            flexibleContentArray.push(<TitleAndCopy data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<TitleAndCopy data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_FullScreenPanel") {
-            flexibleContentArray.push(<FullScreenPanel data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<FullScreenPanel data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_InfographicMap") {
-            flexibleContentArray.push(<InfographicMap data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<InfographicMap data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_WhatWeDo") {
-            flexibleContentArray.push(<WhatWeDo data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<WhatWeDo data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Stats") {
-            flexibleContentArray.push(<StatsModule data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<StatsModule data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_InfographicEcosystem") {
-            flexibleContentArray.push(<InfographicEcosystem data={data} index={i} key={i.toString()} onPopupOpen={() => onPopupOpen(data)} />);
+            flexibleContentArray.push(<InfographicEcosystem data={item} index={i} key={i.toString()} onPopupOpen={() => onPopupOpen(item)} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Expertise") {
-            flexibleContentArray.push(<Expertise data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Expertise data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Sectors") {
-            flexibleContentArray.push(<Sectors data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Sectors data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Portfolio") {
-            flexibleContentArray.push(<Portfolio data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Portfolio data={item} index={i} key={i.toString()} />);
         }
         // if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cta") {
-        //     flexibleContentArray.push(<CTA data={data} index={i} key={i.toString()} />);
+        //   flexibleContentArray.push(<CTA data={item} index={i} key={i.toString()} />);
         // }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Story") {
-            flexibleContentArray.push(<Story data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Story data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_OneColumnCopyAlternate") {
-            flexibleContentArray.push(<OneColumnCopyAlternate data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<OneColumnCopyAlternate data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Stories") {
-            flexibleContentArray.push(<Stories data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Stories data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_News") {
-            flexibleContentArray.push(<News data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<News data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_InspirationalQuotes") {
-            flexibleContentArray.push(<InspirationalQuotes data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<InspirationalQuotes data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cards") {
-            flexibleContentArray.push(<Cards data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Cards data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_FullPanelCarousel") {
-            flexibleContentArray.push(<FullPanelCarousel data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<FullPanelCarousel data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_FullScreenList") {
-            flexibleContentArray.push(<FullScreenList data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<FullScreenList data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Faqs") {
-            flexibleContentArray.push(<Faqs data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Faqs data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Team") {
-            flexibleContentArray.push(<Team data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Team data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Story_Story_FlexibleContent_CopyBlock") {
-            flexibleContentArray.push(<StoryCopy data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<StoryCopy data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Story_Story_FlexibleContent_ImageBlock") {
-            flexibleContentArray.push(<StoryImage data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<StoryImage data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Story_Story_FlexibleContent_QuoteBlock") {
-            flexibleContentArray.push(<StoryQuote data={data} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<StoryQuote data={item} index={i} key={i.toString()} />);
         }
     })}
 
@@ -110,6 +119,8 @@ const PageFlexibleContent = ({ data, onPopupOpen, onVideoPopupOpen, title }) => 
            {flexibleContentArray.map((component) => component)} 
         </>
     );
-};
+});
+
+PageFlexibleContent.displayName = 'PageFlexibleContent';
 
 export default PageFlexibleContent;

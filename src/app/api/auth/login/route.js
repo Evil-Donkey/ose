@@ -6,7 +6,7 @@ export async function POST(req) {
   try {
     const { username, password } = await req.json();
 
-    const response = await fetch(process.env.WORDPRESS_GRAPHQL_ENDPOINT, {
+    const response = await fetch(process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -62,6 +62,16 @@ export async function POST(req) {
         maxAge: 60 * 60, // 1 hour
       });
 
+      // Store WordPress refresh token for refreshing WordPress auth token
+      cookieStore.set("wpRefreshToken", data.data.login.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60, // 7 days
+      });
+
+      // Store our JWT refresh token for session management
       cookieStore.set("refreshToken", refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",

@@ -1,46 +1,43 @@
-"use client";
+import getPageTitleAndContent from "@/lib/getPageTitleAndContent";
+import getFooterData from "@/lib/getFooterData";
+import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import CTA from "@/components/CTA";
+import InvestorPortalClient from "./InvestorPortalClient";
+import RegulatoryInformation from "@/components/RegulatoryInformation";
+import getInvestorPortal from "@/lib/getInvestorPortal";
+import { Suspense } from "react";
+import Container from "@/components/Container";
 
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../context/AuthContext"; 
-import LoginForm from "../../components/LoginForm";
-import Logout from "../../components/Logout";
-import Header from "../../components/Header/index";
-import Container from '../../components/Container';
+export default async function InvestorPortal() {
+    const { title, content } = await getPageTitleAndContent("1597");
+    const footerData = await getFooterData();
+    const investorPortal = await getInvestorPortal();
 
-export default function InvestorPortal() {
-    const { user, checkAuthStatus } = useContext(AuthContext);
-    const [loading, setLoading] = useState(true);
-
-    console.log('user: ' + user);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            await checkAuthStatus();
-            setLoading(false);
-        };
-
-        fetchUser();
-    }, []);
-
-    if (loading) {
-        return (
-            <Container>
-                <Header portal={false} />
-                <p>Loading...</p>
-            </Container>
-        );
-    }
-
-    if (!user) {
-        return <LoginForm />;
-    }
+    const ctaData = {
+        copy: footerData.ctaCopy,
+        title: footerData.ctaTitle,
+        cta: footerData.cta
+    };
 
     return (
-        <Container className="pt-50">
-            <Header portal={false}  />
-            <h1>Welcome to the Investor Portal</h1>
-            <p className="mb-6">Here is your dashboard content...</p>
-            <Logout />
-        </Container>
+        <Suspense fallback={<Container className="py-50 relative z-10 flex flex-col gap-10"><div className="w-full flex justify-center items-center h-full"><p className="text-2xl">Loading...</p></div></Container>}>
+        <>
+            <HeaderWithMeganavLinks fixed={false} />
+            <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 pb-10 relative">
+                <InvestorPortalClient ctaData={ctaData} title={title} content={content} investorPortal={investorPortal} />
+                <Container className="py-10 relative z-10">
+                    <RegulatoryInformation 
+                        documents={investorPortal.regulatoryInformation.map(doc => ({
+                            title: doc.title,
+                            description: doc.description,
+                            fileUrl: doc.file?.mediaItemUrl || doc.file?.link,
+                            fileName: doc.title?.toLowerCase().replace(/\s+/g, '-') + '.pdf'
+                        }))}
+                    />
+                </Container>
+            </div>
+            <CTA data={ctaData} />
+        </>
+        </Suspense>
     );
 }

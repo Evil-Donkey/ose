@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [passwordVerified, setPasswordVerified] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(true);
   const router = useRouter();
 
   // Function to check authentication status
@@ -25,13 +26,19 @@ export const AuthProvider = ({ children }) => {
       if (data.success) {
         setUser(data.user);
       } else {
-        console.warn("Auth check failed, logging out.");
-        setUser(null);
+        console.warn("Auth check failed, attempting refresh...");
+        const refreshSuccess = await refreshToken();
+        if (!refreshSuccess) {
+          console.warn("Refresh failed, logging out.");
+          setUser(null);
+        }
       }
     } catch (error) {
       console.error("Error checking auth:", error);
-      await refreshToken();
-      setUser(null);
+      const refreshSuccess = await refreshToken();
+      if (!refreshSuccess) {
+        setUser(null);
+      }
     } finally {
       setLoading(false);
     }
@@ -52,14 +59,27 @@ export const AuthProvider = ({ children }) => {
 
       if (data.success) {
         console.log("Token refreshed successfully.");
-        checkAuthStatus(); // Retry checking the user's status with the new token
+        // Retry checking the user's status with the new token
+        const retryResponse = await fetch("/api/auth/me", {
+          method: "GET",
+          credentials: "include",
+        });
+        const retryData = await retryResponse.json();
+        
+        if (retryData.success) {
+          setUser(retryData.user);
+          return true;
+        } else {
+          console.warn("Auth check after refresh failed.");
+          return false;
+        }
       } else {
-        console.warn("Refresh token failed, logging out.");
-        setUser(null); // Force log out if refresh fails
+        console.warn("Refresh token failed:", data.message);
+        return false;
       }
     } catch (error) {
       console.error("Error refreshing token:", error);
-      setUser(null);
+      return false;
     }
   };
 
@@ -82,6 +102,7 @@ export const AuthProvider = ({ children }) => {
     if (isPasswordVerified) {
       setPasswordVerified(true);
     }
+    setPasswordLoading(false);
   }, []);
 
   // Login function
@@ -141,7 +162,8 @@ export const AuthProvider = ({ children }) => {
       checkAuthStatus, 
       handleAuthError,
       passwordVerified,
-      setPasswordVerified
+      setPasswordVerified,
+      passwordLoading
     }}>
       {children}
     </AuthContext.Provider>

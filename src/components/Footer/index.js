@@ -134,7 +134,7 @@ const Footer = ({ data }) => {
                             <span>|</span>
                             <Link href="/terms" className="hover:text-lightblue">Terms & Conditions</Link>
                             <span>|</span>
-                            <Link href="/privacy" className="hover:text-lightblue">Privacy policy</Link>
+                            <Link href="/privacy-policy" className="hover:text-lightblue">Privacy policy</Link>
                             <span>|</span>
                             <Link href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</Link>
                             {/* <span>|</span>

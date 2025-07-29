@@ -19,7 +19,7 @@ export async function POST(req) {
       }
     `;
 
-    const response = await fetch(process.env.WORDPRESS_GRAPHQL_ENDPOINT, {
+    const response = await fetch(process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, variables: { key, login, password: newPassword } }),

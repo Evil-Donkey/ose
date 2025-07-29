@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import LazyLoadInitializer from "@/lib/lazyLoader";
@@ -17,14 +17,6 @@ export default function FlexiblePage({ flexibleContent, className, popOutData, t
   const [popupData, setPopupData] = useState(null);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
   const [videoPopupData, setVideoPopupData] = useState(null);
-
-  // useEffect(() => {
-  //   const smoother = ScrollSmoother.create({
-  //     smooth: 1.2, // how long (in seconds) it takes to "catch up" to the native scroll position
-  //     effects: true, // looks for data-speed and data-lag attributes on elements
-  //     smoothTouch: 0.1, 
-  //   });
-  // }, []);
 
   const handlePopupOpen = (data) => {
     setPopupData(data);

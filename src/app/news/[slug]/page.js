@@ -38,17 +38,16 @@ export default async function NewsSinglePage({ params }) {
   return (
     <>
         <HeaderWithMeganavLinks fixed={false} />
-        <div className="text-white pt-16 relative min-h-screen">
-            <div className="absolute inset-0 bg-cover bg-center bg-[url('/gradient.png')] top-0 left-0 w-full h-[100vh]" />
+        <div className="text-white pt-16 relative pb-4 lg:pb-0 lg:min-h-screen">
+            <div className="absolute inset-0 bg-cover bg-center bg-[url('/gradient.png')] top-0 left-0 w-full lg:h-[100vh]" />
             <Container className="pt-30 relative z-10">
                 <Link href="/news" className="text-white text-base font-medium mb-5 flex">&lt; Back</Link>
                 {featuredImage && <div style={{ backgroundImage: `url(${featuredImage.node.mediaItemUrl})` }} className="aspect-6/4 h-auto w-full rounded-2xl bg-cover bg-center bg-no-repeat" />}
             </Container>
-            
         </div>
 
         <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0">
-            <Container className="py-20">
+            <Container className="pt-10 pb-20 lg:pb-20">
                 <div className="flex flex-col gap-4 lg:px-40">
                     <div className="space-y-4">
                         {categories.nodes.map(category => (

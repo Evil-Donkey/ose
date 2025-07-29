@@ -56,6 +56,11 @@ const Form = () => {
         // Send sectors as a single comma-separated string
         formData.append("sectors", sectorsValue);
 
+        // Handle file upload
+        if (data.file && data.file[0]) {
+            formData.append("file", data.file[0]);
+        }
+
         // Debug: Log the FormData contents
         console.log("FormData contents:");
         for (let [key, value] of formData.entries()) {
@@ -74,8 +79,19 @@ const Form = () => {
             console.log("Response status:", response.status);
             console.log("Response headers:", [...response.headers.entries()]);
 
-            const result = await response.json();
-            console.log("Response result:", result);
+            const responseText = await response.text();
+            console.log("Response text:", responseText);
+            
+            let result;
+            try {
+                result = JSON.parse(responseText);
+                console.log("Response result:", result);
+            } catch (parseError) {
+                console.error("JSON parse error:", parseError);
+                setError("Invalid response from server");
+                setIsSubmitting(false);
+                return;
+            }
 
             if (result.status === "mail_sent") {
                 setSuccess(true);
@@ -168,6 +184,35 @@ const Form = () => {
                 </label>
                 {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
             </div>
+        </div>
+
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="file" className="text-sm">Please upload any supporting documents*</label>
+            <input 
+                type="file" 
+                className="bg-lightblue text-white font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer self-start uppercase" 
+                accept=".txt,.pdf"
+                {...register("file", { 
+                    required: "Please upload supporting documents",
+                    validate: {
+                        fileSize: (files) => {
+                            if (files && files[0]) {
+                                const maxSize = 3 * 1024 * 1024; // 3MB
+                                return files[0].size <= maxSize || "File size must be less than 3MB";
+                            }
+                            return true;
+                        },
+                        fileType: (files) => {
+                            if (files && files[0]) {
+                                const allowedTypes = ['text/plain', 'application/pdf'];
+                                return allowedTypes.includes(files[0].type) || "Only .txt and .pdf files are allowed";
+                            }
+                            return true;
+                        }
+                    }
+                })} 
+            />
+            {errors.file && <p className="text-red-500 text-sm">{errors.file.message}</p>}
         </div>
 
         <div className="w-full flex flex-col gap-2 mb-5 px-4">

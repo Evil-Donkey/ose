@@ -2,6 +2,7 @@
 
 import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
+import Button from "@/components/Button";
 
 export default function Logout() {
   const { logout } = useContext(AuthContext); // Use logout from context
@@ -11,11 +12,8 @@ export default function Logout() {
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      className="px-4 py-2 bg-red-500 text-white rounded cursor-pointer"
-    >
+    <Button onClick={handleLogout}>
       Logout
-    </button>
+    </Button>
   );
 }

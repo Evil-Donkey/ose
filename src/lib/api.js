@@ -22,7 +22,16 @@ export default async function fetchAPI(query, { variables } = {}) {
     const json = await res.json();
 
     if (json.errors) {
-      console.error("GraphQL Errors:", json.errors);
+      // Filter out errors related to missing fields that are optional
+      const nonFieldErrors = json.errors.filter(error => 
+        !error.message.includes('Cannot query field') || 
+        !error.message.includes('Did you mean')
+      );
+      
+      if (nonFieldErrors.length > 0) {
+        console.error("GraphQL Errors:", nonFieldErrors);
+      }
+      
       return null; // Don't throw an error, just return null
     }
 
