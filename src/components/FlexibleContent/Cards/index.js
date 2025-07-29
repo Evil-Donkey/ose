@@ -128,7 +128,6 @@ const Cards = ({ data }) => {
                                 
                                 return filteredCards.length > 0 ? filteredCards.map((card, index) => {
                                     const { heading, description, image } = card;
-                                    console.log(image);
                                     return (
                                         <div key={index}>
                                             <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col">

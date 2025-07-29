@@ -101,7 +101,6 @@ export default function InvestorPortalClient({ title, content, investorPortal })
                     {folders.map((folder, index) => renderFolderItem(folder, index))}
                 </div>
             </Container>
-            <AuthDebugger />
         </>
     );
 } 

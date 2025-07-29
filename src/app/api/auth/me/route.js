@@ -36,16 +36,10 @@ export async function GET() {
   });
 
   const data = await response.json();
-  console.log("WordPress response:", data);
 
   if (data?.data?.viewer) {
-    console.log("✅ User authenticated successfully");
     return NextResponse.json({ success: true, user: data.data.viewer }, { status: 200 });
   } else {
-    console.log("❌ WordPress returned invalid token response:", data);
-    console.log("❌ Response status:", response.status);
-    console.log("❌ Response headers:", [...response.headers.entries()]);
-    
     // Check if it's a token expiration error
     if (data?.errors?.[0]?.message?.includes('expired') || 
         data?.errors?.[0]?.message?.includes('invalid') ||
