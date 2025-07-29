@@ -23,15 +23,14 @@ export default async function HowPage() {
   };
 
   return (
-    <>
-      <FlexiblePageClient 
-        flexibleContent={flexibleContent} 
-        popOutData={popOutData}
-        title={title}
-        titleInHero={true}
-        fixedHeader={true}
-      />
+    <FlexiblePageClient 
+      flexibleContent={flexibleContent} 
+      popOutData={popOutData}
+      title={title}
+      titleInHero={true}
+      fixedHeader={true}
+    >
       <CTA data={ctaData} />
-    </>
+    </FlexiblePageClient>
   );
 } 

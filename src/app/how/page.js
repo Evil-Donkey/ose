@@ -21,12 +21,11 @@ export default async function HowPage() {
   };
 
   return (
-    <>
-      <FlexiblePageClient 
-        flexibleContent={flexibleContent} 
-        popOutData={popOutData}
-      />
+    <FlexiblePageClient 
+      flexibleContent={flexibleContent} 
+      popOutData={popOutData}
+    >
       <CTA data={ctaData} />
-    </>
+    </FlexiblePageClient>
   );
 } 
