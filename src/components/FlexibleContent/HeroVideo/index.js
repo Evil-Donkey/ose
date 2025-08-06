@@ -100,9 +100,9 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                                 ))}
                             </h1>
                         )}
-                        {ctaLabel && (
+                        {fullMovie && (
                             <div ref={buttonRef} className="mt-8 opacity-0 translate-y-5">
-                                <Button onClick={() => onVideoPopupOpen(fullMovie)}>{ctaLabel}</Button>
+                                <Button onClick={() => onVideoPopupOpen(fullMovie)}>{ctaLabel ? ctaLabel : "Watch Full Video"}</Button>
                             </div>
                         )}
                     </div>
