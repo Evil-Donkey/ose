@@ -171,13 +171,13 @@ const Team = ({ data }) => {
                     key={member.id || idx}
                     className="flex flex-col"
                 >
-                    <Link href={member.uri} className="group overflow-hidden rounded-2xl mb-4 ">
+                    <Link href={`/who/${member.slug}`} className="group overflow-hidden rounded-2xl mb-4 ">
                         <div 
                             className="w-full aspect-4/5 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
                             style={{ backgroundImage: `url(${member.featuredImage?.node?.mediaItemUrl})` }}
                         />
                     </Link>
-                    <Link href={member.uri} className="flex flex-col">
+                    <Link href={`/who/${member.slug}`} className="flex flex-col">
                         <div className="text-lg font-medium text-blue-02">
                             {member.title}
                         </div>

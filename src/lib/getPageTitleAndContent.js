@@ -10,6 +10,11 @@ const PAGE_TITLE_CONTENT_QUERY = `
           mediaItemUrl
         }
       }
+      sustainability {
+        sustainabilityReport {
+          mediaItemUrl
+        }
+      }
     }
   }
 `;
@@ -21,6 +26,7 @@ export default async function getPageTitleAndContent(pageId) {
   return {
     title: data?.page?.title || null,
     content: data?.page?.content || null,
-    featuredImage: data?.page?.featuredImage?.node?.mediaItemUrl || null
+    featuredImage: data?.page?.featuredImage?.node?.mediaItemUrl || null,
+    sustainability: data?.page?.sustainability?.sustainabilityReport?.mediaItemUrl || null
   };
 } 

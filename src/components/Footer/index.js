@@ -132,7 +132,7 @@ const Footer = ({ data }) => {
                         <div className="flex flex-wrap justify-center lg:justify-end gap-x-1">
                             <Link href="/sustainability" className="hover:text-lightblue">Sustainability</Link>
                             <span>|</span>
-                            <Link href="/terms" className="hover:text-lightblue">Terms & Conditions</Link>
+                            <Link href="/terms-conditions" className="hover:text-lightblue">Terms & Conditions</Link>
                             <span>|</span>
                             <Link href="/privacy-policy" className="hover:text-lightblue">Privacy policy</Link>
                             <span>|</span>
