@@ -102,9 +102,9 @@ const Footer = ({ data }) => {
                         <div className="w-full lg:w-1/3 mb-5 lg:mb-0">
                             <h2 className="text-3xl mb-4">Sectors</h2>
                             <ul>
-                                <li><Link href="/sectors/deep-tech" className="hover:text-lightblue">Deep Tech</Link></li>
-                                <li><Link href="/sectors/life-sciences" className="hover:text-lightblue">Life Sciences</Link></li>
-                                <li><Link href="/sectors/health-tech" className="hover:text-lightblue">Health Tech</Link></li>
+                                <li><Link href="/deep-tech" className="hover:text-lightblue">Deep Tech</Link></li>
+                                <li><Link href="/life-sciences" className="hover:text-lightblue">Life Sciences</Link></li>
+                                <li><Link href="/health-tech" className="hover:text-lightblue">Health Tech</Link></li>
                             </ul>
                         </div>
 

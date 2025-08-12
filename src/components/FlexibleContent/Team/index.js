@@ -134,7 +134,7 @@ const Team = ({ data }) => {
     )
     .reverse();
 
-  if (loading) return <Container id={componentId}><div>Loading…</div></Container>;
+  if (loading) return <Container id={componentId}><div className="min-h-[500px] flex items-center justify-center">Loading…</div></Container>;
   if (error) return <Container id={componentId}><div>{error}</div></Container>;
 
   return (

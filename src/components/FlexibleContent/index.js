@@ -9,7 +9,7 @@ import InfographicEcosystem from "./InfographicEcosystem";
 import Expertise from "./Expertise";
 import Sectors from "./Sectors";
 import Portfolio from "./Portfolio";
-// import CTA from "./CTA";
+import CTA from "@/components/CTA";
 import Story from "./Story";
 import OneColumnCopyAlternate from "./OneColumnCopyAlternate";
 import Stories from "./Stories";
@@ -25,15 +25,6 @@ import StoryImage from "./StoryImage";
 import StoryQuote from "./StoryQuote";
 
 const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }) => {
-    if (!data) {
-        return (
-            <div className="space-y-8">
-                <div className="h-96 bg-gray-100 rounded-lg animate-pulse"></div>
-                <div className="h-64 bg-gray-100 rounded-lg animate-pulse"></div>
-                <div className="h-80 bg-gray-100 rounded-lg animate-pulse"></div>
-            </div>
-        );
-    }
 
     let flexibleContentArray = [];
 
@@ -70,9 +61,9 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Portfolio") {
             flexibleContentArray.push(<Portfolio data={item} index={i} key={i.toString()} />);
         }
-        // if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cta") {
-        //   flexibleContentArray.push(<CTA data={item} index={i} key={i.toString()} />);
-        // }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Cta") {
+          flexibleContentArray.push(<CTA data={item} index={i} key={i.toString()} />);
+        }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Story") {
             flexibleContentArray.push(<Story data={item} index={i} key={i.toString()} />);
         }

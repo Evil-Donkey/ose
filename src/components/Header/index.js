@@ -216,40 +216,86 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                         </ul>
                                                     </div>
                                                     
-                                                    {item.meganavPageLinks && item.meganavPageLinks.links && item.meganavPageLinks.links.length > 0 && (
+                                                    {item.label === 'What' && (
                                                         <div className="w-1/2">
                                                             <div>
-                                                                {item.meganavPageLinks.heading && (
-                                                                    <div className="text-lightblue text-sm 2xl:text-lg mb-4 font-medium">{item.meganavPageLinks.heading}</div>
-                                                                )}
+                                                                <div className="text-lightblue text-sm 2xl:text-lg mb-4 font-medium">Our Sectors:</div>
                                                                 <ul className="space-y-2">
-                                                                    {item.meganavPageLinks.links.map((linkObj, idx) => (
-                                                                        <li key={idx} className="flex gap-2">
-                                                                            <svg
-                                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                                width="16"
-                                                                                height="13"
-                                                                                viewBox="0 0 9.75 7.73"
-                                                                                fill="none"
-                                                                                className="mt-1 2xl:mt-2 flex-shrink-0 min-w-[16px] min-h-[16px]"
-                                                                                >
-                                                                                <g>
-                                                                                    <path
-                                                                                    d="M9.25 3.87H0.5M9.25 3.87l-3.28 3.37M9.25 3.87L5.97 0.5"
-                                                                                    stroke="#fff"
-                                                                                    strokeLinecap="round"
-                                                                                    strokeLinejoin="round"
-                                                                                    />
-                                                                                </g>
-                                                                            </svg>
-                                                                            <a
-                                                                                href={linkObj.link?.slug || '#'}
-                                                                                className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                    <li className="flex gap-2">
+                                                                        <svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16"
+                                                                            height="13"
+                                                                            viewBox="0 0 9.75 7.73"
+                                                                            fill="none"
+                                                                            className="mt-1 2xl:mt-2 flex-shrink-0 min-w-[16px] min-h-[16px]"
                                                                             >
-                                                                                {linkObj.label}
-                                                                            </a>
-                                                                        </li>
-                                                                    ))}
+                                                                            <g>
+                                                                                <path
+                                                                                d="M9.25 3.87H0.5M9.25 3.87l-3.28 3.37M9.25 3.87L5.97 0.5"
+                                                                                stroke="#fff"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"
+                                                                                />
+                                                                            </g>
+                                                                        </svg>
+                                                                        <a
+                                                                            href='/deep-tech'
+                                                                            className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                        >
+                                                                            Deep Tech
+                                                                        </a>
+                                                                    </li>
+                                                                    <li className="flex gap-2">
+                                                                        <svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16"
+                                                                            height="13"
+                                                                            viewBox="0 0 9.75 7.73"
+                                                                            fill="none"
+                                                                            className="mt-1 2xl:mt-2 flex-shrink-0 min-w-[16px] min-h-[16px]"
+                                                                            >
+                                                                            <g>
+                                                                                <path
+                                                                                d="M9.25 3.87H0.5M9.25 3.87l-3.28 3.37M9.25 3.87L5.97 0.5"
+                                                                                stroke="#fff"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"
+                                                                                />
+                                                                            </g>
+                                                                        </svg>
+                                                                        <a
+                                                                            href='/life-sciences'
+                                                                            className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                        >
+                                                                            Life Sciences
+                                                                        </a>
+                                                                    </li>
+                                                                    <li className="flex gap-2">
+                                                                        <svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16"
+                                                                            height="13"
+                                                                            viewBox="0 0 9.75 7.73"
+                                                                            fill="none"
+                                                                            className="mt-1 2xl:mt-2 flex-shrink-0 min-w-[16px] min-h-[16px]"
+                                                                            >
+                                                                            <g>
+                                                                                <path
+                                                                                d="M9.25 3.87H0.5M9.25 3.87l-3.28 3.37M9.25 3.87L5.97 0.5"
+                                                                                stroke="#fff"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"
+                                                                                />
+                                                                            </g>
+                                                                        </svg>
+                                                                        <a
+                                                                            href='/health-tech'
+                                                                            className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                        >
+                                                                            Health Tech
+                                                                        </a>
+                                                                    </li>
                                                                 </ul>
                                                             </div>
                                                         </div>

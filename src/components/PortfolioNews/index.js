@@ -53,39 +53,37 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
             </div>
             {/* Category Filter Dropdown */}
             <div className="flex items-center" ref={dropdownRef}>
-            <label className="text-white mr-4 font-medium">Filter by Sector:</label>
-            <div className="relative">
+              <label className="text-white mr-4 font-medium">Filter by Sector:</label>
+              <div className="relative">
                 <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="bg-white text-gray-800 px-4 py-2 rounded-md border border-gray-300 flex items-center justify-between min-w-[200px] hover:bg-gray-50 transition-colors"
                 >
-                <span className="text-sm">
-                    {selectedCategory === null 
-                    ? 'Show All' 
-                    : portfolioNewsCategories.find(cat => cat.slug === selectedCategory)?.name || 'Show All'
-                    }
-                </span>
-                <svg 
-                    className={`w-4 h-4 ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                  <span className="text-sm">
+                      {selectedCategory === null 
+                      ? 'Show All' 
+                      : portfolioNewsCategories.find(cat => cat.slug === selectedCategory)?.name || 'Show All'
+                      }
+                  </span>
+                  <svg 
+                      className={`w-4 h-4 ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                  >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
                 </button>
                 
                 {isDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-lg z-50 min-w-[200px]">
+                  <div className="absolute top-full left-0 mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-lg z-50 min-w-[200px]">
                     <button
-                    onClick={() => handleCategoryClick(null)}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200 transition-colors"
-                    >
-                    Show All
-                    </button>
+                      onClick={() => handleCategoryClick(null)}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200 transition-colors"
+                    >Show All</button>
                     {portfolioNewsCategories
-                    .filter(category => category.slug !== 'uncategorized')
-                    .map((category) => (
+                      .filter(category => category.slug !== 'uncategorized')
+                      .map((category) => (
                         <button
                         key={category.slug}
                         onClick={() => handleCategoryClick(category.slug)}
@@ -93,10 +91,11 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
                         >
                         {category.name}
                         </button>
-                    ))}
-                </div>
+                      ))
+                    }
+                  </div>
                 )}
-            </div>
+              </div>
             </div>
         </div>
 
@@ -145,7 +144,7 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
                   <div>
                     <div className="space-y-2">
                       {/* Category Tag */}
-                      <span className="inline-block bg-lightblue text-blue-02 px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
+                      <span className="inline-block bg-lightblue-02 text-blue-02 px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
                         {getCategoryName(item)}
                       </span>
 
