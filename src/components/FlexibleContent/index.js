@@ -23,10 +23,14 @@ import Team from "./Team";
 import StoryCopy from "./StoryCopy";
 import StoryImage from "./StoryImage";
 import StoryQuote from "./StoryQuote";
+import ExampleProjects from "./ExampleProjects";
+import LogosGrid from "./LogosGrid";
 
 const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }) => {
 
     let flexibleContentArray = [];
+
+    console.log(data)
 
     {data && data.forEach((item, i) => {
         const { fieldGroupName } = item;
@@ -102,6 +106,12 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }
         }
         if (fieldGroupName === "Story_Story_FlexibleContent_QuoteBlock") {
             flexibleContentArray.push(<StoryQuote data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_ExampleProjects") {
+            flexibleContentArray.push(<ExampleProjects data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_LogosGrid") {
+            flexibleContentArray.push(<LogosGrid data={item} index={i} key={i.toString()} />);
         }
     })}
 

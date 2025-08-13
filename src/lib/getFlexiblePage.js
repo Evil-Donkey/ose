@@ -452,6 +452,38 @@ const FLEXIBLE_CONTENT_QUERY = `
             fieldGroupName
             sectionLabel
           }
+          ... on Page_Flexiblecontent_FlexibleContent_ExampleProjects {
+            fieldGroupName
+            bottomHeading
+            ctaLabel
+            ctaUrl
+            title
+            sectionLabel
+            projects {
+              copy
+              title
+              video {
+                mediaItemUrl
+              }
+              image {
+                altText
+                mediaItemUrl
+                mediaDetails {
+                  height
+                  width
+                }
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_LogosGrid {
+            fieldGroupName
+            sectionLabel
+            title
+            gallery {
+              mediaItemUrl
+              altText
+            }
+          }
         }
       }
     }

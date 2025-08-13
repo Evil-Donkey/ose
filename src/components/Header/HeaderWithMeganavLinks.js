@@ -11,7 +11,6 @@ export default function HeaderWithMeganavLinks(props) {
   useEffect(() => {
     getMeganavLinks().then(setMeganavLinks);
     getMeganavData().then(setMeganavData);
-    console.log(meganavData)
   }, []);
 
   return <Header {...props} meganavLinks={meganavLinks} meganavData={meganavData} />;
