@@ -300,7 +300,7 @@ const FullPanelCarousel = ({ data }) => {
                                 <ul className="list-disc marker:text-lightblue pl-4 space-y-2">
                                     {modalContent.accordionList.slice(0, Math.ceil(modalContent.accordionList.length * 0.6)).map((item, index) => (
                                         <li className="mb-3 text-pretty" key={index}>
-                                            {item.listItem}
+                                            <div className="prose text-white prose-a:text-white" dangerouslySetInnerHTML={{ __html: item.listItem }} />
                                         </li>
                                     ))}
                                 </ul>
@@ -308,7 +308,7 @@ const FullPanelCarousel = ({ data }) => {
                                 <ul className="list-disc marker:text-lightblue pl-4 space-y-2">
                                     {modalContent.accordionList.slice(Math.ceil(modalContent.accordionList.length * 0.6)).map((item, index) => (
                                         <li className="mb-3 text-pretty" key={Math.ceil(modalContent.accordionList.length * 0.6) + index}>
-                                            {item.listItem}
+                                            <div className="prose text-white prose-a:text-white" dangerouslySetInnerHTML={{ __html: item.listItem }} />
                                         </li>
                                     ))}
                                 </ul>

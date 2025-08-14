@@ -30,8 +30,6 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }
 
     let flexibleContentArray = [];
 
-    console.log(data)
-
     {data && data.forEach((item, i) => {
         const { fieldGroupName } = item;
 
