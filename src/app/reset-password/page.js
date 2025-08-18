@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import Header from "@/components/Header/index";
 import Container from "@/components/Container";
+import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import Button from "@/components/Button";
+import { Spinner } from "@/components/Icons/Spinner";
 
 export default function ResetPassword() {
     const [tokenData, setTokenData] = useState(null);
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         register,
@@ -42,6 +45,7 @@ export default function ResetPassword() {
     }, []);
 
     const onSubmit = async (data) => {
+        setIsLoading(true);
         if (!tokenData?.key || !tokenData?.login) {
             setMessage("Invalid reset request.");
             return;
@@ -66,64 +70,74 @@ export default function ResetPassword() {
             }
         } catch (error) {
             setMessage("Something went wrong. Please try again.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <Container>
-            <Header />
-            <h1 className="text-2xl font-bold mb-4">Reset Password</h1>
-            {error ? (
-                <p style={{ color: "red" }}>{error}</p>
-            ) : (
-                tokenData && (
-                    <>
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                            <div>
-                                <label>New Password:</label>
-                                <input
-                                    type="password"
-                                    {...register("password", {
-                                        required: "Password is required.",
-                                        minLength: {
-                                            value: 12,
-                                            message: "Password must be at least 12 characters long.",
-                                        },
-                                        pattern: {
-                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
-                                            message: "Must include uppercase, lowercase, number, and symbol.",
-                                        },
-                                    })}
-                                    className="border border-gray-300 rounded-md p-2 w-full"
-                                />
-                                {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-                            </div>
+        <>
+            <HeaderWithMeganavLinks fixed={false} />
+            <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 pb-10 relative h-full min-h-screen">
+                <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
+                    <h1 className="text-2xl font-bold mb-4">Reset Password</h1>
+                    {error ? (
+                        <p style={{ color: "red" }}>{error}</p>
+                    ) : (
+                        tokenData && (
+                            <>
+                                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                                    <div>
+                                        <label>New Password:</label>
+                                        <input
+                                            type="password"
+                                            {...register("password", {
+                                                required: "Password is required.",
+                                                minLength: {
+                                                    value: 12,
+                                                    message: "Password must be at least 12 characters long.",
+                                                },
+                                                pattern: {
+                                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
+                                                    message: "Must include uppercase, lowercase, number, and symbol.",
+                                                },
+                                            })}
+                                            className="border border-gray-300 rounded-md p-2 w-full"
+                                        />
+                                        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+                                    </div>
 
-                            <div>
-                                <label>Confirm Password:</label>
-                                <input
-                                    type="password"
-                                    {...register("confirmPassword", {
-                                        required: "Please confirm your password.",
-                                        validate: (value) =>
-                                            value === watch("password") || "Passwords do not match.",
-                                    })}
-                                    className="border border-gray-300 rounded-md p-2 w-full"
-                                />
-                                {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
-                            </div>
+                                    <div>
+                                        <label>Confirm Password:</label>
+                                        <input
+                                            type="password"
+                                            {...register("confirmPassword", {
+                                                required: "Please confirm your password.",
+                                                validate: (value) =>
+                                                    value === watch("password") || "Passwords do not match.",
+                                            })}
+                                            className="border border-gray-300 rounded-md p-2 w-full"
+                                        />
+                                        {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+                                    </div>
 
-                            <button
-                                type="submit"
-                                className="bg-blue-500 text-white rounded-md p-2 w-full cursor-pointer"
-                            >
-                                Reset Password
-                            </button>
-                        </form>
-                        {message && <p>{message}</p>}
-                    </>
-                )
-            )}
-        </Container>
+                                    <Button type="submit" disabled={isLoading}>
+                                        {isLoading ? (
+                                            <div className="flex items-center gap-2">
+                                                <Spinner size={16} />
+                                                <span>Resetting...</span>
+                                            </div>
+                                        ) : (
+                                            "Reset Password"
+                                        )}
+                                    </Button>
+                                </form>
+                                {message && <p>{message}</p>}
+                            </>
+                        )
+                    )}
+                </Container>
+            </div>
+        </>
     );
 }
