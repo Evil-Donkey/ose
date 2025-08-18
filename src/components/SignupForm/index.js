@@ -146,7 +146,7 @@ export default function SignupForm({ title, content }) {
           </Button>
         </form>
 
-        {message && <p className="mt-2 text-green-600">{message}</p>}
+        {message && <p className="mt-2 text-white">{message}</p>}
       </div>
     </Container>
   );
