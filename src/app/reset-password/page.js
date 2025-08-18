@@ -64,7 +64,7 @@ export default function ResetPassword() {
 
             const result = await response.json();
             if (result.success) {
-                setMessage("Password reset successfully. You can now log in.");
+                setMessage(`Password reset successfully. You can now <a href="/investor-portal">log in</a>.`);
             } else {
                 setMessage(result.error || "Failed to reset password.");
             }
@@ -80,12 +80,12 @@ export default function ResetPassword() {
             <HeaderWithMeganavLinks fixed={false} />
             <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 pb-10 relative h-full min-h-screen">
                 <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
-                    <h1 className="text-2xl font-bold mb-4">Reset Password</h1>
+                    <h1 className="text-4xl lg:text-6xl">Reset Password</h1>
                     {error ? (
-                        <p style={{ color: "red" }}>{error}</p>
+                        <p className="text-white">{error}</p>
                     ) : (
                         tokenData && (
-                            <>
+                            <div className="flex flex-col gap-4">
                                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                                     <div>
                                         <label>New Password:</label>
@@ -94,8 +94,8 @@ export default function ResetPassword() {
                                             {...register("password", {
                                                 required: "Password is required.",
                                                 minLength: {
-                                                    value: 12,
-                                                    message: "Password must be at least 12 characters long.",
+                                                    value: 8,
+                                                    message: "Password must be at least 8 characters long.",
                                                 },
                                                 pattern: {
                                                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
@@ -104,7 +104,7 @@ export default function ResetPassword() {
                                             })}
                                             className="border border-gray-300 rounded-md p-2 w-full"
                                         />
-                                        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+                                        {errors.password && <p className="text-white">{errors.password.message}</p>}
                                     </div>
 
                                     <div>
@@ -118,7 +118,7 @@ export default function ResetPassword() {
                                             })}
                                             className="border border-gray-300 rounded-md p-2 w-full"
                                         />
-                                        {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
+                                        {errors.confirmPassword && <p className="text-white">{errors.confirmPassword.message}</p>}
                                     </div>
 
                                     <Button type="submit" disabled={isLoading}>
@@ -133,7 +133,7 @@ export default function ResetPassword() {
                                     </Button>
                                 </form>
                                 {message && <p>{message}</p>}
-                            </>
+                            </div>
                         )
                     )}
                 </Container>

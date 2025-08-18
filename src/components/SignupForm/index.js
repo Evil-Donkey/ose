@@ -46,7 +46,6 @@ export default function SignupForm({ title, content }) {
         {content && <div className="text-base flex flex-col gap-4 lg:w-2/3" dangerouslySetInnerHTML={{ __html: content }} />}
       </div>
       <div className="w-full lg:w-2/5">
-        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           
           {/* First Name */}
@@ -59,7 +58,7 @@ export default function SignupForm({ title, content }) {
               })}
               className="border border-gray-300 rounded-md p-2 w-full"
             />
-            {errors.firstName && <p className="text-red-500">{errors.firstName.message}</p>}
+            {errors.firstName && <p className="text-white">{errors.firstName.message}</p>}
           </div>
 
           {/* Last Name */}
@@ -72,7 +71,7 @@ export default function SignupForm({ title, content }) {
               })}
               className="border border-gray-300 rounded-md p-2 w-full"
             />
-            {errors.lastName && <p className="text-red-500">{errors.lastName.message}</p>}
+            {errors.lastName && <p className="text-white">{errors.lastName.message}</p>}
           </div>
 
           {/* Email */}
@@ -89,7 +88,7 @@ export default function SignupForm({ title, content }) {
               })}
               className="border border-gray-300 rounded-md p-2 w-full"
             />
-            {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+            {errors.email && <p className="text-white">{errors.email.message}</p>}
           </div>
 
           {/* Organisation */}
@@ -102,7 +101,7 @@ export default function SignupForm({ title, content }) {
               })}
               className="border border-gray-300 rounded-md p-2 w-full"
             />
-            {errors.organisation && <p className="text-red-500">{errors.organisation.message}</p>}
+            {errors.organisation && <p className="text-white">{errors.organisation.message}</p>}
           </div>
 
           {/* Role */}
@@ -115,7 +114,7 @@ export default function SignupForm({ title, content }) {
               })}
               className="border border-gray-300 rounded-md p-2 w-full"
             />
-            {errors.organisationRole && <p className="text-red-500">{errors.organisationRole.message}</p>}
+            {errors.organisationRole && <p className="text-white">{errors.organisationRole.message}</p>}
           </div>
 
           {/* Terms and Conditions */}
@@ -128,11 +127,11 @@ export default function SignupForm({ title, content }) {
             />
             <label>
               I agree to the website&apos;s{" "}
-              <a href="/terms-and-conditions" target="_blank" className="text-blue-500">Terms & Conditions</a> and{" "}
-              <a href="/privacy-policy" target="_blank" className="text-blue-500">Privacy Policy</a>, and consent to the collection and use of my personal data as outlined in the Privacy Policy.
+              <a href="/terms-and-conditions" target="_blank" className="text-white underline">Terms & Conditions</a> and{" "}
+              <a href="/privacy-policy" target="_blank" className="text-white underline">Privacy Policy</a>, and consent to the collection and use of my personal data as outlined in the Privacy Policy.
             </label>
           </div>
-          {errors.terms && <p className="text-red-500">{errors.terms.message}</p>}
+          {errors.terms && <p className="text-white">{errors.terms.message}</p>}
 
           {/* Submit Button */}
           <Button type="submit" disabled={isLoading}>
