@@ -6,6 +6,7 @@ import AuthContext from "../../context/AuthContext";
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import { Spinner } from "@/components/Icons/Spinner";
+import Link from "next/link";
 
 export default function LoginForm({ title, content }) {
     const { login } = useContext(AuthContext);
@@ -99,7 +100,7 @@ export default function LoginForm({ title, content }) {
                 {serverError && <p className="text-red-500 mt-2">{serverError}</p>}
 
                 <div className="flex flex-col gap-2 mt-8">
-                    <p className="text-sm">If you require assistance, please contact:<br/> <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a></p>
+                    <p className="text-sm">If you require access, please <Link href="/investor-portal-signup" className="text-white underline">click here</Link>.</p>
                 </div>
             </div>
         </Container>
