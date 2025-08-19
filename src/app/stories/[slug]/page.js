@@ -80,16 +80,18 @@ export default async function StoryPage({ params }) {
 
         <div className="bg-linear-to-t from-black/10 to-black/0 pb-20 2xl:pb-45">
             {content &&
-                <Container className="pt-10 md:pt-25 2xl:pt-45 single-story-content">
-                    <div className="text-base 2xl:text-lg flex flex-col gap-5 xl:px-20 *:first:text-2xl *:first:mb-5" dangerouslySetInnerHTML={{ __html: content }} />
+                <Container className="pt-10 md:pt-20 2xl:pt-45 single-story-content">
+                    <div className="text-base 2xl:text-lg flex flex-col gap-4 xl:px-20 *:first:text-2xl *:first:mb-5 prose max-w-none text-blue-02 prose-p:mb-1 prose-p:mt-0 prose-h2:text-darkblue prose-h2:mb-0 prose-h2:mt-3 prose-h2:text-xl prose-a:text-blue-02 prose-a:underline" dangerouslySetInnerHTML={{ __html: content }} />
                 </Container>
             }
 
-            <FlexiblePageClient 
-                flexibleContent={flexibleContent} 
-                popOutData={popOutData}
-                fixedHeader={true}
-            />
+            <div className="mt-16">
+                <FlexiblePageClient 
+                    flexibleContent={flexibleContent} 
+                    popOutData={popOutData}
+                    fixedHeader={true}
+                />
+            </div>
 
             {/* Story Pagination */}
             <Container className="pt-10 md:pt-25 2xl:pt-45">

@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import PasswordWrapper from "../components/PasswordOverlay/PasswordWrapper";
 import { Suspense } from 'react';
 import LayoutClient from "../components/LayoutClient";
+import NavigationLoading from "../components/NavigationLoading";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -26,6 +27,7 @@ export default async function RootLayout({ children }) {
       <body className={`${montserrat.variable}`}>
         <AuthProvider>
           <PasswordWrapper>
+            <NavigationLoading />
             <Suspense>
               <LayoutClient footerData={footerData}>
                 <div className="min-h-screen">

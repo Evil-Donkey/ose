@@ -120,7 +120,7 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                 {randomizedStories.length > 0 && (
                     <>
                         {/* First item - full width */}
-                        <div className="group 2xl:p-12 opacity-0 translate-y-20 stories-item" ref={el => storyRefs.current[0] = el}>
+                        <div className="group opacity-0 translate-y-20 stories-item" ref={el => storyRefs.current[0] = el}>
                             {/* <Link href={`/stories/${randomizedStories[0].slug}`} className="block"> */}
                                 <div className="relative overflow-hidden rounded-3xl min-h-[500px] lg:min-h-[700px] p-8 flex items-end">
                                     {randomizedStories[0].featuredImage?.node?.mediaItemUrl ? (
@@ -172,7 +172,7 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                                     const excerpt = content ? content.replace(/<[^>]*>/g, '').split(' ').slice(0, 20).join(' ') + '...' : '';
                                     
                                     return (
-                                        <div key={index + 1} className="group 2xl:p-12 opacity-0 translate-y-20 stories-item" ref={el => storyRefs.current[index + 1] = el}>
+                                        <div key={index + 1} className="group opacity-0 translate-y-20 stories-item" ref={el => storyRefs.current[index + 1] = el}>
                                             <Link href={`/stories/${slug}`} className="block">
                                                 <div className="relative overflow-hidden rounded-3xl min-h-[500px] p-8 flex items-end">
                                                     {featuredImage?.node?.mediaItemUrl ? (
