@@ -7,6 +7,7 @@ import Logout from "../../components/Logout";
 import Container from "@/components/Container";
 import { Folder, Document, Download } from "@/components/Icons/Portal";
 import AuthDebugger from "../../components/AuthDebugger";
+import { downloadFile } from "@/lib/downloadFile";
 
 export default function InvestorPortalClient({ title, content, investorPortal }) {
     const { user, checkAuthStatus } = useContext(AuthContext);
@@ -59,19 +60,17 @@ export default function InvestorPortalClient({ title, content, investorPortal })
                                 return renderFolderItem(contentItem, contentIndex, level + 1, uniqueKey);
                             } else if (itemType === 'file') {
                                 return (
-                                    <a 
+                                    <div 
                                         key={`${uniqueKey}-file-${contentIndex}`}
-                                        href={contentItem.fileUpload?.mediaItemUrl || contentItem.fileUpload?.link || '#'}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`bg-gray-100 hover:bg-gray-200 transition-colors duration-200 cursor-pointer rounded-lg p-4 mb-2 flex items-center justify-between ${level > 0 ? 'ml-12' : 'ml-6'} no-underline`}
+                                        onClick={() => downloadFile(contentItem.fileUpload?.mediaItemUrl || contentItem.fileUpload?.link, contentItem.fileName)}
+                                        className={`bg-gray-100 hover:bg-gray-200 transition-colors duration-200 cursor-pointer rounded-lg p-4 mb-2 flex items-center justify-between ${level > 0 ? 'ml-12' : 'ml-6'}`}
                                     >
                                         <div className="flex items-center gap-3">
                                             <Document />
                                             <span className="text-gray-800 font-medium">{contentItem.fileName}</span>
                                         </div>
                                         <Download />
-                                    </a>
+                                    </div>
                                 );
                             }
                             return null;
