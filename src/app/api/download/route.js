@@ -56,22 +56,58 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
-    // Now fetch the protected file from WordPress
-    const fileResponse = await fetch(fileUrl, {
-      headers: {
-        // Pass the auth token to WordPress to access protected files
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    if (!fileResponse.ok) {
-      return NextResponse.json({ 
-        error: 'File not found or access denied',
-        status: fileResponse.status 
-      }, { status: fileResponse.status });
+    // Since .htaccess blocks direct access, we need to use WordPress's authentication
+    // to access the protected files. We'll try a few approaches:
+    
+    // Approach 1: Try to access the file with WordPress authentication
+    let fileResponse;
+    
+    try {
+      // First, try with Bearer token
+      fileResponse = await fetch(fileUrl, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          'User-Agent': 'OxfordScienceEnterprises-InvestorPortal/1.0',
+        },
+      });
+    } catch (error) {
+      console.log('Bearer token approach failed, trying alternative methods...');
     }
 
-    // Get file information
+    // Approach 2: If Bearer token fails, try with WordPress session cookies
+    if (!fileResponse || !fileResponse.ok) {
+      try {
+        // Get WordPress session cookies by making an authenticated request first
+        const sessionResponse = await fetch(`${allowedDomain}/wp-json/wp/v2/users/me`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        
+        if (sessionResponse.ok) {
+          // Now try to access the file with the session established
+          fileResponse = await fetch(fileUrl, {
+            credentials: 'include',
+            headers: {
+              'User-Agent': 'OxfordScienceEnterprises-InvestorPortal/1.0',
+            },
+          });
+        }
+      } catch (error) {
+        console.log('Session-based approach failed:', error);
+      }
+    }
+
+    // If all approaches fail, return an error
+    if (!fileResponse || !fileResponse.ok) {
+      return NextResponse.json({ 
+        error: 'File access blocked by server configuration. Please contact support.',
+        status: fileResponse?.status || 403,
+        suggestion: 'The .htaccess file may be blocking all access to protected files.'
+      }, { status: fileResponse?.status || 403 });
+    }
+
+    // File access successful, now stream it to the user
     const contentType = fileResponse.headers.get('content-type') || 'application/octet-stream';
     const contentLength = fileResponse.headers.get('content-length');
     
