@@ -9,6 +9,7 @@ import { Spinner } from "@/components/Icons/Spinner";
 export default function SignupForm({ title, content }) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     register,
@@ -29,7 +30,17 @@ export default function SignupForm({ title, content }) {
       });
     
       const data = await response.json();
-      setMessage(data.message || "Error signing up");
+
+      console.log(data);
+      console.log(response);
+      
+      if (response.status === 201 && data.user) {
+        setIsSuccess(true);
+        setMessage("Thank you for registering for Oxford Science Enterprises' investor portal. Your account is currently pending approval.");
+      } else {
+        // Handle error responses (400, 500, etc.) or successful status with error message
+        setMessage(data.message || data.error || "Error signing up");
+      }
     } catch (error) {
       console.error("❌ Signup error:", error);
       setMessage("Error signing up");
@@ -46,107 +57,121 @@ export default function SignupForm({ title, content }) {
         {content && <div className="text-base flex flex-col gap-4 lg:w-2/3" dangerouslySetInnerHTML={{ __html: content }} />}
       </div>
       <div className="w-full lg:w-2/5">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          
-          {/* First Name */}
-          <div>
-            <input
-              type="text"
-              placeholder="First Name"
-              {...register("firstName", {
-                required: "First name is required",
-              })}
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
-            {errors.firstName && <p className="text-white">{errors.firstName.message}</p>}
+        {isSuccess ? (
+          <div className="text-center">
+            {/* <div className="mb-6">
+              <svg className="mx-auto h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div> */}
+            <h2 className="text-2xl font-semibold mb-4">Registration Successful</h2>
+            <p className="text-base leading-relaxed">{message}</p>
           </div>
+        ) : (
+          <>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+              
+              {/* First Name */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  {...register("firstName", {
+                    required: "First name is required",
+                  })}
+                  className="bg-white text-blue-02 rounded-sm p-2 w-full"
+                />
+                {errors.firstName && <p className="text-white">{errors.firstName.message}</p>}
+              </div>
 
-          {/* Last Name */}
-          <div>
-            <input
-              type="text"
-              placeholder="Last Name"
-              {...register("lastName", {
-                required: "Last name is required",
-              })}
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
-            {errors.lastName && <p className="text-white">{errors.lastName.message}</p>}
-          </div>
+              {/* Last Name */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  {...register("lastName", {
+                    required: "Last name is required",
+                  })}
+                  className="bg-white text-blue-02 rounded-sm p-2 w-full"
+                />
+                {errors.lastName && <p className="text-white">{errors.lastName.message}</p>}
+              </div>
 
-          {/* Email */}
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Invalid email format",
-                },
-              })}
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
-            {errors.email && <p className="text-white">{errors.email.message}</p>}
-          </div>
+              {/* Email */}
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Invalid email format",
+                    },
+                  })}
+                  className="bg-white text-blue-02 rounded-sm p-2 w-full"
+                />
+                {errors.email && <p className="text-white">{errors.email.message}</p>}
+              </div>
 
-          {/* Organisation */}
-          <div>
-            <input
-              type="text"
-              placeholder="Organisation"
-              {...register("organisation", {
-                required: "Organisation is required",
-              })}
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
-            {errors.organisation && <p className="text-white">{errors.organisation.message}</p>}
-          </div>
+              {/* Organisation */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Organisation"
+                  {...register("organisation", {
+                    required: "Organisation is required",
+                  })}
+                  className="bg-white text-blue-02 rounded-sm p-2 w-full"
+                />
+                {errors.organisation && <p className="text-white">{errors.organisation.message}</p>}
+              </div>
 
-          {/* Role */}
-          <div>
-            <input
-              type="text"
-              placeholder="Role"
-              {...register("organisationRole", {
-                required: "Role is required",
-              })}
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
-            {errors.organisationRole && <p className="text-white">{errors.organisationRole.message}</p>}
-          </div>
+              {/* Role */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Role"
+                  {...register("organisationRole", {
+                    required: "Role is required",
+                  })}
+                  className="bg-white text-blue-02 rounded-sm p-2 w-full"
+                />
+                {errors.organisationRole && <p className="text-white">{errors.organisationRole.message}</p>}
+              </div>
 
-          {/* Terms and Conditions */}
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              {...register("terms", {
-                required: "You must agree to the terms and conditions",
-              })}
-            />
-            <label>
-              I agree to the website&apos;s{" "}
-              <a href="/terms-and-conditions" target="_blank" className="text-white underline">Terms & Conditions</a> and{" "}
-              <a href="/privacy-policy" target="_blank" className="text-white underline">Privacy Policy</a>, and consent to the collection and use of my personal data as outlined in the Privacy Policy.
-            </label>
-          </div>
-          {errors.terms && <p className="text-white">{errors.terms.message}</p>}
+              {/* Terms and Conditions */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  {...register("terms", {
+                    required: "You must agree to the terms and conditions",
+                  })}
+                />
+                <label>
+                  I agree to the website&apos;s{" "}
+                  <a href="/terms-and-conditions" target="_blank" className="text-white underline">Terms & Conditions</a> and{" "}
+                  <a href="/privacy-policy" target="_blank" className="text-white underline">Privacy Policy</a>, and consent to the collection and use of my personal data as outlined in the Privacy Policy.
+                </label>
+              </div>
+              {errors.terms && <p className="text-white">{errors.terms.message}</p>}
 
-          {/* Submit Button */}
-          <Button type="submit" disabled={isLoading}>
-              {isLoading ? (
-                  <div className="flex items-center gap-2">
-                      <Spinner size={16} />
-                      <span>Sending...</span>
-                  </div>
-              ) : (
-                  "Request Access"
-              )}
-          </Button>
-        </form>
+              {/* Submit Button */}
+              <Button type="submit" disabled={isLoading}>
+                  {isLoading ? (
+                      <div className="flex items-center gap-2">
+                          <Spinner size={16} />
+                          <span>Sending...</span>
+                      </div>
+                  ) : (
+                      "Request Access"
+                  )}
+              </Button>
+            </form>
 
-        {message && <p className="mt-8 text-white">{message}</p>}
+            {message && !isSuccess && <p className="mt-8 text-white">{message}</p>}
+          </>
+        )}
       </div>
     </Container>
   );

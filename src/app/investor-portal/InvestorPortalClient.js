@@ -6,7 +6,6 @@ import LoginForm from "../../components/LoginForm";
 import Logout from "../../components/Logout";
 import Container from "@/components/Container";
 import { Folder, Document, Download } from "@/components/Icons/Portal";
-import AuthDebugger from "../../components/AuthDebugger";
 import { downloadFile } from "@/lib/downloadFile";
 
 export default function InvestorPortalClient({ title, content, investorPortal }) {
@@ -91,10 +90,16 @@ export default function InvestorPortalClient({ title, content, investorPortal })
 
     return (
         <>
-            <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col gap-10">
-                <div className="w-full flex justify-between items-center gap-10 mb-4">
+            <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col gap-6">
+                <div className="w-full flex justify-between items-center gap-10">
                     {title && <h1 className="text-4xl lg:text-6xl">{title}</h1>}
                     <Logout />
+                </div>
+                <div className="w-full flex justify-between items-center gap-10 mb-4">
+                    <div className="text-base flex flex-col gap-4 lg:w-2/3">
+                        <p>Welcome {user.username}, you're now logged in. Access the latest shareholder reports, company updates, and financial materials anytime from your dashboard.</p>
+                        <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
+                    </div>
                 </div>
                 <div className="w-full bg-white rounded-lg p-6">
                     {folders.map((folder, index) => renderFolderItem(folder, index))}

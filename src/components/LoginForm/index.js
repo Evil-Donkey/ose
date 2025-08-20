@@ -62,7 +62,7 @@ export default function LoginForm({ title, content }) {
                             })}
                             className="bg-white text-blue-02 rounded-sm p-2"
                         />
-                        {errors.username && <p className="text-red-500">{errors.username.message}</p>}
+                        {errors.username && <p className="text-white">{errors.username.message}</p>}
                     </div>
 
                     {/* Password */}
@@ -80,7 +80,7 @@ export default function LoginForm({ title, content }) {
                             })}
                             className="bg-white text-blue-02 rounded-sm p-2"
                         />
-                        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+                        {errors.password && <p className="text-white">{errors.password.message}</p>}
                     </div>
 
                     {/* Submit Button */}
@@ -97,10 +97,10 @@ export default function LoginForm({ title, content }) {
                 </form>
 
                 {/* Server error message */}
-                {serverError && <p className="text-red-500 mt-2">{serverError}</p>}
+                {serverError && <p className="text-white mt-2">{serverError}</p>}
 
                 <div className="flex flex-col gap-2 mt-8">
-                    <p className="text-sm">If you require access, please <Link href="/investor-portal-signup" className="text-white underline">click here</Link>.</p>
+                    <p className="text-sm flex items-center gap-2"><Link href="/investor-portal-signup" className="text-white underline">Request access</Link><span className="text-white">|</span><Link href="/forgot-password" className="text-white underline">Forgot password?</Link></p>
                 </div>
             </div>
         </Container>
