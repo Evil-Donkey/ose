@@ -87,7 +87,7 @@ export default function ResetPassword() {
                     <div className="w-full lg:w-2/5">
                         <h1 className="text-4xl lg:text-6xl mb-4">Create Password</h1>
                         <div className="text-base flex flex-col gap-4 lg:w-2/3">
-                            <p>Hi {tokenData?.login || 'there'}, you've been directed here from your registration email. Please create a secure password to complete your account setup.</p>
+                            <p>Hi {tokenData?.login || 'there'}, you&apos;ve been directed here from your registration email. Please create a secure password to complete your account setup.</p>
                         </div>
                     </div>
                     <div className="w-full lg:w-2/5">

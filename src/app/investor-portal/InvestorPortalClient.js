@@ -97,7 +97,7 @@ export default function InvestorPortalClient({ title, content, investorPortal })
                 </div>
                 <div className="w-full flex justify-between items-center gap-10 mb-4">
                     <div className="text-base flex flex-col gap-4 lg:w-2/3">
-                        <p>Welcome {user.username}, you're now logged in. Access the latest shareholder reports, company updates, and financial materials anytime from your dashboard.</p>
+                        <p>Welcome {user.username}, you&apos;re now logged in. Access the latest shareholder reports, company updates, and financial materials anytime from your dashboard.</p>
                         <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
                     </div>
                 </div>
