@@ -105,7 +105,7 @@ export default function ResetPassword() {
                             </div>
                         ) : (
                             tokenData && (
-                                <div className="flex flex-col gap-4 w-full lg:w-1/3">
+                                <div className="flex flex-col gap-4 w-full">
                                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
                                         <div>
                                             <label>New Password:</label>
