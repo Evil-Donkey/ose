@@ -108,7 +108,7 @@ const News = ({ newsItems, newsCategories }) => {
         {/* Hero Section - First News Item */}
         {heroItem && (
           <div className="mb-16">
-            <Link href={`/news/${heroItem.slug}`} className="block group">
+            <Link href={heroItem.news?.externalUrl || `/news/${heroItem.slug}`} className="block group" target={heroItem.news?.externalUrl ? "_blank" : "_self"}>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                 {/* Image Section */}
                 <div className="relative h-80 lg:h-full min-h-[470px] rounded-xl overflow-hidden">
@@ -161,7 +161,12 @@ const News = ({ newsItems, newsCategories }) => {
         {gridItems.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {gridItems.map((item, index) => (
-              <Link key={item.databaseId || index} href={`/news/${item.slug}`} className="block group">
+              <Link 
+                key={item.databaseId || index} 
+                href={item.news?.externalUrl || `/news/${item.slug}`} 
+                className="block group"
+                target={item.news?.externalUrl ? "_blank" : "_self"}
+              >
                 <div className="transition-all duration-300 hover:-translate-y-1">
                   {/* Image */}
                   <div className="relative aspect-4/5 rounded-xl overflow-hidden">

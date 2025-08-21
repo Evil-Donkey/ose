@@ -11,6 +11,7 @@ const NEWS_ITEMS_QUERY = `
         content(format: RENDERED)
         news {
           shortDescription
+          externalUrl
         }
         featuredImage {
           node {

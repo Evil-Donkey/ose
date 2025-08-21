@@ -41,7 +41,7 @@ export default async function NewsSinglePage({ params }) {
         <div className="text-white pt-16 relative pb-4 lg:pb-0 lg:min-h-screen">
             <div className="absolute inset-0 bg-cover bg-center bg-[url('/gradient.png')] top-0 left-0 w-full lg:h-[100vh]" />
             <Container className="pt-30 relative z-10">
-                <Link href="/news" className="text-white text-base font-medium mb-5 flex">&lt; Back</Link>
+                <Link href="/news" className="text-white text-base font-medium mb-5 flex">&lt; Back to News</Link>
                 {featuredImage && <div style={{ backgroundImage: `url(${featuredImage.node.mediaItemUrl})` }} className="aspect-6/4 h-auto w-full rounded-2xl bg-cover bg-center bg-no-repeat" />}
             </Container>
         </div>

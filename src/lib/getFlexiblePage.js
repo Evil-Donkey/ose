@@ -348,6 +348,9 @@ const FLEXIBLE_CONTENT_QUERY = `
                 link
                 uri
                 title(format: RENDERED)
+                news {
+                  externalUrl
+                }
                 featuredImage {
                   node {
                     altText
