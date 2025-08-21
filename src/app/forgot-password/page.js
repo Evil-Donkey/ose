@@ -63,7 +63,7 @@ export default function ForgotPassword() {
                     <div className="w-full lg:w-2/5">
                         <h1 className="text-4xl lg:text-6xl mb-4">Forgot Password</h1>
                         <div className="text-base flex flex-col gap-4 lg:w-2/3">
-                            <p>Enter your email address below and we'll check if it exists in our system. If it does, we can help you reset your password.</p>
+                            <p>Enter your email address below and we&apos;ll check if it exists in our system. If it does, we can help you reset your password.</p>
                         </div>
                     </div>
                     <div className="w-full lg:w-2/5">
