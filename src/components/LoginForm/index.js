@@ -100,7 +100,7 @@ export default function LoginForm({ title, content }) {
                 {serverError && <p className="text-white mt-2">{serverError}</p>}
 
                 <div className="flex flex-col gap-2 mt-8">
-                    <p className="text-sm flex items-center gap-2"><Link href="/investor-portal-signup" className="text-white underline">Request access</Link><span className="text-white">|</span><Link href="/forgot-password" className="text-white underline">Forgot password?</Link></p>
+                    <p className="text-sm flex items-center gap-2"><Link href="/shareholder-portal-signup" className="text-white underline">Request access</Link><span className="text-white">|</span><Link href="/forgot-password" className="text-white underline">Forgot password?</Link></p>
                 </div>
             </div>
         </Container>

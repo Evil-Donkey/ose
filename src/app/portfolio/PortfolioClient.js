@@ -160,10 +160,8 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
         {/* Filter UI */}
         <div className="w-full mx-auto relative z-50">
 
-          {/* Clear Filters Button */}
-          <div className="w-full flex justify-between mb-5">
-              
-              {/* CURRENTLY FUNDRAISING TOGGLE */}
+          {/* CURRENTLY FUNDRAISING TOGGLE */}
+          {/* <div className="w-full flex justify-between mb-5">
               <div className="flex items-center gap-2 lg:gap-4">
                 <button
                   type="button"
@@ -171,7 +169,6 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                   onClick={() => setFundraisingOnly(v => !v)}
                   className={`relative w-16 h-8 rounded-full transition-colors duration-200 focus:outline-none cursor-pointer ${fundraisingOnly ? 'bg-[#00A0CC]' : 'bg-gray-300'}`}
                 >
-                  {/* ON/OFF text */}
                   {fundraisingOnly ? (
                     <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-bold text-white select-none">ON</span>
                   ) : (
@@ -183,7 +180,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                 </button>
                 <span className="text-sm font-bold uppercase text-blue-02">Actively Raising</span>
               </div>
-          </div>
+          </div> */}
 
           <div className="w-full flex justify-between mb-3">
               <h3 className="text-sm font-bold uppercase text-blue-02">Filter by sector:</h3>
@@ -214,7 +211,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                       className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap hover:opacity-100 ${isOpen ? "z-10 rounded-t-xl" : "rounded-xl"} ${isDeepTechActive ? "opacity-100" : "opacity-80"}`}
                       onClick={() => setOpenDropdown(isOpen ? null : dropdownKey)}
                     >
-                      <span>{selectedOption.name === 'Deep Tech' ? 'All Deep Tech' : selectedOption.name}</span>
+                      <span>{selectedOption.name === 'Deep Tech' ? 'Deep Tech' : selectedOption.name}</span>
                       <span>
                         <span className={`ml-2 -mr-2 w-9 h-5 flex items-center justify-center`}>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
@@ -255,7 +252,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                                 setSelectedCategory(opt.id);
                               }}
                             >
-                              <span>{opt.name === 'Deep Tech' ? 'All Deep Tech' : opt.name}</span>
+                              <span>{opt.name === 'Deep Tech' ? 'Deep Tech' : opt.name}</span>
                               <span>
                                   <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedCategory === opt.id ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
                               </span>

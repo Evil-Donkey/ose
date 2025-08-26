@@ -393,6 +393,7 @@ const FLEXIBLE_CONTENT_QUERY = `
               description
               heading
               field
+              bio
               image {
                 altText
                 mediaItemUrl

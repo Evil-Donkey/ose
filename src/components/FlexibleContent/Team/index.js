@@ -134,13 +134,16 @@ const Team = ({ data }) => {
     )
     .reverse();
 
+  // Get the current selected category object to access its description
+  const selectedCategoryData = categories.find(cat => cat.slug === selectedCategory);
+
   if (loading) return <Container id={componentId}><div className="min-h-[500px] flex items-center justify-center">Loading…</div></Container>;
   if (error) return <Container id={componentId}><div>{error}</div></Container>;
 
   return (
     <div id={componentId} className="bg-linear-to-t from-black/10 to-black/0">
         <Container className="py-20 2xl:py-40">
-            <div className="flex flex-col md:flex-row gap-8">
+          <div className="flex flex-col md:flex-row gap-8">
             {/* Sidebar */}
             <aside className="md:w-1/4">
                 <div className="mb-4 font-medium text-blue-02 uppercase tracking-widest text-sm">
@@ -164,8 +167,20 @@ const Team = ({ data }) => {
                 </ul>
             </aside>
 
-            {/* Grid */}
-            <section className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Main content area */}
+            <div className="flex-1">
+              {/* Category description */}
+              {selectedCategoryData?.description && (
+                <div className="mb-8">
+                  <div 
+                    className="text-blue-02 text-lg leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: selectedCategoryData.description }}
+                  />
+                </div>
+              )}
+
+              {/* Grid */}
+              <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredMembers.map((member, idx) => (
                 <div
                     key={member.id || idx}
@@ -187,8 +202,9 @@ const Team = ({ data }) => {
                     </Link>
                 </div>
                 ))}
-            </section>
+              </section>
             </div>
+          </div>
         </Container>
     </div>
   );

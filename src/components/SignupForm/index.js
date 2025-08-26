@@ -36,7 +36,7 @@ export default function SignupForm({ title, content }) {
       
       if (response.status === 201 && data.user) {
         setIsSuccess(true);
-        setMessage("Thank you for registering for Oxford Science Enterprises' investor portal. Your account is currently pending approval.");
+        setMessage("Thank you for registering for Oxford Science Enterprises' shareholder portal. Your account is currently pending approval.");
       } else {
         // Handle error responses (400, 500, etc.) or successful status with error message
         setMessage(data.message || data.error || "Error signing up");

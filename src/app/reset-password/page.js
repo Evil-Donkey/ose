@@ -97,7 +97,7 @@ export default function ResetPassword() {
                             <div className="flex flex-col gap-4">
                                 <p className="text-white text-lg">
                                     Password reset successfully. You can now{" "}
-                                    <Link href="/investor-portal" className="text-blue-300 hover:text-blue-200 underline">
+                                    <Link href="/shareholder-portal" className="text-blue-300 hover:text-blue-200 underline">
                                         log in
                                     </Link>
                                     .

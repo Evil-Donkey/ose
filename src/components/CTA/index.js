@@ -10,6 +10,22 @@ import Container from "../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Helper function to detect if a URL is an email
+const isEmail = (url) => {
+    if (!url) return false;
+    // Check if it contains @ symbol and looks like an email
+    return url.includes('@') && !url.startsWith('http') && !url.startsWith('/');
+};
+
+// Helper function to format email URL
+const formatEmailUrl = (email) => {
+    if (!email) return '#';
+    // If it already starts with mailto:, return as is
+    if (email.startsWith('mailto:')) return email;
+    // Otherwise, add mailto: prefix
+    return `mailto:${email}`;
+};
+
 const CTA = ({ data, storiesData }) => {
     const ctaTitleRef = useRef([]);
     const ctaCopyRef = useRef(null);
@@ -90,7 +106,13 @@ const CTA = ({ data, storiesData }) => {
 
             {/* CTA Grid */}
             {cta &&
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-5 2xl:mt-12">
+                <div className={`grid grid-cols-1 gap-8 mt-5 2xl:mt-12 ${
+                    cta.length === 1 ? 'md:grid-cols-1' :
+                    cta.length === 2 ? 'md:grid-cols-2' :
+                    cta.length === 3 ? 'md:grid-cols-3' :
+                    cta.length === 4 ? 'md:grid-cols-4' :
+                    'md:grid-cols-2' // fallback
+                }`}>
                     {cta.map((cta, index) => {
                         const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, backgroundImage } = cta;
                         return (
@@ -105,9 +127,20 @@ const CTA = ({ data, storiesData }) => {
                                         </div>
                                         {copy && <div className="text-white mb-8 text-base md:text-xl flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />}
                                     </div>
-                                    {ctaLabel && <Button href={ctaUrl} variant="light">
-                                        {ctaLabel}
-                                    </Button>}
+                                    {ctaLabel && (
+                                        isEmail(ctaUrl) ? (
+                                            <a 
+                                                href={formatEmailUrl(ctaUrl)} 
+                                                className="bg-lightblue text-white font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer w-max uppercase"
+                                            >
+                                                {ctaLabel}
+                                            </a>
+                                        ) : (
+                                            <Button href={ctaUrl} variant="light">
+                                                {ctaLabel}
+                                            </Button>
+                                        )
+                                    )}
                                 </div>
                             </div>
                         )

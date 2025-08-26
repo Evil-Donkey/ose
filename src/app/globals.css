@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@safelist {
+  md:grid-cols-1;
+  md:grid-cols-2;
+  md:grid-cols-3;
+  md:grid-cols-4;
+  md:grid-cols-5;
+  md:grid-cols-6;
+}
+
 @theme {
   --color-lightblue: #00A0CC;
   --color-lightblue-02: #23CAF8;

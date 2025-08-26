@@ -142,7 +142,7 @@ export default function ForgotPassword() {
                                 {emailCheckResult.status === 'not_found' && (
                                     <div className="mt-3">
                                         <p className="text-base text-white">
-                                            <Link href="/investor-portal-signup" className="underline">
+                                            <Link href="/shareholder-portal-signup" className="underline">
                                                 Click here to sign up
                                             </Link>
                                         </p>
@@ -153,9 +153,9 @@ export default function ForgotPassword() {
 
                         <div className="flex flex-col gap-2 mt-8">
                             <p className="text-sm flex items-center gap-2">
-                                <Link href="/investor-portal" className="text-white underline">Back to login</Link>
+                                <Link href="/shareholder-portal" className="text-white underline">Back to login</Link>
                                 <span className="text-white">|</span>
-                                <Link href="/investor-portal-signup" className="text-white underline">Request access</Link>
+                                <Link href="/shareholder-portal-signup" className="text-white underline">Request access</Link>
                             </p>
                         </div>
                     </div>

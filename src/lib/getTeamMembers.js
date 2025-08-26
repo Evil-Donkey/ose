@@ -36,6 +36,7 @@ const TEAM_MEMBERS_QUERY = `
                     name
                     slug
                     customOrder
+                    description
                 }
             }
         }

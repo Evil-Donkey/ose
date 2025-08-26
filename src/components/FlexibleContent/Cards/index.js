@@ -28,6 +28,14 @@ const Cards = ({ data }) => {
     ];
 
     const [activeTab, setActiveTab] = useState(uniqueFields[0] || '');
+    const [expandedBios, setExpandedBios] = useState({});
+
+    const toggleBio = (cardIndex) => {
+        setExpandedBios(prev => ({
+            ...prev,
+            [cardIndex]: !prev[cardIndex]
+        }));
+    };
 
     useEffect(() => {
         gsap.to(titleRef.current, {
@@ -127,17 +135,35 @@ const Cards = ({ data }) => {
                                 }) || [];
                                 
                                 return filteredCards.length > 0 ? filteredCards.map((card, index) => {
-                                    const { heading, description, image } = card;
+                                    const { heading, description, image, bio } = card;
                                     return (
                                         <div key={index}>
-                                            <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col">
-                                                {image && (
-                                                    <div className="relative overflow-hidden rounded-lg min-h-[200px]">
-                                                        <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                            <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col gap-4 justify-between h-full">
+                                                <div className="flex flex-col">
+                                                    {image && (
+                                                        <div className="relative overflow-hidden rounded-lg min-h-[200px]">
+                                                            <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                                        </div>
+                                                    )}
+                                                    {heading && <h4 className="text-lg font-medium mt-4" dangerouslySetInnerHTML={{ __html: heading }} />}
+                                                    {description && <div className="text-sm" dangerouslySetInnerHTML={{ __html: description }} />}
+                                                </div>
+                                                {bio && (
+                                                    <div className="text-sm mt-4">
+                                                        <div 
+                                                            className={`overflow-hidden transition-all duration-300 ${
+                                                                expandedBios[index] ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
+                                                            }`}
+                                                            dangerouslySetInnerHTML={{ __html: bio }} 
+                                                        />
+                                                        <button
+                                                            onClick={() => toggleBio(index)}
+                                                            className="text-blue-02 hover:text-darkblue underline text-sm mt-2 cursor-pointer"
+                                                        >
+                                                            {expandedBios[index] ? 'Collapse' : 'Expand'}
+                                                        </button>
                                                     </div>
                                                 )}
-                                                {heading && <h4 className="text-lg font-medium mt-4" dangerouslySetInnerHTML={{ __html: heading }} />}
-                                                {description && <div className="text-sm" dangerouslySetInnerHTML={{ __html: description }} />}
                                             </div>
                                         </div>
                                     );
@@ -158,7 +184,7 @@ const Cards = ({ data }) => {
                             className="cards-swiper my-10"
                         >
                             {cards.map((card, index) => {
-                                const { heading, description, image } = card;
+                                const { heading, description, image, bio } = card;
                                 return (
                                     <SwiperSlide key={index}>
                                         <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col">
@@ -169,6 +195,22 @@ const Cards = ({ data }) => {
                                             )}
                                             {heading && <h4 className="text-lg font-medium mt-4" dangerouslySetInnerHTML={{ __html: heading }} />}
                                             {description && <div className="text-sm" dangerouslySetInnerHTML={{ __html: description }} />}
+                                            {bio && (
+                                                <div className="text-sm mt-4">
+                                                    <div 
+                                                        className={`overflow-hidden transition-all duration-300 ${
+                                                            expandedBios[index] ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
+                                                        }`}
+                                                        dangerouslySetInnerHTML={{ __html: bio }} 
+                                                    />
+                                                    <button
+                                                        onClick={() => toggleBio(index)}
+                                                        className="text-blue-02 hover:text-darkblue underline text-sm mt-2 cursor-pointer"
+                                                    >
+                                                        {expandedBios[index] ? 'Collapse' : 'Expand'}
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     </SwiperSlide>
                                 );
@@ -203,7 +245,7 @@ const Cards = ({ data }) => {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
                             {cards.map((card, index) => {
-                                const { heading, description, image } = card;
+                                const { heading, description, image, bio } = card;
                                 return (
                                     <div key={index} ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col min-h-[370px] 2xl:min-h-[450px]">
                                         <div className="relative overflow-hidden rounded-lg flex flex-col text-center items-center p-6 2xl:p-10 h-full justify-end">
@@ -213,6 +255,22 @@ const Cards = ({ data }) => {
                                             <div className="absolute inset-0 bg-black/30 pointer-events-none" />
                                             {heading && <h4 className="text-white text-3xl font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: heading }} />}
                                             {description && <div className="text-white text-base z-10 mt-3" dangerouslySetInnerHTML={{ __html: description }} />}
+                                            {bio && (
+                                                <div className="text-white text-base z-10 mt-3">
+                                                    <div 
+                                                        className={`overflow-hidden transition-all duration-300 ${
+                                                            expandedBios[index] ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
+                                                        }`}
+                                                        dangerouslySetInnerHTML={{ __html: bio }} 
+                                                    />
+                                                    <button
+                                                        onClick={() => toggleBio(index)}
+                                                        className="text-white underline text-sm mt-2 cursor-pointer hover:text-blue-200"
+                                                    >
+                                                        {expandedBios[index] ? 'Collapse' : 'Expand'}
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 );

@@ -118,7 +118,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
-        router.push("/investor-portal");
+        router.push("/shareholder-portal");
       } else {
         console.error(data.error);
       }
@@ -145,7 +145,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
 
         // Redirect to login or home page
-        router.push("/investor-portal");
+        router.push("/shareholder-portal");
       } else {
         console.error("Logout failed");
       }
