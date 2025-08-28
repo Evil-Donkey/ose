@@ -104,7 +104,7 @@ const Footer = ({ data }) => {
                             <ul>
                                 <li><Link href="/deep-tech" className="hover:text-lightblue">Deep Tech</Link></li>
                                 <li><Link href="/life-sciences" className="hover:text-lightblue">Life Sciences</Link></li>
-                                <li><Link href="/health-tech" className="hover:text-lightblue">Health Tech</Link></li>
+                                <li><Link href="/health-tech" className="hover:text-lightblue">HealthTech</Link></li>
                             </ul>
                         </div>
 

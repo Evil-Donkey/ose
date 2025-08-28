@@ -109,17 +109,17 @@ const CTA = ({ data, storiesData }) => {
                 <div className={`grid grid-cols-1 gap-8 mt-5 2xl:mt-12 ${
                     cta.length === 1 ? 'md:grid-cols-1' :
                     cta.length === 2 ? 'md:grid-cols-2' :
-                    cta.length === 3 ? 'md:grid-cols-3' :
-                    cta.length === 4 ? 'md:grid-cols-4' :
+                    cta.length === 3 ? 'lg:grid-cols-3' :
+                    cta.length === 4 ? 'lg:grid-cols-4' :
                     'md:grid-cols-2' // fallback
                 }`}>
                     {cta.map((cta, index) => {
                         const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, backgroundImage } = cta;
                         return (
-                            <div key={index} ref={el => ctaRef.current[index] = el} className={`relative overflow-hidden rounded-3xl group p-8 2xl:p-12 ${!ctaLabel ? 'min-h-[600px] md:min-h-auto' : ''}`}>
+                            <div key={index} ref={el => ctaRef.current[index] = el} className={`relative overflow-hidden rounded-3xl group p-6 xl:p-8 2xl:p-12 ${!ctaLabel ? 'min-h-[600px] md:min-h-auto' : ''}`}>
                                 {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className={`absolute inset-0 object-cover ${ctaLabel ? 'group-hover:scale-110' : ''} transition-all duration-300`} />}
                                 {!ctaLabel && <div className="absolute inset-0 w-full h-2/3 bottom-0 top-auto bg-gradient-to-t from-black/90 to-black/0" />}
-                                <div className={`relative z-10 flex flex-col ${!ctaLabel ? 'justify-end' : 'justify-between'} h-full`}>
+                                <div className={`relative z-10 flex flex-col items-center ${!ctaLabel ? 'justify-end' : 'justify-between'} h-full`}>
                                     <div className={`flex flex-col ${!ctaLabel ? 'md:aspect-7/6 justify-end' : ''}`}>
                                         <div>
                                             {smallTitle && <p className="text-xs md:text-sm text-white mb-4">{smallTitle}</p>}
@@ -131,7 +131,7 @@ const CTA = ({ data, storiesData }) => {
                                         isEmail(ctaUrl) ? (
                                             <a 
                                                 href={formatEmailUrl(ctaUrl)} 
-                                                className="bg-lightblue text-white font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer w-max uppercase"
+                                                className="bg-lightblue text-white text-sm lg:text-xs xl:text-base font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer w-max uppercase"
                                             >
                                                 {ctaLabel}
                                             </a>

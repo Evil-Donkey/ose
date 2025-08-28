@@ -33,7 +33,7 @@ const FullWidthLargeHeading = ({ data }) => {
             <Container className="py-20 2xl:py-40">
                 {copy && (
                     <div className="flex flex-col items-center text-center">
-                        <h3 ref={copyRef} className="w-full lg:w-3/5 text-darkblue text-3xl md:text-4xl/13 font-medium opacity-0 translate-x-full">{copy}</h3>
+                        <h3 ref={copyRef} className="w-full lg:w-3/5 text-darkblue text-3xl/10 xl:text-4xl/13 font-medium opacity-0 translate-x-full">{copy}</h3>
                     </div>
                 )}
             </Container>
