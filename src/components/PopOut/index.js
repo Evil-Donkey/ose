@@ -9,7 +9,7 @@ const PopOut = ({ data }) => {
   const popoutContent = data?.popoutContent || [];
 
   return (
-    <div className={`flex flex-col md:flex-row fixed bottom-0 md:bottom-auto right-1/2 translate-x-1/2 md:right-0 md:top-1/2 md:-translate-y-1/2 z-50 transition-transform duration-300 ${isOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-82 md:translate-x-92.5'}`}>
+    <div className={`flex flex-col md:flex-row fixed bottom-0 md:bottom-auto right-1/2 translate-x-1/2 md:right-0 md:top-1/2 md:-translate-y-1/2 z-50 transition-transform duration-300 ${isOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-113.5 md:translate-x-92.5'}`}>
       {/* Vertical Tab */}
       <button
         onClick={() => setIsOpen((open) => !open)}
