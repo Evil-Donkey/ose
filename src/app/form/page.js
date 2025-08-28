@@ -29,11 +29,14 @@ export default async function ContactPage() {
       <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 relative">
           <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
             <div className="w-full lg:w-1/2">
-              <div className="text-xl mb-3">Oxford Researchers</div>
+              <div className="text-xl mb-3">Oxford researchers &amp; innovators</div>
               {title && <h1 className="text-4xl md:text-6xl/18 mb-10" dangerouslySetInnerHTML={{ __html: title }} />}
+              {content && <div className="text-base md:text-lg mb-10" dangerouslySetInnerHTML={{ __html: content }} />}
             </div>
             <div className="w-full lg:w-2/5">
-              <div className="text-base md:text-lg mb-10" dangerouslySetInnerHTML={{ __html: content }} />
+              <div className="text-base md:text-lg mb-10">
+                Use this short form to get in touch and tell us about your research.
+              </div>
               <Form />
             </div>
           </Container>

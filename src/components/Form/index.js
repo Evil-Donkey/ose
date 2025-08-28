@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const Form = () => {
 
-    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,8 +33,11 @@ const Form = () => {
         formData.append("last-name", data.lastName);
         formData.append("email", data.email);
         formData.append("connection", data.connection);
+        formData.append("other-connection", data.otherConnection || "");
         formData.append("university-department", data.universityDepartment || "");
-        formData.append("summary", data.summary);
+        formData.append("summary", data.summary || "");
+        formData.append("challenge", data.challenge || "");
+        formData.append("conversation", data.conversation || "");
         
         // Handle sectors as comma-separated string for text field
         let sectorsValue = "";
@@ -95,6 +98,7 @@ const Form = () => {
 
             if (result.status === "mail_sent") {
                 setSuccess(true);
+                reset(); // Clear all form fields after successful submission
             } else {
                 // Handle different types of errors
                 let errorMessage = "Submission failed. Please try again.";
@@ -119,6 +123,9 @@ const Form = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex -mx-4 flex-col md:flex-row flex-wrap">
+        <div className="w-full flex flex-col gap-2 mb-2 px-4">
+            <div className="text-sm font-bold">Personal information</div>
+        </div>
         <div className="md:w-1/2 flex flex-col gap-2 mb-5 px-4">
             <label htmlFor="firstName" className="text-sm">First Name*</label>
             <input type="text" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("firstName", { required: "First name is required" })} />
@@ -147,39 +154,64 @@ const Form = () => {
             <label htmlFor="connection" className="text-sm">Connection to Oxford*</label>
             <select className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("connection", { required: "Connection to Oxford is required" })} defaultValue="">
                 <option value="" disabled>Select</option>
-                <option value="Option 1">Option 1</option>
-                <option value="Option 2">Option 2</option>
-                <option value="Option 3">Option 3</option>
+                <option value="Professor, University of Oxford">Professor, University of Oxford</option>
+                <option value="Researcher, University of Oxford">Researcher, University of Oxford</option>
+                <option value="Post-doctoral Student, University of Oxford">Post-doctoral Student, University of Oxford</option>
+                <option value="Postgraduate Student, University of Oxford">Postgraduate Student, University of Oxford</option>
+                <option value="Undergraduate Student, University of Oxford">Undergraduate Student, University of Oxford</option>
+                <option value="Researcher, Harwell Science Park">Researcher, Harwell Science Park</option>
+                <option value="Researcher, Culham Science Park">Researcher, Culham Science Park</option>
+                <option value="Other">Other</option>
             </select>
             {errors.connection && <p className="text-red-500 text-sm">{errors.connection.message}</p>}
         </div>
 
+        {watch("connection") === "Other" && (
+            <div className="w-full flex flex-col gap-2 mb-5 px-4">
+                <label htmlFor="otherConnection" className="text-sm">Other (please specify)</label>
+                <input type="text" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("otherConnection")} />
+                {errors.otherConnection && <p className="text-red-500 text-sm">{errors.otherConnection.message}</p>}
+            </div>
+        )}
+
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <div className="text-sm font-bold">Research &amp; Business Idea Submission</div>
-            <label htmlFor="universityDepartment" className="text-sm">University Department (if applicable)</label>
+            <label htmlFor="universityDepartment" className="text-sm">Department (if applicable)</label>
             <input type="text" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("universityDepartment")} />
             {errors.universityDepartment && <p className="text-red-500 text-sm">{errors.universityDepartment.message}</p>}
         </div>
         
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="summary" className="text-sm">Brief summary of your research or business idea*</label>
-            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("summary", { required: "Summary of your research or business idea is required" })} />
+            <div className="text-sm font-bold mt-4">Research summary</div>
+            <label htmlFor="summary" className="text-sm">Brief description of your research*</label>
+            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("summary", { required: "Summary of your research is required" })} />
             {errors.summary && <p className="text-red-500 text-sm">{errors.summary.message}</p>}
+        </div>
+        
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="challenge" className="text-sm">What challenge does your work aim to address?</label>
+            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("challenge")} />
+            {errors.challenge && <p className="text-red-500 text-sm">{errors.challenge.message}</p>}
+        </div>
+        
+        <div className="w-full flex flex-col gap-2 mb-5 px-4">
+            <label htmlFor="conversation" className="text-sm">What do you hope to explore through a conversation with OSE?</label>
+            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("conversation")} />
+            {errors.conversation && <p className="text-red-500 text-sm">{errors.conversation.message}</p>}
         </div>
 
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="sectors" className="text-sm">Relevant Sector (Select all that apply)*</label>
+            <label htmlFor="sectors" className="text-sm">Relevant Sector (select one)*</label>
             <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" {...register("sectors")} value="Deep Tech" />
+                    <input type="radio" {...register("sectors")} value="Deep Tech" />
                     <span>Deep Tech</span>
                 </label>
                 <label className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" {...register("sectors")} value="Health Tech" />
+                    <input type="radio" {...register("sectors")} value="Health Tech" />
                     <span>Health Tech</span>
                 </label>
                 <label className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" {...register("sectors")} value="Life Sciences" />
+                    <input type="radio" {...register("sectors")} value="Life Sciences" />
                     <span>Life Sciences</span>
                 </label>
                 {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
@@ -187,13 +219,13 @@ const Form = () => {
         </div>
 
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="file" className="text-sm">Please upload any supporting documents*</label>
+            <div className="text-sm font-bold mt-4">Supporting materials</div>
+            <label htmlFor="file" className="text-sm">Upload any relevant non-confidential material</label>
             <input 
                 type="file" 
                 className="bg-lightblue text-white font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer self-start uppercase" 
                 accept=".txt,.pdf"
                 {...register("file", { 
-                    required: "Please upload supporting documents",
                     validate: {
                         fileSize: (files) => {
                             if (files && files[0]) {
@@ -225,12 +257,12 @@ const Form = () => {
 
         <div className="w-full flex flex-col items-end gap-2 px-4">
             <Button disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Submit your idea"}
+                {isSubmitting ? "Submitting..." : "Start the conversation"}
             </Button>
         </div>
 
         <div className="w-full flex flex-col gap-2 mt-5 mt-md-0 px-4">
-            {success && <p className="text-white font-medium">Form submitted successfully!</p>}
+            {success && <p className="text-white font-medium">Thank you for sharing your research! Our team will review your submission and be in touch soon.</p>}
             {error && <p className="text-red-500 font-medium">{error}</p>}
         </div>
     </form>
