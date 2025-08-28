@@ -115,7 +115,7 @@ const Exits = ({ data }) => {
                                                 {title}
                                             </h3>
                                         }
-                                        {story && <Link href={story.slug} className="text-lightblue hover:text-white uppercase text-sm mt-2 font-bold transition-colors duration-300">Read more</Link>}
+                                        {url && <Link href={url} className="text-lightblue hover:text-white uppercase text-sm mt-2 font-bold transition-colors duration-300">Read more</Link>}
                                     </div>
                                 </div>
                             </div>
