@@ -33,12 +33,12 @@ const Footer = ({ data }) => {
                             <h2 className="text-3xl mb-4">Get in touch</h2>
                             <div className="lg:space-y-4">
                                 <div>
-                                    <h3 className="text-lightblue hidden lg:block">Oxford Academics &amp; Researchers</h3>
+                                    <h3 className="text-lightblue hidden lg:block">Oxford Researchers &amp; Innovators</h3>
                                     <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
                                         {oxfordAcademicsEmail}
                                     </a>
                                     <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue lg:hidden">
-                                        Oxford Academics &amp; Researchers
+                                        Oxford Researchers &amp; Innovators
                                     </a>
                                 </div>
                                 <div>

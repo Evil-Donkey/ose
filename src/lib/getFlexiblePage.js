@@ -496,12 +496,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             exits {
               description
               title
-              story {
-                ... on Story {
-                  id
-                  slug
-                }
-              }
+              url
               logo {
                 mediaItemUrl
                 mediaDetails {

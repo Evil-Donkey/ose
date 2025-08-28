@@ -76,7 +76,7 @@ const Exits = ({ data }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-10 2xl:mt-16">
                     {exits.map((item, index) => {
-                        const { title, description, story, logo } = item;
+                        const { title, description, url, logo } = item;
 
                         return index === 0 ? (
                             <div 
@@ -97,7 +97,7 @@ const Exits = ({ data }) => {
                                     </div>
                                     <div className="p-4 md:p-8 w-full md:w-2/5 flex flex-col text-white">
                                         {description && <div className="text-base md:text-lg" dangerouslySetInnerHTML={{ __html: description }} />}
-                                        {story && <Link href={story.slug} className="text-lightblue hover:text-white uppercase text-sm mt-2 font-bold transition-colors duration-300">Read more</Link>}
+                                        {url && <Link href={url} className="text-lightblue hover:text-white uppercase text-sm mt-2 font-bold transition-colors duration-300">Read more</Link>}
                                     </div>
                                 </div>
                             </div>
