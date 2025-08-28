@@ -488,6 +488,44 @@ const FLEXIBLE_CONTENT_QUERY = `
               altText
             }
           }
+          ... on Page_Flexiblecontent_FlexibleContent_Exits {
+            copy
+            fieldGroupName
+            sectionLabel
+            title
+            exits {
+              description
+              title
+              story {
+                ... on Story {
+                  id
+                  slug
+                }
+              }
+              logo {
+                mediaItemUrl
+                mediaDetails {
+                  height
+                  width
+                }
+                altText
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_TwoColumnsTitleCopy {
+            fieldGroupName
+            sectionLabel
+            title
+            blocks {
+              copy
+              heading
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_FullWidthLargeHeading {
+            copy
+            fieldGroupName
+            sectionLabel
+          }
         }
       }
     }

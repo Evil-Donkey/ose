@@ -25,6 +25,9 @@ import StoryImage from "./StoryImage";
 import StoryQuote from "./StoryQuote";
 import ExampleProjects from "./ExampleProjects";
 import LogosGrid from "./LogosGrid";
+import Exits from "./Exits";
+import TwoColumnsTitleCopy from "./TwoColumnsTitleCopy";
+import FullWidthLargeHeading from "./FullWidthLargeHeading";
 
 const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }) => {
 
@@ -110,6 +113,15 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_LogosGrid") {
             flexibleContentArray.push(<LogosGrid data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Exits") {
+            flexibleContentArray.push(<Exits data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_TwoColumnsTitleCopy") {
+            flexibleContentArray.push(<TwoColumnsTitleCopy data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_FullWidthLargeHeading") {
+            flexibleContentArray.push(<FullWidthLargeHeading data={item} index={i} key={i.toString()} />);
         }
     })}
 
