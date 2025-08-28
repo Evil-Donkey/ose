@@ -208,7 +208,7 @@ const Form = () => {
                 </label>
                 <label className="flex items-center gap-2 text-sm">
                     <input type="radio" {...register("sectors")} value="Health Tech" />
-                    <span>Health Tech</span>
+                    <span>HealthTech</span>
                 </label>
                 <label className="flex items-center gap-2 text-sm">
                     <input type="radio" {...register("sectors")} value="Life Sciences" />

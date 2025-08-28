@@ -95,6 +95,8 @@ const Cards = ({ data }) => {
 
     }, []);
 
+    console.log(uniqueFields);
+
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
@@ -119,7 +121,11 @@ const Cards = ({ data }) => {
                                 onClick={() => setActiveTab(field)}
                                 type="button"
                             >
-                                <h3 className="text-lg">{field.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase())}</h3>
+                                <h3 className="text-lg">
+                                    {field === 'health-tech' 
+                                        ? field.replace(/-/g, '').replace(/\b\w/g, char => char.toUpperCase()).replace('tech', 'Tech')
+                                        : field.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase())}
+                                </h3>
                             </button>
                         ))}
                     </div>

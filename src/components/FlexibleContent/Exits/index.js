@@ -89,7 +89,7 @@ const Exits = ({ data }) => {
                                         <div className="flex flex-col justify-between h-full gap-8">
                                             {logo && <Image src={logo.mediaItemUrl} alt={logo.altText} width={logo.mediaDetails.width} height={logo.mediaDetails.height} className="object-cover transition-transform" />}
                                             {title &&
-                                                <h3 className="text-3xl md:text-4xl 2xl:text-5xl">
+                                                <h3 className="text-3xl xl:text-4xl 2xl:text-5xl">
                                                     {title}
                                                 </h3>
                                             }
@@ -111,7 +111,7 @@ const Exits = ({ data }) => {
                                     <div className="flex flex-col justify-between h-full gap-8 text-white p-4 md:p-8">
                                         {logo && <Image src={logo.mediaItemUrl} alt={logo.altText} width={logo.mediaDetails.width} height={logo.mediaDetails.height} className="object-cover transition-transform" />}
                                         {title &&
-                                            <h3 className="text-3xl md:text-4xl 2xl:text-5xl">
+                                            <h3 className="text-3xl xl:text-4xl 2xl:text-5xl">
                                                 {title}
                                             </h3>
                                         }

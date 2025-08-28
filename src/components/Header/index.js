@@ -293,7 +293,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                             href='/health-tech'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
                                                                         >
-                                                                            Health Tech
+                                                                            HealthTech
                                                                         </a>
                                                                     </li>
                                                                 </ul>
