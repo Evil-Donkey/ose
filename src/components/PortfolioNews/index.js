@@ -154,12 +154,12 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
         </div>
 
         {/* Results Count */}
-        <div className="mb-8 text-white">
+        {/* <div className="mb-8 text-white">
           <p className="text-lg">
             Showing {totalItems > 0 ? startIndex + 1 : 0}-{Math.min(endIndex, totalItems)} of {totalItems} news items
             {selectedCategory && ` in ${portfolioNewsCategories.find(cat => cat.slug === selectedCategory)?.name}`}
           </p>
-        </div>
+        </div> */}
 
         {/* Grid Section - Current Page Items */}
         {currentItems.length > 0 && (
