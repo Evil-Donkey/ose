@@ -91,7 +91,7 @@ export default function InvestorPortalSignupClient({ title, content, investorPor
 
     return (
         <>
-            <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col gap-10">
+            <Container className="pt-40 pb-10 2xl:pt-50 relative z-10 flex flex-col gap-10">
                 <div className="w-full flex justify-between items-center gap-10 mb-4">
                     {title && <h1 className="text-4xl lg:text-6xl">{title}</h1>}
                     <Logout />

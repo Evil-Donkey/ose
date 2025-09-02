@@ -51,12 +51,12 @@ export default function SignupForm({ title, content }) {
   
 
   return (
-    <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
+    <Container className="pt-40 pb-10 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
       <div className="w-full lg:w-2/5">
         {title && <h1 className="text-4xl lg:text-6xl mb-4">{title}</h1>}
-        {content && <div className="text-base flex flex-col gap-4 lg:w-2/3" dangerouslySetInnerHTML={{ __html: content }} />}
+        {content && <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3" dangerouslySetInnerHTML={{ __html: content }} />}
       </div>
-      <div className="w-full lg:w-2/5">
+      <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10">
         {isSuccess ? (
           <div className="text-center">
             {/* <div className="mb-6">

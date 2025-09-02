@@ -90,7 +90,7 @@ export default function InvestorPortalClient({ title, content, investorPortal })
 
     return (
         <>
-            <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col gap-6">
+            <Container className="pt-40 pb-10 2xl:pt-50 relative z-10 flex flex-col gap-6">
                 <div className="w-full flex justify-between items-center gap-10">
                     {title && <h1 className="text-4xl lg:text-6xl">{title}</h1>}
                     <Logout />

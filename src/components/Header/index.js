@@ -126,14 +126,14 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                     >
                         <div className={`transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col items-center lg:items-end justify-center lg:justify-start gap-5 lg:gap-0 absolute top-0 left-0 w-svw h-svh lg:h-auto lg:w-auto bg-blue-02 lg:bg-transparent lg:static ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-none'}`}>
                             <div className={`flex justify-end transition-all duration-500 order-last lg:order-first ${isHeaderScrolled ? 'mb-0 2xl:mb-3' : 'md:mb-2 2xl:mb-4'}`}>
-                                <nav className={`${isHeaderScrolled ? 'lg:space-x-2' : 'xl:space-x-5'} flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0`}>
+                                <nav className={`space-x-4 ${isHeaderScrolled ? 'lg:space-x-6' : 'xl:space-x-9'} flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0`}>
                                     {topNavItems.map((item, index) => {
                                         const isActive = pathname === item.href;
                                         return (
                                             <Link
                                                 href={item.href}
                                                 key={index}
-                                                className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 pt-2 rounded-xl
+                                                className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 pt-2 rounded-xl
                                                     ${isActive ? 'text-lightblue' : 'hover:text-lightblue text-white'}
                                                     ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}
                                                     ${isHeaderScrolled ? 'pb-1' : 'pb-2'}
@@ -146,7 +146,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                 </nav>
                             </div>
                             <div className="flex justify-end">
-                                <nav className="lg:space-x-8 2xl:space-x-12 text-lg flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0">
+                                <nav className="lg:space-x-12 2xl:space-x-16 text-lg flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0">
                                     {bottomNavItems.map((item, index) => {
                                         const isActive = pathname === item.href;
                                         return (
@@ -157,7 +157,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                             >
                                                 <Link
                                                     href={item.href}
-                                                    className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 px-4 rounded-xl pt-2
+                                                    className={`transition duration-300 lg:opacity-100 lg:translate-x-0 lg:delay-0 rounded-xl pt-2
                                                         ${isActive ? 'text-lightblue' : 'hover:text-lightblue text-white'}
                                                         ${isMobileMenuOpen ? `translate-x-0 opacity-100 ${delays[index]}` : '-translate-x-full opacity-0'}
                                                         ${isHeaderScrolled ? 'pb-3 2xl:pb-7 text-2xl' : 'pb-9 2xl:pb-10 text-3xl 2xl:text-4xl'}
@@ -181,7 +181,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                     />
                                                 </div>
                                                 
-                                                <div className={`flex gap-10 absolute pt-12 ps-2 w-full 2xl:w-auto
+                                                <div className={`flex gap-10 absolute pt-12 ps-0 w-full 2xl:w-auto
                                                     ${activeMeganav === item.label ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-full'}                                 
                                                 `}>
                                                     <div className={`${item.meganavPageLinks && item.meganavPageLinks.links && item.meganavPageLinks.links.length > 0 ? 'w-auto 2xl:w-1/2' : 'w-auto'}`}>

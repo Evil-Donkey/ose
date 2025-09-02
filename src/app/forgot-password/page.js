@@ -59,17 +59,17 @@ export default function ForgotPassword() {
         <>
             <HeaderWithMeganavLinks fixed={false} />
             <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 pb-10 relative h-full min-h-screen">
-                <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
+                <Container className="pt-40 pb-10 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
                     <div className="w-full lg:w-2/5">
                         <h1 className="text-4xl lg:text-6xl mb-4">Forgot Password</h1>
-                        <div className="text-base flex flex-col gap-4 lg:w-2/3">
+                        <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3">
                             <p>Enter your email address below and we&apos;ll check if it exists in our system. If it does, we can help you reset your password.</p>
                         </div>
                     </div>
-                    <div className="w-full lg:w-2/5">
+                    <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10">
                         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                             {/* Email */}
-                            <div className="w-full flex flex-col gap-2 mb-3">
+                            <div className="w-full flex flex-col gap-2">
                                 <label htmlFor="email" className="text-sm">Email Address*</label>
                                 <input
                                     type="email"
