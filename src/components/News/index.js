@@ -58,7 +58,7 @@ const News = ({ newsItems, newsCategories }) => {
             </div>
             {/* Category Filter Dropdown */}
             <div className="flex items-center" ref={dropdownRef}>
-            <label className="text-white mr-4 font-medium">Filter by Sector:</label>
+            <label className="text-white mr-4 font-medium">Filter by Type:</label>
             <div className="relative">
                 <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -112,10 +112,10 @@ const News = ({ newsItems, newsCategories }) => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                 {/* Image Section */}
                 <div className="relative h-80 lg:h-full min-h-[470px] rounded-xl overflow-hidden">
-                  {heroItem.featuredImage?.node?.mediaItemUrl ? (
+                  {heroItem.news?.thumbnailImage?.mediaItemUrl || heroItem.featuredImage?.node?.mediaItemUrl ? (
                     <Image
-                      src={heroItem.featuredImage.node.mediaItemUrl}
-                      alt={heroItem.featuredImage.node.altText || heroItem.title}
+                      src={heroItem.news?.thumbnailImage?.mediaItemUrl || heroItem.featuredImage.node.mediaItemUrl}
+                      alt={heroItem.news?.thumbnailImage?.altText || heroItem.featuredImage.node.altText || heroItem.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -170,10 +170,10 @@ const News = ({ newsItems, newsCategories }) => {
                 <div className="transition-all duration-300 hover:-translate-y-1">
                   {/* Image */}
                   <div className="relative aspect-4/5 rounded-xl overflow-hidden">
-                    {item.featuredImage?.node?.mediaItemUrl ? (
+                    {item.news?.thumbnailImage?.mediaItemUrl || item.featuredImage?.node?.mediaItemUrl ? (
                       <Image
-                        src={item.featuredImage.node.mediaItemUrl}
-                        alt={item.featuredImage.node.altText || item.title}
+                        src={item.news?.thumbnailImage?.mediaItemUrl || item.featuredImage.node.mediaItemUrl}
+                        alt={item.news?.thumbnailImage?.altText || item.featuredImage.node.altText || item.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -198,11 +198,7 @@ const News = ({ newsItems, newsCategories }) => {
                       </p>
 
                       {/* Title */}
-                      <h3 className="text-white text-sm leading-tight overflow-hidden" style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical'
-                      }}>
+                      <h3 className="text-white text-sm leading-tight overflow-hidden">
                         {item.title}
                       </h3>
                     </div>

@@ -55,7 +55,7 @@ const LogosGrid = ({ data }) => {
                     </div>
                 }
                 <div className="relative w-full 2xl:mt-25">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 2xl:gap-10 2xl:mt-10">
                         {gallery.map((image, index) => {
                             return (
                                 <div key={index} ref={el => galleryRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">

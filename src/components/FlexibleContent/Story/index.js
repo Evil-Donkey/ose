@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
@@ -21,6 +21,8 @@ const Story = ({ data }) => {
     const mainTitleRef = useRef(null);
     const copyRef = useRef([]);
     const imageRef = useRef(null);
+
+
 
     useEffect(() => {
         const titleTl = gsap.timeline();
@@ -86,6 +88,59 @@ const Story = ({ data }) => {
         };
     }, []);
 
+    // Function to truncate HTML content to 120 words while preserving HTML tags
+    const truncateHTML = (html, wordLimit = 120) => {
+        if (!html) return '';
+        
+        // Simple approach: count words in text content and truncate at word boundary
+        // This preserves HTML structure but may not be as precise as DOM walking
+        const textContent = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+        const words = textContent.split(' ');
+        
+        if (words.length <= wordLimit) {
+            return html;
+        }
+        
+        // Find the position of the 120th word in the original HTML
+        let wordCount = 0;
+        let inTag = false;
+        let truncatedHTML = '';
+        
+        for (let i = 0; i < html.length; i++) {
+            const char = html[i];
+            
+            if (char === '<') {
+                inTag = true;
+            }
+            
+            if (!inTag && char === ' ' && wordCount < wordLimit) {
+                wordCount++;
+            }
+            
+            truncatedHTML += char;
+            
+            if (char === '>') {
+                inTag = false;
+            }
+            
+            // If we've reached the word limit and we're not in a tag, break
+            if (wordCount >= wordLimit && !inTag) {
+                break;
+            }
+        }
+        
+        // Add ellipsis if truncated
+        if (wordCount >= wordLimit) {
+            truncatedHTML += '...';
+        }
+        
+        return truncatedHTML;
+    };
+
+    // Get truncated content
+    const truncatedContent = truncateHTML(content, 120);
+    const displayContent = truncatedContent;
+
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}>
             <div className="relative w-full lg:min-h-[100vh] h-full">
@@ -114,10 +169,7 @@ const Story = ({ data }) => {
                     <div className="flex flex-col lg:flex-row gap-10">
                         {content &&
                             <div ref={el => copyRef.current[1] = el} className="w-full lg:w-1/2 xl:pe-20 flex flex-col gap-10 opacity-0 translate-y-20 transition-all duration-1000">
-                                <div className="text-base 2xl:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: content }} />
-                                {secondCopyBlock &&
-                                    <div className="text-base 2xl:text-lg hidden lg:flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock }} />
-                                }
+                                <div className="text-base 2xl:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: displayContent }} />
                                 <Link href={uri} className="hidden lg:flex font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline">Read More</Link>
                             </div>
                         }
@@ -135,12 +187,17 @@ const Story = ({ data }) => {
                                 </div>
                             </div>
                         }
-                        {secondCopyBlock && (
+                        {/* {secondCopyBlock && (
                             <>
                                 <div className="text-base 2xl:text-lg lg:hidden flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock }} />
-                                <Link href={uri} className="lg:hidden font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline">Read More</Link>
+                                <button 
+                                    onClick={() => setIsExpanded(!isExpanded)}
+                                    className="lg:hidden font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline bg-transparent border-none cursor-pointer p-0 self-start"
+                                >
+                                    {isExpanded ? 'Read Less' : 'Read More'}
+                                </button>
                             </>
-                        )}
+                        )} */}
                     </div>
 
                     <div ref={el => copyRef.current[2] = el} className="flex justify-center mt-16 opacity-0 translate-y-20 transition-all duration-1000">

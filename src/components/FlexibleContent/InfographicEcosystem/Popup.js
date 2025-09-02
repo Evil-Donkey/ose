@@ -63,8 +63,8 @@ const Popup = ({ isOpen, onClose, spinoutDesktopImage, spinoutMobileImage }) => 
                 </button>
                 <div className="h-full w-full flex flex-col items-center justify-center text-white gap-10">
                     <div className="w-full p-10 md:p-20 max-h-full">
-                        {spinoutDesktopImage && <Image src={spinoutDesktopImage.mediaItemUrl} alt={spinoutDesktopImage.altText} width={spinoutDesktopImage.mediaDetails.width} height={spinoutDesktopImage.mediaDetails.height} className={spinoutMobileImage ? "hidden lg:block" : ""} />}
-                        {spinoutMobileImage && <Image src={spinoutMobileImage.mediaItemUrl} alt={spinoutMobileImage.altText} width={spinoutMobileImage.mediaDetails.width} height={spinoutMobileImage.mediaDetails.height} className={spinoutDesktopImage ? "lg:hidden" : ""} />}
+                        {spinoutDesktopImage && <Image src={spinoutDesktopImage.mediaItemUrl} alt={spinoutDesktopImage.altText} width={spinoutDesktopImage.mediaDetails.width} height={spinoutDesktopImage.mediaDetails.height} className={`w-full h-full object-contain ${spinoutMobileImage ? "hidden lg:block" : ""}`} />}
+                        {spinoutMobileImage && <Image src={spinoutMobileImage.mediaItemUrl} alt={spinoutMobileImage.altText} width={spinoutMobileImage.mediaDetails.width} height={spinoutMobileImage.mediaDetails.height} className={`w-full h-full object-contain ${spinoutDesktopImage ? "lg:hidden" : ""}`} />}
                     </div>
                 </div>
             </div>

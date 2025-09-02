@@ -12,6 +12,10 @@ const NEWS_ITEMS_QUERY = `
         news {
           shortDescription
           externalUrl
+          thumbnailImage {
+            altText
+            mediaItemUrl
+          }
         }
         featuredImage {
           node {

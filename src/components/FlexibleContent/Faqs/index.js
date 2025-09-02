@@ -62,7 +62,7 @@ const Faqs = ({ data }) => {
                         <div className="text-base md:text-xl flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />
                     </div>}
                 </div>
-                <div className="flex flex-col gap-7 mt-12">
+                <div className="flex flex-col gap-5 2xl:gap-7 mt-12">
                     {faqs && faqs.length > 0 && faqs.map((faq, idx) => {
                         const isOpen = openIndex === idx;
                         return (
@@ -72,7 +72,7 @@ const Faqs = ({ data }) => {
                                 ref={el => copyRef.current[idx + 1] = el}
                             >
                                 <button
-                                    className="w-full flex items-center justify-between px-7 py-6 cursor-pointer focus:outline-none text-left text-xl 2xl:text-2xl font-medium"
+                                    className="w-full flex items-center justify-between px-7 py-5 2xl:py-6 cursor-pointer focus:outline-none text-left text-xl 2xl:text-2xl font-medium"
                                     onClick={() => setOpenIndex(isOpen ? null : idx)}
                                     aria-expanded={isOpen}
                                 >
@@ -93,7 +93,7 @@ const Faqs = ({ data }) => {
                                 >
                                     {isOpen && (
                                         <div className="text-lg 2xl:text-lg font-normal leading-relaxed">
-                                            <div className="flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                                            <div className="faq__answer flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: faq.answer }} />
                                         </div>
                                     )}
                                 </div>

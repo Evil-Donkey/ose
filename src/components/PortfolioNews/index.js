@@ -10,12 +10,17 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
   const pathname = usePathname();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(12); // Show 12 items per page
   const dropdownRef = useRef(null);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setIsDropdownOpen(false);
+    setCurrentPage(1); // Reset to first page when filtering
   };
+
+  console.log(`Portfolio News Items: ${portfolioNewsItems?.length || 0} total items`);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -31,6 +36,11 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
     };
   }, []);
 
+  // Reset to first page when items change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [portfolioNewsItems]);
+
   // Filter news items based on selected category
   const filteredNewsItems = selectedCategory 
     ? portfolioNewsItems.filter(item => 
@@ -38,10 +48,54 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
       )
     : portfolioNewsItems;
 
+  // Calculate pagination
+  const totalItems = filteredNewsItems.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredNewsItems.slice(startIndex, endIndex);
+
+  // Ensure current page is valid
+  useEffect(() => {
+    if (totalPages > 0 && currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
   // Get category name for display
   const getCategoryName = (item) => {
     return item.portfolioNewsCategories?.nodes?.[0]?.name || 'Portfolio News';
   };
+
+  // Handle page change
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      // Scroll to top of the grid
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Handle items per page change
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    const newTotalPages = Math.ceil(totalItems / newItemsPerPage);
+    const newCurrentPage = Math.min(currentPage, newTotalPages);
+    setCurrentPage(newCurrentPage);
+  };
+
+  // Error handling for missing data
+  if (!portfolioNewsItems || !Array.isArray(portfolioNewsItems)) {
+    return (
+      <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 relative min-h-screen">
+        <Container className="py-40 2xl:pt-50 relative z-10">
+          <div className="text-center">
+            <h1 className="text-3xl mb-4">Portfolio News</h1>
+            <p className="text-lg">Unable to load portfolio news at this time. Please try again later.</p>
+          </div>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 relative min-h-screen">
@@ -99,10 +153,18 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
             </div>
         </div>
 
-        {/* Grid Section - Remaining News Items */}
-        {filteredNewsItems.length > 0 && (
+        {/* Results Count */}
+        <div className="mb-8 text-white">
+          <p className="text-lg">
+            Showing {totalItems > 0 ? startIndex + 1 : 0}-{Math.min(endIndex, totalItems)} of {totalItems} news items
+            {selectedCategory && ` in ${portfolioNewsCategories.find(cat => cat.slug === selectedCategory)?.name}`}
+          </p>
+        </div>
+
+        {/* Grid Section - Current Page Items */}
+        {currentItems.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {filteredNewsItems.map((item, index) => {
+            {currentItems.map((item, index) => {
               // Calculate row and position within row
               const row = Math.floor(index / 3);
               const positionInRow = index % 3;
@@ -149,17 +211,17 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
                       </span>
 
                       {/* Date */}
-                      <p className={`text-xs font-medium mt-3 ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
+                      <p className={`text-sm font-medium mt-3 ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
                         {formatDate(item.date)}
                       </p>
 
                       {/* Title */}
-                      <h1 className={`${bgColor === 'bg-white' ? 'text-2xl lg:text-3xl' : 'text-sm'} leading-tight overflow-hidden ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
+                      <h1 className={`${bgColor === 'bg-white' ? 'text-2xl 2xl:text-3xl' : 'text-xl'} leading-tight overflow-hidden ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
                         {item.title}
                       </h1>
 
                       {item.portfolioNews.hashtag && (
-                        <span className={`${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'} text-xs font-medium tracking-wide mt-5 block`}>
+                        <span className={`${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'} text-sm font-medium tracking-wide mt-5 block`}>
                           {item.portfolioNews.hashtag}
                         </span>
                       )}
@@ -168,6 +230,69 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
                 </Link>
               );
             })}
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center mt-12 space-x-2">
+            {/* Previous Page Button */}
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                currentPage === 1
+                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                  : 'bg-white text-gray-800 hover:bg-gray-50'
+              }`}
+            >
+              Previous
+            </button>
+
+            {/* Page Numbers */}
+            <div className="flex space-x-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                // Show first page, last page, current page, and pages around current page
+                if (
+                  page === 1 ||
+                  page === totalPages ||
+                  (page >= currentPage - 1 && page <= currentPage + 1)
+                ) {
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`px-3 py-2 w-10 h-10 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                        page === currentPage
+                          ? 'bg-lightblue text-white'
+                          : 'bg-white text-gray-800 hover:bg-gray-50'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                } else if (
+                  page === currentPage - 2 ||
+                  page === currentPage + 2
+                ) {
+                  return <span key={page} className="px-2 py-2 text-gray-400">...</span>;
+                }
+                return null;
+              })}
+            </div>
+
+            {/* Next Page Button */}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                currentPage === totalPages
+                  ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                  : 'bg-white text-gray-800 hover:bg-gray-50'
+              }`}
+            >
+              Next
+            </button>
           </div>
         )}
 

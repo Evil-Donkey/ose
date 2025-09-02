@@ -65,9 +65,9 @@ const FullScreenPanel = ({ data }) => {
                 <Container className={`py-30 ${autoHeight ? "md:py-40 2xl:py-60" : "md:py-25 2xl:py-45"} relative z-10 text-white flex flex-col h-full`}>
                     {mainTitle && <h2 className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{mainTitle}</h2>}
                     <div className="flex flex-col items-center text-center w-full gap-5">
-                        {heading && <h3 ref={titleRef} className="text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 font-light tracking-tight w-full opacity-0 -translate-y-full">{heading}</h3>}
+                        {heading && <h3 ref={titleRef} className="full-screen-panel__heading text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 font-light tracking-tight w-full opacity-0 -translate-y-full">{heading}</h3>}
                         {copy && <div ref={copyRef} className={`w-full xl:px-17 ${!autoHeight && "lg:w-3/5"} text-xl md:text-2xl 2xl:text-[2.5rem]/12 opacity-0 translate-y-5`}>
-                            <div className="text-center flex flex-col gap-8 items-center" dangerouslySetInnerHTML={{ __html: copy }} />
+                            <div className="full-screen-panel__copy text-center flex flex-col gap-8 items-center" dangerouslySetInnerHTML={{ __html: copy }} />
                         </div>}
                     </div>
                     {(ctaLabel && ctaUrl) && (

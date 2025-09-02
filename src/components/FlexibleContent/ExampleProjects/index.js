@@ -63,7 +63,7 @@ const ExampleProjects = ({ data }) => {
                         const { title, image, video, copy } = project;
                         return (
                             <div key={index} ref={el => projectsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
-                                <div className="relative aspect-square overflow-hidden rounded-lg flex items-end py-10 px-10 lg:p-6 2xl:ps-10 2xl:pe-18">
+                                <div className="relative aspect-5/4 2xl:aspect-square overflow-hidden rounded-lg flex items-end py-10 px-10 lg:p-6 2xl:ps-10 2xl:pe-18">
                                     <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0" />
                                     {video && <video src={video.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />}
                                     <div className="absolute inset-0 bg-gradient-to-t w-full h-3/5 bottom-0 top-auto from-black/60 to-black/0 pointer-events-none" />
@@ -79,7 +79,7 @@ const ExampleProjects = ({ data }) => {
                 </div>
 
                 {bottomHeading && (
-                    <div className="mt-20 mb-10 2xl:mb-15 w-full lg:w-2/3 flex justify-center">
+                    <div className="mt-20 mb-10 2xl:mb-15 w-full lg:w-4/5 2xl:w-2/3 flex justify-center">
                         <h2 className="text-center text-2xl md:text-5xl 2xl:text-6xl leading-tight font-medium text-white" dangerouslySetInnerHTML={{ __html: bottomHeading }} />
                     </div>
                 )}

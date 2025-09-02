@@ -56,9 +56,9 @@ const TwoColumnsTitleCopy = ({ data }) => {
                                 const { heading, copy } = block;
                                 
                                 return (
-                                    <div key={index} ref={el => blocksRef.current[index] = el} className="flex flex-col text-center items-center justify-center opacity-0 -translate-x-full">
+                                    <div key={index} ref={el => blocksRef.current[index] = el} className="flex flex-col text-center items-center opacity-0 -translate-x-full">
                                         {heading && <h4 className="text-[2rem]/10 lg:text-[2.5rem]/12 2xl:text-[3.75rem]/18 text-lightblue" dangerouslySetInnerHTML={{ __html: heading }} />}
-                                        {copy && <div className={`text-base 2xl:text-lg text-white mt-3 md:mt-10`} dangerouslySetInnerHTML={{ __html: copy }} />}
+                                        {copy && <div className={`text-base 2xl:text-lg text-white mt-3 2xl:mt-10`} dangerouslySetInnerHTML={{ __html: copy }} />}
                                     </div>
                                 )
                             })}

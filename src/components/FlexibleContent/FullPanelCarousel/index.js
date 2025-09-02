@@ -181,7 +181,7 @@ const FullPanelCarousel = ({ data }) => {
                                 swiperRef.current?.swiper?.slideTo(index);
                                 setActiveIndex(index);
                             }}
-                            className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full ${activeIndex === index ? 'text-lightblue' : 'text-white'}`}
+                            className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
                         >
                             {slide.title}
                         </button>
@@ -296,9 +296,9 @@ const FullPanelCarousel = ({ data }) => {
                         )}
                         {modalContent.accordionList && (
                             <div className="lg:grid lg:grid-cols-2 lg:gap-10">
-                                {/* First column - gets more items */}
+                                {/* First column - gets equal items if even, one more if odd */}
                                 <ul className="list-disc marker:text-lightblue pl-4 space-y-2">
-                                    {modalContent.accordionList.slice(0, Math.ceil(modalContent.accordionList.length * 0.6)).map((item, index) => (
+                                    {modalContent.accordionList.slice(0, Math.ceil(modalContent.accordionList.length / 2)).map((item, index) => (
                                         <li className="mb-3 text-pretty" key={index}>
                                             <div className="prose text-white prose-a:text-white" dangerouslySetInnerHTML={{ __html: item.listItem }} />
                                         </li>
@@ -306,8 +306,8 @@ const FullPanelCarousel = ({ data }) => {
                                 </ul>
                                 {/* Second column - gets remaining items */}
                                 <ul className="list-disc marker:text-lightblue pl-4 space-y-2">
-                                    {modalContent.accordionList.slice(Math.ceil(modalContent.accordionList.length * 0.6)).map((item, index) => (
-                                        <li className="mb-3 text-pretty" key={Math.ceil(modalContent.accordionList.length * 0.6) + index}>
+                                    {modalContent.accordionList.slice(Math.ceil(modalContent.accordionList.length / 2)).map((item, index) => (
+                                        <li className="mb-3 text-pretty" key={Math.ceil(modalContent.accordionList.length / 2) + index}>
                                             <div className="prose text-white prose-a:text-white" dangerouslySetInnerHTML={{ __html: item.listItem }} />
                                         </li>
                                     ))}

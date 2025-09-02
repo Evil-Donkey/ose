@@ -38,6 +38,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media screen and (max-width: 1300px) and (min-height: 580px) and (max-height: 699px) {
+  html {
+    font-size: 14px;
+  }
+  .el__popout {
+    transform: translateX(3.3rem);
+  }
+  .news__card-image {
+    @apply aspect-square;
+  }
+  .uncover__hero-image {
+    min-height: calc(100vh - 7.5rem);
+  }
+  .full-screen-panel__heading {
+    @apply text-7xl;
+  }
+  .full-screen-panel__copy img {
+    @apply max-w-[180px];
+  }
+}
 /* html {
   scroll-behavior: smooth !important;
  } */
@@ -63,7 +83,7 @@ body {
 }
 
 .faqs-section ul {
-  @apply list-disc list-inside;
+  @apply list-disc list-outside ps-4;
 }
 .swiper-slide {
   @apply h-auto!;
