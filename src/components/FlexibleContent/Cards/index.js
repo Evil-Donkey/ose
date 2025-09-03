@@ -31,10 +31,23 @@ const Cards = ({ data }) => {
     const [expandedBios, setExpandedBios] = useState({});
 
     const toggleBio = (cardIndex) => {
-        setExpandedBios(prev => ({
-            ...prev,
-            [cardIndex]: !prev[cardIndex]
-        }));
+        setExpandedBios(prev => {
+            // If the clicked card is already expanded, just collapse it
+            if (prev[cardIndex]) {
+                return {
+                    ...prev,
+                    [cardIndex]: false
+                };
+            }
+            
+            // If expanding a card, close all others first
+            const newState = {};
+            Object.keys(prev).forEach(key => {
+                newState[key] = false;
+            });
+            newState[cardIndex] = true;
+            return newState;
+        });
     };
 
     useEffect(() => {
@@ -142,9 +155,18 @@ const Cards = ({ data }) => {
                                 
                                 return filteredCards.length > 0 ? filteredCards.map((card, index) => {
                                     const { heading, description, image, bio } = card;
+                                    const isAnyCardExpanded = Object.values(expandedBios).some(expanded => expanded);
+                                    const isCurrentCardExpanded = expandedBios[index];
+                                    const shouldDim = isAnyCardExpanded && !isCurrentCardExpanded;
+                                    
                                     return (
                                         <div key={index}>
-                                            <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col gap-4 justify-between h-full">
+                                            <div 
+                                                ref={el => cardsRef.current[index] = el} 
+                                                className={`opacity-0 translate-y-20 flex flex-col gap-4 h-full transition-opacity duration-300 ${
+                                                    shouldDim ? 'opacity-30!' : ''
+                                                }`}
+                                            >
                                                 <div className="flex flex-col">
                                                     {image && (
                                                         <div className="relative overflow-hidden rounded-lg min-h-[200px]">
@@ -155,16 +177,16 @@ const Cards = ({ data }) => {
                                                     {description && <div className="text-sm" dangerouslySetInnerHTML={{ __html: description }} />}
                                                 </div>
                                                 {bio && (
-                                                    <div className="text-sm mt-4">
+                                                    <div className="text-sm">
                                                         <div 
-                                                            className={`overflow-hidden transition-all duration-300 ${
-                                                                expandedBios[index] ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
+                                                            className={`overflow-hidden transition-all duration-500 ${
+                                                                expandedBios[index] ? 'max-h-[700px] opacity-100' : 'max-h-0 opacity-0'
                                                             }`}
                                                             dangerouslySetInnerHTML={{ __html: bio }} 
                                                         />
                                                         <button
                                                             onClick={() => toggleBio(index)}
-                                                            className="text-blue-02 hover:text-darkblue underline text-sm mt-2 cursor-pointer"
+                                                            className="text-blue-02 hover:text-darkblue underline text-sm cursor-pointer mt-4"
                                                         >
                                                             {expandedBios[index] ? 'Collapse' : 'Expand'}
                                                         </button>
@@ -191,9 +213,18 @@ const Cards = ({ data }) => {
                         >
                             {cards.map((card, index) => {
                                 const { heading, description, image, bio } = card;
+                                const isAnyCardExpanded = Object.values(expandedBios).some(expanded => expanded);
+                                const isCurrentCardExpanded = expandedBios[index];
+                                const shouldDim = isAnyCardExpanded && !isCurrentCardExpanded;
+                                
                                 return (
                                     <SwiperSlide key={index}>
-                                        <div ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 flex flex-col">
+                                        <div 
+                                            ref={el => cardsRef.current[index] = el} 
+                                            className={`opacity-0 translate-y-20 flex flex-col transition-opacity duration-300 ${
+                                                shouldDim ? 'opacity-50' : ''
+                                            }`}
+                                        >
                                             {image && (
                                                 <div className="relative overflow-hidden rounded-lg min-h-[400px]">
                                                     <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
@@ -252,8 +283,18 @@ const Cards = ({ data }) => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
                             {cards.map((card, index) => {
                                 const { heading, description, image, bio } = card;
+                                const isAnyCardExpanded = Object.values(expandedBios).some(expanded => expanded);
+                                const isCurrentCardExpanded = expandedBios[index];
+                                const shouldDim = isAnyCardExpanded && !isCurrentCardExpanded;
+                                
                                 return (
-                                    <div key={index} ref={el => cardsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col min-h-[370px] 2xl:min-h-[450px]">
+                                    <div 
+                                        key={index} 
+                                        ref={el => cardsRef.current[index] = el} 
+                                        className={`opacity-0 translate-y-20 h-full flex flex-col min-h-[370px] 2xl:min-h-[450px] transition-opacity duration-300 ${
+                                            shouldDim ? 'opacity-50' : ''
+                                        }`}
+                                    >
                                         <div className="relative overflow-hidden rounded-lg flex flex-col text-center items-center p-6 2xl:p-10 h-full justify-end">
                                             {image && (
                                                 <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
