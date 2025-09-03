@@ -35,7 +35,7 @@ export default function LoginForm({ title, content }) {
             if (error.message === "Your account is pending approval. Please wait for confirmation.") {
                 setServerError(error.message); // This will show the message to the user
             } else {
-                setServerError("Please check your details and try again.");
+                setServerError("Incorrect email or password. Please check your details and try again.");
             }
         } finally {
             setIsLoading(false);
@@ -66,7 +66,7 @@ export default function LoginForm({ title, content }) {
                     </div>
 
                     {/* Password */}
-                    <div className="w-full flex flex-col gap-2 mb-5">
+                    <div className="w-full flex flex-col gap-2 mb-3">
                         <label htmlFor="password" className="text-sm">Password*</label>
                         <input
                             type="password"

@@ -36,7 +36,7 @@ export default function SignupForm({ title, content }) {
       
       if (response.status === 201 && data.user) {
         setIsSuccess(true);
-        setMessage("Thank you for registering for Oxford Science Enterprises' shareholder portal. Your account is currently pending approval.");
+        setMessage("Thank you for requesting access to Oxford Science Enterprises' shareholder portal. Your account is currently pending approval.");
       } else {
         // Handle error responses (400, 500, etc.) or successful status with error message
         setMessage(data.message || data.error || "Error signing up");
@@ -56,7 +56,7 @@ export default function SignupForm({ title, content }) {
         {title && <h1 className="text-4xl lg:text-6xl mb-4">{title}</h1>}
         {content && <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3" dangerouslySetInnerHTML={{ __html: content }} />}
       </div>
-      <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10">
+      <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10 flex flex-col justify-center">
         {isSuccess ? (
           <div className="text-center">
             {/* <div className="mb-6">
@@ -64,7 +64,7 @@ export default function SignupForm({ title, content }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div> */}
-            <h2 className="text-2xl font-semibold mb-4">Registration Successful</h2>
+            <h2 className="text-2xl font-semibold mb-4">Access request submitted</h2>
             <p className="text-base leading-relaxed">{message}</p>
           </div>
         ) : (
@@ -150,7 +150,7 @@ export default function SignupForm({ title, content }) {
                 />
                 <label>
                   I agree to the website&apos;s{" "}
-                  <a href="/terms-and-conditions" target="_blank" className="text-white underline">Terms & Conditions</a> and{" "}
+                  <a href="/terms-conditions" target="_blank" className="text-white underline">Terms & Conditions</a> and{" "}
                   <a href="/privacy-policy" target="_blank" className="text-white underline">Privacy Policy</a>, and consent to the collection and use of my personal data as outlined in the Privacy Policy.
                 </label>
               </div>

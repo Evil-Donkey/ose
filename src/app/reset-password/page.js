@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import Link from "next/link";
 import Container from "@/components/Container";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Button from "@/components/Button";
+import Link from "next/link";
 import { Spinner } from "@/components/Icons/Spinner";
 import EyeIcon from "@/components/Icons/EyeIcon";
 
@@ -87,21 +87,16 @@ export default function ResetPassword() {
                     <div className="w-full lg:w-2/5">
                         <h1 className="text-4xl lg:text-6xl mb-4">Create Password</h1>
                         <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3">
-                            <p>Hi {tokenData?.login || 'there'}, you&apos;ve been directed here from your registration email. Please create a secure password to complete your account setup.</p>
+                            <p>An account has been created for you to access Oxford Science Enterprises&apos; shareholder portal. Please create a secure password to complete your account setup.</p>
+                            <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
                         </div>
                     </div>
                     <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10">
                         {error ? (
-                            <p className="text-white">{error}</p>
+                            <p className="text-white text-center">{error}</p>
                         ) : message === "success" ? (
-                            <div className="flex flex-col gap-4">
-                                <p className="text-white text-lg">
-                                    Password reset successfully. You can now{" "}
-                                    <Link href="/shareholder-portal" className="text-blue-300 hover:text-blue-200 underline">
-                                        log in
-                                    </Link>
-                                    .
-                                </p>
+                            <div className="flex flex-col gap-4 text-center items-center justify-center">
+                                <p className="text-white text-lg">Password successfully created. You can now <Link href="/shareholder-portal" className="text-white underline">log in</Link>.</p>
                             </div>
                         ) : (
                             tokenData && (

@@ -63,7 +63,7 @@ export default function ForgotPassword() {
                     <div className="w-full lg:w-2/5">
                         <h1 className="text-4xl lg:text-6xl mb-4">Forgot Password</h1>
                         <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3">
-                            <p>Enter your email address below and we&apos;ll check if it exists in our system. If it does, we can help you reset your password.</p>
+                            <p>Enter your email address and we&apos;ll check if it exists in our system. If it does, we&apos;ll send you an email to reset your password.</p>
                         </div>
                     </div>
                     <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10">
@@ -108,7 +108,7 @@ export default function ForgotPassword() {
 
                         {/* Email check result */}
                         {emailCheckResult && (
-                            <div className={`mt-4 p-4 rounded ${
+                            <div className={`mt-8 p-4 rounded ${
                                 emailCheckResult.type === "success" 
                                     ? "bg-green-500/20 border border-green-500/50" 
                                     : emailCheckResult.type === "warning"
@@ -121,7 +121,7 @@ export default function ForgotPassword() {
                                 {emailCheckResult.status === 'approved' && emailCheckResult.user && (
                                     <div className="mt-3 p-3 bg-green-500/10 rounded border border-green-500/30">
                                         <p className="text-sm text-green-200">
-                                            <strong>Username:</strong> {emailCheckResult.user.username}
+                                            <strong>Email:</strong> {emailCheckResult.user.email}
                                         </p>
                                         <p className="text-sm text-green-200 mt-1">
                                             <strong>Status:</strong> {emailCheckResult.user.userStatus}
@@ -130,16 +130,16 @@ export default function ForgotPassword() {
                                 )}
                                 
                                 {/* Show contact info for denied/pending users */}
-                                {emailCheckResult.status === 'denied' || emailCheckResult.status === 'pending' ? (
+                                {/* {emailCheckResult.status === 'denied' || emailCheckResult.status === 'pending' ? (
                                     <div className="mt-3">
                                         <p className="text-base">
                                             <strong>Contact:</strong> investors@oxfordsciences.com
                                         </p>
                                     </div>
-                                ) : null}
+                                ) : null} */}
                                 
                                 {/* Show signup link for non-existent emails */}
-                                {emailCheckResult.status === 'not_found' && (
+                                {/* {emailCheckResult.status === 'not_found' && (
                                     <div className="mt-3">
                                         <p className="text-base text-white">
                                             <Link href="/shareholder-portal-signup" className="underline">
@@ -147,7 +147,7 @@ export default function ForgotPassword() {
                                             </Link>
                                         </p>
                                     </div>
-                                )}
+                                )} */}
                             </div>
                         )}
 
