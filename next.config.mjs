@@ -23,27 +23,58 @@ const nextConfig = {
         // Enable modern JavaScript features
         esmExternals: true,
         // Optimize for modern browsers
-        optimizePackageImports: ['framer-motion', 'gsap', 'lottie-react', 'swiper'],
+        optimizePackageImports: ['framer-motion', 'gsap', 'lottie-react', 'swiper', 'react-hook-form'],
     },
     // Optimize bundle for modern browsers
     webpack: (config, { dev, isServer }) => {
         if (!dev && !isServer) {
-            // Optimize CSS for production
-            config.optimization.splitChunks.cacheGroups.styles = {
-                name: 'styles',
-                test: /\.(css|scss)$/,
+            // Enhanced code splitting for better performance
+            config.optimization.splitChunks = {
                 chunks: 'all',
-                enforce: true,
+                minSize: 20000,
+                maxSize: 244000,
+                cacheGroups: {
+                    // Vendor libraries
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                        priority: 10,
+                        reuseExistingChunk: true,
+                    },
+                    // Heavy animation libraries
+                    animations: {
+                        test: /[\\/]node_modules[\\/](gsap|framer-motion|lottie-react)[\\/]/,
+                        name: 'animations',
+                        priority: 20,
+                        reuseExistingChunk: true,
+                    },
+                    // UI libraries
+                    ui: {
+                        test: /[\\/]node_modules[\\/](swiper|react-hook-form)[\\/]/,
+                        name: 'ui',
+                        priority: 15,
+                        reuseExistingChunk: true,
+                    },
+                    // Common components
+                    common: {
+                        name: 'common',
+                        minChunks: 2,
+                        priority: 5,
+                        reuseExistingChunk: true,
+                    },
+                    // CSS optimization
+                    styles: {
+                        name: 'styles',
+                        test: /\.(css|scss)$/,
+                        chunks: 'all',
+                        enforce: true,
+                    },
+                },
             };
 
-            // Modern browser optimizations
-            config.optimization.splitChunks.cacheGroups.modern = {
-                name: 'modern',
-                test: /[\\/]node_modules[\\/]/,
-                chunks: 'all',
-                priority: 10,
-                reuseExistingChunk: true,
-            };
+            // Tree shaking optimization
+            config.optimization.usedExports = true;
+            config.optimization.sideEffects = false;
         }
 
         // Reduce polyfills for modern browsers
@@ -53,6 +84,12 @@ const nextConfig = {
             fs: false,
             net: false,
             tls: false,
+        };
+
+        // Optimize module resolution
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            // Reduce bundle size by using lighter alternatives where possible
         };
 
         return config;

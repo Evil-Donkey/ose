@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "node scripts/analyze-bundle.js",
+    "analyze:bundle": "npm run build && npm run analyze"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.15",
