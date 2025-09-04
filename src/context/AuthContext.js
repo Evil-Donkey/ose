@@ -98,10 +98,11 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus(); // Check authentication on mount
     
     // Check if password was already verified in this session
-    const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
-    if (isPasswordVerified) {
-      setPasswordVerified(true);
-    }
+    // const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
+    // if (isPasswordVerified) {
+    //   setPasswordVerified(true);
+    // }
+    setPasswordVerified(true);
     setPasswordLoading(false);
   }, []);
 
