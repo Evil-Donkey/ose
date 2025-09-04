@@ -23,8 +23,7 @@ export const optimizeImages = () => {
 export const preloadCriticalResources = () => {
   // Preload critical resources
   const criticalResources = [
-    '/_next/static/css/critical.css',
-    // Add other critical resources here
+    // Add critical resources here if needed
   ];
 
   criticalResources.forEach(resource => {

@@ -14,10 +14,6 @@ const nextConfig = {
             },
         ],
     },
-    // Optimize CSS loading
-    experimental: {
-        optimizeCss: true,
-    },
     // Enable CSS optimization
     compiler: {
         removeConsole: process.env.NODE_ENV === "production",
