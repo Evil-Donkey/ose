@@ -1,11 +1,18 @@
 "use client";
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import AuthContext from '../context/AuthContext';
 import Footer from './Footer';
+import AsyncCSSLoader from './AsyncCSSLoader';
+import { initPerformanceOptimizations } from '../lib/performanceOptimizer';
 
 const LayoutClient = ({ children, footerData }) => {
   const { passwordLoading } = useContext(AuthContext);
+
+  useEffect(() => {
+    // Initialize performance optimizations
+    initPerformanceOptimizations();
+  }, []);
 
   // Show loading state while password verification is being checked
   if (passwordLoading) {
@@ -21,6 +28,7 @@ const LayoutClient = ({ children, footerData }) => {
 
   return (
     <>
+      <AsyncCSSLoader />
       {children}
       <Footer data={footerData} />
     </>
