@@ -24,6 +24,9 @@ export default async function RootLayout({ children }) {
   const footerData = await getFooterData();
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://oxfordscienceenterprises-cms.com" />
+      </head>
       <body className={`${montserrat.variable}`}>
         <AuthProvider>
           <PasswordWrapper>
