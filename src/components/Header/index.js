@@ -123,7 +123,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
                         <div className="text-xl font-bold">
                             {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                            <Link href="/">
+                            <Link href="/" aria-label="Oxford Science Enterprises - Go to homepage">
                                 <LottieLogo />
                             </Link>
                         </div>
@@ -250,6 +250,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                         <a
                                                                             href='/deep-tech'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                            aria-label="Learn about our Deep Tech sector"
                                                                         >
                                                                             Deep Tech
                                                                         </a>
@@ -275,6 +276,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                         <a
                                                                             href='/life-sciences'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                            aria-label="Learn about our Life Sciences sector"
                                                                         >
                                                                             Life Sciences
                                                                         </a>
@@ -300,6 +302,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                         <a
                                                                             href='/health-tech'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                            aria-label="Learn about our HealthTech sector"
                                                                         >
                                                                             HealthTech
                                                                         </a>

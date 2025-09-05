@@ -14,7 +14,7 @@ const Footer = ({ data }) => {
                 <div className="flex flex-row gap-x-5 justify-between items-center mb-12">
                     <div className="w-1/2">
                         <div className="w-40 lg:w-60">
-                            <Link href="/"><Logo /></Link>
+                            <Link href="/" aria-label="Oxford Science Enterprises - Go to homepage"><Logo /></Link>
                         </div>
                     </div>
                     <div className="flex-col lg:flex-row w-1/2 lg:mt-0 lg:justify-end flex gap-x-4">
