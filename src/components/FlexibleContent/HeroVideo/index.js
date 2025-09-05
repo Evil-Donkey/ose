@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // import { SplitText } from "gsap/SplitText";
 import Button from "@/components/Button";
 import Container from "../../Container";
+import { getOptimizedVideoProps, getVideoSources } from "@/lib/videoUtils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -73,13 +74,43 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
             <Container className="flex-grow-1 h-full">
                 <div className={`mx-auto relative h-full`}>
                     {introMovie && (   
-                        <video ref={el => videoRef.current[0] = el} className={`w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`} autoPlay playsInline muted loop>
-                            <source src={introMovie.mediaItemUrl} type="video/mp4" />
+                        <video 
+                            ref={el => videoRef.current[0] = el} 
+                            {...getOptimizedVideoProps(introMovie, {
+                                context: 'hero',
+                                isHero: true,
+                                isAboveFold: true,
+                                isAutoplay: true,
+                                className: `w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`,
+                                controls: false,
+                                muted: true,
+                                loop: true,
+                                playsInline: true
+                            })}
+                        >
+                            {getVideoSources(introMovie).map((source, index) => (
+                                <source key={index} src={source.src} type={source.type} />
+                            ))}
                         </video>
                     )}
                     {mobileMovie && (
-                        <video ref={el => videoRef.current[1] = el} className="w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 lg:hidden" autoPlay playsInline muted loop>
-                            <source src={mobileMovie.mediaItemUrl} type="video/mp4" />
+                        <video 
+                            ref={el => videoRef.current[1] = el} 
+                            {...getOptimizedVideoProps(mobileMovie, {
+                                context: 'hero',
+                                isHero: true,
+                                isAboveFold: true,
+                                isAutoplay: true,
+                                className: "w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 lg:hidden",
+                                controls: false,
+                                muted: true,
+                                loop: true,
+                                playsInline: true
+                            })}
+                        >
+                            {getVideoSources(mobileMovie).map((source, index) => (
+                                <source key={index} src={source.src} type={source.type} />
+                            ))}
                         </video>
                     )}
 

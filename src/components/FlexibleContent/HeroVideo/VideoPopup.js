@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Container from "@/components/Container";
+import { getOptimizedVideoProps, getVideoSources } from "@/lib/videoUtils";
 
 const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
     const popupRef = useRef(null);
@@ -72,11 +73,17 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
                     <Container>
                         <video 
                             ref={videoRef}
-                            className="w-full rounded-2xl shadow-xl"
-                            controls
-                            playsInline
+                            {...getOptimizedVideoProps(fullMovie, {
+                                context: 'content',
+                                priority: true,
+                                className: "w-full rounded-2xl shadow-xl",
+                                controls: true,
+                                playsInline: true
+                            })}
                         >
-                            <source src={fullMovie.mediaItemUrl} type="video/mp4" />
+                            {getVideoSources(fullMovie).map((source, index) => (
+                                <source key={index} src={source.src} type={source.type} />
+                            ))}
                         </video>
                     </Container>
                 </div>
