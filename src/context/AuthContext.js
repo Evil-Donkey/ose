@@ -95,8 +95,28 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    checkAuthStatus(); // Check authentication on mount
-    
+    // Only check authentication if we're on a protected route or if there's a stored auth token
+    const shouldCheckAuth = () => {
+      // Check if we're on a protected route
+      const protectedRoutes = ['/shareholder-portal', '/shareholder-portal-signup'];
+      const currentPath = window.location.pathname;
+      
+      // Check if there's a stored auth token in cookies
+      const hasAuthToken = document.cookie.includes('authToken=');
+      
+      return protectedRoutes.some(route => currentPath.startsWith(route)) || hasAuthToken;
+    };
+
+    // Add a small delay to ensure we're on the client side
+    const timer = setTimeout(() => {
+      if (shouldCheckAuth()) {
+        checkAuthStatus();
+      } else {
+        // Skip auth check for public pages
+        setLoading(false);
+      }
+    }, 100);
+
     // Check if password was already verified in this session
     // const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
     // if (isPasswordVerified) {
@@ -104,6 +124,8 @@ export const AuthProvider = ({ children }) => {
     // }
     setPasswordVerified(true);
     setPasswordLoading(false);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Login function

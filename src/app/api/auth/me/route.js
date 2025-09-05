@@ -11,7 +11,7 @@ export async function GET() {
 
   if (!authToken) {
     console.log("❌ No auth token found");
-    return NextResponse.json({ success: false, message: "Not authenticated" }, { status: 401 });
+    return NextResponse.json({ success: false, message: "Not authenticated" }, { status: 200 });
   }
 
   // Proceed with fetching the user data
@@ -47,6 +47,6 @@ export async function GET() {
       console.log("🔄 Token appears to be expired, should trigger refresh");
     }
     
-    return NextResponse.json({ success: false, message: "Invalid token" }, { status: 401 });
+    return NextResponse.json({ success: false, message: "Invalid token" }, { status: 200 });
   }
 }
