@@ -4,7 +4,9 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import Container from "@/components/Container";
 import Link from "next/link";
 import Image from "next/image";
+import ResponsiveImage from "../../components/ResponsiveImage";
 import Button from "@/components/Button";
+import { getOptimizedImageProps } from "../../lib/imageUtils";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -125,7 +127,15 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                                 <div className="relative overflow-hidden rounded-3xl min-h-[500px] lg:min-h-[700px] p-8 flex items-end">
                                     {randomizedStories[0].featuredImage?.node?.mediaItemUrl ? (
                                         <>
-                                            <Image src={randomizedStories[0].featuredImage.node.mediaItemUrl} alt={randomizedStories[0].featuredImage.node.altText} width={1000} height={1000} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300" loading="lazy" />
+                                            <ResponsiveImage 
+                                                {...getOptimizedImageProps(randomizedStories[0].featuredImage.node, {
+                                                    context: 'hero',
+                                                    isAboveFold: true,
+                                                    isHero: true,
+                                                    index: 0,
+                                                    className: "absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
+                                                })}
+                                            />
                                             <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
                                             {randomizedStories[0].featuredImage.node.altText && <div className="hidden lg:block absolute bottom-8 right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: randomizedStories[0].featuredImage.node.altText }} />}
                                         </>
