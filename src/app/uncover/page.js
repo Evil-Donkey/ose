@@ -20,8 +20,6 @@ export default async function UncoverPage() {
     const popOutData = await getPopOutData();
     const footerData = await getFooterData();
 
-    console.log(flexibleContent)
-
   const ctaData = {
     copy: footerData.ctaCopy,
     title: footerData.ctaTitle,

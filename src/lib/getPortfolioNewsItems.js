@@ -64,7 +64,6 @@ export default async function getPortfolioNewsItems() {
       }
     }
 
-    console.log(`Fetched ${allItems.length} portfolio news items`);
     return allItems;
   } catch (error) {
     console.error('Error fetching portfolio news items:', error);

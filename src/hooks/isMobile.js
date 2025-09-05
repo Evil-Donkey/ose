@@ -4,19 +4,27 @@ export const useIsMobile = () => {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+        let timeoutId;
+        
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                setIsMobile(window.innerWidth < 768);
+            }, 100); // Debounce by 100ms
         };
 
-    // Initial check
-    handleResize();
+        // Initial check
+        setIsMobile(window.innerWidth < 768);
 
-    // Add event listener
-    window.addEventListener('resize', handleResize);
+        // Add event listener
+        window.addEventListener('resize', handleResize, { passive: true });
 
-    // Cleanup
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+        // Cleanup
+        return () => {
+            clearTimeout(timeoutId);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
-  return isMobile;
+    return isMobile;
 };

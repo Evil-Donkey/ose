@@ -59,32 +59,40 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
     ];
 
     useEffect(() => {
+        let ticking = false;
+        
         const handleScroll = () => {
-            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            
-            // When scrolling down and past 200px, hide the nav and set the threshold
-            if (currentScrollTop > lastScrollTop && currentScrollTop > 200) {
-                setIsScrollingUp(false);
-                setHideThreshold(currentScrollTop);
-            } 
-            // When scrolling up, only show nav if we've scrolled up more than 300px from where it was hidden
-            else if (currentScrollTop < lastScrollTop) {
-                const scrollUpDistance = hideThreshold - currentScrollTop;
-                if (scrollUpDistance >= 300 || currentScrollTop <= 200) {
-                    setIsScrollingUp(true);
-                }
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // When scrolling down and past 200px, hide the nav and set the threshold
+                    if (currentScrollTop > lastScrollTop && currentScrollTop > 200) {
+                        setIsScrollingUp(false);
+                        setHideThreshold(currentScrollTop);
+                    } 
+                    // When scrolling up, only show nav if we've scrolled up more than 300px from where it was hidden
+                    else if (currentScrollTop < lastScrollTop) {
+                        const scrollUpDistance = hideThreshold - currentScrollTop;
+                        if (scrollUpDistance >= 300 || currentScrollTop <= 200) {
+                            setIsScrollingUp(true);
+                        }
+                    }
+                    
+                    if (currentScrollTop > 0) {
+                        setIsHeaderScrolled(true);
+                    } else {
+                        setIsHeaderScrolled(false);
+                    }
+                    setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
+                    ticking = false;
+                });
+                ticking = true;
             }
-            
-            if (currentScrollTop > 0) {
-                setIsHeaderScrolled(true);
-            } else {
-                setIsHeaderScrolled(false);
-            }
-            setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
         };
+        
         if (!isMobileMenuOpen) {
-            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('scroll', handleScroll, { passive: true });
         }
         return () => {
             window.removeEventListener('scroll', handleScroll);

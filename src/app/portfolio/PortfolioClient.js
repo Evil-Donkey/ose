@@ -61,22 +61,36 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   // When opening a dropdown, measure its button position
   useEffect(() => {
     if (openDropdown && dropdownButtonRefs.current[openDropdown]) {
-      const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
-      setDropdownPosition({
-        left: rect.left,
-        top: rect.bottom,
-        width: rect.width,
+      // Use requestAnimationFrame to ensure layout is complete
+      requestAnimationFrame(() => {
+        const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
+        setDropdownPosition({
+          left: rect.left,
+          top: rect.bottom,
+          width: rect.width,
+        });
       });
     }
   }, [openDropdown]);
   // Update isMobileDropdown on resize
   useEffect(() => {
+    let timeoutId;
+    
     function handleResize() {
-      setIsMobileDropdown(window.innerWidth < 1021);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsMobileDropdown(window.innerWidth < 1021);
+      }, 100);
     }
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    
+    // Initial check
+    setIsMobileDropdown(window.innerWidth < 1021);
+    
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Helper to render dropdown in portal
@@ -137,12 +151,26 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   // GSAP animation (must be after filteredItems definition)
   useEffect(() => {
     const portfolioItems = document.querySelectorAll(".portfolio-item");
-    portfolioItems.forEach(item => {
-      gsap.to(item, { opacity: 1, y: 0, duration: 1, stagger: 0.1, scrollTrigger: { trigger: item, start: "top bottom", scrub: false } });
-    });
-    ScrollTrigger.refresh();
+    if (portfolioItems.length > 0) {
+      // Use batch for better performance
+      ScrollTrigger.batch(portfolioItems, {
+        onEnter: (elements) => {
+          gsap.fromTo(elements, 
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 1, stagger: 0.1 }
+          );
+        },
+        start: "top 90%",
+        once: true
+      });
+    }
+    
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars && trigger.vars.onEnter) {
+          trigger.kill();
+        }
+      });
     };
   }, [filteredItems, fundraisingOnly, selectedCategory, selectedStage]);
 

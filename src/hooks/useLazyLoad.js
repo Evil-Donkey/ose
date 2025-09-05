@@ -47,9 +47,9 @@ const useLazyLoad = () => {
       id: "lazy-load",
       start: "top 80%",
       onEnter: batch => {
-        // Skip elements that are already visible
+        // Use data attribute instead of getComputedStyle to avoid forced reflow
         const unloadedElements = Array.from(batch).filter(
-          el => getComputedStyle(el).opacity === "0"
+          el => el.dataset.loaded !== "true"
         );
         
         if (unloadedElements.length > 0) {
@@ -62,6 +62,12 @@ const useLazyLoad = () => {
               duration: 1,
               stagger: { each: 0.2 },
               overwrite: true,
+              onComplete: () => {
+                // Mark as loaded to prevent re-animation
+                unloadedElements.forEach(el => {
+                  el.dataset.loaded = "true";
+                });
+              }
             }
           );
         }

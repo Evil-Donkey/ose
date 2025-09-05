@@ -108,9 +108,6 @@ const Cards = ({ data }) => {
 
     }, []);
 
-    console.log(uniqueFields);
-
-
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20 2xl:py-40">
