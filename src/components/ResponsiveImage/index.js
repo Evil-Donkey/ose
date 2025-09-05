@@ -87,7 +87,7 @@ const ResponsiveImage = ({
   const imageProps = {
     src,
     alt,
-    className: `${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-all duration-300`,
+    className: `${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`,
     priority: shouldPriority,
     loading: loadingBehavior,
     quality,
