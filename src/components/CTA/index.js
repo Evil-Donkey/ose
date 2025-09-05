@@ -117,7 +117,7 @@ const CTA = ({ data, storiesData }) => {
                         const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, backgroundImage } = cta;
                         return (
                             <div key={index} ref={el => ctaRef.current[index] = el} className={`relative overflow-hidden rounded-3xl group p-6 xl:p-8 2xl:p-12 ${!ctaLabel ? 'min-h-[600px] md:min-h-auto' : ''}`}>
-                                {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} fill className={`absolute inset-0 object-cover ${ctaLabel ? 'group-hover:scale-110' : ''} transition-all duration-300`} />}
+                                {backgroundImage && <Image src={backgroundImage.mediaItemUrl} alt={backgroundImage.altText} width={1000} height={1000} className={`absolute inset-0 w-full h-full object-cover ${ctaLabel ? 'group-hover:scale-110' : ''} transition-all duration-300`} />}
                                 {!ctaLabel && <div className="absolute inset-0 w-full h-2/3 bottom-0 top-auto bg-gradient-to-t from-black/90 to-black/0" />}
                                 <div className={`relative z-10 flex flex-col items-center ${!ctaLabel ? 'justify-end' : 'justify-between'} h-full`}>
                                     <div className={`flex flex-col ${!ctaLabel ? 'md:aspect-7/6 justify-end' : ''}`}>

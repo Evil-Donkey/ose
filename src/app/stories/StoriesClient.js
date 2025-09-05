@@ -125,7 +125,7 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                                 <div className="relative overflow-hidden rounded-3xl min-h-[500px] lg:min-h-[700px] p-8 flex items-end">
                                     {randomizedStories[0].featuredImage?.node?.mediaItemUrl ? (
                                         <>
-                                            <Image src={randomizedStories[0].featuredImage.node.mediaItemUrl} alt={randomizedStories[0].featuredImage.node.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" loading="lazy" />
+                                            <Image src={randomizedStories[0].featuredImage.node.mediaItemUrl} alt={randomizedStories[0].featuredImage.node.altText} width={1000} height={1000} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300" loading="lazy" />
                                             <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
                                             {randomizedStories[0].featuredImage.node.altText && <div className="hidden lg:block absolute bottom-8 right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: randomizedStories[0].featuredImage.node.altText }} />}
                                         </>
@@ -177,7 +177,7 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                                                 <div className="relative overflow-hidden rounded-3xl min-h-[500px] p-8 flex items-end">
                                                     {featuredImage?.node?.mediaItemUrl ? (
                                                         <>
-                                                            <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" />
+                                                            <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} width={1000} height={1000} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300" loading="lazy" />
                                                             <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
                                                         </>
                                                     ) : (

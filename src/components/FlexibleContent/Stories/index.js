@@ -67,7 +67,7 @@ const Stories = ({ data }) => {
                             <div key={index} ref={el => ctaRef.current[index] = el} className="relative overflow-hidden rounded-3xl group p-8 2xl:p-12 opacity-0 translate-y-20 min-h-[500px]">
                                 {featuredImage && 
                                     <>
-                                        <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" />
+                                        <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} width={1000} height={1000} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300" />
                                         <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
                                     </>
                                 }
