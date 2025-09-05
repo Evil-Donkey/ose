@@ -13,6 +13,8 @@ import NavigationLoading from "../components/NavigationLoading";
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
+  display: 'swap', // This prevents render-blocking
+  preload: true,   // This preloads the font
 });
 
 export const metadata = {

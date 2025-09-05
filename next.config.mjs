@@ -25,7 +25,7 @@ const nextConfig = {
         // Add loader for better performance
         loader: 'default',
     },
-    // Add headers for video caching
+    // Add headers for video and CSS caching
     async headers() {
         return [
             {
@@ -47,6 +47,15 @@ const nextConfig = {
                     {
                         key: 'Cache-Control',
                         value: 'public, max-age=3600, s-maxage=3600',
+                    },
+                ],
+            },
+            {
+                source: '/_next/static/css/(.*)',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=31536000, immutable',
                     },
                 ],
             },
