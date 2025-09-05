@@ -58,7 +58,7 @@ export const getOptimizedVideoProps = (videoData, options = {}) => {
   });
   
   return {
-    src: videoData.mediaItemUrl,
+    src: getCacheOptimizedVideoUrl(videoData.mediaItemUrl, { useProxy: true }),
     preload: shouldPreload ? 'metadata' : 'none',
     className,
     controls,
@@ -84,7 +84,7 @@ export const getVideoSources = (videoData, type = 'video/mp4') => {
   
   return [
     {
-      src: videoData.mediaItemUrl,
+      src: getCacheOptimizedVideoUrl(videoData.mediaItemUrl, { useProxy: true }),
       type: type
     }
   ];
@@ -136,8 +136,16 @@ export const getCacheOptimizedVideoUrl = (videoUrl, options = {}) => {
   const {
     version = '1.0',
     quality = 'auto',
-    format = 'mp4'
+    format = 'mp4',
+    useProxy = true
   } = options;
+  
+  // If using proxy, convert CMS URL to our API proxy URL
+  if (useProxy && videoUrl.includes('oxfordscienceenterprises-cms.com')) {
+    const url = new URL(videoUrl);
+    const path = url.pathname.substring(1); // Remove leading slash
+    return `/api/video/${path}`;
+  }
   
   const url = new URL(videoUrl);
   
