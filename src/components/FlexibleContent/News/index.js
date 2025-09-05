@@ -4,8 +4,10 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import ResponsiveImage from "../../ResponsiveImage";
 import Link from "next/link";
 import Button from "@/components/Button";
+import { getOptimizedImageProps } from "../../../lib/imageUtils";
 import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 
@@ -60,7 +62,13 @@ const News = ({ data }) => {
                         return (
                             <div key={index} ref={el => newsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
                                 <Link href={link} target={target} className="news__card-image relative aspect-4/5 overflow-hidden rounded-4xl flex text-center items-end justify-center py-10 xl:px-18 group" aria-label={`Read news article: ${title}`}>
-                                    <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} width={1000} height={1000} className="object-cover w-full h-full absolute inset-0 transition-transform duration-300 group-hover:scale-110" />
+                                    <ResponsiveImage 
+                                        {...getOptimizedImageProps(featuredImage.node, {
+                                            context: 'card',
+                                            index,
+                                            className: "object-cover w-full h-full absolute inset-0 transition-transform duration-300 group-hover:scale-110"
+                                        })}
+                                    />
                                 </Link>
                                 <Link href={link} target={target}>
                                     {date && (

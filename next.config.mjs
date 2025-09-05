@@ -14,12 +14,16 @@ const nextConfig = {
             },
         ],
         // Enable responsive image optimization
-        formats: ['image/webp', 'image/avif'],
+        formats: ['image/avif', 'image/webp'],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-        imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-        minimumCacheTTL: 60,
+        imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512, 640, 750, 828, 1080],
+        minimumCacheTTL: 31536000, // 1 year cache for images
         dangerouslyAllowSVG: true,
         contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+        // Enable unoptimized for better performance in some cases
+        unoptimized: false,
+        // Add loader for better performance
+        loader: 'default',
     },
     // Add headers for video caching
     async headers() {

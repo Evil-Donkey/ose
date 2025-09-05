@@ -2,7 +2,9 @@ import getPageTitleAndContent from "@/lib/getPageTitleAndContent";
 import generateMetadataFromLib from "@/lib/generateMetadata";
 import Container from "@/components/Container";
 import Image from "next/image";
+import ResponsiveImage from "../../components/ResponsiveImage";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import { getOptimizedImageProps } from "../../lib/imageUtils";
 import Link from "next/link";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
@@ -31,7 +33,14 @@ export default async function UncoverPage() {
       <HeaderWithMeganavLinks fixed={true} />
       {featuredImage && 
         <div className="uncover__hero-image relative mt-30 min-h-[500px] lg:min-h-[700px]">
-          <Image src={featuredImage} alt={title} width={1000} height={1000} className="object-cover w-full h-full" />
+          <ResponsiveImage 
+            {...getOptimizedImageProps({ mediaItemUrl: featuredImage, altText: title }, {
+              context: 'hero',
+              isAboveFold: true,
+              isHero: true,
+              className: "object-cover w-full h-full"
+            })}
+          />
           {/* <div className="absolute inset-0 bg-black/50" /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
             {title && <h1 className="text-5xl md:text-[7rem]/30 2xl:text-[9rem]/50 tracking-tight text-white">{title}</h1>}

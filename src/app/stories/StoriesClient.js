@@ -182,12 +182,18 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                                     const excerpt = content ? content.replace(/<[^>]*>/g, '').split(' ').slice(0, 20).join(' ') + '...' : '';
                                     
                                     return (
-                                        <div key={index + 1} className="group opacity-0 translate-y-20 stories-item" ref={el => storyRefs.current[index + 1] = el}>
-                                            <Link href={`/stories/${slug}`} className="block">
+                                        <div key={index + 1} className="opacity-0 translate-y-20 stories-item" ref={el => storyRefs.current[index + 1] = el}>
+                                            <Link href={`/stories/${slug}`} className="block group transition-all duration-300">
                                                 <div className="relative overflow-hidden rounded-3xl min-h-[500px] p-8 flex items-end">
                                                     {featuredImage?.node?.mediaItemUrl ? (
                                                         <>
-                                                            <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} width={1000} height={1000} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300" loading="lazy" />
+                                                            <ResponsiveImage 
+                                                                {...getOptimizedImageProps(featuredImage.node, {
+                                                                    context: 'card',
+                                                                    index,
+                                                                    className: "absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
+                                                                })}
+                                                            />
                                                             <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
                                                         </>
                                                     ) : (

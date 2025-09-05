@@ -38,6 +38,8 @@ const ResponsiveImage = ({
   quality = 75,
   fill = false,
   objectFit = "cover",
+  placeholder = "blur",
+  blurDataURL,
   onLoad,
   onError,
   ...props
@@ -56,14 +58,6 @@ const ResponsiveImage = ({
     onError?.(e);
   };
 
-  // Calculate responsive sizes based on common breakpoints
-  const getResponsiveSizes = (containerWidth) => {
-    if (containerWidth) {
-      return `(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 50vw, ${containerWidth}px`;
-    }
-    return sizes;
-  };
-
   // Determine if this should be priority loaded (above the fold)
   const shouldPriority = priority || (typeof window !== 'undefined' && window.scrollY === 0);
 
@@ -78,15 +72,25 @@ const ResponsiveImage = ({
     );
   }
 
+  // Generate a simple blur placeholder if none provided
+  const defaultBlurDataURL = blurDataURL || `data:image/svg+xml;base64,${Buffer.from(
+    `<svg width="${width || 400}" height="${height || 300}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100%" height="100%" fill="#f3f4f6"/>
+      <text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#9ca3af" font-family="system-ui" font-size="14">Loading...</text>
+    </svg>`
+  ).toString('base64')}`;
+
   const imageProps = {
     src,
     alt,
-    className: `${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`,
+    className: `${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-all duration-300`,
     priority: shouldPriority,
     quality,
+    placeholder,
+    blurDataURL: defaultBlurDataURL,
     onLoad: handleLoad,
     onError: handleError,
-    sizes: getResponsiveSizes(width),
+    sizes,
     ...props
   };
 
