@@ -20,6 +20,7 @@ Created `/src/components/ResponsiveImage/index.js` with features:
 - Automatic responsive sizing
 - Loading states and error handling
 - Priority loading for above-the-fold images
+- Lazy loading for below-the-fold images
 - Quality optimization based on context
 - Smooth loading transitions
 
@@ -125,12 +126,14 @@ sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
 - Large file sizes regardless of display size
 - No format optimization
 - No priority loading
+- No lazy loading
 - Poor LCP scores
 
 ### After (Responsive images)
 - **50-80% smaller file sizes** for mobile devices
 - **WebP/AVIF formats** for modern browsers
 - **Priority loading** for above-the-fold content
+- **Lazy loading** for below-the-fold content
 - **Better LCP scores** and perceived performance
 
 ## Migration Checklist
@@ -179,8 +182,8 @@ To convert existing images to responsive:
 1. **Update remaining components** that use Image
 2. **Test on different devices** and screen sizes
 3. **Monitor PageSpeed Insights** for improvements
-4. **Consider lazy loading** for below-the-fold images
-5. **Add blur placeholders** for better UX
+4. **Lazy loading is already implemented** for below-the-fold images
+5. **Blur placeholders are already implemented** for better UX
 
 ## Common Issues and Solutions
 

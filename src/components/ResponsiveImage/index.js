@@ -40,6 +40,7 @@ const ResponsiveImage = ({
   objectFit = "cover",
   placeholder = "blur",
   blurDataURL,
+  loading = "lazy",
   onLoad,
   onError,
   ...props
@@ -60,6 +61,9 @@ const ResponsiveImage = ({
 
   // Determine if this should be priority loaded (above the fold)
   const shouldPriority = priority || (typeof window !== 'undefined' && window.scrollY === 0);
+  
+  // Set loading behavior - priority images should not be lazy loaded
+  const loadingBehavior = shouldPriority ? "eager" : loading;
 
   if (hasError) {
     return (
@@ -85,6 +89,7 @@ const ResponsiveImage = ({
     alt,
     className: `${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-all duration-300`,
     priority: shouldPriority,
+    loading: loadingBehavior,
     quality,
     placeholder,
     blurDataURL: defaultBlurDataURL,

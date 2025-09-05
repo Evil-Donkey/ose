@@ -88,18 +88,22 @@ export const getOptimizedImageProps = (imageData, options = {}) => {
     index = 0,
     maxWidth = 1200,
     className = '',
-    alt = ''
+    alt = '',
+    loading = 'lazy'
   } = options;
   
   const width = imageData?.mediaDetails?.width || 800;
   const height = imageData?.mediaDetails?.height || 600;
+  
+  const shouldPriority = priority || shouldPriorityLoad({ isAboveFold, isHero, isFirstInList: index === 0, index });
   
   return {
     src: imageData.mediaItemUrl,
     alt: imageData.altText || alt,
     width,
     height,
-    priority: priority || shouldPriorityLoad({ isAboveFold, isHero, isFirstInList: index === 0, index }),
+    priority: shouldPriority,
+    loading: shouldPriority ? 'eager' : loading,
     sizes: getResponsiveSizes({ context, maxWidth }),
     quality: getOptimalQuality({ context, width, height }),
     className
