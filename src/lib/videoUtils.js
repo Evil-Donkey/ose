@@ -62,6 +62,7 @@ export const getOptimizedVideoProps = (videoData, options = {}) => {
     preload: shouldPreload ? 'metadata' : 'none',
     className,
     controls,
+    autoPlay: isAutoplay,
     muted: isAutoplay ? true : muted, // Autoplay videos must be muted
     loop,
     playsInline,
