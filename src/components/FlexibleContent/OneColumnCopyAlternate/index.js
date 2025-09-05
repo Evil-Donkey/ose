@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import Container from "../../Container";
 import Button from "../../Button";
 import formatSectionLabel from '@/lib/formatSectionLabel';
@@ -67,8 +68,8 @@ const OneColumnCopyAlternate = ({ data }) => {
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
             {backgroundMedia && (image || imageMobile) && (
                 <>
-                    {image && <div ref={el => imageRef.current[0] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
-                    {imageMobile && <div ref={el => imageRef.current[1] = el} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top lg:hidden" style={{ backgroundImage: `url(${imageMobile.mediaItemUrl})` }} />}
+                    {image && <Image ref={el => imageRef.current[0] = el} src={image.mediaItemUrl} alt={heading} fill className={`object-cover scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} loading="lazy" />}
+                    {imageMobile && <Image ref={el => imageRef.current[1] = el} src={imageMobile.mediaItemUrl} alt={heading} fill className="object-cover scale-180 origin-top lg:hidden" loading="lazy" />}
                     {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${copyLast ? "lg:left-auto lg:right-0" : ""} w-full h-3/5 lg:h-full bg-gradient-to-t ${copyLast ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                 </>
             )}
@@ -105,8 +106,8 @@ const OneColumnCopyAlternate = ({ data }) => {
                         {credits && <div className={`lg:hidden text-xs 2xl:text-sm lg:text-end mt-10 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
                     </div>
                     {!backgroundMedia && image && (
-                        <div className="w-full lg:w-1/2 h-60 lg:h-auto overflow-hidden rounded-2xl">
-                            <div ref={imageRef} className="w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />
+                        <div className="w-full lg:w-1/2 h-60 lg:h-auto overflow-hidden rounded-2xl relative">
+                            <Image ref={imageRef} src={image.mediaItemUrl} alt="" fill className="object-cover scale-180 origin-top" />
                         </div>
                     )}
                     {!backgroundMedia && videoMp4 &&

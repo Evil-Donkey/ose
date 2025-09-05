@@ -46,7 +46,7 @@ export default async function PortfolioSinglePage({ params }) {
             {featuredImage.node.altText && <div className="absolute bottom-8 right-10 text-white text-sm">{featuredImage.node.altText}</div>}
             <div className="w-full md:w-200 mx-auto text-center text-white relative">
                 {logo 
-                    ? <Image src={logo.mediaItemUrl} alt={logo.altText} width={1000} height={1000} className="object-contain h-auto w-full" />
+                    ? <Image src={logo.mediaItemUrl} alt={logo.altText} width={1000} height={1000} loading="lazy" className="object-contain h-auto w-full" />
                     : <h1 className="text-4xl font-bold mb-4" dangerouslySetInnerHTML={{ __html: title }} />
                 }
             </div>
