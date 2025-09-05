@@ -68,7 +68,7 @@ const OptimizedVideo = ({
         <source key={index} src={source.src} type={source.type} />
       ))}
       {/* Fallback message for browsers that don't support video */}
-      <p>Your browser doesn't support HTML5 video.</p>
+      <p>Your browser doesn&apos;t support HTML5 video.</p>
     </video>
   );
 };
