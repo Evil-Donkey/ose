@@ -25,7 +25,10 @@ const LottieLogo = () => {
         autoplay={true}
         initialSegment={[0, 60]}
         height={400} 
-        width={400} 
+        width={400}
+        role="img"
+        aria-label="Oxford Science Enterprises Logo"
+        aria-hidden="false"
       />
     </div>
   );
