@@ -8,11 +8,6 @@ import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Button from "@/components/Button";
 import { Spinner } from "@/components/Icons/Spinner";
 
-export const metadata = {
-  title: "Forgot Password - Oxford Science Enterprises",
-  description: "Reset your password for the Oxford Science Enterprises shareholder portal. Enter your email address to receive password reset instructions.",
-};
-
 export default function ForgotPassword() {
     const [isLoading, setIsLoading] = useState(false);
     const [emailCheckResult, setEmailCheckResult] = useState(null);
