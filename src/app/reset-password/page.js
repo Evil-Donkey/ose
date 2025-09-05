@@ -9,6 +9,11 @@ import Link from "next/link";
 import { Spinner } from "@/components/Icons/Spinner";
 import EyeIcon from "@/components/Icons/EyeIcon";
 
+export const metadata = {
+  title: "Create Password - Oxford Science Enterprises",
+  description: "Create a secure password for your Oxford Science Enterprises shareholder portal account. Complete your account setup with a strong password.",
+};
+
 export default function ResetPassword() {
     const [tokenData, setTokenData] = useState(null);
     const [error, setError] = useState("");

@@ -5,8 +5,13 @@ import CTA from "@/components/CTA";
 import InvestorPortalClient from "./InvestorPortalClient";
 import RegulatoryInformation from "@/components/RegulatoryInformation";
 import getInvestorPortal from "@/lib/getInvestorPortal";
+import generateMetadataFromLib from "@/lib/generateMetadata";
 import { Suspense } from "react";
 import Container from "@/components/Container";
+
+export async function generateMetadata() {
+  return await generateMetadataFromLib("1597");
+}
 
 export default async function InvestorPortal() {
     const { title, content } = await getPageTitleAndContent("1597");
