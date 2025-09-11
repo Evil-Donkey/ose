@@ -14,6 +14,9 @@ const STORIES_ITEMS_QUERY = `
             mediaItemUrl
           }
         }
+        story {
+          cardExcerpt
+        }
         storiesTypes {
           nodes {
             id

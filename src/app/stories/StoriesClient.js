@@ -148,9 +148,7 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                                         <div>
                                             {randomizedStories[0].title && <h3 className="text-3xl md:text-5xl/13 2xl:text-6xl text-white mb-4">{randomizedStories[0].title}</h3>}
                                             <div className="hidden lg:block">
-                                                <p className="text-white text-lg 2xl:text-xl leading-relaxed mb-6 font-medium lg:pe-10">
-                                                    {randomizedStories[0].content ? randomizedStories[0].content.replace(/<[^>]*>/g, '').split(' ').slice(0, 20).join(' ') + '...' : ''}
-                                                </p>
+                                                <p className="text-white text-lg 2xl:text-xl leading-relaxed mb-6 font-medium lg:pe-10" dangerouslySetInnerHTML={{ __html: randomizedStories[0].story?.cardExcerpt || randomizedStories[0].content.replace(/<[^>]*>/g, '').split(' ').slice(0, 20).join(' ') + '...' }} />
                                                 <Link href={`/stories/${randomizedStories[0].slug}`} className="block">
                                                     <Button className="w-full">
                                                         READ MORE
@@ -179,6 +177,7 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 {randomizedStories.slice(1).map((story, index) => {
                                     const { title, content, featuredImage, slug } = story;
+                                    const { cardExcerpt } = story.story;
                                     const excerpt = content ? content.replace(/<[^>]*>/g, '').split(' ').slice(0, 20).join(' ') + '...' : '';
                                     
                                     return (
@@ -211,9 +210,7 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                                             
                                             {/* Content section */}
                                             <div className="p-6">
-                                                <p className="text-blue-02 text-lg 2xl:text-xl leading-relaxed mb-6 font-medium">
-                                                    {excerpt}
-                                                </p>
+                                                <p className="text-blue-02 text-lg 2xl:text-xl leading-relaxed mb-6 font-medium" dangerouslySetInnerHTML={{ __html: cardExcerpt || excerpt }} />
                                                 <Link href={`/stories/${slug}`} className="block">
                                                     <Button className="w-full">
                                                         READ MORE
