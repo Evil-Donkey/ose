@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import getFounders from '@/lib/getFounders';
 import Link from "next/link";
-import ResponsiveImage from "../../ResponsiveImage";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import Container from "../../Container";
 
@@ -17,6 +16,7 @@ const Cards = ({ data }) => {
     const copyRef = useRef([]);
     const titleRef = useRef([]);
     const tabsRef = useRef([]);
+    const cardsWrapperRef = useRef();
 
     const { title, copy, sectionLabel } = data;
     const [founders, setFounders] = useState([]);
@@ -114,14 +114,14 @@ const Cards = ({ data }) => {
                 invalidateOnRefresh: true
             },
         });
-        gsap.to(cardsRef.current, {
+        gsap.to(cardsWrapperRef.current, {
             opacity: 1,
             y: 0,
             duration: 1,
             ease: 'power4.out',
             stagger: 0.1,
             scrollTrigger: {
-                trigger: cardsRef.current,
+                trigger: cardsWrapperRef.current,
                 start: 'top 90%',
                 end: 'top center',
                 scrub: 1.5
@@ -147,29 +147,29 @@ const Cards = ({ data }) => {
     }, [loading]);
 
     // Re-trigger animations when activeTab changes
-    useEffect(() => {
-        if (!loading && founders.length > 0) {
-            // Clear refs array
-            cardsRef.current = [];
+    // useEffect(() => {
+    //     if (!loading && founders.length > 0) {
+    //         // Clear refs array
+    //         cardsRef.current = [];
             
-            // Re-trigger card animations
-            setTimeout(() => {
-                gsap.to(cardsRef.current, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: 'power4.out',
-                    stagger: 0.1,
-                    scrollTrigger: {
-                        trigger: cardsRef.current,
-                        start: 'top 90%',
-                        end: 'top center',
-                        scrub: 1.5
-                    },
-                });
-            }, 100);
-        }
-    }, [activeTab, loading, founders]);
+    //         // Re-trigger card animations
+    //         setTimeout(() => {
+    //             gsap.to(cardsRef.current, {
+    //                 opacity: 1,
+    //                 y: 0,
+    //                 duration: 1,
+    //                 ease: 'power4.out',
+    //                 stagger: 0.1,
+    //                 scrollTrigger: {
+    //                     trigger: cardsRef.current,
+    //                     start: 'top 90%',
+    //                     end: 'top center',
+    //                     scrub: 1.5
+    //                 },
+    //             });
+    //         }, 100);
+    //     }
+    // }, [activeTab, loading, founders]);
 
     if (loading) return <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}><div className="min-h-[500px] flex items-center justify-center">Loading…</div></Container>;
     if (error) return <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}><div>{error}</div></Container>;
@@ -204,18 +204,12 @@ const Cards = ({ data }) => {
                     ))}
                 </div>
                 <div className="relative w-full 2xl:mt-25">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
+                    <div ref={cardsWrapperRef} className="opacity-0 translate-y-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-10">
                         {(() => {
                             const filteredFounders = founders?.filter(founder => {
                                 const founderCategories = founder.foundersCategories?.nodes?.map(cat => cat.slug) || [];
                                 return founderCategories.includes(activeTab);
                             }) || [];
-                            
-                            // Debug logging
-                            console.log('Active tab:', activeTab);
-                            console.log('All founders:', founders.length);
-                            console.log('Filtered founders:', filteredFounders.length);
-                            console.log('Founders categories:', foundersCategories.map(cat => ({ name: cat.name, slug: cat.slug })));
                             
                             return filteredFounders.length > 0 ? filteredFounders.map((founder, index) => {
                                 const { title: founderTitle, featuredImage, slug } = founder;
@@ -225,7 +219,7 @@ const Cards = ({ data }) => {
                                     <div key={`${founder.slug}-${index}`}>
                                         <div 
                                             ref={el => cardsRef.current[index] = el} 
-                                            className={`opacity-0 translate-y-20 flex flex-col gap-4 h-full`}
+                                            className={`flex flex-col gap-4 h-full`}
                                         >
                                             <div className="flex flex-col">
                                                 {featuredImage?.node && (
