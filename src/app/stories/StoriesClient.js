@@ -133,7 +133,7 @@ export default function StoriesClient({ types, stories, onStoriesUpdate }) {
                                                     isAboveFold: true,
                                                     isHero: true,
                                                     index: 0,
-                                                    className: "absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
+                                                    className: "absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all! duration-300!"
                                                 })}
                                             />
                                             <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
