@@ -305,9 +305,11 @@ const FLEXIBLE_CONTENT_QUERY = `
             credits
             image {
               mediaItemUrl
+              altText
             }
             imageMobile {
               mediaItemUrl
+              altText
             }
             videoMp4 {
               mediaItemUrl

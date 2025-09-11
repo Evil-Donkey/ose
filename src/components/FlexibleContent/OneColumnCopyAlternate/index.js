@@ -18,12 +18,27 @@ const OneColumnCopyAlternate = ({ data }) => {
     const contentRef = useRef([]);
     const imageRef = useRef([]);
     const videoRef = useRef([]);
+    const titleRef = useRef([]);
+    const titleMobileRef = useRef([]);
 
     const size = headingSize === "small" ? "text-5xl md:text-[3.5rem]/17 lg:text-[4rem]/20 2xl:text-[4.5rem]/22" : "text-8xl md:text-[8rem]/30 2xl:text-[10rem]/50";
     
     useEffect(() => {
         const titleTl = gsap.timeline();
-        titleTl.to(imageRef.current, {
+        titleTl.to([titleRef.current, titleMobileRef.current], {
+            x: 0,
+            opacity: 1,
+            duration: 2,
+            ease: 'power4.out',
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: [titleRef.current, titleMobileRef.current],
+                start: 'top 90%',
+                scrub: 1.5,
+                invalidateOnRefresh: true
+            },
+        })
+        .to(imageRef.current, {
             scale: 1,
             // duration: 2,
             ease: 'power4.out', 
@@ -67,6 +82,11 @@ const OneColumnCopyAlternate = ({ data }) => {
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+
+            <div className="hidden lg:flex flex-col items-center text-center pt-20 z-50 relative">
+                <h2 ref={titleRef} className={`uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 text-center font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
+            </div>
+
             {backgroundMedia && (image || imageMobile) && (
                 <>
                     {image && (
@@ -108,12 +128,14 @@ const OneColumnCopyAlternate = ({ data }) => {
             
             <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
                 <Container className={`h-full py-15 md:py-15 2xl:py-25 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
-                    <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-4/5 xl:w-2/3 2xl:w-1/2" : "lg:w-1/2"} gap-5 lg:py-15`}>
-                        {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />}
+                    <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-3/5 xl:w-1/2" : "lg:w-1/2"} gap-5 lg:py-15`}>
+                        {/* {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />} */}
+                        <h2 ref={titleMobileRef} className={`lg:hidden uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
+                        {subheading && <h1 ref={el => contentRef.current[1] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: subheading }} />}
                         <div className="w-full lg:w-3/4 flex flex-col gap-5">
-                            {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl lg:text-[1.8rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
+                            {/* {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl lg:text-[1.8rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                 <div dangerouslySetInnerHTML={{ __html: subheading }} />
-                            </div>}
+                            </div>} */}
                             {copy && <div ref={el => contentRef.current[2] = el} className="text-base md:text-xl flex flex-col gap-4 opacity-0 translate-y-5">
                                 <div dangerouslySetInnerHTML={{ __html: copy }} />
                             </div>}
@@ -142,6 +164,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                                 sizes="(max-width: 1024px) 100vw, 50vw"
                                 quality={80}
                             />
+                            {image.altText && <div className="absolute bottom-4 right-4 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: image.altText }} />}
                         </div>
                     )}
                     {!backgroundMedia && videoMp4 &&
