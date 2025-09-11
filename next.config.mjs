@@ -13,53 +13,90 @@ const nextConfig = {
                 port: "",
             },
         ],
-        // Enable responsive image optimization
-        formats: ['image/avif', 'image/webp'],
-        deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-        imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512, 640, 750, 828, 1080],
-        minimumCacheTTL: 31536000, // 1 year cache for images
-        dangerouslyAllowSVG: true,
-        contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-        // Enable unoptimized for better performance in some cases
-        unoptimized: false,
-        // Add loader for better performance
-        loader: 'default',
     },
-    // Add headers for video and CSS caching
-    async headers() {
-        return [
-            {
-                source: '/api/video/(.*)',
-                headers: [
-                    {
-                        key: 'Cache-Control',
-                        value: 'public, max-age=31536000, immutable',
+    // Enable CSS optimization
+    compiler: {
+        removeConsole: process.env.NODE_ENV === "production",
+    },
+    // Modern browser optimizations
+    experimental: {
+        // Enable modern JavaScript features
+        esmExternals: true,
+        // Optimize for modern browsers
+        optimizePackageImports: ['framer-motion', 'gsap', 'lottie-react', 'swiper', 'react-hook-form'],
+    },
+    // Optimize bundle for modern browsers
+    webpack: (config, { dev, isServer }) => {
+        if (!dev && !isServer) {
+            // Enhanced code splitting for better performance
+            config.optimization.splitChunks = {
+                chunks: 'all',
+                minSize: 20000,
+                maxSize: 244000,
+                cacheGroups: {
+                    // Vendor libraries
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendors',
+                        priority: 10,
+                        reuseExistingChunk: true,
                     },
-                    {
-                        key: 'Content-Type',
-                        value: 'video/mp4',
+                    // Heavy animation libraries
+                    animations: {
+                        test: /[\\/]node_modules[\\/](gsap|framer-motion|lottie-react)[\\/]/,
+                        name: 'animations',
+                        priority: 20,
+                        reuseExistingChunk: true,
                     },
-                ],
-            },
-            {
-                source: '/api/(.*)',
-                headers: [
-                    {
-                        key: 'Cache-Control',
-                        value: 'public, max-age=3600, s-maxage=3600',
+                    // UI libraries
+                    ui: {
+                        test: /[\\/]node_modules[\\/](swiper|react-hook-form)[\\/]/,
+                        name: 'ui',
+                        priority: 15,
+                        reuseExistingChunk: true,
                     },
-                ],
-            },
-            {
-                source: '/_next/static/css/(.*)',
-                headers: [
-                    {
-                        key: 'Cache-Control',
-                        value: 'public, max-age=31536000, immutable',
+                    // Common components
+                    common: {
+                        name: 'common',
+                        minChunks: 2,
+                        priority: 5,
+                        reuseExistingChunk: true,
                     },
-                ],
-            },
-        ];
+                    // CSS optimization
+                    styles: {
+                        name: 'styles',
+                        test: /\.(css|scss)$/,
+                        chunks: 'all',
+                        enforce: true,
+                    },
+                },
+            };
+
+            // Tree shaking optimization
+            config.optimization.usedExports = true;
+            config.optimization.sideEffects = false;
+        }
+
+        // Reduce polyfills for modern browsers
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            // Only include essential polyfills
+            fs: false,
+            net: false,
+            tls: false,
+        };
+
+        // Optimize module resolution
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            // Reduce bundle size by using lighter alternatives where possible
+        };
+
+        return config;
+    },
+    // Handle API routes properly
+    async rewrites() {
+        return [];
     },
 };
 

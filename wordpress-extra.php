@@ -306,6 +306,64 @@ add_action('manage_team_posts_custom_column', function($column, $post_id) {
 }, 10, 2);
 
 
+// founders custom post type
+add_post_type_support( 'founders', 'thumbnail' );
+add_action( 'init', function() {
+  register_post_type( 'founders', [
+     'show_ui' => true,
+     'labels'  => [
+         'name' => __( 'Founders', 'your-textdomain' ),
+         'singular_name' => __( 'Founder', 'your-textdomain' ),
+       'menu_name' => __( 'Founders', 'your-textdomain' ),
+     ],
+      'supports' => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+     'hierarchical' => true,
+     'show_in_graphql' => true,
+     'graphql_single_name' => 'founders',
+     'graphql_plural_name' => 'allFounders',
+      'graphql_sortable_fields' => ['menuOrder'],
+     'public' => true,
+     'publicly_queryable' => true,
+      'menu_icon' => 'dashicons-admin-users'
+  ] );
+} );
+add_action('init', function() {
+ register_taxonomy( 'founders-category', 'founders', [
+   'labels'  => [
+     'menu_name' => __( 'Founders Categories', 'your-textdomain' ),
+   ],
+    'hierarchical' => true,
+   'show_in_graphql' => true,
+   'graphql_single_name' => 'foundersCategory',
+   'graphql_plural_name' => 'foundersCategories',
+ ]);
+});
+// Add custom column for founders-category taxonomy
+add_filter('manage_founders_posts_columns', function($columns) {
+   // Insert the new column after the title column
+   $new_columns = [];
+   foreach ($columns as $key => $label) {
+       $new_columns[$key] = $label;
+       if ($key === 'title') {
+           $new_columns['founders_category'] = __('Founders Categories', 'your-textdomain');
+       }
+   }
+   return $new_columns;
+});
+
+// Populate the team-category column
+add_action('manage_founders_posts_custom_column', function($column, $post_id) {
+   if ($column === 'founders_category') {
+       $terms = get_the_terms($post_id, 'founders-category');
+       if (!empty($terms) && !is_wp_error($terms)) {
+           echo implode(', ', wp_list_pluck($terms, 'name'));
+       } else {
+           echo '—';
+       }
+   }
+}, 10, 2);
+
+
 // Add the field in the Edit Term screen - Portfolio Stage
 add_action('portfolio-stage_edit_form_fields', function($term) {
    $value = get_term_meta($term->term_id, 'custom_order', true);
@@ -396,6 +454,41 @@ add_action( 'graphql_register_types', function() {
    }
  ]);
 });
+
+
+// Add the field in the Edit Term screen - Founders category
+add_action('founders-category_edit_form_fields', function($term) {
+   $value = get_term_meta($term->term_id, 'founders_custom_order', true);
+   ?>
+   <tr class="form-field">
+       <th scope="row"><label for="founders_custom_order">Custom Order</label></th>
+       <td>
+           <input name="founders_custom_order" id="founders_custom_order" type="number" value="<?php echo esc_attr($value); ?>" />
+           <p class="description">Set a numeric value for custom order.</p>
+       </td>
+   </tr>
+   <?php
+});
+// Save the value
+add_action('edited_founders-category', function($term_id) {
+   if (isset($_POST['founders_custom_order'])) {
+       update_term_meta($term_id, 'founders_custom_order', intval($_POST['founders_custom_order']));
+   }
+});
+add_action( 'graphql_register_types', function() {
+ register_graphql_field( 'foundersCategory', 'customOrder', [
+   'type' => 'Int',
+   'description' => 'Custom order value of the term.',
+   'resolve' => function( $term ) {
+     return (int) get_term_meta( $term->term_id, 'founders_custom_order', true );
+   }
+ ]);
+});
+
+
+
+
+
 
 
 
@@ -806,6 +899,320 @@ add_action('wp_ajax_get_attachment_url', function() {
 
 // Save the quick edit field values
 add_action('save_post_team', function($post_id) {
+   if (!current_user_can('edit_post', $post_id)) return;
+   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+   
+   if (isset($_POST['hero_desktop_image'])) {
+       $attachment_id = intval($_POST['hero_desktop_image']);
+       if ($attachment_id > 0) {
+           update_field('field_6899d3922fd7a', $attachment_id, $post_id);
+       } else {
+           update_field('field_6899d3922fd7a', '', $post_id);
+       }
+   }
+   
+   if (isset($_POST['hero_mobile_image'])) {
+       $attachment_id = intval($_POST['hero_mobile_image']);
+       if ($attachment_id > 0) {
+           update_field('field_6899c61546384', $attachment_id, $post_id);
+       } else {
+           update_field('field_6899c61546384', '', $post_id);
+       }
+   }
+});
+
+// Add custom columns to the Founders post type
+add_filter('manage_edit-founders_columns', function($columns) {
+   $columns['hero_desktop_image'] = __('Hero Desktop Image');
+   $columns['hero_mobile_image'] = __('Hero Mobile Image');
+   return $columns;
+});
+
+// Show the field values in the columns for founders
+add_action('manage_founders_posts_custom_column', function($column, $post_id) {
+   if ($column === 'hero_desktop_image') {
+       $image = get_field('field_6899d3922fd7a', $post_id);
+       $image_id = '';
+       
+       if ($image && is_array($image) && isset($image['url'])) {
+           echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) . '" style="max-width: 50px; height: auto;">';
+           $image_id = $image['ID'];
+       } elseif ($image && is_numeric($image)) {
+           $image_url = wp_get_attachment_image_url($image, 'thumbnail');
+           if ($image_url) {
+               echo '<img src="' . esc_url($image_url) . '" alt="" style="max-width: 50px; height: auto;">';
+           }
+           $image_id = $image;
+       } elseif ($image && is_string($image)) {
+           // Handle case where field returns URL string
+           echo '<img src="' . esc_url($image) . '" alt="" style="max-width: 50px; height: auto;">';
+           $image_id = attachment_url_to_postid($image);
+       }
+       
+       echo '<span id="hero_desktop_image_' . $post_id . '" style="display: none;">' . esc_html($image_id) . '</span>';
+   }
+   
+   if ($column === 'hero_mobile_image') {
+       $image = get_field('field_6899c61546384', $post_id);
+       $image_id = '';
+       
+       if ($image && is_array($image) && isset($image['url'])) {
+           echo '<img src="' . esc_url($image['url']) . '" alt="' . esc_attr($image['alt']) . '" style="max-width: 50px; height: auto;">';
+           $image_id = $image['ID'];
+       } elseif ($image && is_numeric($image)) {
+           $image_url = wp_get_attachment_image_url($image, 'thumbnail');
+           if ($image_url) {
+               echo '<img src="' . esc_url($image_url) . '" alt="" style="max-width: 50px; height: auto;">';
+           }
+           $image_id = $image;
+       } elseif ($image && is_string($image)) {
+           // Handle case where field returns URL string
+           echo '<img src="' . esc_url($image) . '" alt="" style="max-width: 50px; height: auto;">';
+           $image_id = attachment_url_to_postid($image);
+       }
+       
+       echo '<span id="hero_mobile_image_' . $post_id . '" style="display: none;">' . esc_html($image_id) . '</span>';
+   }
+}, 10, 2);
+
+// Add the quick edit fields to the form for founders
+add_action('quick_edit_custom_box', function($column_name, $post_type) {
+   if ($post_type !== 'founders') return;
+   
+   if ($column_name === 'hero_desktop_image') {
+   ?>
+   <fieldset class="inline-edit-col-right">
+       <div class="inline-edit-col">
+           <label>
+               <span class="title"><?php _e('Hero Desktop Image'); ?></span>
+               <span class="input-text-wrap">
+                   <input type="hidden" name="hero_desktop_image" class="hero_desktop_image" value="">
+                   <button type="button" class="button hero_desktop_image_upload"><?php _e('Select Image'); ?></button>
+                   <button type="button" class="button hero_desktop_image_remove" style="display:none;"><?php _e('Remove Image'); ?></button>
+                   <div class="hero_desktop_image_preview" style="margin-top: 5px;"></div>
+               </span>
+           </label>
+       </div>
+   </fieldset>
+   <?php
+   }
+   
+   if ($column_name === 'hero_mobile_image') {
+   ?>
+   <fieldset class="inline-edit-col-right">
+       <div class="inline-edit-col">
+           <label>
+               <span class="title"><?php _e('Hero Mobile Image'); ?></span>
+               <span class="input-text-wrap">
+                   <input type="hidden" name="hero_mobile_image" class="hero_mobile_image" value="">
+                   <button type="button" class="button hero_mobile_image_upload"><?php _e('Select Image'); ?></button>
+                   <button type="button" class="button hero_mobile_image_remove" style="display:none;"><?php _e('Remove Image'); ?></button>
+                   <div class="hero_mobile_image_preview" style="margin-top: 5px;"></div>
+               </span>
+           </label>
+       </div>
+   </fieldset>
+   <?php
+   }
+}, 10, 2);
+
+// Add JavaScript to populate the quick edit fields for founders
+add_action('admin_footer', function() {
+   global $post_type;
+   if ($post_type !== 'founders') return;
+
+   // Ensure media scripts are loaded
+   wp_enqueue_media();
+   
+   // Print media templates
+   wp_print_media_templates();
+   
+   ?>
+   <script>
+   jQuery(function($) {
+       
+       // Handle quick edit population for founders
+       $('body').on('click', '.editinline', function() {
+           var post_id = $(this).closest('tr').attr('id').replace('post-', '');
+           var desktop_image = $('#hero_desktop_image_' + post_id).text();
+           var mobile_image = $('#hero_mobile_image_' + post_id).text();
+           
+           $('input.hero_desktop_image', '.inline-edit-row').val(desktop_image);
+           $('input.hero_mobile_image', '.inline-edit-row').val(mobile_image);
+           
+           // Update previews with attachment IDs
+           updateImagePreviewFromID('.hero_desktop_image_preview', desktop_image);
+           updateImagePreviewFromID('.hero_mobile_image_preview', mobile_image);
+       });
+       
+       // Handle desktop image upload for founders
+       $('body').on('click', '.hero_desktop_image_upload', function() {
+           var button = $(this);
+           var input = button.siblings('input.hero_desktop_image');
+           var preview = button.siblings('.hero_desktop_image_preview');
+           var removeBtn = button.siblings('.hero_desktop_image_remove');
+           
+           // Check if wp.media is available
+           if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
+               console.log('wp.media not available, attempting to load...');
+               // Try to load media scripts dynamically
+               if (typeof wp === 'undefined') {
+                   alert('WordPress media library is not loaded. Please refresh the page and try again.');
+                   return;
+               }
+               if (typeof wp.media === 'undefined') {
+                   alert('Media library is not available. Please refresh the page and try again.');
+                   return;
+               }
+               return;
+           }
+           
+           // Create a new media uploader instance for each click
+           var frame = wp.media({
+               title: 'Select Hero Desktop Image',
+               button: {
+                   text: 'Use this image'
+               },
+               multiple: false,
+               library: {
+                   type: 'image'
+               }
+           });
+           
+           frame.on('select', function() {
+               var attachment = frame.state().get('selection').first().toJSON();
+               input.val(attachment.id);
+               if (attachment.sizes && attachment.sizes.thumbnail) {
+                   preview.html('<img src="' + attachment.sizes.thumbnail.url + '" style="max-width: 80px; height: auto;" />');
+               } else {
+                   preview.html('<img src="' + attachment.url + '" style="max-width: 80px; height: auto;" />');
+               }
+               removeBtn.show();
+           });
+           
+           frame.open();
+       });
+       
+       // Handle mobile image upload for founders
+       $('body').on('click', '.hero_mobile_image_upload', function() {
+           var button = $(this);
+           var input = button.siblings('input.hero_mobile_image');
+           var preview = button.siblings('.hero_mobile_image_preview');
+           var removeBtn = button.siblings('.hero_mobile_image_remove');
+           
+           // Check if wp.media is available
+           if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
+               console.log('wp.media not available, attempting to load...');
+               // Try to load media scripts dynamically
+               if (typeof wp === 'undefined') {
+                   alert('WordPress media library is not loaded. Please refresh the page and try again.');
+                   return;
+               }
+               if (typeof wp.media === 'undefined') {
+                   alert('Media library is not available. Please refresh the page and try again.');
+                   return;
+               }
+               return;
+           }
+           
+           // Create a new media uploader instance for each click
+           var frame = wp.media({
+               title: 'Select Hero Mobile Image',
+               button: {
+                   text: 'Use this image'
+               },
+               multiple: false,
+               library: {
+                   type: 'image'
+               }
+           });
+           
+           frame.on('select', function() {
+               var attachment = frame.state().get('selection').first().toJSON();
+               input.val(attachment.id);
+               if (attachment.sizes && attachment.sizes.thumbnail) {
+                   preview.html('<img src="' + attachment.sizes.thumbnail.url + '" style="max-width: 80px; height: auto;" />');
+               } else {
+                   preview.html('<img src="' + attachment.url + '" style="max-width: 80px; height: auto;" />');
+               }
+               removeBtn.show();
+           });
+           
+           frame.open();
+       });
+       
+       // Handle remove buttons for founders
+       $('body').on('click', '.hero_desktop_image_remove', function() {
+           var button = $(this);
+           var input = button.siblings('input.hero_desktop_image');
+           var preview = button.siblings('.hero_desktop_image_preview');
+           input.val('');
+           preview.empty();
+           button.hide();
+       });
+       
+       $('body').on('click', '.hero_mobile_image_remove', function() {
+           var button = $(this);
+           var input = button.siblings('input.hero_mobile_image');
+           var preview = button.siblings('.hero_mobile_image_preview');
+           input.val('');
+           preview.empty();
+           button.hide();
+       });
+       
+       // Function to update image preview from attachment ID for founders
+       function updateImagePreviewFromID(selector, attachmentId) {
+           var preview = $(selector);
+           var removeBtn = preview.siblings('.hero_desktop_image_remove, .hero_mobile_image_remove');
+           
+           if (attachmentId && attachmentId.trim() !== '') {
+               // Use AJAX to get image URL from attachment ID
+               $.ajax({
+                   url: ajaxurl,
+                   type: 'POST',
+                   data: {
+                       action: 'get_attachment_url',
+                       attachment_id: attachmentId,
+                       nonce: '<?php echo wp_create_nonce("get_attachment_url_nonce"); ?>'
+                   },
+                   success: function(response) {
+                       if (response.success && response.data.url) {
+                           preview.html('<img src="' + response.data.url + '" style="max-width: 80px; height: auto;" />');
+                           removeBtn.show();
+                       } else {
+                           preview.empty();
+                           removeBtn.hide();
+                       }
+                   },
+                   error: function() {
+                       preview.empty();
+                       removeBtn.hide();
+                   }
+               });
+           } else {
+               preview.empty();
+               removeBtn.hide();
+           }
+       }
+       
+       // Function to update image preview from URL (for backward compatibility) for founders
+       function updateImagePreview(selector, imageUrl) {
+           var preview = $(selector);
+           if (imageUrl && imageUrl.trim() !== '') {
+               preview.html('<img src="' + imageUrl + '" style="max-width: 80px; height: auto;" />');
+               preview.siblings('.hero_desktop_image_remove, .hero_mobile_image_remove').show();
+           } else {
+               preview.empty();
+               preview.siblings('.hero_desktop_image_remove, .hero_mobile_image_remove').hide();
+           }
+       }
+   });
+   </script>
+   <?php
+});
+
+// Save the quick edit field values for founders
+add_action('save_post_founders', function($post_id) {
    if (!current_user_can('edit_post', $post_id)) return;
    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
    

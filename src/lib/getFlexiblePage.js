@@ -400,6 +400,12 @@ const FLEXIBLE_CONTENT_QUERY = `
               }
             }
           }
+          ... on Page_Flexiblecontent_FlexibleContent_Founders {
+            fieldGroupName
+            sectionLabel
+            title
+            copy
+          }
           ... on Page_Flexiblecontent_FlexibleContent_FullPanelCarousel {
             fieldGroupName
             sectionLabel
