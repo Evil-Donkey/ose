@@ -29,6 +29,7 @@ import Exits from "./Exits";
 import TwoColumnsTitleCopy from "./TwoColumnsTitleCopy";
 import FullWidthLargeHeading from "./FullWidthLargeHeading";
 import Founders from "./Founders";
+import Advantages from "./Advantages";
 
 const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }) => {
 
@@ -126,6 +127,9 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Founders") {
             flexibleContentArray.push(<Founders data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Advantages") {
+            flexibleContentArray.push(<Advantages data={item} index={i} key={i.toString()} />);
         }
     })}
 

@@ -529,6 +529,21 @@ const FLEXIBLE_CONTENT_QUERY = `
             fieldGroupName
             sectionLabel
           }
+          ... on Page_Flexiblecontent_FlexibleContent_Advantages {
+            fieldGroupName
+            sectionLabel
+            title
+            backgroundImage {
+              mediaItemUrl
+            }
+            backgroundImageMobile {
+              mediaItemUrl
+            }
+            advantages {
+              copy
+              heading
+            }
+          }
         }
       }
     }
