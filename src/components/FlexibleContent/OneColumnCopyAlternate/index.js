@@ -21,7 +21,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     const titleRef = useRef([]);
     const titleMobileRef = useRef([]);
 
-    const size = headingSize === "small" ? "text-4xl md:text-[3rem]/15 lg:text-[3.5rem]/17 2xl:text-[4rem]/20" : "text-8xl md:text-[8rem]/30 2xl:text-[10rem]/50";
+    const size = headingSize === "small" ? "text-4xl md:text-[3rem]/15 2xl:text-[4rem]/20" : "text-8xl md:text-[8rem]/30 2xl:text-[10rem]/50";
     
     useEffect(() => {
         const titleTl = gsap.timeline();
@@ -127,7 +127,7 @@ const OneColumnCopyAlternate = ({ data }) => {
             }
             
             <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
-                <Container className={`h-full py-15 md:py-15 2xl:py-25 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
+                <Container className={`h-full py-15 md:py-15 2xl:py-25 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between lg:items-center gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
                     <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-3/5 xl:w-1/2" : "lg:w-1/2"} gap-5 lg:py-15`}>
                         {/* {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />} */}
                         <h2 ref={titleMobileRef} className={`lg:hidden uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
@@ -153,7 +153,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                         {credits && <div className={`lg:hidden text-xs 2xl:text-sm lg:text-end mt-10 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
                     </div>
                     {!backgroundMedia && image && (
-                        <div className="w-full lg:w-1/2 h-60 lg:h-auto overflow-hidden rounded-2xl relative">
+                        <div className="w-full lg:w-1/2 h-110 lg:h-auto overflow-hidden rounded-2xl relative one-column-copy-alternate__image">
                             <ResponsiveImage 
                                 ref={imageRef} 
                                 src={image.mediaItemUrl} 

@@ -57,6 +57,9 @@ body {
   .full-screen-panel__copy img {
     @apply max-w-[180px];
   }
+  .one-column-copy-alternate__image {
+    @apply h-110;
+  }
 }
 /* html {
   scroll-behavior: smooth !important;
