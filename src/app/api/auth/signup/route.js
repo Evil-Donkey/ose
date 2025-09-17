@@ -1,8 +1,41 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const { firstName, lastName, email, organisation, organisationRole } = await req.json();
+  const { firstName, lastName, email, organisation, organisationRole, recaptchaToken } = await req.json();
   const username = email.split('@')[0];
+
+  // Verify reCAPTCHA token
+  if (recaptchaToken) {
+    try {
+      const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: recaptchaToken,
+        }),
+      });
+
+      const recaptchaData = await recaptchaResponse.json();
+      
+      if (!recaptchaData.success || recaptchaData.score < 0.5) {
+        return NextResponse.json({ 
+          error: "reCAPTCHA verification failed. Please try again." 
+        }, { status: 400 });
+      }
+    } catch (error) {
+      console.error('reCAPTCHA verification error:', error);
+      return NextResponse.json({ 
+        error: "reCAPTCHA verification failed. Please try again." 
+      }, { status: 400 });
+    }
+  } else {
+    return NextResponse.json({ 
+      error: "reCAPTCHA token is required" 
+    }, { status: 400 });
+  }
 
   try {
     const response = await fetch(process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT, {

@@ -67,8 +67,8 @@ const Advantages = ({ data }) => {
                                         ref={el => blocksRef.current[index] = el} 
                                         className={`
                                             relative 
-                                            w-80
-                                            flex flex-col justify-center items-center 
+                                            w-80 h-70
+                                            flex flex-col items-center justify-center md:justify-start
                                             text-center 
                                             px-10 py-10
                                             opacity-0 -translate-x-full

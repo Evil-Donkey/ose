@@ -1,15 +1,17 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import { Spinner } from "@/components/Icons/Spinner";
+import ReCAPTCHA from "@/components/ReCAPTCHA";
 
 export default function SignupForm({ title, content }) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const recaptchaRef = useRef(null);
 
   const {
     register,
@@ -23,10 +25,19 @@ export default function SignupForm({ title, content }) {
     const { terms, ...dataWithoutTerms } = formData;
   
     try {
+      // Get reCAPTCHA token
+      let recaptchaToken = null;
+      if (recaptchaRef.current && recaptchaRef.current.executeRecaptcha) {
+        recaptchaToken = await recaptchaRef.current.executeRecaptcha();
+      }
+
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataWithoutTerms),
+        body: JSON.stringify({
+          ...dataWithoutTerms,
+          recaptchaToken
+        }),
       });
     
       const data = await response.json();
@@ -155,6 +166,12 @@ export default function SignupForm({ title, content }) {
                 </label>
               </div>
               {errors.terms && <p className="text-white">{errors.terms.message}</p>}
+
+              {/* Hidden reCAPTCHA */}
+              <ReCAPTCHA 
+                ref={recaptchaRef}
+                siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              />
 
               {/* Submit Button */}
               <Button type="submit" disabled={isLoading}>
