@@ -25,7 +25,7 @@ const PasswordOverlay = () => {
     setError('');
 
     // Simple password check - you can replace this with API call later
-    if (password === 'oseprotected') {
+    if (password === 'disabled') {
       // Store in sessionStorage for the session
       sessionStorage.setItem('passwordVerified', 'true');
       setPasswordVerified(true);
