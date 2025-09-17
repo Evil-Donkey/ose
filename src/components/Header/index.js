@@ -31,28 +31,28 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
         { 
             label: 'Why', 
             href: '/why',
-            meganavHeading: 'Why<br/>We Exist',
+            meganavHeading: 'Why<br/>we exist',
             meganavLinks: meganavLinks?.Why || [],
             meganavPageLinks: meganavData?.Why?.pageLinks || null
         },
         { 
             label: 'What', 
             href: '/what',
-            meganavHeading: 'What<br/>We Do',
+            meganavHeading: 'What<br/>we do',
             meganavLinks: meganavLinks?.What || [],
             meganavPageLinks: meganavData?.What?.pageLinks || null
         },
         { 
             label: 'How', 
             href: '/how',
-            meganavHeading: 'How<br/>We Work',
+            meganavHeading: 'How<br/>we work',
             meganavLinks: meganavLinks?.How || [],
             meganavPageLinks: meganavData?.How?.pageLinks || null
         },
         { 
             label: 'Who', 
             href: '/who',
-            meganavHeading: 'Who<br/>We Are',
+            meganavHeading: 'Who<br/>we are',
             meganavLinks: meganavLinks?.Who || [],
             meganavPageLinks: meganavData?.Who?.pageLinks || null
         }
