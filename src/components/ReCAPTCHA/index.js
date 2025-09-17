@@ -1,41 +1,49 @@
 'use client'
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, forwardRef, useImperativeHandle, useState } from 'react';
 
-export default function ReCAPTCHA({ onVerify, siteKey }) {
+const ReCAPTCHA = forwardRef(({ siteKey }, ref) => {
   const recaptchaRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Load reCAPTCHA script if not already loaded
-    if (!window.grecaptcha) {
-      const script = document.createElement('script');
-      script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-
-      script.onload = () => {
-        if (window.grecaptcha && window.grecaptcha.ready) {
-          window.grecaptcha.ready(() => {
-            // reCAPTCHA is ready
-          });
-        }
-      };
-    } else if (window.grecaptcha && window.grecaptcha.ready) {
-      window.grecaptcha.ready(() => {
-        // reCAPTCHA is already loaded and ready
-      });
+    // Check if reCAPTCHA is already loaded
+    if (window.grecaptcha && window.grecaptcha.ready) {
+      setIsLoaded(true);
+      return;
     }
+
+    // Load reCAPTCHA script if not already loaded
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      if (window.grecaptcha && window.grecaptcha.ready) {
+        window.grecaptcha.ready(() => {
+          console.log('reCAPTCHA loaded and ready');
+          setIsLoaded(true);
+        });
+      }
+    };
+
+    script.onerror = () => {
+      console.error('Failed to load reCAPTCHA script');
+    };
   }, [siteKey]);
 
   const executeRecaptcha = async () => {
-    if (!window.grecaptcha || !window.grecaptcha.ready) {
-      console.error('reCAPTCHA not ready');
+    if (!isLoaded || !window.grecaptcha) {
+      console.error('reCAPTCHA not loaded or ready');
       return null;
     }
 
     try {
+      console.log('Executing reCAPTCHA...');
       const token = await window.grecaptcha.execute(siteKey, { action: 'signup' });
+      console.log('reCAPTCHA token generated:', token ? 'Yes' : 'No');
       return token;
     } catch (error) {
       console.error('reCAPTCHA execution failed:', error);
@@ -44,11 +52,9 @@ export default function ReCAPTCHA({ onVerify, siteKey }) {
   };
 
   // Expose the execute function to parent component
-  useEffect(() => {
-    if (recaptchaRef.current) {
-      recaptchaRef.current.executeRecaptcha = executeRecaptcha;
-    }
-  }, [siteKey]);
+  useImperativeHandle(ref, () => ({
+    executeRecaptcha
+  }), [isLoaded, siteKey]);
 
   return (
     <div 
@@ -57,4 +63,8 @@ export default function ReCAPTCHA({ onVerify, siteKey }) {
       aria-hidden="true"
     />
   );
-}
+});
+
+ReCAPTCHA.displayName = 'ReCAPTCHA';
+
+export default ReCAPTCHA;

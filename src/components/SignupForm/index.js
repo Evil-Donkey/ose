@@ -28,7 +28,17 @@ export default function SignupForm({ title, content }) {
       // Get reCAPTCHA token
       let recaptchaToken = null;
       if (recaptchaRef.current && recaptchaRef.current.executeRecaptcha) {
+        console.log('Attempting to get reCAPTCHA token...');
         recaptchaToken = await recaptchaRef.current.executeRecaptcha();
+        console.log('reCAPTCHA token received:', recaptchaToken ? 'Yes' : 'No');
+      } else {
+        console.error('reCAPTCHA ref not available');
+      }
+
+      if (!recaptchaToken) {
+        setMessage("reCAPTCHA verification failed. Please refresh the page and try again.");
+        setIsLoading(false);
+        return;
       }
 
       const response = await fetch("/api/auth/signup", {
@@ -172,6 +182,13 @@ export default function SignupForm({ title, content }) {
                 ref={recaptchaRef}
                 siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
               />
+              
+              {/* Debug info - remove in production */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="text-xs text-gray-400 mt-2">
+                  reCAPTCHA Site Key: {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? 'Set' : 'Not Set'}
+                </div>
+              )}
 
               {/* Submit Button */}
               <Button type="submit" disabled={isLoading}>
