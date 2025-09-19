@@ -79,7 +79,7 @@ export default function SignupForm({ title, content }) {
       </div>
       <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10 flex flex-col justify-center">
         {isSuccess ? (
-          <div className="text-center">
+          <div className="text-center p-10 rounded-sm border bg-blue-02/30 border-white">
             {/* <div className="mb-6">
               <svg className="mx-auto h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
