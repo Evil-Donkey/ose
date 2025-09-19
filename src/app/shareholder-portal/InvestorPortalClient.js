@@ -40,7 +40,7 @@ export default function InvestorPortalClient({ title, content, investorPortal })
         return (
             <div key={uniqueKey} className="w-full">
                 <div 
-                    className={`bg-gray-100 hover:bg-gray-200 transition-colors duration-200 cursor-pointer rounded-lg p-4 mb-2 flex items-center justify-between ${level > 0 ? 'ml-6' : ''}`}
+                    className={`bg-gray-200 hover:bg-gray-300 transition-colors duration-200 cursor-pointer rounded-lg p-4 mb-2 flex items-center justify-between ${level > 0 ? 'ml-6' : ''}`}
                     onClick={() => toggleFolder(uniqueKey)}
                 >
                     <div className="flex items-center gap-3">
@@ -97,7 +97,7 @@ export default function InvestorPortalClient({ title, content, investorPortal })
                 </div>
                 <div className="w-full flex justify-between items-center gap-10 mb-4">
                     <div className="text-base flex flex-col gap-4 lg:w-2/3">
-                        <p>Access the latest shareholder reports, company updates, and financial materials anytime.</p>
+                        <p>Access shareholder reports, company news, and other updates below.</p>
                         <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
                     </div>
                 </div>

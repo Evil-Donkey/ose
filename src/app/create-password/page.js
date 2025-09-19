@@ -85,9 +85,9 @@ export default function ResetPassword() {
             <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 pb-10 relative h-full min-h-screen">
                 <Container className="pt-40 pb-10 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
                     <div className="w-full lg:w-2/5">
-                        <h1 className="text-4xl lg:text-6xl mb-4">Reset Password</h1>
+                        <h1 className="text-4xl lg:text-6xl mb-4">Create Password</h1>
                         <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3">
-                            <p>You&apos;ve requested to reset your password. Enter a new, secure password below to regain access to your Oxford Science Enterprises shareholder portal account.</p>
+                            <p>An account has been created for you to access Oxford Science Enterprises&apos; shareholder portal. Please create a secure password to complete your account setup.</p>
                             <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
                         </div>
                     </div>
