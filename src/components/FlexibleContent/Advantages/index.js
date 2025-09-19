@@ -46,7 +46,7 @@ const Advantages = ({ data }) => {
     }, []);
 
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="text-white bg-cover bg-center bg-[url('/mobile-gradient.jpg')] lg:bg-[url('/desktop-gradient.jpg')] relative pt-10 pb-30">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="min-h-section-height text-white bg-cover bg-center bg-[url('/mobile-gradient.jpg')] lg:bg-[url('/desktop-gradient.jpg')] relative pt-10 pb-30">
             {backgroundImage?.mediaItemUrl && (
                 <div className={`absolute inset-0 bg-cover bg-center ${backgroundImageMobile?.mediaItemUrl ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${backgroundImage?.mediaItemUrl})` }} />
             )}
@@ -66,6 +66,7 @@ const Advantages = ({ data }) => {
                                         key={index} 
                                         ref={el => blocksRef.current[index] = el} 
                                         className={`
+                                            advantage-block
                                             relative 
                                             w-80 h-70
                                             flex flex-col items-center justify-center md:justify-start
@@ -74,7 +75,7 @@ const Advantages = ({ data }) => {
                                             opacity-0 -translate-x-full
                                             ${index > 0 && index % 2 === 1 ? 'md:-ml-8' : ''}
                                             ${index > 0 ? 'xl:-ml-4' : ''}
-                                            before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-x-1/2 before:-translate-y-1/2 before:aspect-square before:rounded-full before:bg-white/95 before:-z-1 before:w-[330px] before:h-[330px]
+                                            before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-x-1/2 before:-translate-y-1/2 before:aspect-square before:rounded-full before:bg-white/95 before:-z-1 before:w-[270px] before:h-[270px] xl:before:w-[330px] xl:before:h-[330px]
                                         `}
                                     >
                                         {heading && (

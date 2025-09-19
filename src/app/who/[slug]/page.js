@@ -49,7 +49,7 @@ export default async function TeamMemberSinglePage({ params }) {
         <div className={`mt-20 py-20 min-h-[750px] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
             backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined
         }}>
-            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute inset-0 bg-black/20" />
             <Container className={`py-20 relative flex ${heroCopyToTheRight ? 'flex-row-reverse' : 'flex-row'}`}>
                 <div className="flex flex-col gap-2 text-white">
                     {title && <h1 className="text-4xl lg:text-6xl/18">{title}</h1>}

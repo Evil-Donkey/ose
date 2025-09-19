@@ -182,13 +182,6 @@ export default function SignupForm({ title, content }) {
                 ref={recaptchaRef}
                 siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
               />
-              
-              {/* Debug info - remove in production */}
-              {process.env.NODE_ENV === 'development' && (
-                <div className="text-xs text-gray-400 mt-2">
-                  reCAPTCHA Site Key: {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? 'Set' : 'Not Set'}
-                </div>
-              )}
 
               {/* Submit Button */}
               <Button type="submit" disabled={isLoading}>

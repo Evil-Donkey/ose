@@ -65,7 +65,7 @@ const Stats = ({ data, theme }) => {
                     <div className="text-base md:text-xl flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />
                 </div>}
             {stats && 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-5 2xl:gap-10 mt-10">
                     {stats.map((stat, index) => {
                         const { description, postStat, preStat, statValue } = stat;
                         let decimals = 0;

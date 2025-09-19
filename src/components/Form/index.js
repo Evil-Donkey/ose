@@ -188,7 +188,7 @@ const Form = () => {
         </div>
         
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="challenge" className="text-sm">What challenge does your work aim to address?</label>
+            <label htmlFor="challenge" className="text-sm">What challenge does your work aim to solve?</label>
             <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("challenge")} />
             {errors.challenge && <p className="text-red-500 text-sm">{errors.challenge.message}</p>}
         </div>

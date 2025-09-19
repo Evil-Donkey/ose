@@ -19,10 +19,10 @@ const Footer = ({ data }) => {
                     </div>
                     <div className="flex-col lg:flex-row w-1/2 lg:mt-0 lg:justify-end flex gap-x-4">
                         <div className="gap-x-4 items-center mb-5 lg:mb-0 hidden lg:flex">
-                            <YouTube />
-                            <LinkedIn />
+                            {/* <YouTube /> */}
+                            <a href="https://www.linkedin.com/company/19776983/admin/dashboard/" target="_blank" rel="noopener noreferrer"><LinkedIn /></a>
                         </div>
-                        <Button href="/shareholder-portal" className="text-sm lg:text-base">Shareholder Portal</Button>
+                        {/* <Button href="/shareholder-portal" className="text-sm lg:text-base">Shareholder Portal</Button> */}
                     </div>
                 </div>
 
@@ -33,21 +33,30 @@ const Footer = ({ data }) => {
                             <h2 className="text-3xl mb-4">Get in touch</h2>
                             <div className="lg:space-y-4">
                                 <div>
-                                    <h3 className="text-lightblue hidden lg:block">Oxford Researchers &amp; Innovators</h3>
+                                    <h3 className="text-lightblue hidden lg:block">Oxford researchers &amp; innovators</h3>
                                     <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
                                         {oxfordAcademicsEmail}
                                     </a>
                                     <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue lg:hidden">
-                                        Oxford Researchers &amp; Innovators
+                                        Oxford researchers &amp; innovators
                                     </a>
                                 </div>
                                 <div>
-                                    <h3 className="text-lightblue hidden lg:block">Investors &amp; Co-Investors</h3>
+                                    <h3 className="text-lightblue hidden lg:block">Investors &amp; co-investors</h3>
                                     <a href={`mailto:${investorsEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
                                         {investorsEmail}
                                     </a>
                                     <a href={`mailto:${investorsEmail}`} className="text-sm hover:text-lightblue lg:hidden">
-                                        Investors &amp; Co-Investors
+                                        Investors &amp; co-investors
+                                    </a>
+                                </div>
+                                <div>
+                                    <h3 className="text-lightblue hidden lg:block">Media</h3>
+                                    <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
+                                        {mediaEmail}
+                                    </a>
+                                    <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue lg:hidden">
+                                        Media
                                     </a>
                                 </div>
                             </div>
@@ -57,15 +66,6 @@ const Footer = ({ data }) => {
                         <div className="w-full lg:w-1/2 mb-5 lg:mb-0">
                             <h2 className="text-3xl mb-4 hidden lg:block">&nbsp;</h2>
                             <div className="lg:space-y-4">
-                                <div className="mb-5">
-                                    <h3 className="text-lightblue hidden lg:block">Media</h3>
-                                    <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue hidden lg:block">
-                                        {mediaEmail}
-                                    </a>
-                                    <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue lg:hidden">
-                                        Media
-                                    </a>
-                                </div>
                                 <div className="mb-5">
                                     <h3 className="text-lightblue">Call</h3>
                                     <a href={`tel:${telephone}`} className="text-sm hover:text-lightblue">
@@ -78,8 +78,8 @@ const Footer = ({ data }) => {
                                 </div>
                                 <div>
                                     <div className="flex flex-row gap-x-2 items-center mb-5 lg:mb-0 lg:hidden">
-                                        <YouTube />
-                                        <LinkedIn />
+                                        {/* <YouTube /> */}
+                                        <a href="https://www.linkedin.com/company/19776983/admin/dashboard/" target="_blank" rel="noopener noreferrer"><LinkedIn /></a>
                                     </div>
                                 </div>
                             </div>
@@ -116,6 +116,7 @@ const Footer = ({ data }) => {
                                 <li><Link href="/stories" className="hover:text-lightblue">Stories</Link></li>
                                 <li><Link href="/news" className="hover:text-lightblue">News</Link></li>
                                 <li><Link href="/contact" className="hover:text-lightblue">Contact</Link></li>
+                                <li><Link href="/shareholder-portal" className="hover:text-lightblue">Shareholder Portal</Link></li>
                             </ul>
                         </div>
                     </div>
@@ -135,8 +136,8 @@ const Footer = ({ data }) => {
                             <Link href="/terms-conditions" className="hover:text-lightblue">Terms & Conditions</Link>
                             <span>|</span>
                             <Link href="/privacy-policy" className="hover:text-lightblue">Privacy policy</Link>
-                            <span>|</span>
-                            <Link href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</Link>
+                            {/* <span>|</span>
+                            <Link href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</Link> */}
                             {/* <span>|</span>
                             <a href="/cookie-policy" className="hover:text-lightblue">Cookie policy</a> */}
                         </div>

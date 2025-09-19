@@ -82,10 +82,12 @@ const OneColumnCopyAlternate = ({ data }) => {
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
-
-            <div className="hidden lg:flex flex-col items-center text-center pt-20 z-50 relative">
-                <h2 ref={titleRef} className={`uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 text-center font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
-            </div>
+            
+            {heading && (
+                <div className="hidden lg:flex flex-col items-center text-center pt-20 z-50 absolute top-0 left-0 w-full h-full">
+                    <h2 ref={titleRef} className={`uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 text-center font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
+                </div>
+            )}
 
             {backgroundMedia && (image || imageMobile) && (
                 <>
@@ -126,17 +128,17 @@ const OneColumnCopyAlternate = ({ data }) => {
                 </>
             }
             
-            <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center">
+            <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center mt-20">
                 <Container className={`h-full py-15 md:py-15 2xl:py-25 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between lg:items-center gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
                     <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-3/5 xl:w-1/2" : "lg:w-1/2"} gap-5 lg:py-15`}>
                         {/* {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />} */}
                         <h2 ref={titleMobileRef} className={`lg:hidden uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
                         {subheading && <h1 ref={el => contentRef.current[1] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: subheading }} />}
-                        <div className="w-full lg:w-3/4 flex flex-col gap-5">
+                        <div className="w-full flex flex-col gap-5">
                             {/* {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl lg:text-[1.8rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                 <div dangerouslySetInnerHTML={{ __html: subheading }} />
                             </div>} */}
-                            {copy && <div ref={el => contentRef.current[2] = el} className="text-base md:text-xl flex flex-col gap-4 opacity-0 translate-y-5">
+                            {copy && <div ref={el => contentRef.current[2] = el} className={`text-base md:text-xl ${!backgroundMedia ? "lg:text-[1.36rem]" : "lg:text-[1.45rem]"} flex flex-col gap-4 opacity-0 translate-y-5`}>
                                 <div dangerouslySetInnerHTML={{ __html: copy }} />
                             </div>}
                             {ctaLabel && 
@@ -173,7 +175,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                         </div>
                     }
                 </Container>
-                {credits && <div className={`hidden lg:block absolute bottom-15 right-15 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
+                {credits && <div className={`hidden lg:block absolute bottom-10 right-10 2xl:bottom-15 2xl:right-15 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
             </div>
         </div>
     )

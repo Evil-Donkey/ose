@@ -58,7 +58,13 @@ body {
     @apply max-w-[180px];
   }
   .one-column-copy-alternate__image {
-    @apply h-110;
+    @apply h-140;
+  }
+  .advantage-block:before {
+    @apply w-[270px] h-[270px];
+  }
+  .min-h-section-height {
+    @apply min-h-[100vh];
   }
 }
 /* html {
@@ -133,4 +139,8 @@ body {
   opacity: 0;
   transform: translateY(-20px);
   transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+}
+
+.grecaptcha-badge {
+  display: none !important;
 }
