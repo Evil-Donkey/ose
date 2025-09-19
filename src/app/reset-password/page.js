@@ -91,12 +91,12 @@ export default function ResetPassword() {
                             <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
                         </div>
                     </div>
-                    <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10">
+                    <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10 flex flex-col justify-center">
                         {error ? (
                             <p className="text-white text-center">{error}</p>
                         ) : message === "success" ? (
                             <div className="flex flex-col gap-4 text-center items-center justify-center">
-                                <p className="text-white text-lg">Password successfully created. You can now <Link href="/shareholder-portal" className="text-white underline">log in</Link>.</p>
+                                <p className="text-white text-lg">Password successfully created. You can now</p><Button href="/shareholder-portal">log in</Button>
                             </div>
                         ) : (
                             tokenData && (

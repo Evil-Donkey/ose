@@ -74,7 +74,7 @@ const Footer = ({ data }) => {
                                 </div>
                                 <div className="mb-8 lg:mb-0">
                                     <h3 className="text-lightblue">Address</h3>
-                                    <p className="text-sm">{address}</p>
+                                    <p className="text-sm" dangerouslySetInnerHTML={{ __html: address }} />
                                 </div>
                                 <div>
                                     <div className="flex flex-row gap-x-2 items-center mb-5 lg:mb-0 lg:hidden">
