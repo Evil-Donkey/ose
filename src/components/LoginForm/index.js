@@ -35,7 +35,7 @@ export default function LoginForm({ title, content }) {
             if (error.message === "Your account is pending approval. Please wait for confirmation.") {
                 setServerError(error.message); // This will show the message to the user
             } else {
-                setServerError("Incorrect email or password. Please check your details and try again.");
+                setServerError("Incorrect email or password. Please check your details.");
             }
         } finally {
             setIsLoading(false);

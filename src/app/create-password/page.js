@@ -96,7 +96,7 @@ export default function ResetPassword() {
                             <p className="text-white text-center">{error}</p>
                         ) : message === "success" ? (
                             <div className="flex flex-col gap-4 text-center items-center justify-center">
-                                <p className="text-white text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Password successfully created.<br/>You can now <a href="/shareholder-portal">log in</a>.</p>
+                                <p className="text-white text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Password successfully created.<br/>You can now <a href="/shareholder-portal" className="text-white underline">log in</a>.</p>
                             </div>
                         ) : (
                             tokenData && (
