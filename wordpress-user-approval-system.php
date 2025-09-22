@@ -67,8 +67,42 @@ function add_user_approval_meta_box($user) {
     </script>
     <?php
 }
+
+// Add approval section for new user creation
+function add_user_approval_meta_box_new_user() {
+    ?>
+    <div id="approval-section">
+        <h2>User Approval</h2>
+        <table class="form-table">
+            <tr>
+                <th><label for="user_status">Approval Status</label></th>
+                <td>
+                    <input type="radio" name="user_status" value="pending" checked> Pending<br>
+                    <input type="radio" name="user_status" value="approved"> Approved<br>
+                    <input type="radio" name="user_status" value="denied"> Denied
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var approvalSection = document.getElementById("approval-section");
+            var profileForm = document.getElementById("createuser"); // WordPress user creation form container
+
+            if (approvalSection && profileForm) {
+                profileForm.insertBefore(approvalSection, profileForm.firstChild); // Move only the div
+            }
+        });
+    </script>
+    <?php
+}
+
+// Hook for existing user profiles
 add_action('edit_user_profile', 'add_user_approval_meta_box');
 add_action('show_user_profile', 'add_user_approval_meta_box');
+
+// Hook for new user creation
+add_action('user_new_form', 'add_user_approval_meta_box_new_user');
 
 
 // Save the approval status when the user profile is updated
@@ -97,8 +131,38 @@ function save_user_approval_status($user_id) {
         }
     }
 }
+
+// Save the approval status when a new user is created
+function save_user_approval_status_new_user($user_id) {
+    if (!current_user_can('create_users')) {
+        return false;
+    }
+
+    if (isset($_POST['user_status'])) {
+        $new_status = sanitize_text_field($_POST['user_status']);
+        update_user_meta($user_id, 'user_status', $new_status);
+
+        // Send appropriate email based on status
+        if ($new_status === 'approved') {
+            send_admin_approval_email($user_id);
+        }
+        // elseif ($new_status === 'denied') {
+        //     send_denied_email($user_id);
+        // }
+        // Note: We don't send signup email for admin-created users, even if status is pending
+    } else {
+        // Default to pending if no status is set
+        update_user_meta($user_id, 'user_status', 'pending');
+        // Note: We don't send signup email for admin-created users
+    }
+}
+
+// Hook for existing user profile updates
 add_action('personal_options_update', 'save_user_approval_status');
 add_action('edit_user_profile_update', 'save_user_approval_status');
+
+// Hook for new user creation
+add_action('user_register', 'save_user_approval_status_new_user');
 
 
 // Add user_status field to GraphQL User type
@@ -167,7 +231,7 @@ function send_approval_email($user_id) {
             .logo img { max-width: 150px; }
             p { color: #666; }
             .button {
-                display: block; width: 200px; margin: 20px auto; padding: 10px 20px;
+                display: block; width: 200px; margin: 20px 0; padding: 10px 20px;
                 text-align: center; background-color: #0073e6; color: white !important;
                 text-decoration: none; border-radius: 5px; font-size: 16px;
             }
@@ -178,7 +242,7 @@ function send_approval_email($user_id) {
         <div class="container">
             <p>Hi ' . esc_html($first_name) . '</p>'
             . $copy .
-			'<a class="button" href="' . esc_url($reset_link) . '">Set Your Password</a>
+			'<a class="button" href="' . esc_url($reset_link) . '">Set Your Password & Login</a>
 			<p>If the button above does not work, copy and paste the following link into your browser:</p>
 			<a href="' . esc_url($reset_link) . '">' . esc_url($reset_link) . '</a>
 			<p>Once your password is set, you can log in at any time using:</p>
@@ -233,7 +297,7 @@ function send_denied_email($user_id) {
         <style>
             body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
             .container { max-width: 600px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
-            .logo { center; margin-bottom: 20px; }
+            .logo { margin-bottom: 20px; }
             .logo img { max-width: 150px; }
             p { color: #666; }
             .button {
@@ -336,50 +400,85 @@ function send_user_signup_email($user_id) {
         error_log("Signup email sent successfully to: " . $email);
     }
 }
-// Hook into WordPress user registration
-add_action('user_register', 'send_user_signup_email');
+
+// Hook into WordPress user registration for frontend signups only
+function handle_frontend_user_registration($user_id) {
+    // Only send signup email if this is a frontend registration (not admin-created)
+    // We can detect this by checking if the current user is an admin creating the user
+    if (!current_user_can('create_users')) {
+        // This is a frontend registration, send the signup email
+        send_user_signup_email($user_id);
+    }
+}
+add_action('user_register', 'handle_frontend_user_registration');
 
 
 
-// Send admin notification email after user registration
-function send_admin_new_user_notification($user_id) {
+
+// Send an email to the user when their account created by admin is approved
+function send_admin_approval_email($user_id) {
     $user = get_userdata($user_id);
+    $email = $user->user_email;
+    
+    // Generate password reset key
+    $reset_key = get_password_reset_key($user);
 
-    // Get user data
-    $first_name = get_user_meta($user->ID, 'first_name', true);
-    $last_name  = get_user_meta($user->ID, 'last_name', true);
-    $email      = $user->user_email;
+    // Set expiration time (30 days from now)
+    $expires_at = time() + (30 * 24 * 60 * 60);
 
-    // Get ACF fields (Organisation & Role)
-    $organisation = get_field('organisation', 'user_' . $user_id);
-    $organisation_role = get_field('organisation_role', 'user_' . $user_id);
+    // Encode the reset key and user_login to avoid URL issues
+    $reset_token = urlencode(base64_encode(json_encode([
+        'key' => $reset_key,
+        'login' => $user->user_login,
+        'expires' => $expires_at
+    ])));
+
+    // URL to Next.js password reset page
+    #$reset_link = "http://localhost:3000/create-password?token=" . $reset_token;
+	$reset_link = "https://ose-six.vercel.app/create-password?token=" . $reset_token;
 
     // Email subject
-    $subject = 'OSE Shareholder Portal: New User Registration';
+    $subject = get_field('admin_approved_email_subject', 'options');
+	$copy = get_field('admin_approved_email_copy', 'options');
+	
+	$first_name = get_user_meta( $user->ID, 'first_name', true );
+	if ( empty( $first_name ) ) {
+		$first_name = $user->display_name; // fallback
+	}
 
-    // Email body (HTML)
+    // Styled HTML email template
     $message = '
     <html>
     <head>
         <style>
             body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
             .container { max-width: 600px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
-            p { color: #333; }
+            .logo { margin-bottom: 20px; }
+            .logo img { max-width: 150px; }
+            p { color: #666; }
             .button {
-                display: inline-block; margin-top: 20px; padding: 10px 20px;
-                background-color: #0073e6; color: white !important; text-decoration: none;
-                border-radius: 5px; font-size: 16px;
+                display: block; width: 200px; margin: 20px 0; padding: 10px 20px;
+                text-align: center; background-color: #0073e6; color: white !important;
+                text-decoration: none; border-radius: 5px; font-size: 16px;
             }
             .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 20px; }
         </style>
     </head>
     <body>
         <div class="container">
-            <p>A new user has requested access to the OSE investor portal:</p>
-            <p><b>Name:</b> ' . esc_html($first_name . ' ' . $last_name) . '<br/>
-               <b>Email:</b> ' . esc_html($email) . '</p>
-            <p>Please log in to the CMS to approve or deny this registration.</p>
-            <a href="' . esc_url(admin_url()) . '" class="button">Login to CMS</a>
+            <p>Hi ' . esc_html($first_name) . '</p>'
+            . $copy .
+			'<a class="button" href="' . esc_url($reset_link) . '">Set Your Password & Login</a>
+			<p>If the button above does not work, copy and paste the following link into your browser:</p>
+			<a href="' . esc_url($reset_link) . '">' . esc_url($reset_link) . '</a>
+			<p>Once your password is set, you can log in at any time using:</p>
+			<p><b>Email:</b> ' . esc_html($user->user_email) . '<br/>
+			<b>Password:</b> Your chosen password</p>
+			<p>If you need any assistance, please contact us at <a href="mailto:investors@oxfordsciences.com">investors@oxfordsciences.com</a>.</p>
+			<p>Kind regards</p>
+			<div class="logo">
+                <img src="https://oxfordscienceenterprises-cms.com/wp-content/uploads/2025/09/OSE-POSITIVE-RGB-LOGO.png" alt="Oxford Science Enterprises Logo" />
+            </div>
             <div class="footer">
                 <p>&copy; ' . date('Y') . ' Oxford Science Enterprises. All rights reserved.</p>
             </div>
@@ -387,20 +486,85 @@ function send_admin_new_user_notification($user_id) {
     </body>
     </html>';
 
-    // Headers
     $headers = [
         'Content-Type: text/html; charset=UTF-8',
         'From: Oxford Science Enterprises <investors@oxfordsciences.com>',
         'Reply-To: investors@oxfordsciences.com'
     ];
 
-    // Send email
-    $mail_sent = wp_mail('investors@oxfordsciences.com', $subject, $message, $headers);
+    $mail_sent = wp_mail($email, $subject, $message, $headers);
 
     if (!$mail_sent) {
-        error_log("Admin notification email failed to send for user ID: " . $user_id);
+        error_log("Approval email failed to send to: " . $email);
     } else {
-        error_log("Admin notification email sent successfully for user ID: " . $user_id);
+        error_log("Approval email sent successfully to: " . $email);
+    }
+}
+
+
+// Send admin notification email after frontend user registration
+function send_admin_new_user_notification($user_id) {
+    // Only send admin notification for frontend registrations (not admin-created users)
+    if (!current_user_can('create_users')) {
+        $user = get_userdata($user_id);
+
+        // Get user data
+        $first_name = get_user_meta($user->ID, 'first_name', true);
+        $last_name  = get_user_meta($user->ID, 'last_name', true);
+        $email      = $user->user_email;
+
+        // Get ACF fields (Organisation & Role)
+        $organisation = get_field('organisation', 'user_' . $user_id);
+        $organisation_role = get_field('organisation_role', 'user_' . $user_id);
+
+        // Email subject
+        $subject = 'OSE Shareholder Portal: New User Registration';
+
+        // Email body (HTML)
+        $message = '
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+                .container { max-width: 600px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+                p { color: #333; }
+                .button {
+                    display: inline-block; margin-top: 20px; padding: 10px 20px;
+                    background-color: #0073e6; color: white !important; text-decoration: none;
+                    border-radius: 5px; font-size: 16px;
+                }
+                .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 20px; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <p>A new user has requested access to the OSE investor portal:</p>
+                <p><b>Name:</b> ' . esc_html($first_name . ' ' . $last_name) . '<br/>
+                   <b>Email:</b> ' . esc_html($email) . '</p>
+                <p>Please log in to the CMS to approve or deny this registration.</p>
+                <a href="' . esc_url(admin_url()) . '" class="button">Login to CMS</a>
+                <div class="footer">
+                    <p>&copy; ' . date('Y') . ' Oxford Science Enterprises. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>';
+
+        // Headers
+        $headers = [
+            'Content-Type: text/html; charset=UTF-8',
+            'From: Oxford Science Enterprises <investors@oxfordsciences.com>',
+            'Reply-To: investors@oxfordsciences.com'
+        ];
+
+        // Send email
+        $mail_sent = wp_mail('investors@oxfordsciences.com', $subject, $message, $headers);
+
+        if (!$mail_sent) {
+            error_log("Admin notification email failed to send for user ID: " . $user_id);
+        } else {
+            error_log("Admin notification email sent successfully for user ID: " . $user_id);
+        }
     }
 }
 

@@ -107,7 +107,7 @@ add_action('graphql_register_types', function () {
 
            if (username_exists($username) || email_exists($email)) {
                return [
-                   'message' => 'Username or Email already exists',
+                   'message' => 'Email already exists',
                ];
            }
 
