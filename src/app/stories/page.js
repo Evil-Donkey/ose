@@ -6,6 +6,7 @@ import FlexiblePageClient from "@/components/Templates/FlexiblePageClient";
 import StoriesWrapper from "./StoriesWrapper";
 import getStoriesTypes from "@/lib/getStoriesTypes";
 import getStoriesItems from "@/lib/getStoriesItems";
+import getStoriesSectors from "@/lib/getStoriesSectors";
 import getFooterData from "@/lib/getFooterData";
 
 export async function generateMetadata() {
@@ -18,6 +19,7 @@ export default async function StoriesPage() {
   const popOutData = await getPopOutData();
   const types = await getStoriesTypes();
   const stories = await getStoriesItems();
+  const sectors = await getStoriesSectors();
   const footerData = await getFooterData();
 
   const ctaData = {
@@ -32,11 +34,11 @@ export default async function StoriesPage() {
         flexibleContent={flexibleContent} 
         popOutData={popOutData}
         title={title}
-        content={content}
+        isStoriesPage={true}
         fixedHeader={true}
       />
 
-      <StoriesWrapper types={types} stories={stories} ctaData={ctaData} />
+      <StoriesWrapper types={types} stories={stories} sectors={sectors} ctaData={ctaData} />
     </>
   );
 } 

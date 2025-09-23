@@ -4,12 +4,18 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Container from "@/components/Container";
 import { getOptimizedVideoProps, getVideoSources } from "@/lib/videoUtils";
+import VimeoEmbed from "./VimeoEmbed";
 
 const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
     const popupRef = useRef(null);
     const popupBgRef = useRef(null);
     const popupContentRef = useRef(null);
     const videoRef = useRef(null);
+
+    // Check if fullMovie is a Vimeo URL
+    const isVimeoUrl = (url) => {
+        return typeof url === 'string' && url.includes('vimeo.com');
+    };
 
     useEffect(() => {
         if (popupRef.current) {
@@ -43,12 +49,12 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
 
             if (isOpen) {
                 popupTl.play();
-                if (videoRef.current) {
+                if (videoRef.current && !isVimeoUrl(fullMovie)) {
                     videoRef.current.play();
                 }
             } else {
                 popupTl.reverse();
-                if (videoRef.current) {
+                if (videoRef.current && !isVimeoUrl(fullMovie)) {
                     videoRef.current.pause();
                 }
             }
@@ -71,20 +77,31 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
                 </button>
                 <div className="h-full w-full flex items-center justify-center">
                     <Container>
-                        <video 
-                            ref={videoRef}
-                            {...getOptimizedVideoProps(fullMovie, {
-                                context: 'content',
-                                priority: true,
-                                className: "w-full rounded-2xl shadow-xl",
-                                controls: true,
-                                playsInline: true
-                            })}
-                        >
-                            {getVideoSources(fullMovie).map((source, index) => (
-                                <source key={index} src={source.src} type={source.type} />
-                            ))}
-                        </video>
+                        {isVimeoUrl(fullMovie) ? (
+                            <div className="w-full aspect-video rounded-2xl shadow-xl overflow-hidden">
+                                <VimeoEmbed
+                                    vimeoUrl={fullMovie}
+                                    className="w-full h-full"
+                                    controls={true}
+                                    muted={false}
+                                />
+                            </div>
+                        ) : fullMovie ? (
+                            <video 
+                                ref={videoRef}
+                                {...getOptimizedVideoProps(fullMovie, {
+                                    context: 'content',
+                                    priority: true,
+                                    className: "w-full rounded-2xl shadow-xl",
+                                    controls: true,
+                                    playsInline: true
+                                })}
+                            >
+                                {getVideoSources(fullMovie).map((source, index) => (
+                                    <source key={index} src={source.src} type={source.type} />
+                                ))}
+                            </video>
+                        ) : null}
                     </Container>
                 </div>
             </div>

@@ -2,11 +2,12 @@ import fetchAPI from "./api";
 
 const STORIES_ITEMS_QUERY = `
   query Stories {
-    stories(first: 1000) {
+    stories(first: 1000, where: {orderby: {field: MENU_ORDER, order: ASC}}) {
       nodes {
         title
         slug
         databaseId
+        menuOrder
         content(format: RENDERED)
         featuredImage {
           node {
@@ -18,6 +19,13 @@ const STORIES_ITEMS_QUERY = `
           cardExcerpt
         }
         storiesTypes {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+        storiesSectors {
           nodes {
             id
             name

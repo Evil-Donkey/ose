@@ -170,7 +170,7 @@ const Story = ({ data }) => {
                         {content &&
                             <div ref={el => copyRef.current[1] = el} className="w-full lg:w-1/2 xl:pe-20 flex flex-col gap-10 opacity-0 translate-y-20 transition-all duration-1000">
                                 <div className="text-base 2xl:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock || displayContent }} />
-                                <Link href={uri} className="hidden lg:flex font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline">Read More</Link>
+                                <Link href={uri} className="hidden lg:flex font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline">Read full story</Link>
                             </div>
                         }
                         {quote &&
@@ -201,7 +201,7 @@ const Story = ({ data }) => {
                     </div>
 
                     <div ref={el => copyRef.current[2] = el} className="flex justify-center mt-16 opacity-0 translate-y-20 transition-all duration-1000">
-                        <Button href="/stories">Read more stories</Button>
+                        <Button href="/stories">See all stories</Button>
                     </div>
                 </Container>
             </div>

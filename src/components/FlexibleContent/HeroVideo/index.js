@@ -7,11 +7,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Button from "@/components/Button";
 import Container from "../../Container";
 import { getOptimizedVideoProps, getVideoSources } from "@/lib/videoUtils";
+import VimeoEmbed from "./VimeoEmbed";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
-    const { fullMovie, introMovie, mobileMovie, headings, desktopImage, mobileImage, copyOnTheLeft, ctaLabel } = data;
+    const { fullMovie, introMovie, mobileMovie, fullMovieVimeo, introMovieMobileVimeo, introMovieVimeo, headings, desktopImage, mobileImage, copyOnTheLeft, ctaLabel } = data;
 
     const videoRef = useRef([]);
     const heroRef = useRef(null);
@@ -73,7 +74,18 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
         <div ref={heroRef} className={`pb-40 md:pb-10 h-[100vh] ${!title ? "bg-cover bg-center bg-[url('/gradient.png')] pt-40 2xl:pt-50" : "pt-45 2xl:pt-60"} flex`}>
             <Container className="flex-grow-1 h-full">
                 <div className={`mx-auto relative h-full`}>
-                    {introMovie && (   
+                    
+                    {introMovieVimeo ? (
+                        <div 
+                            ref={el => videoRef.current[0] = el}
+                            className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden ${mobileMovie || introMovieMobileVimeo ? "hidden lg:block" : ""}`}
+                        >
+                            <VimeoEmbed
+                                vimeoUrl={introMovieVimeo}
+                                className="w-full h-full"
+                            />
+                        </div>
+                    ) : introMovie && (   
                         <video 
                             ref={el => videoRef.current[0] = el} 
                             {...getOptimizedVideoProps(introMovie, {
@@ -93,7 +105,17 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                             ))}
                         </video>
                     )}
-                    {mobileMovie && (
+                    {introMovieMobileVimeo ? (
+                        <div 
+                            ref={el => videoRef.current[1] = el}
+                            className="w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden lg:hidden"
+                        >
+                            <VimeoEmbed
+                                vimeoUrl={introMovieMobileVimeo}
+                                className="w-full h-full"
+                            />
+                        </div>
+                    ) : mobileMovie && (
                         <video 
                             ref={el => videoRef.current[1] = el} 
                             {...getOptimizedVideoProps(mobileMovie, {
@@ -131,9 +153,9 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                                 ))}
                             </h1>
                         )}
-                        {fullMovie && (
+                        {(fullMovieVimeo || fullMovie) && (
                             <div ref={buttonRef} className="mt-8 opacity-0 translate-y-5">
-                                <Button onClick={() => onVideoPopupOpen(fullMovie)}>{ctaLabel ? ctaLabel : "Watch Full Video"}</Button>
+                                <Button onClick={() => onVideoPopupOpen(fullMovieVimeo || fullMovie)}>{ctaLabel ? ctaLabel : "Watch Full Video"}</Button>
                             </div>
                         )}
                     </div>

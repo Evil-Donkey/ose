@@ -4,7 +4,7 @@ import { useState } from "react";
 import StoriesClient from "./StoriesClient";
 import CTA from "@/components/CTA";
 
-export default function StoriesWrapper({ types, stories, ctaData }) {
+export default function StoriesWrapper({ types, stories, sectors, ctaData }) {
   const [storiesData, setStoriesData] = useState(null);
 
   const handleStoriesUpdate = (updatedStories) => {
@@ -16,6 +16,7 @@ export default function StoriesWrapper({ types, stories, ctaData }) {
       <StoriesClient 
         types={types} 
         stories={stories} 
+        sectors={sectors}
         onStoriesUpdate={handleStoriesUpdate}
       />
       <CTA data={ctaData} storiesData={storiesData} />

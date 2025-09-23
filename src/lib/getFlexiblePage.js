@@ -30,6 +30,9 @@ const FLEXIBLE_CONTENT_QUERY = `
             }
               copyOnTheLeft
               ctaLabel
+              fullMovieVimeo
+              introMovieMobileVimeo
+              introMovieVimeo
           }
           ... on Page_Flexiblecontent_FlexibleContent_TitleAndCopy {
             copy

@@ -178,10 +178,10 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
     <>
       <HeaderWithMeganavLinks fixed={true} />
       <Container>
-        <div className="flex flex-col gap-10 items-center justify-center text-center lg:pb-20 pt-50">
+        <div className="flex flex-col gap-10 items-center justify-center text-center pb-10 lg:pb-15 pt-45 lg:pt-50">
           <div className="w-full lg:w-120">
-            <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27 text-darkblue mb-5">{title}</h1>
-            <div className="text-base lg:text-xl mb-10" dangerouslySetInnerHTML={{ __html: content }} />
+            <h1 className="text-6xl text-darkblue mb-5">{title}</h1>
+            {/* <div className="text-base lg:text-xl mb-10" dangerouslySetInnerHTML={{ __html: content }} /> */}
           </div>
         </div>
 
@@ -417,8 +417,9 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
             </button>
           </div>
         </div>
+
         {/* Portfolio grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left mb-20">
           {filteredItems.slice().sort((a, b) => a.title.localeCompare(b.title)).map((item, idx) => {
             const gridThumb = item.portfolioFields?.gridThumbnail?.mediaItemUrl;
             const featuredImg = item.featuredImage?.node?.mediaItemUrl;
@@ -431,7 +432,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                 prefetch={false}
               >
                 <div
-                  className="relative bg-white rounded-2xl shadow flex flex-col gap-2 overflow-hidden min-h-[330px] h-full transition-transform duration-200 group-hover:-translate-y-1"
+                  className="relative bg-white rounded-2xl shadow flex flex-col gap-2 overflow-hidden min-h-[200px] h-full transition-transform duration-200 group-hover:-translate-y-1"
                   style={bgImage ? { backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
                 >
                   {/* Overlay */}
@@ -445,10 +446,10 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                         className="mb-4 absolute top-4 left-3 w-2/3 object-contain"
                       />
                     ) : (
-                      <h2 className="text-xl font-bold text-white drop-shadow mb-2" dangerouslySetInnerHTML={{ __html: item.title }} />
+                      <h2 className="text-lg 2xl:text-xl font-bold text-white drop-shadow mb-2" dangerouslySetInnerHTML={{ __html: item.title }} />
                     )}
                     {item.portfolioFields?.portfolioTitle && (
-                      <div className="text-base xl:text-2xl font-medium" dangerouslySetInnerHTML={{ __html: item.portfolioFields.portfolioTitle }} />
+                      <div className="text-base lg:text-xl 2xl:text-2xl font-medium" dangerouslySetInnerHTML={{ __html: item.portfolioFields.portfolioTitle }} />
                     )}
                   </div>
                 </div>

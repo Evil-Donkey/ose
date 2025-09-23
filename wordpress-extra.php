@@ -224,10 +224,12 @@ add_action( 'init', function() {
          'singular_name' => __( 'Stories', 'your-textdomain' ),
        'menu_name' => __( 'Stories', 'your-textdomain' ),
      ],
+     'supports' => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
      'hierarchical' => true,
      'show_in_graphql' => true,
      'graphql_single_name' => 'story',
      'graphql_plural_name' => 'stories',
+     'graphql_sortable_fields' => ['menuOrder'],
      'public' => true,
      'publicly_queryable' => true,
       'menu_icon' => 'dashicons-portfolio'
@@ -245,6 +247,21 @@ add_action('init', function() {
    'show_in_graphql' => true,
    'graphql_single_name' => 'storiesType',
    'graphql_plural_name' => 'storiesTypes',
+ ]);
+});
+
+// stories sectors
+add_action('init', function() {
+ register_taxonomy( 'stories-sector', 'stories', [
+   'labels'  => [
+       'name' => __( 'Stories Sectors', 'your-textdomain' ),
+         'singular_name' => __( 'Stories Sector', 'your-textdomain' ),
+     'menu_name' => __( 'Stories Sectors', 'your-textdomain' ),
+   ],
+    'hierarchical' => true,
+   'show_in_graphql' => true,
+   'graphql_single_name' => 'storiesSector',
+   'graphql_plural_name' => 'storiesSectors',
  ]);
 });
 
