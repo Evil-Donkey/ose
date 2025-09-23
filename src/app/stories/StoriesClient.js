@@ -174,7 +174,7 @@ export default function StoriesClient({ types, stories, sectors }) {
                     className="flex-1 relative group"
                     >
                         <div
-                        className={`bg-lightblue rounded-xl p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap hover:opacity-100 hover:rounded-b-none ${selectedType !== type.id ? "opacity-80" : "opacity-100"}`}
+                        className={`bg-lightblue rounded-xl p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap hover:opacity-100 ${type.description && "hover:rounded-b-none"} ${selectedType !== type.id ? "opacity-80" : "opacity-100"}`}
                         onClick={() => {
                             setSelectedType(type.id);
                         }}
@@ -184,11 +184,13 @@ export default function StoriesClient({ types, stories, sectors }) {
                                 <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedType === type.id ? "bg-white" : ""}`}></span>
                             </span>
                         </div>
-                        <div className="absolute left-0 right-0 bg-lightblue text-white rounded-b-xl shadow-lg overflow-hidden hidden group-hover:block">
-                            <div className="flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg">
-                                <span>{type.description}</span>
+                        {type.description && (
+                            <div className="absolute left-0 right-0 bg-lightblue text-white rounded-b-xl shadow-lg overflow-hidden hidden group-hover:block">
+                                <div className="flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg">
+                                    <span>{type.description}</span>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 ))}
                 
