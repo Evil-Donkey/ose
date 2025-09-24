@@ -28,14 +28,15 @@ export default async function SustainabilityPage() {
       <HeaderWithMeganavLinks fixed={true} />
       {featuredImage && 
       <div className="relative mt-30 h-[500px]">
-        <ResponsiveImage 
+        {/* <ResponsiveImage 
           {...getOptimizedImageProps({ mediaItemUrl: featuredImage, altText: title }, {
             context: 'hero',
             isAboveFold: true,
             isHero: true,
             className: "object-cover w-full h-full"
           })}
-        />
+        /> */}
+        <Image src={featuredImage} alt={title} fill className="object-cover" />
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex items-center justify-center">
           {title && <h1 className="text-5xl md:text-[7rem]/30 2xl:text-[9rem]/50 tracking-tight text-white">{title}</h1>}

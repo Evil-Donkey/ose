@@ -45,7 +45,7 @@ export default async function PortfolioSinglePage({ params }) {
             backgroundImage: featuredImage ? `url(${featuredImage.node.mediaItemUrl})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/30" />
-            {featuredImage.node.altText && <div className="absolute bottom-8 right-10 text-white text-sm">{featuredImage.node.altText}</div>}
+            {featuredImage.node.caption ? <div className="absolute bottom-8 right-10 text-white text-sm">{featuredImage.node.caption}</div> : featuredImage.node.altText && <div className="absolute bottom-8 right-10 text-white text-sm">{featuredImage.node.altText}</div>}
             <div className="w-full md:w-200 mx-auto text-center text-white relative">
                 {logo 
                     ? <ResponsiveImage 

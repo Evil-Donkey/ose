@@ -115,7 +115,7 @@ const News = ({ newsItems, newsCategories }) => {
                   {heroItem.news?.thumbnailImage?.mediaItemUrl || heroItem.featuredImage?.node?.mediaItemUrl ? (
                     <Image
                       src={heroItem.news?.thumbnailImage?.mediaItemUrl || heroItem.featuredImage.node.mediaItemUrl}
-                      alt={heroItem.news?.thumbnailImage?.altText || heroItem.featuredImage.node.altText || heroItem.title}
+                      alt={ heroItem.news?.thumbnailImage?.altText || heroItem.featuredImage.node.altText || heroItem.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />

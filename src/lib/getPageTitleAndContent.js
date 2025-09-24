@@ -9,6 +9,7 @@ const PAGE_TITLE_CONTENT_QUERY = `
         node {
           mediaItemUrl
           altText
+          caption
         }
       }
       sustainability {
@@ -32,6 +33,7 @@ export default async function getPageTitleAndContent(pageId) {
     content: data?.page?.content || null,
     featuredImage: data?.page?.featuredImage?.node?.mediaItemUrl || null,
     featuredImageAltText: data?.page?.featuredImage?.node?.altText || null,
+    featuredImageCaption: data?.page?.featuredImage?.node?.caption || null,
     sustainability: data?.page?.sustainability?.sustainabilityReport?.mediaItemUrl || null,
     secondaryTitle: data?.page?.extraPageOptions?.secondaryTitle || null
   };

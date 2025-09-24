@@ -56,6 +56,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             backgroundImage {
               mediaItemUrl
               altText
+              caption
             }
           }
           ... on Page_Flexiblecontent_FlexibleContent_InfographicMap {
@@ -84,6 +85,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             investorsHeading
             investorsDesktopImage {
               altText
+              caption
               mediaItemUrl
               mediaDetails {
                 height
@@ -92,6 +94,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             }
             investorsMobileImage {
               altText
+              caption
               mediaItemUrl
               mediaDetails {
                 height
@@ -121,6 +124,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             spinoutDesktopImage {
               mediaItemUrl
               altText
+              caption
               mediaDetails {
                 height
                 width
@@ -129,6 +133,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             spinoutMobileImage {
               mediaItemUrl
               altText
+              caption
               mediaDetails {
                 height
                 width
@@ -155,6 +160,7 @@ const FLEXIBLE_CONTENT_QUERY = `
               }
               photo {
                 altText
+                caption
                 mediaItemUrl
                 mediaDetails {
                   height
@@ -183,6 +189,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                   width
                 }
                 altText
+                caption
               }
               video {
                 mediaItemUrl
@@ -205,6 +212,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                 featuredImage {
                   node {
                     altText
+                    caption
                     mediaItemUrl
                     mediaDetails {
                       height
@@ -239,6 +247,7 @@ const FLEXIBLE_CONTENT_QUERY = `
               ctaUrl
               backgroundImage {
                 altText
+                caption
                 mediaDetails {
                   height
                   width
@@ -272,6 +281,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                       width
                     }
                     altText
+                    caption
                   }
                 }
               }
@@ -309,10 +319,12 @@ const FLEXIBLE_CONTENT_QUERY = `
             image {
               mediaItemUrl
               altText
+              caption
             }
             imageMobile {
               mediaItemUrl
               altText
+              caption
             }
             videoMp4 {
               mediaItemUrl
@@ -334,6 +346,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                 featuredImage {
                   node {
                     altText
+                    caption
                     mediaItemUrl
                   }
                 }
@@ -359,6 +372,7 @@ const FLEXIBLE_CONTENT_QUERY = `
                 featuredImage {
                   node {
                     altText
+                    caption
                     mediaItemUrl
                   }
                 }
@@ -379,10 +393,12 @@ const FLEXIBLE_CONTENT_QUERY = `
               quote
               image {
                 altText
+                caption
                 mediaItemUrl
               }
               mobile {
                 altText
+                caption
                 mediaItemUrl
               }
             }
@@ -401,6 +417,7 @@ const FLEXIBLE_CONTENT_QUERY = `
               bio
               image {
                 altText
+                caption
                 mediaItemUrl
               }
             }
@@ -425,10 +442,12 @@ const FLEXIBLE_CONTENT_QUERY = `
               imageOverlay
               backgroundImage {
                 altText
+                caption
                 mediaItemUrl
               }
               backgroundImageMobile {
                 altText
+                caption
                 mediaItemUrl
               }
             }
@@ -442,10 +461,12 @@ const FLEXIBLE_CONTENT_QUERY = `
             listPosition
             backgroundImage {
               altText
+              caption
               mediaItemUrl
             }
             backgroundImageMobile {
               altText
+              caption
               mediaItemUrl
             }
             list {
@@ -482,6 +503,7 @@ const FLEXIBLE_CONTENT_QUERY = `
               }
               image {
                 altText
+                caption
                 mediaItemUrl
                 mediaDetails {
                   height
@@ -496,6 +518,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             title
             gallery {
               mediaItemUrl
+              caption
               altText
             }
           }
@@ -509,12 +532,13 @@ const FLEXIBLE_CONTENT_QUERY = `
               title
               url
               logo {
+                altText
+                caption
                 mediaItemUrl
                 mediaDetails {
                   height
                   width
                 }
-                altText
               }
             }
           }

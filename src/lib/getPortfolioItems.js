@@ -9,8 +9,13 @@ const PORTFOLIO_ITEMS_QUERY = `
         slug
         featuredImage {
             node {
-            altText
-            mediaItemUrl
+              altText
+              caption
+              mediaItemUrl
+              mediaDetails {
+                height
+                width
+              }
             }
         }
         portfolioFields {
@@ -18,15 +23,30 @@ const PORTFOLIO_ITEMS_QUERY = `
           currentlyFundraising
           logo {
             altText
+            caption
             mediaItemUrl
+            mediaDetails {
+              height
+              width
+            }
           }
           logoThumbnail {
             altText
+            caption
             mediaItemUrl
+            mediaDetails {
+              height
+              width
+            }
           }
           gridThumbnail {
             altText
+            caption
             mediaItemUrl
+            mediaDetails {
+              height
+              width
+            }
           }
           websiteUrl
           linkedinUrl

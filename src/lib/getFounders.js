@@ -22,6 +22,7 @@ const FOUNDERS_QUERY = `
             featuredImage {
                 node {
                 altText
+                caption
                 mediaItemUrl
                 mediaDetails {
                     height

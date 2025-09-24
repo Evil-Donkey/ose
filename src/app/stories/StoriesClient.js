@@ -353,7 +353,7 @@ export default function StoriesClient({ types, stories, sectors }) {
                             const excerpt = content ? content.replace(/<[^>]*>/g, '').split(' ').slice(0, 20).join(' ') + '...' : '';
                             
                             return (
-                                <div key={index + 1} className="opacity-0 translate-y-20 stories-item" ref={el => storyRefs.current[index + 1] = el}>
+                                <div key={index + 1} className="opacity-0 translate-y-20 stories-item flex flex-col" ref={el => storyRefs.current[index + 1] = el}>
                                     <Link href={`/stories/${slug}`} className="block group transition-all duration-300">
                                         <div className="relative overflow-hidden rounded-2xl min-h-[200px] p-6 flex items-end">
                                             {featuredImage?.node?.mediaItemUrl ? (
@@ -381,8 +381,8 @@ export default function StoriesClient({ types, stories, sectors }) {
                                     </Link>
                                     
                                     {/* Content section */}
-                                    <div className="p-6">
-                                        <p className="text-blue-02 text-base 2g:text-lg leading-relaxed mb-6 font-medium" dangerouslySetInnerHTML={{ __html: cardExcerpt || excerpt }} />
+                                    <div className="p-6 flex-grow-1 flex flex-col justify-between">
+                                        <div className="text-blue-02 text-base 2g:text-lg leading-relaxed mb-6 font-medium" dangerouslySetInnerHTML={{ __html: cardExcerpt || excerpt }} />
                                         <Link href={`/stories/${slug}`} className="block">
                                             <Button className="w-full">
                                                 READ MORE

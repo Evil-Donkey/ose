@@ -3,6 +3,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import Container from "@/components/Container";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Link from "next/link";
+import Image from "next/image";
 import ReactDOM from "react-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -178,7 +179,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
     <>
       <HeaderWithMeganavLinks fixed={true} />
       <Container>
-        <div className="flex flex-col gap-10 items-center justify-center text-center pb-10 lg:pb-15 pt-45 lg:pt-50">
+        <div className="flex flex-col gap-10 items-center justify-center text-center pb-10 lg:pb-15 pt-45 lg:pt-50 2xl:pt-60">
           <div className="w-full lg:w-120">
             <h1 className="text-6xl text-darkblue mb-5">{title}</h1>
             {/* <div className="text-base lg:text-xl mb-10" dangerouslySetInnerHTML={{ __html: content }} /> */}
@@ -419,7 +420,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
         </div>
 
         {/* Portfolio grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 text-left mb-20">
           {filteredItems.slice().sort((a, b) => a.title.localeCompare(b.title)).map((item, idx) => {
             const gridThumb = item.portfolioFields?.gridThumbnail?.mediaItemUrl;
             const featuredImg = item.featuredImage?.node?.mediaItemUrl;
@@ -432,7 +433,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                 prefetch={false}
               >
                 <div
-                  className="relative bg-white rounded-2xl shadow flex flex-col gap-2 overflow-hidden min-h-[200px] h-full transition-transform duration-200 group-hover:-translate-y-1"
+                  className="relative bg-white rounded-2xl shadow flex flex-col gap-2 overflow-hidden min-h-[200px] md:min-h-[250px] 2xl:min-h-[300px] h-full transition-transform duration-200 group-hover:-translate-y-1"
                   style={bgImage ? { backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
                 >
                   {/* Overlay */}
@@ -440,9 +441,11 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                   {/* Card content */}
                   <div className="relative z-10 p-6 flex flex-col h-full justify-end text-white">
                     {item.portfolioFields?.logo?.mediaItemUrl ? (
-                      <img
+                      <Image
                         src={item.portfolioFields.logoThumbnail?.mediaItemUrl || item.portfolioFields.logo.mediaItemUrl}
                         alt={item.portfolioFields.logo.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
+                        width={item.portfolioFields.logoThumbnail?.mediaDetails?.width || item.portfolioFields.logo.mediaDetails?.width || 100}
+                        height={item.portfolioFields.logoThumbnail?.mediaDetails?.height || item.portfolioFields.logo.mediaDetails?.height || 100}
                         className="mb-4 absolute top-4 left-3 w-2/3 object-contain"
                       />
                     ) : (

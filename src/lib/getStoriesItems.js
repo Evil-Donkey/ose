@@ -11,6 +11,7 @@ const STORIES_ITEMS_QUERY = `
         content(format: RENDERED)
         featuredImage {
           node {
+            caption
             altText
             mediaItemUrl
           }

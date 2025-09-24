@@ -13,6 +13,7 @@ const STORY_DATA_QUERY = `
             fieldGroupName
             fullWidth
             image {
+              caption
               altText
               mediaItemUrl
               mediaDetails {

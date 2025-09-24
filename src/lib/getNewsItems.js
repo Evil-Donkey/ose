@@ -14,12 +14,14 @@ const NEWS_ITEMS_QUERY = `
           externalUrl
           thumbnailImage {
             altText
+            caption
             mediaItemUrl
           }
         }
         featuredImage {
           node {
             altText
+            caption
             mediaItemUrl
           }
         }

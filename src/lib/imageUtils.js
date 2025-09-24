@@ -99,7 +99,7 @@ export const getOptimizedImageProps = (imageData, options = {}) => {
   
   return {
     src: imageData.mediaItemUrl,
-    alt: imageData.altText || alt,
+    alt: imageData.altText || imageData.caption || alt,
     width,
     height,
     priority: shouldPriority,

@@ -159,14 +159,14 @@ const OneColumnCopyAlternate = ({ data }) => {
                             <ResponsiveImage 
                                 ref={imageRef} 
                                 src={image.mediaItemUrl} 
-                                alt={heading} 
+                                alt={image.caption || image.altText || heading} 
                                 width={image.mediaDetails?.width || 800} 
                                 height={image.mediaDetails?.height || 600} 
                                 className="object-cover scale-180 origin-top w-full h-full" 
                                 sizes="(max-width: 1024px) 100vw, 50vw"
                                 quality={80}
                             />
-                            {image.altText && <div className="absolute bottom-4 right-4 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: image.altText }} />}
+                            {image.caption ? <div className="absolute bottom-4 right-4 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: image.caption }} /> : image.altText && <div className="absolute bottom-4 right-4 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: image.altText }} />}
                         </div>
                     )}
                     {!backgroundMedia && videoMp4 &&
