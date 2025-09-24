@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import Container from "@/components/Container";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Link from "next/link";
@@ -20,6 +20,46 @@ function groupCategories(categories) {
   }));
 }
 
+// LogoImage component moved outside to prevent re-creation on every render
+const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onInitializeLogo, onLogoLoad, onLogoError }) => {
+  const logoUrl = item.portfolioFields?.logoThumbnail?.mediaItemUrl || item.portfolioFields?.logo?.mediaItemUrl;
+  const isLoading = logoLoadingStates[itemId] === true;
+  const hasError = logoErrorStates[itemId] === true;
+  
+  // Initialize loading state for this item
+  useEffect(() => {
+    if (logoUrl && logoLoadingStates[itemId] === undefined) {
+      onInitializeLogo(itemId);
+    }
+  }, [logoUrl, itemId, logoLoadingStates, onInitializeLogo]);
+  
+  if (!logoUrl || hasError) {
+    // Fallback to text title
+    return (
+      <h2 className="text-lg 2xl:text-xl font-bold text-white drop-shadow mb-2" dangerouslySetInnerHTML={{ __html: item.title }} />
+    );
+  }
+
+  return (
+    <div>
+      {isLoading && (
+        <div className="absolute top-4 left-3 w-2/3 h-16 bg-white/20 rounded animate-pulse" />
+      )}
+      <Image
+        src={logoUrl}
+        alt={item.portfolioFields.logo?.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
+        width={item.portfolioFields.logoThumbnail?.mediaDetails?.width || item.portfolioFields.logo?.mediaDetails?.width || 100}
+        height={item.portfolioFields.logoThumbnail?.mediaDetails?.height || item.portfolioFields.logo?.mediaDetails?.height || 100}
+        className={`mb-4 absolute top-4 left-3 w-2/3 object-contain transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        onLoad={() => onLogoLoad(itemId)}
+        onError={() => onLogoError(itemId)}
+        unoptimized={logoUrl.endsWith('.svg')} // Disable optimization for SVGs
+        priority={false} // Don't prioritize logo loading
+      />
+    </div>
+  );
+};
+
 export default function PortfolioClient({ title, content, portfolioItems, categories, stages }) {
   const searchParams = useSearchParams();
   const groupedCategories = useMemo(() => groupCategories(categories), [categories]);
@@ -29,6 +69,26 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   const dropdownRefs = useRef({});
   const portalDropdownRefs = useRef({});
   const [fundraisingOnly, setFundraisingOnly] = useState(false);
+  
+  // Logo loading states
+  const [logoLoadingStates, setLogoLoadingStates] = useState({});
+  const [logoErrorStates, setLogoErrorStates] = useState({});
+
+  // Logo loading handlers
+  const initializeLogoState = useCallback((itemId) => {
+    setLogoLoadingStates(prev => ({ ...prev, [itemId]: true }));
+    setLogoErrorStates(prev => ({ ...prev, [itemId]: false }));
+  }, []);
+
+  const handleLogoLoad = useCallback((itemId) => {
+    setLogoLoadingStates(prev => ({ ...prev, [itemId]: false }));
+    setLogoErrorStates(prev => ({ ...prev, [itemId]: false }));
+  }, []);
+
+  const handleLogoError = useCallback((itemId) => {
+    setLogoLoadingStates(prev => ({ ...prev, [itemId]: false }));
+    setLogoErrorStates(prev => ({ ...prev, [itemId]: true }));
+  }, []);
 
   // Dropdown portal logic
   const [dropdownPosition, setDropdownPosition] = useState({});
@@ -440,17 +500,15 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                   {bgImage && <div className="absolute inset-0 bg-black/40 z-0" />}
                   {/* Card content */}
                   <div className="relative z-10 p-6 flex flex-col h-full justify-end text-white">
-                    {item.portfolioFields?.logo?.mediaItemUrl ? (
-                      <Image
-                        src={item.portfolioFields.logoThumbnail?.mediaItemUrl || item.portfolioFields.logo.mediaItemUrl}
-                        alt={item.portfolioFields.logo.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
-                        width={item.portfolioFields.logoThumbnail?.mediaDetails?.width || item.portfolioFields.logo.mediaDetails?.width || 100}
-                        height={item.portfolioFields.logoThumbnail?.mediaDetails?.height || item.portfolioFields.logo.mediaDetails?.height || 100}
-                        className="mb-4 absolute top-4 left-3 w-2/3 object-contain"
-                      />
-                    ) : (
-                      <h2 className="text-lg 2xl:text-xl font-bold text-white drop-shadow mb-2" dangerouslySetInnerHTML={{ __html: item.title }} />
-                    )}
+                    <LogoImage 
+                      item={item} 
+                      itemId={item.id || idx} 
+                      logoLoadingStates={logoLoadingStates}
+                      logoErrorStates={logoErrorStates}
+                      onInitializeLogo={initializeLogoState}
+                      onLogoLoad={handleLogoLoad}
+                      onLogoError={handleLogoError}
+                    />
                     {item.portfolioFields?.portfolioTitle && (
                       <div className="text-base lg:text-xl 2xl:text-2xl font-medium" dangerouslySetInnerHTML={{ __html: item.portfolioFields.portfolioTitle }} />
                     )}
