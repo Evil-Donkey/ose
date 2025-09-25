@@ -166,7 +166,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                                 sizes="(max-width: 1024px) 100vw, 50vw"
                                 quality={80}
                             />
-                            {image.caption ? <div className="absolute bottom-4 right-4 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: image.caption }} /> : image.altText && <div className="absolute bottom-4 right-4 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: image.altText }} />}
+                            {image.caption && <div className="absolute bottom-4 right-4 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: image.caption }} />}
                         </div>
                     )}
                     {!backgroundMedia && videoMp4 &&
