@@ -355,7 +355,7 @@ export default function StoriesClient({ types, stories, sectors }) {
                             return (
                                 <div key={index + 1} className="opacity-0 translate-y-20 stories-item flex flex-col" ref={el => storyRefs.current[index + 1] = el}>
                                     <Link href={`/stories/${slug}`} className="block group transition-all duration-300">
-                                        <div className="relative overflow-hidden rounded-2xl min-h-[200px] p-6 flex items-end">
+                                        <div className="relative overflow-hidden rounded-2xl aspect-3/2 p-6 flex items-end">
                                             {featuredImage?.node?.mediaItemUrl ? (
                                                 <>
                                                     <ResponsiveImage 
@@ -365,7 +365,7 @@ export default function StoriesClient({ types, stories, sectors }) {
                                                             className: "absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all! duration-300!"
                                                         })}
                                                     />
-                                                    <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
+                                                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/40 to-black/0" />
                                                 </>
                                             ) : (
                                                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">

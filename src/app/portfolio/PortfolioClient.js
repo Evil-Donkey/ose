@@ -239,10 +239,10 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
     <>
       <HeaderWithMeganavLinks fixed={true} />
       <Container>
-        <div className="flex flex-col gap-10 items-center justify-center text-center pb-10 lg:pb-15 pt-45 lg:pt-50 2xl:pt-60">
-          <div className="w-full lg:w-120">
-            <h1 className="text-6xl text-darkblue mb-5">{title}</h1>
-            {/* <div className="text-base lg:text-xl mb-10" dangerouslySetInnerHTML={{ __html: content }} /> */}
+        <div className="flex flex-col gap-10 items-center justify-center text-center pb-10 lg:pb-9 pt-45 lg:pt-50 2xl:pt-60">
+          <div className="w-full">
+            <h1 className="text-6xl text-darkblue mb-4">{title}</h1>
+            <div className="text-base lg:text-lg" dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         </div>
 

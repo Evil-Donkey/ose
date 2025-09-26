@@ -156,7 +156,7 @@ const InfographicMap = ({ data, onPopupOpen }) => {
                                     className="relative flex flex-col items-center justify-center size-27 lg:size-60 transition-all duration-300 group-hover:scale-105 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue cursor-pointer"
                                 >
                                     <div className="text-4xl lg:text-7xl">82</div>
-                                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-xs lg:text-sm text-white text-center hidden lg:block">Click to see OSE&apos;s spinouts</div>
+                                    {/* <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-xs lg:text-sm text-white text-center hidden lg:block">Click to see OSE&apos;s spinouts</div> */}
                                 </div>
                             </div>
                             <div className="relative" ref={el => circlesRef.current[3] = el}>
@@ -164,7 +164,7 @@ const InfographicMap = ({ data, onPopupOpen }) => {
                                 <div className="relative flex flex-col items-center justify-center size-38 lg:size-80 transition-all duration-300 group-hover:scale-105 rounded-full bg-linear-to-r from-[#003EA6]/90 to-[#000050] text-lightblue cursor-pointer">
                                     <div className="text-5xl lg:text-8xl">100+</div>
                                     <div className="text-lg lg:text-3xl -mt-1">Companies</div>
-                                    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-xs lg:text-sm text-white text-center hidden lg:block">Click to see OSE&apos;s spinouts</div>
+                                    {/* <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-xs lg:text-sm text-white text-center hidden lg:block">Click to see OSE&apos;s spinouts</div> */}
                                 </div>
                             </div>
                         </div>
