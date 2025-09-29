@@ -63,6 +63,7 @@ export default function InvestorPortalSignupClient({ title, content, investorPor
                                     <div 
                                         key={`${uniqueKey}-file-${contentIndex}`}
                                         onClick={() => downloadFile(contentItem.fileUpload?.mediaItemUrl || contentItem.fileUpload?.link, contentItem.fileName)}
+                                        // onClick={() => window.open(contentItem.fileUpload?.mediaItemUrl || contentItem.fileUpload?.link, '_blank')}
                                         className={`bg-gray-200 hover:bg-gray-200 transition-colors duration-200 cursor-pointer rounded-lg p-4 mb-2 flex items-center justify-between ${level > 0 ? 'ml-12' : 'ml-6'}`}
                                     >
                                         <div className="flex items-center gap-3">

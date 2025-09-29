@@ -134,7 +134,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                     >
                         <div className={`transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col items-center lg:items-end justify-center lg:justify-start gap-5 lg:gap-0 absolute top-0 left-0 w-svw h-svh lg:h-auto lg:w-auto bg-blue-02 lg:bg-transparent lg:static ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-none'}`}>
                             <div className={`flex justify-end transition-all duration-500 order-last lg:order-first ${isHeaderScrolled ? 'mb-0 2xl:mb-3' : 'md:mb-2 2xl:mb-4'}`}>
-                                <nav className={`space-x-4 ${isHeaderScrolled ? 'lg:space-x-6' : 'xl:space-x-9'} flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0`}>
+                                <nav className={`${isHeaderScrolled ? 'lg:space-x-6' : 'xl:space-x-9'} flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0`}>
                                     {topNavItems.map((item, index) => {
                                         const isActive = pathname === item.href;
                                         return (

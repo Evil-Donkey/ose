@@ -23,6 +23,7 @@ const Cards = ({ data }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('');
+    const [openDropdown, setOpenDropdown] = useState(null);
 
     // Extract unique foundersCategories from founders
     const foundersCategories = Array.from(
@@ -146,6 +147,19 @@ const Cards = ({ data }) => {
 
     }, [loading]);
 
+    // Close dropdown on outside click
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (openDropdown && !event.target.closest('.dropdown-container')) {
+                setOpenDropdown(null);
+            }
+        }
+        if (openDropdown !== null) {
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => document.removeEventListener("mousedown", handleClickOutside);
+        }
+    }, [openDropdown]);
+
     // Re-trigger animations when activeTab changes
     // useEffect(() => {
     //     if (!loading && founders.length > 0) {
@@ -175,7 +189,7 @@ const Cards = ({ data }) => {
     if (error) return <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}><div>{error}</div></Container>;
 
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0 overflow-hidden">
             <Container className="py-20 2xl:py-40">
                 {title && 
                     <div className="flex flex-col">
@@ -188,7 +202,44 @@ const Cards = ({ data }) => {
                     </div>
                 }
                 
-                <div className="flex items-center text-center justify-center gap-10 mt-20">
+                {/* Mobile Dropdown */}
+                <div className="md:hidden relative dropdown-container mt-10">
+                    <div 
+                        className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap rounded-xl ${openDropdown === 'founders' ? 'rounded-t-xl' : 'rounded-xl'}`}
+                        onClick={() => setOpenDropdown(openDropdown === 'founders' ? null : 'founders')}
+                    >
+                        <span>{foundersCategories.find(cat => cat.slug === activeTab)?.name || 'Select Category'}</span>
+                        <span>
+                            <span className="ml-2 -mr-2 w-9 h-5 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
+                                    <path fillRule="evenodd" d="M12 15.5a.75.75 0 01-.53-.22l-5-5a.75.75 0 111.06-1.06L12 13.69l4.47-4.47a.75.75 0 111.06 1.06l-5 5a.75.75 0 01-.53.22z" clipRule="evenodd" />
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    {openDropdown === 'founders' && (
+                        <div className="absolute left-0 right-0 bg-[#00A0CC] text-white rounded-b-xl shadow-lg overflow-hidden z-10">
+                            {foundersCategories.map((category, index) => (
+                                <div
+                                    key={index}
+                                    className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${activeTab === category.slug ? "bg-white text-[#00A0CC] font-bold" : ""}`}
+                                    onClick={() => {
+                                        setActiveTab(category.slug);
+                                        setOpenDropdown(null);
+                                    }}
+                                >
+                                    <span>{category.name}</span>
+                                    <span>
+                                        <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${activeTab === category.slug ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Desktop Button List */}
+                <div className="hidden md:flex items-center text-center justify-center gap-10 mt-20">
                     {foundersCategories.map((category, index) => (
                         <button
                             key={index}

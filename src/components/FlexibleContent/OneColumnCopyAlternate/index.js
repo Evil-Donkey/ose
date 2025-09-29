@@ -81,7 +81,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     }, []);
 
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[70vh] md:min-h-[100vh] h-full w-full overflow-hidden bg-white">
             
             {heading && (
                 <div className="hidden lg:flex flex-col items-center text-center pt-20 z-50 absolute top-0 left-0 w-full h-full">
@@ -128,7 +128,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                 </>
             }
             
-            <div className="min-h-[100vh] h-full flex flex-col justify-end lg:justify-center mt-20">
+            <div className="min-h-[70vh] md:min-h-[100vh] h-full flex flex-col justify-end lg:justify-center lg:mt-20">
                 <Container className={`h-full py-15 md:py-15 2xl:py-25 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between lg:items-center gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
                     <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-3/5 xl:w-1/2" : "lg:w-1/2"} gap-5 lg:py-15`}>
                         {/* {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />} */}
@@ -152,7 +152,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                                 </div>
                             }
                         </div>
-                        {credits && <div className={`lg:hidden text-xs 2xl:text-sm lg:text-end mt-10 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
+                        {credits && <div className={`lg:hidden text-xs 2xl:text-sm text-end mt-4 lg:mt-10 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
                     </div>
                     {!backgroundMedia && image && (
                         <div className="w-full lg:w-1/2 h-110 lg:h-auto overflow-hidden rounded-2xl relative one-column-copy-alternate__image">

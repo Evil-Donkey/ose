@@ -58,13 +58,13 @@ export default async function TeamMemberSinglePage({ params }) {
             </Container>
         </div>
         {heroMobileImage && (
-            <div className={`mt-20 py-20 min-h-[500px] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
+            <div className={`mt-30 py-20 min-h-[300px] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
                 backgroundImage: heroMobileImage ? `url(${heroMobileImage.mediaItemUrl})` : undefined
             }}>
             </div>
         )}
         <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0">
-            <Container className="py-20">
+            <Container className="py-10 md:py-20">
                 <div className="flex flex-col lg:flex-row gap-16">
                     <div className="w-full lg:w-2/3">
                         {content && <div className="mt-4 flex flex-col gap-4 text-base lg:text-lg" dangerouslySetInnerHTML={{ __html: content }} />}

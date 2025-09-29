@@ -143,7 +143,7 @@ const Story = ({ data }) => {
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}>
-            <div className="relative w-full lg:min-h-[100vh] h-full">
+            <div className="relative w-full lg:min-h-[100vh] h-full overflow-hidden">
                 {backgroundImage && 
                     <>
                         <div ref={imageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage})` }} />
@@ -164,7 +164,7 @@ const Story = ({ data }) => {
                 }
             </div>
 
-            <div className="bg-linear-to-t from-black/10 to-black/0">
+            <div className="bg-linear-to-t from-black/10 to-black/0 overflow-hidden md:overflow-visible">
                 <Container className="py-10 md:py-25 2xl:py-45">
                     <div className="flex flex-col lg:flex-row gap-10">
                         {content &&

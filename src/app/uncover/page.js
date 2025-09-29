@@ -17,7 +17,7 @@ export async function generateMetadata() {
 }
 
 export default async function UncoverPage() {
-    const { title, content, featuredImage, featuredImageAltText, featuredImageCaption, secondaryTitle } = await getPageTitleAndContent("1704");
+    const { title, content, featuredImage, featuredImageAltText, featuredImageCaption, secondaryTitle, mobileFeaturedImage, mobileFeaturedImageAltText, mobileFeaturedImageCaption } = await getPageTitleAndContent("1704");
     const flexibleContent = await getFlexiblePage("1704");
     const popOutData = await getPopOutData();
     const footerData = await getFooterData();
@@ -41,13 +41,14 @@ export default async function UncoverPage() {
               className: "object-cover w-full h-full"
             })}
           /> */}
-          <Image src={featuredImage} alt={featuredImageAltText} fill className="object-cover" />
+          <Image src={featuredImage} alt={featuredImageAltText} fill className={`object-cover ${mobileFeaturedImage ? "hidden lg:block" : ""}`} />
+          {mobileFeaturedImage && <Image src={mobileFeaturedImage} alt={mobileFeaturedImageAltText} fill className="object-cover lg:hidden" />}
           {/* <div className="absolute inset-0 bg-black/50" /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
             {title && <h1 className="text-5xl md:text-[7rem]/30 2xl:text-[9rem]/50 tracking-tight text-white">{title}</h1>}
             {secondaryTitle && <h2 className="w-full md:w-200 text-2xl md:text-4xl 2xl:text-5xl text-white mt-3">{secondaryTitle}</h2>}
           </div>
-          {featuredImageCaption && <div className="hidden lg:block absolute bottom-8 right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: featuredImageCaption }} />}
+          {featuredImageCaption && <div className="block absolute bottom-4 right-4 md:bottom-8 md:right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: featuredImageCaption }} />}
         </div>
       }
       <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0">

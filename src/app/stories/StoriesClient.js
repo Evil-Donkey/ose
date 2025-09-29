@@ -95,16 +95,19 @@ export default function StoriesClient({ types, stories, sectors }) {
     if (openDropdown && dropdownButtonRefs.current[openDropdown]) {
       requestAnimationFrame(() => {
         const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        
         setDropdownPosition({
-          left: rect.left,
-          top: rect.bottom,
+          left: rect.left + scrollLeft,
+          top: rect.bottom + scrollTop,
           width: rect.width,
         });
       });
     }
   }, [openDropdown]);
 
-  // Update isMobileDropdown on resize
+  // Update isMobileDropdown on resize and handle scroll for dropdown positioning
   useEffect(() => {
     let timeoutId;
     
@@ -115,14 +118,32 @@ export default function StoriesClient({ types, stories, sectors }) {
       }, 100);
     }
     
+    function handleScroll() {
+      if (openDropdown && dropdownButtonRefs.current[openDropdown]) {
+        const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        
+        setDropdownPosition({
+          left: rect.left + scrollLeft,
+          top: rect.bottom + scrollTop,
+          width: rect.width,
+        });
+      }
+    }
+    
+    // Initial check
     setIsMobileDropdown(window.innerWidth < 1021);
     
     window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [openDropdown]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -220,6 +241,7 @@ export default function StoriesClient({ types, stories, sectors }) {
                                         onMouseDown={e => {
                                             e.stopPropagation();
                                             setSelectedSector(null);
+                                            setOpenDropdown(null);
                                         }}
                                     >
                                         <span>All Sectors</span>
@@ -234,6 +256,7 @@ export default function StoriesClient({ types, stories, sectors }) {
                                             onMouseDown={e => {
                                                 e.stopPropagation();
                                                 setSelectedSector(sector.id);
+                                                setOpenDropdown(null);
                                             }}
                                         >
                                             <span>{sector.name}</span>
@@ -252,6 +275,7 @@ export default function StoriesClient({ types, stories, sectors }) {
                                     onMouseDown={e => {
                                         e.stopPropagation();
                                         setSelectedSector(null);
+                                        setOpenDropdown(null);
                                     }}
                                 >
                                     <span>All Sectors</span>
@@ -266,6 +290,7 @@ export default function StoriesClient({ types, stories, sectors }) {
                                         onMouseDown={e => {
                                             e.stopPropagation();
                                             setSelectedSector(sector.id);
+                                            setOpenDropdown(null);
                                         }}
                                     >
                                         <span>{sector.name}</span>

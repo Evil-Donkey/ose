@@ -75,7 +75,7 @@ const Advantages = ({ data }) => {
                                             opacity-0 -translate-x-full
                                             ${index > 0 && index % 2 === 1 ? 'md:-ml-8' : ''}
                                             ${index > 0 ? 'xl:-ml-4' : ''}
-                                            before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-x-1/2 before:-translate-y-1/2 before:aspect-square before:rounded-full before:bg-white/95 before:-z-1 before:w-[270px] before:h-[270px] xl:before:w-[330px] xl:before:h-[330px]
+                                            before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:transform before:-translate-x-1/2 before:-translate-y-1/2 before:aspect-square before:rounded-full before:bg-white/95 before:-z-1 before:w-[320px] before:h-[320px] md:before:w-[270px] md:before:h-[270px] xl:before:w-[330px] xl:before:h-[330px]
                                         `}
                                     >
                                         {heading && (

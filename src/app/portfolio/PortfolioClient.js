@@ -125,15 +125,18 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
       // Use requestAnimationFrame to ensure layout is complete
       requestAnimationFrame(() => {
         const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        
         setDropdownPosition({
-          left: rect.left,
-          top: rect.bottom,
+          left: rect.left + scrollLeft,
+          top: rect.bottom + scrollTop,
           width: rect.width,
         });
       });
     }
   }, [openDropdown]);
-  // Update isMobileDropdown on resize
+  // Update isMobileDropdown on resize and handle scroll for dropdown positioning
   useEffect(() => {
     let timeoutId;
     
@@ -144,15 +147,32 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
       }, 100);
     }
     
+    function handleScroll() {
+      if (openDropdown && dropdownButtonRefs.current[openDropdown]) {
+        const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        
+        setDropdownPosition({
+          left: rect.left + scrollLeft,
+          top: rect.bottom + scrollTop,
+          width: rect.width,
+        });
+      }
+    }
+    
     // Initial check
     setIsMobileDropdown(window.innerWidth < 1021);
     
     window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
     return () => {
       clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [openDropdown]);
 
   // Helper to render dropdown in portal
   function DropdownPortal({ children, dropdownKey }) {
@@ -320,6 +340,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                                 onMouseDown={e => {
                                   e.stopPropagation();
                                   setSelectedCategory(opt.id);
+                                  setOpenDropdown(null);
                                 }}
                               >
                                 <span>{opt.name === 'Deep Tech' ? 'All' : opt.name}</span>
@@ -339,6 +360,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                               onMouseDown={e => {
                                 e.stopPropagation();
                                 setSelectedCategory(opt.id);
+                                setOpenDropdown(null);
                               }}
                             >
                               <span>{opt.name === 'Deep Tech' ? 'Deep Tech' : opt.name}</span>
@@ -404,6 +426,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                         onMouseDown={e => {
                           e.stopPropagation();
                           setSelectedStage(null);
+                          setOpenDropdown(null);
                         }}
                       >
                         <span>All Stages</span>
@@ -418,6 +441,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                           onMouseDown={e => {
                             e.stopPropagation();
                             setSelectedStage(stage.id);
+                            setOpenDropdown(null);
                           }}
                         >
                           <span>{stage.name}</span>
@@ -437,6 +461,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                       onMouseDown={e => {
                         e.stopPropagation();
                         setSelectedStage(null);
+                        setOpenDropdown(null);
                       }}
                     >
                       <span>All Stages</span>
@@ -451,6 +476,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                         onMouseDown={e => {
                           e.stopPropagation();
                           setSelectedStage(stage.id);
+                          setOpenDropdown(null);
                         }}
                       >
                         <span>{stage.name}</span>

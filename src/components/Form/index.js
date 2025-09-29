@@ -223,7 +223,7 @@ const Form = () => {
             <label htmlFor="file" className="text-sm">Upload any relevant non-confidential material</label>
             <input 
                 type="file" 
-                className="bg-lightblue text-white font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer self-start uppercase" 
+                className="bg-lightblue text-white font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer self-start uppercase w-full md:w-auto" 
                 accept=".txt,.pdf"
                 {...register("file", { 
                     validate: {
