@@ -46,7 +46,7 @@ export default async function TeamMemberSinglePage({ params }) {
   return (
     <>
         <HeaderWithMeganavLinks fixed={true} />
-        <div className={`mt-20 py-20 aspect-[16/9] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
+        <div className={`mt-20 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
             backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/20" />
@@ -58,13 +58,20 @@ export default async function TeamMemberSinglePage({ params }) {
             </Container>
         </div>
         {heroMobileImage && (
-            <div className={`mt-30 py-20 aspect-[16/9] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
+            <div className={`mt-30 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
                 backgroundImage: heroMobileImage ? `url(${heroMobileImage.mediaItemUrl})` : undefined
             }}>
             </div>
         )}
         <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0">
-            <Container className="py-10 md:py-20">
+            <Container className={`pt-10 relative flex flex-row lg:hidden`}>
+                <div className="flex flex-col gap-2">
+                    {title && <h1 className="text-4xl">{title}</h1>}
+                    {role && <p className="text-lg max-w-md">{role}</p>}
+                </div>
+            </Container>
+
+            <Container className="pb-10 lg:py-20">
                 <div className="flex flex-col lg:flex-row gap-16">
                     <div className="w-full lg:w-2/3">
                         {content && <div className="mt-4 flex flex-col gap-4 text-base lg:text-lg" dangerouslySetInnerHTML={{ __html: content }} />}
