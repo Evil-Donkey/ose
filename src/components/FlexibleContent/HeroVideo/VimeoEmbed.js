@@ -1,80 +1,43 @@
 'use client'
 
 import { useEffect, useRef } from 'react';
-import Player from '@vimeo/player';
 
 const VimeoEmbed = ({ vimeoUrl, className = "", background = true, controls = false, muted = true, loop = true, ...props }) => {
-    const playerRef = useRef(null);
-    const playerInstanceRef = useRef(null);
+    const iframeRef = useRef(null);
 
     useEffect(() => {
-        if (!vimeoUrl || !playerRef.current) return;
-
-        // Extract video ID from Vimeo URL
-        const getVimeoId = (url) => {
-            const match = url.match(/(?:vimeo\.com\/)(\d+)/);
-            return match ? match[1] : null;
-        };
-
-        const videoId = getVimeoId(vimeoUrl);
-        
-        if (!videoId) {
-            console.warn('Invalid Vimeo URL:', vimeoUrl);
-            return;
+        if (iframeRef.current) {
+            // Ensure the iframe loads properly
+            iframeRef.current.src = iframeRef.current.src;
         }
-
-        // Clean up existing player instance
-        if (playerInstanceRef.current) {
-            playerInstanceRef.current.destroy();
-        }
-
-        // Create new player instance
-        playerInstanceRef.current = new Player(playerRef.current, {
-            id: parseInt(videoId),
-            autoplay: true,
-            muted: muted,
-            loop: loop,
-            background: background && !controls, // Only use background mode if controls are disabled
-            controls: controls,
-            title: false,
-            byline: false,
-            portrait: false,
-            dnt: true,
-            responsive: true
-        });
-
-        // Handle player events if needed
-        playerInstanceRef.current.on('ready', () => {
-            // Player is ready
-            // Ensure the iframe inside the player has proper pointer events
-            const iframe = playerRef.current.querySelector('iframe');
-            if (iframe) {
-                iframe.style.pointerEvents = 'auto';
-                iframe.style.zIndex = '2';
-            }
-        });
-
-        playerInstanceRef.current.on('error', (error) => {
-            console.error('Vimeo player error:', error);
-        });
-
-        // Cleanup function
-        return () => {
-            if (playerInstanceRef.current) {
-                playerInstanceRef.current.destroy();
-                playerInstanceRef.current = null;
-            }
-        };
-    }, [vimeoUrl, background, controls, muted, loop]);
+    }, [vimeoUrl]);
 
     if (!vimeoUrl) return null;
 
+    // Extract video ID from Vimeo URL
+    const getVimeoId = (url) => {
+        const match = url.match(/(?:vimeo\.com\/)(\d+)/);
+        return match ? match[1] : null;
+    };
+
+    const videoId = getVimeoId(vimeoUrl);
+    
+    if (!videoId) {
+        console.warn('Invalid Vimeo URL:', vimeoUrl);
+        return null;
+    }
+
+    const embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&background=${background && !controls ? 1 : 0}&controls=${controls ? 1 : 0}&title=0&byline=0&portrait=0&dnt=1`;
+
     return (
         <div className={`relative w-full h-full overflow-hidden ${className}`} {...props}>
-            <div
-                ref={playerRef}
-                className="absolute top-1/2 left-1/2 w-full h-full min-w-full min-h-full max-w-none -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
-                style={{ zIndex: 1 }}
+            <iframe
+                ref={iframeRef}
+                src={embedUrl}
+                className={`absolute top-1/2 left-1/2 ${controls ? "w-full h-full" : "w-[177.78vh] h-[56.25vw] min-w-full min-h-full max-w-none"} -translate-x-1/2 -translate-y-1/2`}
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
             />
         </div>
     );

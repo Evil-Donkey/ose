@@ -85,7 +85,6 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
 
                             <VimeoEmbed
                                 vimeoUrl={introMovieVimeo}
-                                className="w-full h-full"
                             />
                         </div>
                     ) : introMovie && (  
@@ -120,7 +119,6 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                             {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />}
                             <VimeoEmbed
                                 vimeoUrl={introMovieMobileVimeo}
-                                className="w-full h-full"
                             />
                         </div>
                     ) : mobileMovie && (
