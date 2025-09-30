@@ -323,7 +323,7 @@ const Cards = ({ data }) => {
                                             )}
                                             <div className="absolute inset-0 bg-black/30 pointer-events-none" />
                                             {heading && <h4 className="text-white text-3xl font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: heading }} />}
-                                            {description && <div className="text-white text-base z-10 mt-3 text-pretty" dangerouslySetInnerHTML={{ __html: description }} />}
+                                            {description && <div className="text-white text-base z-10 mt-3 text-balance" dangerouslySetInnerHTML={{ __html: description }} />}
                                             {bio && (
                                                 <div className="text-white text-base z-10 mt-3">
                                                     <div 

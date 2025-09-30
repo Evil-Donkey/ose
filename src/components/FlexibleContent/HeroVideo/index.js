@@ -78,68 +78,79 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                     {introMovieVimeo ? (
                         <div 
                             ref={el => videoRef.current[0] = el}
-                            className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden ${mobileMovie || introMovieMobileVimeo ? "hidden lg:block" : ""}`}
+                            className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 relative overflow-hidden ${mobileMovie || introMovieMobileVimeo ? "hidden lg:block" : ""}`}
                         >
+                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />}
+                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />}
+
                             <VimeoEmbed
                                 vimeoUrl={introMovieVimeo}
                                 className="w-full h-full"
                             />
                         </div>
-                    ) : introMovie && (   
-                        <video 
-                            ref={el => videoRef.current[0] = el} 
-                            {...getOptimizedVideoProps(introMovie, {
-                                context: 'hero',
-                                isHero: true,
-                                isAboveFold: true,
-                                isAutoplay: true,
-                                className: `w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 ${mobileMovie ? "hidden lg:block" : ""}`,
-                                controls: false,
-                                muted: true,
-                                loop: true,
-                                playsInline: true
-                            })}
-                        >
-                            {getVideoSources(introMovie).map((source, index) => (
-                                <source key={index} src={source.src} type={source.type} />
-                            ))}
-                        </video>
+                    ) : introMovie && (  
+                        <div className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 relative ${mobileMovie ? "hidden lg:block" : ""}`} ref={el => videoRef.current[0] = el}>
+                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />}
+                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />}
+                            <video 
+                                {...getOptimizedVideoProps(introMovie, {
+                                    context: 'hero',
+                                    isHero: true,
+                                    isAboveFold: true,
+                                    isAutoplay: true,
+                                    className: `w-full h-full object-cover`,
+                                    controls: false,
+                                    muted: true,
+                                    loop: true,
+                                    playsInline: true
+                                })}
+                            >
+                                {getVideoSources(introMovie).map((source, index) => (
+                                    <source key={index} src={source.src} type={source.type} />
+                                ))}
+                            </video>
+                        </div>
                     )}
                     {introMovieMobileVimeo ? (
                         <div 
                             ref={el => videoRef.current[1] = el}
-                            className="w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden lg:hidden"
+                            className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden lg:hidden relative ${mobileMovie ? "hidden lg:block" : ""}`}
                         >
+                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />}
+                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />}
                             <VimeoEmbed
                                 vimeoUrl={introMovieMobileVimeo}
                                 className="w-full h-full"
                             />
                         </div>
                     ) : mobileMovie && (
-                        <video 
-                            ref={el => videoRef.current[1] = el} 
-                            {...getOptimizedVideoProps(mobileMovie, {
-                                context: 'hero',
-                                isHero: true,
-                                isAboveFold: true,
-                                isAutoplay: true,
-                                className: "w-full h-full rounded-2xl shadow-xl object-cover opacity-0 scale-125 lg:hidden",
-                                controls: false,
-                                muted: true,
-                                loop: true,
-                                playsInline: true
-                            })}
-                        >
-                            {getVideoSources(mobileMovie).map((source, index) => (
-                                <source key={index} src={source.src} type={source.type} />
-                            ))}
-                        </video>
+                        <div className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden lg:hidden relative ${mobileMovie ? "hidden lg:block" : ""}`} ref={el => videoRef.current[1] = el}>
+                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />}
+                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />}
+                            <video 
+                                {...getOptimizedVideoProps(mobileMovie, {
+                                    context: 'hero',
+                                    isHero: true,
+                                    isAboveFold: true,
+                                    isAutoplay: true,
+                                    className: "w-full h-full object-cover",
+                                    controls: false,
+                                    muted: true,
+                                    loop: true,
+                                    playsInline: true
+                                })}
+                            >
+                                {getVideoSources(mobileMovie).map((source, index) => (
+                                    <source key={index} src={source.src} type={source.type} />
+                                ))}
+                            </video>
+                        </div>
                     )}
 
-                    {desktopImage && (
+                    {desktopImage && !introMovieVimeo && !introMovie && (
                         <div ref={el => videoRef.current[2] = el} className={`w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />
                     )}
-                    {mobileImage && (
+                    {mobileImage && !introMovieMobileVimeo && !mobileMovie && (
                         <div ref={el => videoRef.current[3] = el} className="w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />
                     )}
 

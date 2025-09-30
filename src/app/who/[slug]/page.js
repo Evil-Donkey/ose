@@ -46,7 +46,7 @@ export default async function TeamMemberSinglePage({ params }) {
   return (
     <>
         <HeaderWithMeganavLinks fixed={true} />
-        <div className={`mt-20 py-20 min-h-[750px] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
+        <div className={`mt-20 py-20 aspect-[16/9] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
             backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/20" />
@@ -58,7 +58,7 @@ export default async function TeamMemberSinglePage({ params }) {
             </Container>
         </div>
         {heroMobileImage && (
-            <div className={`mt-30 py-20 min-h-[300px] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
+            <div className={`mt-30 py-20 aspect-[16/9] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
                 backgroundImage: heroMobileImage ? `url(${heroMobileImage.mediaItemUrl})` : undefined
             }}>
             </div>

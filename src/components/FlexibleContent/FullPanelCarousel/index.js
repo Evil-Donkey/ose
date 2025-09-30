@@ -299,7 +299,7 @@ const FullPanelCarousel = ({ data }) => {
                                 {/* First column - gets equal items if even, one more if odd */}
                                 <ul className="list-disc marker:text-lightblue pl-4 space-y-2">
                                     {modalContent.accordionList.slice(0, Math.ceil(modalContent.accordionList.length / 2)).map((item, index) => (
-                                        <li className="mb-3 text-pretty" key={index}>
+                                        <li className="mb-3 text-balance" key={index}>
                                             <div className="prose text-white prose-a:text-white" dangerouslySetInnerHTML={{ __html: item.listItem }} />
                                         </li>
                                     ))}
@@ -307,7 +307,7 @@ const FullPanelCarousel = ({ data }) => {
                                 {/* Second column - gets remaining items */}
                                 <ul className="list-disc marker:text-lightblue pl-4 space-y-2">
                                     {modalContent.accordionList.slice(Math.ceil(modalContent.accordionList.length / 2)).map((item, index) => (
-                                        <li className="mb-3 text-pretty" key={Math.ceil(modalContent.accordionList.length / 2) + index}>
+                                        <li className="mb-3 text-balance" key={Math.ceil(modalContent.accordionList.length / 2) + index}>
                                             <div className="prose text-white prose-a:text-white" dangerouslySetInnerHTML={{ __html: item.listItem }} />
                                         </li>
                                     ))}

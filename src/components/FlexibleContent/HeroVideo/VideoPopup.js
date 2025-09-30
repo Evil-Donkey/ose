@@ -83,7 +83,9 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
                                     vimeoUrl={fullMovie}
                                     className="w-full h-full"
                                     controls={true}
+                                    background={false}
                                     muted={false}
+                                    loop={false}
                                 />
                             </div>
                         ) : fullMovie ? (

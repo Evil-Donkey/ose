@@ -48,9 +48,9 @@ const Exits = ({ data }) => {
         .to(portfolioRef.current, {
             opacity: 1,
             y: 0,
-            duration: 1,
+            duration: .5,
             ease: 'power4.out',
-            stagger: 0.1,
+            stagger: 0.01,
             scrollTrigger: {
                 trigger: portfolioRef.current,
                 start: 'top 90%',
@@ -111,7 +111,7 @@ const Exits = ({ data }) => {
                                     <div className="flex flex-col justify-between h-full gap-4 text-white p-4 md:p-8">
                                         {logo && <Image src={logo.mediaItemUrl} alt={logo.altText} width={logo.mediaDetails.width} height={logo.mediaDetails.height} className="object-cover transition-transform" />}
                                         {title &&
-                                            <h3 className="text-3xl xl:text-[1.6rem] 2xl:text-5xl text-balance">
+                                            <h3 className="text-3xl xl:text-[1.5rem] 2xl:text-4xl text-balance">
                                                 {title}
                                             </h3>
                                         }

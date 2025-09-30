@@ -46,21 +46,28 @@ export default async function TeamMemberSinglePage({ params }) {
   return (
     <>
         <HeaderWithMeganavLinks fixed={true} />
-        <div className={`mt-20 py-20 min-h-[750px] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
+        <div className={`mt-20 py-20 aspect-[16/9] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
             backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/30" />
             <Container className={`py-20 relative flex ${heroCopyToTheRight ? 'flex-row-reverse' : 'flex-row'}`}>
                 <div className="flex flex-col gap-2 text-white">
-                    {title && <h1 className="text-4xl lg:text-6xl/18">{title}</h1>}
-                    {role && <p className="text-lg lg:text-2xl">{role}</p>}
+                    {title && <h1 className="text-6xl/18">{title}</h1>}
+                    {role && <p className="text-2xl max-w-2xl">{role}</p>}
                 </div>
             </Container>
         </div>
         {heroMobileImage && (
-            <div className={`mt-30 py-20 min-h-[300px] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
+            <div className={`mt-30 py-20 aspect-[16/9] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
                 backgroundImage: heroMobileImage ? `url(${heroMobileImage.mediaItemUrl})` : undefined
             }}>
+                <div className="absolute inset-0 bg-black/30" />
+                <Container className={`py-20 relative flex ${heroCopyToTheRight ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className="flex flex-col gap-2 text-white">
+                        {title && <h1 className="text-4xl">{title}</h1>}
+                        {role && <p className="text-lg max-w-md">{role}</p>}
+                    </div>
+                </Container>
             </div>
         )}
         <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0">
