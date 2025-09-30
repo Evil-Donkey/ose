@@ -71,9 +71,9 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
     }, []);
 
     return (
-        <div ref={heroRef} className={`pb-20 md:pb-10 h-[100vh] ${!title ? "bg-cover bg-center bg-[url('/gradient.png')] pt-40 2xl:pt-50" : "pt-45 2xl:pt-60"} flex`}>
+        <div ref={heroRef} className={`pb-20 md:pb-10 h-[100vh] ${!title ? "bg-cover bg-center bg-[url('/gradient.png')] pt-30 md:pt-40 2xl:pt-50" : "pt-45 2xl:pt-60"} flex items-center`}>
             <Container className="flex-grow-1 h-full">
-                <div className={`mx-auto relative h-full`}>
+                <div className={`mx-auto relative h-full flex flex-col items-center justify-center`}>
                     
                     {introMovieVimeo ? (
                         <div 
@@ -113,7 +113,7 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                     {introMovieMobileVimeo ? (
                         <div 
                             ref={el => videoRef.current[1] = el}
-                            className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden lg:hidden relative ${mobileMovie ? "hidden lg:block" : ""}`}
+                            className={`w-full aspect-5/7 md:aspect-auto md:w-full md:h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden lg:hidden relative ${mobileMovie ? "hidden lg:block" : ""}`}
                         >
                             {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${desktopImage.mediaItemUrl})` }} />}
                             {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${mobileImage.mediaItemUrl})` }} />}

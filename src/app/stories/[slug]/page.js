@@ -59,7 +59,7 @@ export default async function StoryPage({ params }) {
 
   return (
     <>
-        <div className="relative w-full min-h-[100vh] h-full">
+        <div className="relative w-full min-h-dvh h-full">
             {backgroundImage && 
                 <>
                     <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }} />
@@ -68,8 +68,8 @@ export default async function StoryPage({ params }) {
                 </>
             }
             {title &&
-                <div className="min-h-[100vh] h-full">
-                    <Container className="py-15 2xl:py-25 relative z-10 text-white flex flex-col h-full min-h-[100vh] justify-end gap-10 lg:gap-0">
+                <div className="min-h-dvh h-full">
+                    <Container className="py-15 2xl:py-25 relative z-10 text-white flex flex-col h-full min-h-dvh justify-end gap-10 lg:gap-0">
                         <div className="flex flex-col justify-end w-full">
                             <h2 className="text-[2.5rem]/12 md:text-[3.3rem]/16 xl:text-[4rem]/20 2xl:text-[5rem]/22 3xl:text-[7rem]/30 tracking-tight w-4/5 lg:w-1/2">{title}</h2>
                         </div>
