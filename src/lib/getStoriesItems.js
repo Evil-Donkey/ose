@@ -16,6 +16,13 @@ const STORIES_ITEMS_QUERY = `
             mediaItemUrl
           }
         }
+        mobileFeaturedImage {
+          mobileFeaturedImage {
+            mediaItemUrl
+            altText
+            caption
+          }
+        }
         story {
           cardExcerpt
         }

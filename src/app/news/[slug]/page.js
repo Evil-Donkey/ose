@@ -66,7 +66,7 @@ export default async function NewsSinglePage({ params }) {
         <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0">
             <Container className="pt-10 pb-20 lg:pb-20">
                 <div className="flex flex-col gap-4 lg:px-40">
-                    {content && <div className="mt-4 flex flex-col gap-4 text-base lg:text-lg prose max-w-none text-blue-02 prose-p:mb-1 prose-p:mt-0 prose-h2:text-darkblue prose-h2:mb-0 prose-h2:mt-3 prose-h2:text-xl prose-a:text-blue-02 prose-a:underline" dangerouslySetInnerHTML={{ __html: content }} />}
+                    {content && <div className="mt-4 flex flex-col gap-4 text-base lg:text-lg prose max-w-none text-blue-02 prose-p:mb-1 prose-p:mt-0 prose-h2:text-darkblue prose-h2:mb-0 prose-h2:mt-3 prose-h2:text-xl prose-a:text-blue-02 prose-a:underline prose-ul:m-0 marker:text-lightblue" dangerouslySetInnerHTML={{ __html: content }} />}
                 </div>
 
                 

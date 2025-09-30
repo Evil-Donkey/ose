@@ -48,6 +48,7 @@ export default async function StoryPage({ params }) {
   const popOutData = await getPopOutData();
   const footerData = await getFooterData();
   const backgroundImage = story.featuredImage?.node?.mediaItemUrl;
+  const backgroundImageMobile = story.mobileFeaturedImage?.mobileFeaturedImage?.mediaItemUrl;
   const title = story.title;
   const content = story.content;
 
@@ -60,9 +61,10 @@ export default async function StoryPage({ params }) {
   return (
     <>
         <div className="relative w-full min-h-dvh h-full">
-            {backgroundImage && 
+            {(backgroundImage || backgroundImageMobile) && 
                 <>
-                    <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }} />
+                    <div className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${backgroundImageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${backgroundImage})` }} />
+                    {backgroundImageMobile && <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile})` }} />}
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/40 to-black/0" />
                     {story.featuredImage.node.caption && <div className="hidden lg:block absolute bottom-8 right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: story.featuredImage.node.caption }} />}
                 </>
@@ -81,11 +83,11 @@ export default async function StoryPage({ params }) {
         <div className="bg-linear-to-t from-black/10 to-black/0 pb-20 2xl:pb-45">
             {content &&
                 <Container className="pt-10 md:pt-20 2xl:pt-45 single-story-content">
-                    <div className="text-base 2xl:text-lg flex flex-col gap-4 xl:px-20 *:first:text-2xl *:first:mb-5 prose max-w-none text-blue-02 prose-p:mb-1 prose-p:mt-0 prose-h2:text-darkblue prose-h2:mb-0 prose-h2:mt-3 prose-h2:text-xl prose-a:text-blue-02 prose-a:underline" dangerouslySetInnerHTML={{ __html: content }} />
+                    <div className="text-base 2xl:text-lg flex flex-col gap-4 xl:px-20 *:first:text-2xl *:first:mb-1 prose max-w-none text-blue-02 prose-p:mb-1 prose-p:mt-0 prose-h2:text-darkblue prose-h2:mb-0 prose-h2:mt-3 prose-h2:text-xl prose-a:text-blue-02 prose-a:underline marker:text-lightblue" dangerouslySetInnerHTML={{ __html: content }} />
                 </Container>
             }
 
-            <div className="mt-16">
+            <div className="mt-11">
                 <FlexiblePageClient 
                     flexibleContent={flexibleContent} 
                     popOutData={popOutData}
