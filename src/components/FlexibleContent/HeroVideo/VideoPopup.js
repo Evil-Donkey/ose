@@ -69,7 +69,7 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
             <div ref={popupContentRef} className="opacity-0 w-full h-full z-50 relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-white text-4xl font-bold z-50 cursor-pointer"
+                    className="absolute top-10 lg:top-4 right-4 text-white text-4xl font-bold z-50 cursor-pointer"
                 >
                     <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 5L4.99998 19M5.00001 5L19 19" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
