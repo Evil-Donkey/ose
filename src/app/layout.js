@@ -26,13 +26,13 @@ export default async function RootLayout({ children }) {
   const footerData = await getFooterData();
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} overflow-clip`}>
+      <body className={`${montserrat.variable} overflow-x-hidden`}>
         <AuthProvider>
           <PasswordWrapper>
             <NavigationLoading />
             <Suspense>
               <LayoutClient footerData={footerData}>
-                <div className="min-h-screen">
+                <div className="min-h-screen overflow-clip">
                   <ScrollToHashOnRouteChange />
                   {children}
                 </div>

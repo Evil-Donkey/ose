@@ -61,13 +61,6 @@ export default async function TeamMemberSinglePage({ params }) {
             <div className={`mt-30 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
                 backgroundImage: heroMobileImage ? `url(${heroMobileImage.mediaItemUrl})` : undefined
             }}>
-                <div className="absolute inset-0 bg-black/30" />
-                <Container className={`py-20 relative flex ${heroCopyToTheRight ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <div className="flex flex-col gap-2 text-white">
-                        {title && <h1 className="text-4xl">{title}</h1>}
-                        {role && <p className="text-lg max-w-md">{role}</p>}
-                    </div>
-                </Container>
             </div>
         )}
         <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0">
