@@ -61,15 +61,17 @@ const News = ({ data }) => {
                         const target = externalUrl ? "_blank" : "_self";
                         return (
                             <div key={index} ref={el => newsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
-                                <Link href={link} target={target} className="news__card-image relative aspect-4/5 overflow-hidden rounded-4xl flex text-center items-end justify-center py-10 xl:px-18 group" aria-label={`Read news article: ${title}`}>
-                                    <ResponsiveImage 
-                                        {...getOptimizedImageProps(featuredImage.node, {
-                                            context: 'card',
-                                            index,
-                                            className: "object-cover w-full h-full absolute inset-0 transition-transform duration-300 group-hover:scale-110"
-                                        })}
-                                    />
-                                </Link>
+                                {featuredImage && (
+                                    <Link href={link} target={target} className="news__card-image relative aspect-4/5 overflow-hidden rounded-4xl flex text-center items-end justify-center py-10 xl:px-18 group" aria-label={`Read news article: ${title}`}>
+                                        <ResponsiveImage 
+                                            {...getOptimizedImageProps(featuredImage.node, {
+                                                context: 'card',
+                                                index,
+                                                className: "object-cover w-full h-full absolute inset-0 transition-transform duration-300 group-hover:scale-110"
+                                            })}
+                                        />
+                                    </Link>
+                                )}
                                 <Link href={link} target={target}>
                                     {date && (
                                         <p className="text-white text-xs md:text-base font-bold drop-shadow-lg z-10 mt-5">
