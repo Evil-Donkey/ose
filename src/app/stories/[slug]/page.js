@@ -38,10 +38,10 @@ export default async function StoryPage({ params }) {
     notFound();
   }
 
-  // Find current story index and get previous/next stories
+  // Find current story index and get previous/next stories with circular pagination
   const currentIndex = stories.findIndex(s => s.slug === resolvedParams.slug);
-  const previousStory = currentIndex > 0 ? stories[currentIndex - 1] : null;
-  const nextStory = currentIndex < stories.length - 1 ? stories[currentIndex + 1] : null;
+  const previousStory = currentIndex > 0 ? stories[currentIndex - 1] : stories[stories.length - 1];
+  const nextStory = currentIndex < stories.length - 1 ? stories[currentIndex + 1] : stories[0];
 
   const storyData = await getStoryData(story.databaseId);
   const flexibleContent = storyData.flexibleContent;
@@ -99,18 +99,10 @@ export default async function StoryPage({ params }) {
             <Container className="pt-10 md:pt-25 2xl:pt-45">
                 <div className="grid grid-cols-2 gap-8">
                     <div className="justify-self-end">
-                        {previousStory ? (
-                            <Button href={`/stories/${previousStory.slug}`}>Previous</Button>
-                        ) : (
-                            <div></div>
-                        )}
+                        <Button href={`/stories/${previousStory.slug}`}>Previous</Button>
                     </div>
                     <div>
-                        {nextStory ? (
-                            <Button href={`/stories/${nextStory.slug}`}>Next</Button>
-                        ) : (
-                            <div></div>
-                        )}
+                        <Button href={`/stories/${nextStory.slug}`}>Next</Button>
                     </div>
                 </div>
             </Container>
