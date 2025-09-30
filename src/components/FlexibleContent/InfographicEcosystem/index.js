@@ -138,13 +138,14 @@ const InfographicMap = ({ data, onPopupOpen }) => {
 
                             <div 
                                 ref={el => lineRef.current[1] = el}
-                                className="absolute right-1 top-[80px] lg:top-[120px] 2xl:top-[140px] w-[2px] h-[120px] lg:h-[160px] 2xl:h-[200px] bg-[#B8DDE0]"
+                                className="absolute right-1 top-[80px] lg:top-[120px] 2xl:top-[140px] w-[2px] h-[140px] lg:h-[180px] 2xl:h-[220px] bg-[#B8DDE0]"
                             >
                                 <div className="absolute left-0 bottom-0 w-[500px] ps-2" ref={el => bottomTextRef.current[1] = el}>
                                     <div className="w-30 h-auto mb-2">
                                         <LogoDark />
                                     </div>
                                     <h3 className="font-bold text-xs text-blue-02">OSE established 2015</h3>
+                                    <p className="text-xs text-blue-02">Click to see OSE&apos;s spinouts</p>
                                 </div>
                             </div>
                         </div>

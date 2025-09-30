@@ -594,6 +594,80 @@ function show_user_status_column($value, $column_name, $user_id) {
 }
 add_filter('manage_users_custom_column', 'show_user_status_column', 10, 3);
 
+// Make the user_status column sortable
+function make_user_status_column_sortable($columns) {
+    $columns['user_status'] = 'user_status';
+    return $columns;
+}
+add_filter('manage_users_sortable_columns', 'make_user_status_column_sortable');
+
+// Handle the sorting of the user_status column
+function sort_users_by_status($query) {
+    if (!is_admin() || !isset($_GET['orderby']) || $_GET['orderby'] !== 'user_status') {
+        return;
+    }
+    
+    $query->set('meta_key', 'user_status');
+    $query->set('orderby', 'meta_value');
+    
+    // Set default order to show pending users first
+    $order = isset($_GET['order']) ? $_GET['order'] : 'ASC';
+    $query->set('order', $order);
+}
+add_action('pre_get_users', 'sort_users_by_status');
+
+// Force default sorting to show pending users first
+function force_user_status_default_sorting() {
+    if (!is_admin()) {
+        return;
+    }
+    
+    // Check if we're on the users page and no explicit sorting is set
+    if (isset($_GET['orderby']) && $_GET['orderby'] !== 'user_status') {
+        return;
+    }
+    
+    // Add the filter to modify the query
+    add_filter('users_clauses', 'add_user_status_orderby_clause', 10, 2);
+}
+add_action('pre_get_users', 'force_user_status_default_sorting', 1);
+
+// Force redirect to sorted users page on first load
+function force_user_status_sorting_redirect() {
+    if (is_admin() && isset($_GET['page']) && $_GET['page'] === 'users.php') {
+        if (!isset($_GET['orderby'])) {
+            // Redirect to the same page with our default sorting
+            $redirect_url = add_query_arg(array('orderby' => 'user_status', 'order' => 'asc'), admin_url('users.php'));
+            wp_redirect($redirect_url);
+            exit;
+        }
+    }
+}
+add_action('admin_init', 'force_user_status_sorting_redirect');
+
+// Add custom ORDER BY clause to put pending users first
+function add_user_status_orderby_clause($clauses, $query) {
+    global $wpdb;
+    
+    // Only apply to the main users query
+    if (!$query->is_main_query()) {
+        return $clauses;
+    }
+    
+    // Remove the filter to prevent it from being applied multiple times
+    remove_filter('users_clauses', 'add_user_status_orderby_clause', 10);
+    
+    // Add custom ORDER BY to put pending users first
+    $clauses['orderby'] = "CASE 
+        WHEN {$wpdb->usermeta}.meta_value IS NULL OR {$wpdb->usermeta}.meta_value = '' THEN 0 
+        WHEN {$wpdb->usermeta}.meta_value = 'pending' THEN 1 
+        WHEN {$wpdb->usermeta}.meta_value = 'approved' THEN 2 
+        WHEN {$wpdb->usermeta}.meta_value = 'rejected' THEN 3 
+        ELSE 4 
+    END ASC, {$wpdb->users}.user_login ASC";
+    
+    return $clauses;
+}
 
 // Prevent unapproved users from logging in
 function restrict_unapproved_users($user, $username, $password = null) {
