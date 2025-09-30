@@ -26,7 +26,7 @@ export default async function RootLayout({ children }) {
   const footerData = await getFooterData();
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} overflow-clip`}>
+      <body className={`${montserrat.variable}`}>
         <AuthProvider>
           <PasswordWrapper>
             <NavigationLoading />
