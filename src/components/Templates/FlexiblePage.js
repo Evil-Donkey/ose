@@ -1,16 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
 import LazyLoadInitializer from "@/lib/lazyLoader";
 import PageFlexibleContent from "@/components/FlexibleContent";
 import PopOut from "@/components/PopOut/index";
 import Popup from "@/components/FlexibleContent/InfographicEcosystem/Popup";
 import VideoPopup from "@/components/FlexibleContent/HeroVideo/VideoPopup";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
-
-gsap.registerPlugin(ScrollSmoother);
 
 export default function FlexiblePage({ flexibleContent, className, popOutData, title, titleInHero, content, fixedHeader, hideHeader, isStoriesPage }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
