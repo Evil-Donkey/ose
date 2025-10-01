@@ -98,6 +98,29 @@ const nextConfig = {
     async rewrites() {
         return [];
     },
+    // Configure headers for favicon cache busting
+    async headers() {
+        return [
+            {
+                source: '/icon.ico',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=0, must-revalidate',
+                    },
+                ],
+            },
+            {
+                source: '/favicon.ico',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: 'public, max-age=0, must-revalidate',
+                    },
+                ],
+            },
+        ];
+    },
     // Configure redirects
     async redirects() {
         return [
