@@ -5,11 +5,21 @@ import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Link from "next/link";
 import Image from "next/image";
 import ReactDOM from "react-dom";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSearchParams } from "next/navigation";
+import { useConditionalLibrary } from "@/lib/conditionalImports";
 
-gsap.registerPlugin(ScrollTrigger);
+// Conditionally load GSAP
+const useGSAP = () => {
+  const { library: gsap, loading } = useConditionalLibrary('gsap');
+  
+  useEffect(() => {
+    if (gsap && gsap.ScrollTrigger) {
+      gsap.registerPlugin(gsap.ScrollTrigger);
+    }
+  }, [gsap]);
+  
+  return { gsap, loading };
+};
 
 function groupCategories(categories) {
   const parents = categories.filter(cat => !cat.parentId);

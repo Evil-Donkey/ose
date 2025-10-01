@@ -1,0 +1,14 @@
+# Modern browsers that support ES2017+ features
+# This reduces unnecessary polyfills and transforms
+
+# Production browsers (modern browsers with good market share)
+> 0.5%
+last 2 versions
+not dead
+not ie 11
+not op_mini all
+
+# Development browsers (latest versions for development)
+last 1 chrome version
+last 1 firefox version
+last 1 safari version
