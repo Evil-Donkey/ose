@@ -108,14 +108,14 @@ const News = ({ newsItems, newsCategories }) => {
         {/* Hero Section - First News Item */}
         {heroItem && (
           <div className="mb-16">
-            <Link href={heroItem.news?.externalUrl || `/news/${heroItem.slug}`} className="block group" target={heroItem.news?.externalUrl ? "_blank" : "_self"}>
+            <Link href={heroItem.news?.externalUrl || `/news/${heroItem.slug}`} className="block group" target={heroItem.news?.externalUrl ? "_blank" : "_self"} aria-label={`Read news article: ${heroItem.title}`}>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                 {/* Image Section */}
                 <div className="relative h-80 lg:h-full min-h-[470px] rounded-xl overflow-hidden">
                   {heroItem.news?.thumbnailImage?.mediaItemUrl || heroItem.featuredImage?.node?.mediaItemUrl ? (
                     <Image
                       src={heroItem.news?.thumbnailImage?.mediaItemUrl || heroItem.featuredImage.node.mediaItemUrl}
-                      alt={heroItem.news?.thumbnailImage?.altText || heroItem.featuredImage.node.altText || heroItem.title}
+                      alt={ heroItem.news?.thumbnailImage?.altText || heroItem.featuredImage.node.altText || heroItem.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -166,6 +166,7 @@ const News = ({ newsItems, newsCategories }) => {
                 href={item.news?.externalUrl || `/news/${item.slug}`} 
                 className="block group"
                 target={item.news?.externalUrl ? "_blank" : "_self"}
+                aria-label={`Read news article: ${item.title}`}
               >
                 <div className="transition-all duration-300 hover:-translate-y-1">
                   {/* Image */}

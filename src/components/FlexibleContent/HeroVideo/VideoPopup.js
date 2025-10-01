@@ -3,12 +3,19 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Container from "@/components/Container";
+import { getOptimizedVideoProps, getVideoSources } from "@/lib/videoUtils";
+import VimeoEmbed from "./VimeoEmbed";
 
 const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
     const popupRef = useRef(null);
     const popupBgRef = useRef(null);
     const popupContentRef = useRef(null);
     const videoRef = useRef(null);
+
+    // Check if fullMovie is a Vimeo URL
+    const isVimeoUrl = (url) => {
+        return typeof url === 'string' && url.includes('vimeo.com');
+    };
 
     useEffect(() => {
         if (popupRef.current) {
@@ -42,12 +49,12 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
 
             if (isOpen) {
                 popupTl.play();
-                if (videoRef.current) {
+                if (videoRef.current && !isVimeoUrl(fullMovie)) {
                     videoRef.current.play();
                 }
             } else {
                 popupTl.reverse();
-                if (videoRef.current) {
+                if (videoRef.current && !isVimeoUrl(fullMovie)) {
                     videoRef.current.pause();
                 }
             }
@@ -58,11 +65,11 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
 
     return (
         <div ref={popupRef} className="fixed z-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-screen h-screen">
-            <div ref={popupBgRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 bg-darkblue/80 origin-center rounded-full"></div>
+            <div ref={popupBgRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 bg-darkblue origin-center rounded-full"></div>
             <div ref={popupContentRef} className="opacity-0 w-full h-full z-50 relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-white text-4xl font-bold z-50 cursor-pointer"
+                    className="absolute top-10 lg:top-4 right-4 text-white text-4xl font-bold z-50 cursor-pointer"
                 >
                     <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 5L4.99998 19M5.00001 5L19 19" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -70,14 +77,33 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
                 </button>
                 <div className="h-full w-full flex items-center justify-center">
                     <Container>
-                        <video 
-                            ref={videoRef}
-                            className="w-full rounded-2xl shadow-xl"
-                            controls
-                            playsInline
-                        >
-                            <source src={fullMovie.mediaItemUrl} type="video/mp4" />
-                        </video>
+                        {isVimeoUrl(fullMovie) ? (
+                            <div className="w-full aspect-video rounded-2xl shadow-xl overflow-hidden">
+                                <VimeoEmbed
+                                    vimeoUrl={fullMovie}
+                                    className="w-full h-full"
+                                    controls={true}
+                                    background={false}
+                                    muted={false}
+                                    loop={false}
+                                />
+                            </div>
+                        ) : fullMovie ? (
+                            <video 
+                                ref={videoRef}
+                                {...getOptimizedVideoProps(fullMovie, {
+                                    context: 'content',
+                                    priority: true,
+                                    className: "w-full rounded-2xl shadow-xl",
+                                    controls: true,
+                                    playsInline: true
+                                })}
+                            >
+                                {getVideoSources(fullMovie).map((source, index) => (
+                                    <source key={index} src={source.src} type={source.type} />
+                                ))}
+                            </video>
+                        ) : null}
                     </Container>
                 </div>
             </div>

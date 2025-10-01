@@ -16,15 +16,21 @@ const Contact = ({ title, featuredImage, footerData }) => {
                         <div className="w-full lg:w-1/2 lg:mb-0">
                             <div className="lg:space-y-4">
                                 <div>
-                                    <h3 className="text-lightblue hidden lg:block">Oxford Academics &amp; Researchers</h3>
+                                    <h3 className="text-lightblue hidden lg:block">Oxford researchers &amp; innovators</h3>
                                     <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue">
                                         {oxfordAcademicsEmail}
                                     </a>
                                 </div>
                                 <div>
-                                    <h3 className="text-lightblue hidden lg:block">Investors &amp; Co-Investors</h3>
+                                    <h3 className="text-lightblue hidden lg:block">Investors &amp; co-investors</h3>
                                     <a href={`mailto:${investorsEmail}`} className="text-sm hover:text-lightblue">
                                         {investorsEmail}
+                                    </a>
+                                </div>
+                                <div>
+                                    <h3 className="text-lightblue hidden lg:block">Media</h3>
+                                    <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue">
+                                        {mediaEmail}
                                     </a>
                                 </div>
                             </div>
@@ -34,12 +40,6 @@ const Contact = ({ title, featuredImage, footerData }) => {
                         <div className="w-full lg:w-1/2 mb-5 lg:mb-0">
                             <div className="lg:space-y-4">
                                 <div className="mb-5">
-                                    <h3 className="text-lightblue hidden lg:block">Media</h3>
-                                    <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue">
-                                        {mediaEmail}
-                                    </a>
-                                </div>
-                                <div className="mb-5">
                                     <h3 className="text-lightblue">Call</h3>
                                     <a href={`tel:${telephone}`} className="text-sm hover:text-lightblue">
                                         {telephone}
@@ -47,7 +47,7 @@ const Contact = ({ title, featuredImage, footerData }) => {
                                 </div>
                                 <div className="mb-8 lg:mb-0">
                                     <h3 className="text-lightblue">Address</h3>
-                                    <p className="text-sm">{address}</p>
+                                    <p className="text-sm" dangerouslySetInnerHTML={{ __html: address }} />
                                 </div>
                             </div>
                         </div>

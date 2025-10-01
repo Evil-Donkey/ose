@@ -37,7 +37,12 @@ export const useConditionalLibrary = (libraryName, condition = true) => {
         let lib;
         switch (libraryName) {
           case 'gsap':
-            lib = await import('gsap');
+            const gsapModule = await import('gsap');
+            const scrollTriggerModule = await import('gsap/ScrollTrigger');
+            lib = {
+              ...gsapModule,
+              ScrollTrigger: scrollTriggerModule.ScrollTrigger
+            };
             break;
           case 'framer-motion':
             lib = await import('framer-motion');

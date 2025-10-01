@@ -12,6 +12,7 @@ const Team = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [openDropdown, setOpenDropdown] = useState(null);
   
   const { sectionLabel } = data;
   const componentId = sectionLabel ? formatSectionLabel(sectionLabel) : undefined;
@@ -105,6 +106,19 @@ const Team = ({ data }) => {
     }
   }, [loading, componentId, sectionLabel]);
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (openDropdown && !event.target.closest('.dropdown-container')) {
+        setOpenDropdown(null);
+      }
+    }
+    if (openDropdown !== null) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [openDropdown]);
+
   // Extract unique categories from members
   const categories = Array.from(
     new Set(
@@ -142,14 +156,52 @@ const Team = ({ data }) => {
 
   return (
     <div id={componentId} className="bg-linear-to-t from-black/10 to-black/0">
-        <Container className="py-20 2xl:py-40">
+        <Container className="pt-10 pb-20 md:py-20 2xl:py-40">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Sidebar */}
             <aside className="md:w-1/4">
                 <div className="mb-4 font-medium text-blue-02 uppercase tracking-widest text-sm">
                 Filter by team:
                 </div>
-                <ul className="space-y-1 text-lg">
+                
+                {/* Mobile Dropdown */}
+                <div className="md:hidden relative dropdown-container">
+                    <div 
+                        className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap ${openDropdown === 'team' ? 'rounded-t-xl' : 'rounded-xl'}`}
+                        onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
+                    >
+                        <span>{categories.find(cat => cat.slug === selectedCategory)?.name || 'Select Team'}</span>
+                        <span>
+                            <span className="ml-2 -mr-2 w-9 h-5 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
+                                    <path fillRule="evenodd" d="M12 15.5a.75.75 0 01-.53-.22l-5-5a.75.75 0 111.06-1.06L12 13.69l4.47-4.47a.75.75 0 111.06 1.06l-5 5a.75.75 0 01-.53.22z" clipRule="evenodd" />
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    {openDropdown === 'team' && (
+                        <div className="absolute left-0 right-0 bg-[#00A0CC] text-white rounded-b-xl shadow-lg overflow-hidden z-10">
+                            {categories.map(cat => (
+                                <div
+                                    key={cat.slug}
+                                    className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${selectedCategory === cat.slug ? "bg-white text-[#00A0CC] font-bold" : ""}`}
+                                    onClick={() => {
+                                        setSelectedCategory(cat.slug);
+                                        setOpenDropdown(null);
+                                    }}
+                                >
+                                    <span>{cat.name}</span>
+                                    <span>
+                                        <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedCategory === cat.slug ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Desktop List */}
+                <ul className="hidden md:block space-y-1 text-lg">
                     {categories.map(cat => (
                         <li key={cat.slug}>
                         <button

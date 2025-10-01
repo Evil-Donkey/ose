@@ -98,9 +98,19 @@ const Portfolio = ({ data }) => {
     };
 
     useEffect(() => {
+        let timeoutId;
+        
+        const debouncedUpdateHeights = () => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(updateWideHeights, 100);
+        };
+
         updateWideHeights();
-        window.addEventListener('resize', updateWideHeights);
-        return () => window.removeEventListener('resize', updateWideHeights);
+        window.addEventListener('resize', debouncedUpdateHeights, { passive: true });
+        return () => {
+            clearTimeout(timeoutId);
+            window.removeEventListener('resize', debouncedUpdateHeights);
+        };
     }, []);
 
     const handleLoadMore = () => {

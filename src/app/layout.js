@@ -2,6 +2,8 @@ import { AuthProvider } from "../context/AuthContext";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import getFooterData from "../lib/getFooterData";
+import Script from "next/script";
+import PasswordWrapper from "../components/PasswordOverlay/PasswordWrapper";
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -22,6 +24,8 @@ const GoogleAnalytics = dynamic(() => import('../lib/googleAnalytics'));
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
+  display: 'swap', // This prevents render-blocking
+  preload: true,   // This preloads the font
 });
 
 export const metadata = {
@@ -31,18 +35,16 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const footerData = await getFooterData();
+  const GA_TRACKING_ID = process.env.GA_TRACKING_ID;
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://oxfordscienceenterprises-cms.com" />
-      </head>
-      <body className={`${montserrat.variable}`}>
+      <body className={`${montserrat.variable} overflow-x-hidden`}>
         <AuthProvider>
           <PasswordWrapper>
             <NavigationLoading />
             <Suspense>
               <LayoutClient footerData={footerData}>
-                <div className="min-h-screen">
+                <div className="min-h-screen overflow-clip">
                   <ScrollToHashOnRouteChange />
                   {children}
                 </div>
@@ -50,7 +52,8 @@ export default async function RootLayout({ children }) {
             </Suspense>
           </PasswordWrapper>
         </AuthProvider>
-        {process.env.NODE_ENV === 'production' && <GoogleAnalytics />}
+        <Script src='https://cdn-cookieyes.com/client_data/057bd4483d07fa02fa3b4a27/script.js' strategy='beforeInteractive' />
+        <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} />
       </body>
     </html>
   );

@@ -38,16 +38,17 @@ export default async function StoryPage({ params }) {
     notFound();
   }
 
-  // Find current story index and get previous/next stories
+  // Find current story index and get previous/next stories with circular pagination
   const currentIndex = stories.findIndex(s => s.slug === resolvedParams.slug);
-  const previousStory = currentIndex > 0 ? stories[currentIndex - 1] : null;
-  const nextStory = currentIndex < stories.length - 1 ? stories[currentIndex + 1] : null;
+  const previousStory = currentIndex > 0 ? stories[currentIndex - 1] : stories[stories.length - 1];
+  const nextStory = currentIndex < stories.length - 1 ? stories[currentIndex + 1] : stories[0];
 
   const storyData = await getStoryData(story.databaseId);
   const flexibleContent = storyData.flexibleContent;
   const popOutData = await getPopOutData();
   const footerData = await getFooterData();
   const backgroundImage = story.featuredImage?.node?.mediaItemUrl;
+  const backgroundImageMobile = story.mobileFeaturedImage?.mobileFeaturedImage?.mediaItemUrl;
   const title = story.title;
   const content = story.content;
 
@@ -59,17 +60,18 @@ export default async function StoryPage({ params }) {
 
   return (
     <>
-        <div className="relative w-full min-h-[100vh] h-full">
-            {backgroundImage && 
+        <div className="relative w-full min-h-dvh h-full">
+            {(backgroundImage || backgroundImageMobile) && 
                 <>
-                    <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }} />
+                    <div className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${backgroundImageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${backgroundImage})` }} />
+                    {backgroundImageMobile && <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile})` }} />}
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/40 to-black/0" />
-                    {story.featuredImage.node.altText && <div className="hidden lg:block absolute bottom-8 right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: story.featuredImage.node.altText }} />}
+                    {story.featuredImage.node.caption && <div className="hidden lg:block absolute bottom-8 right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: story.featuredImage.node.caption }} />}
                 </>
             }
             {title &&
-                <div className="min-h-[100vh] h-full">
-                    <Container className="py-15 2xl:py-25 relative z-10 text-white flex flex-col h-full min-h-[100vh] justify-end gap-10 lg:gap-0">
+                <div className="min-h-dvh h-full">
+                    <Container className="py-15 2xl:py-25 relative z-10 text-white flex flex-col h-full min-h-dvh justify-end gap-10 lg:gap-0">
                         <div className="flex flex-col justify-end w-full">
                             <h2 className="text-[2.5rem]/12 md:text-[3.3rem]/16 xl:text-[4rem]/20 2xl:text-[5rem]/22 3xl:text-[7rem]/30 tracking-tight w-4/5 lg:w-1/2">{title}</h2>
                         </div>
@@ -81,11 +83,11 @@ export default async function StoryPage({ params }) {
         <div className="bg-linear-to-t from-black/10 to-black/0 pb-20 2xl:pb-45">
             {content &&
                 <Container className="pt-10 md:pt-20 2xl:pt-45 single-story-content">
-                    <div className="text-base 2xl:text-lg flex flex-col gap-4 xl:px-20 *:first:text-2xl *:first:mb-5 prose max-w-none text-blue-02 prose-p:mb-1 prose-p:mt-0 prose-h2:text-darkblue prose-h2:mb-0 prose-h2:mt-3 prose-h2:text-xl prose-a:text-blue-02 prose-a:underline" dangerouslySetInnerHTML={{ __html: content }} />
+                    <div className="text-base 2xl:text-lg flex flex-col gap-4 xl:px-20 *:first:text-2xl *:first:mb-1 prose max-w-none text-blue-02 prose-p:mb-1 prose-p:mt-0 prose-h2:text-darkblue prose-h2:mb-0 prose-h2:mt-3 prose-h2:text-xl prose-a:text-blue-02 prose-a:underline marker:text-lightblue" dangerouslySetInnerHTML={{ __html: content }} />
                 </Container>
             }
 
-            <div className="mt-16">
+            <div className="mt-11">
                 <FlexiblePageClient 
                     flexibleContent={flexibleContent} 
                     popOutData={popOutData}
@@ -95,21 +97,9 @@ export default async function StoryPage({ params }) {
 
             {/* Story Pagination */}
             <Container className="pt-10 md:pt-25 2xl:pt-45">
-                <div className="grid grid-cols-2 gap-8 mt-16">
-                    <div className="justify-self-end">
-                        {previousStory ? (
-                            <Button href={`/stories/${previousStory.slug}`}>Previous</Button>
-                        ) : (
-                            <div></div>
-                        )}
-                    </div>
-                    <div>
-                        {nextStory ? (
-                            <Button href={`/stories/${nextStory.slug}`}>Next</Button>
-                        ) : (
-                            <div></div>
-                        )}
-                    </div>
+                <div className="flex justify-center gap-8">
+                    <Button className="w-40!" href={`/stories/${previousStory.slug}`}>Previous</Button>
+                    <Button className="w-40!" href={`/stories/${nextStory.slug}`}>Next</Button>
                 </div>
             </Container>
         </div>

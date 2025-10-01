@@ -23,6 +23,7 @@ const TEAM_MEMBERS_QUERY = `
             date
             featuredImage {
                 node {
+                    caption
                     altText
                     mediaItemUrl
                     mediaDetails {

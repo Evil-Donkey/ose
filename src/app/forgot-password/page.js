@@ -108,17 +108,11 @@ export default function ForgotPassword() {
 
                         {/* Email check result */}
                         {emailCheckResult && (
-                            <div className={`mt-8 p-4 rounded ${
-                                emailCheckResult.type === "success" 
-                                    ? "bg-green-500/20 border border-green-500/50" 
-                                    : emailCheckResult.type === "warning"
-                                    ? "bg-yellow-500/20 border border-yellow-500/50"
-                                    : "bg-red-500/20 border border-red-500/50"
-                            }`}>
+                            <div className={`mt-8 text-center p-4 rounded-sm border bg-blue-02/30 border-white`}>
                                 <p className="text-white font-medium">{emailCheckResult.message}</p>
                                 
                                 {/* Show additional info for approved users */}
-                                {emailCheckResult.status === 'approved' && emailCheckResult.user && (
+                                {/* {emailCheckResult.status === 'approved' && emailCheckResult.user && (
                                     <div className="mt-3 p-3 bg-green-500/10 rounded border border-green-500/30">
                                         <p className="text-sm text-green-200">
                                             <strong>Email:</strong> {emailCheckResult.user.email}
@@ -127,7 +121,7 @@ export default function ForgotPassword() {
                                             <strong>Status:</strong> {emailCheckResult.user.userStatus}
                                         </p>
                                     </div>
-                                )}
+                                )} */}
                                 
                                 {/* Show contact info for denied/pending users */}
                                 {/* {emailCheckResult.status === 'denied' || emailCheckResult.status === 'pending' ? (

@@ -20,6 +20,7 @@ const FOOTER_DATA_QUERY = `
           smallTitle
           backgroundImage {
             altText
+            caption
             mediaDetails {
               height
               width

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import ResponsiveImage from "../../ResponsiveImage";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import Container from "../../Container";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -108,15 +109,12 @@ const Cards = ({ data }) => {
 
     }, []);
 
-    console.log(uniqueFields);
-
-
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="bg-linear-to-t from-black/10 to-black/0">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="min-h-section-height bg-linear-to-t from-black/10 to-black/0">
             <Container className="py-20 2xl:py-40">
                 {title && 
                     <div className="flex flex-col">
-                        <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>
+                        <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full" dangerouslySetInnerHTML={{ __html: title }} />
                     </div>
                 }
                 {copy && 
@@ -170,7 +168,15 @@ const Cards = ({ data }) => {
                                                 <div className="flex flex-col">
                                                     {image && (
                                                         <div className="relative overflow-hidden rounded-lg min-h-[200px]">
-                                                            <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                                            <ResponsiveImage 
+                                                                src={image.mediaItemUrl} 
+                                                                alt={image.altText} 
+                                                                width={image.mediaDetails?.width || 400} 
+                                                                height={image.mediaDetails?.height || 300} 
+                                                                className="object-cover absolute inset-0 transition-transform w-full h-full" 
+                                                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                                                quality={75}
+                                                            />
                                                         </div>
                                                     )}
                                                     {heading && <h4 className="text-lg font-medium mt-4" dangerouslySetInnerHTML={{ __html: heading }} />}
@@ -227,7 +233,15 @@ const Cards = ({ data }) => {
                                         >
                                             {image && (
                                                 <div className="relative overflow-hidden rounded-lg min-h-[400px]">
-                                                    <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                                    <ResponsiveImage 
+                                                        src={image.mediaItemUrl} 
+                                                        alt={image.altText} 
+                                                        width={image.mediaDetails?.width || 600} 
+                                                        height={image.mediaDetails?.height || 400} 
+                                                        className="object-cover absolute inset-0 transition-transform w-full h-full" 
+                                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                                        quality={80}
+                                                    />
                                                 </div>
                                             )}
                                             {heading && <h4 className="text-lg font-medium mt-4" dangerouslySetInnerHTML={{ __html: heading }} />}
@@ -297,11 +311,19 @@ const Cards = ({ data }) => {
                                     >
                                         <div className="relative overflow-hidden rounded-lg flex flex-col text-center items-center p-6 2xl:p-10 h-full justify-end">
                                             {image && (
-                                                <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform" />
+                                                <ResponsiveImage 
+                                                    src={image.mediaItemUrl} 
+                                                    alt={image.altText} 
+                                                    width={image.mediaDetails?.width || 500} 
+                                                    height={image.mediaDetails?.height || 400} 
+                                                    className="object-cover absolute inset-0 transition-transform w-full h-full" 
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                    quality={75}
+                                                />
                                             )}
                                             <div className="absolute inset-0 bg-black/30 pointer-events-none" />
                                             {heading && <h4 className="text-white text-3xl font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: heading }} />}
-                                            {description && <div className="text-white text-base z-10 mt-3" dangerouslySetInnerHTML={{ __html: description }} />}
+                                            {description && <div className="text-white text-base z-10 mt-3 text-balance" dangerouslySetInnerHTML={{ __html: description }} />}
                                             {bio && (
                                                 <div className="text-white text-base z-10 mt-3">
                                                     <div 

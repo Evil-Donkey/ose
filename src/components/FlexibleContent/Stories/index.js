@@ -67,11 +67,11 @@ const Stories = ({ data }) => {
                             <div key={index} ref={el => ctaRef.current[index] = el} className="relative overflow-hidden rounded-3xl group p-8 2xl:p-12 opacity-0 translate-y-20 min-h-[500px]">
                                 {featuredImage && 
                                     <>
-                                        <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} fill className="absolute inset-0 object-cover group-hover:scale-110 transition-all duration-300" />
+                                        <Image src={featuredImage.node.mediaItemUrl} alt={featuredImage.node.altText} width={1000} height={1000} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-all duration-300" />
                                         <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
                                     </>
                                 }
-                                <div className="relative z-10 flex flex-col justify-between h-full">
+                                <div className="relative z-10 flex flex-col justify-end h-full">
                                     <div>
                                         {title && <h3 className="text-3xl md:text-5xl/13 2xl:text-6xl text-white mb-6">{title}</h3>}
                                         {(cardExcerpt || content) && <div className="text-white mb-8 text-base md:text-xl" dangerouslySetInnerHTML={{ __html: cardExcerpt || content.split(' ').slice(0, 20).join(' ') + ' ...' }} />}

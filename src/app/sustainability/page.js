@@ -2,7 +2,9 @@ import getPageTitleAndContent from "@/lib/getPageTitleAndContent";
 import generateMetadataFromLib from "@/lib/generateMetadata";
 import Container from "@/components/Container";
 import Image from "next/image";
+import ResponsiveImage from "../../components/ResponsiveImage";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import { getOptimizedImageProps } from "../../lib/imageUtils";
 import Link from "next/link";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
@@ -26,6 +28,14 @@ export default async function SustainabilityPage() {
       <HeaderWithMeganavLinks fixed={true} />
       {featuredImage && 
       <div className="relative mt-30 h-[500px]">
+        {/* <ResponsiveImage 
+          {...getOptimizedImageProps({ mediaItemUrl: featuredImage, altText: title }, {
+            context: 'hero',
+            isAboveFold: true,
+            isHero: true,
+            className: "object-cover w-full h-full"
+          })}
+        /> */}
         <Image src={featuredImage} alt={title} fill className="object-cover" />
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex items-center justify-center">

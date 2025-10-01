@@ -8,9 +8,9 @@ import getPortfolioNewsItems from "@/lib/getPortfolioNewsItems";
 import getPortfolioNewsCategories from "@/lib/getPortfolioNewsCategories";
 import PortfolioNews from "@/components/PortfolioNews";
 
-// export async function generateMetadata() {
-//   return await generateMetadataFromLib("1573");
-// }
+export async function generateMetadata() {
+  return await generateMetadataFromLib("1573");
+}
 
 export default async function ContactPage() {
   // const flexibleContent = await getFlexiblePage("1573");

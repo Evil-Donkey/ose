@@ -1,8 +1,9 @@
 "use client";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import Container from "@/components/Container";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Link from "next/link";
+import Image from "next/image";
 import ReactDOM from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { useConditionalLibrary } from "@/lib/conditionalImports";
@@ -29,6 +30,46 @@ function groupCategories(categories) {
   }));
 }
 
+// LogoImage component moved outside to prevent re-creation on every render
+const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onInitializeLogo, onLogoLoad, onLogoError }) => {
+  const logoUrl = item.portfolioFields?.logoThumbnail?.mediaItemUrl || item.portfolioFields?.logo?.mediaItemUrl;
+  const isLoading = logoLoadingStates[itemId] === true;
+  const hasError = logoErrorStates[itemId] === true;
+  
+  // Initialize loading state for this item
+  useEffect(() => {
+    if (logoUrl && logoLoadingStates[itemId] === undefined) {
+      onInitializeLogo(itemId);
+    }
+  }, [logoUrl, itemId, logoLoadingStates, onInitializeLogo]);
+  
+  if (!logoUrl || hasError) {
+    // Fallback to text title
+    return (
+      <h2 className="text-lg 2xl:text-xl font-bold text-white drop-shadow mb-2" dangerouslySetInnerHTML={{ __html: item.title }} />
+    );
+  }
+
+  return (
+    <div>
+      {isLoading && (
+        <div className="absolute top-4 left-3 w-2/3 h-16 bg-white/20 rounded animate-pulse" />
+      )}
+      <Image
+        src={logoUrl}
+        alt={item.portfolioFields.logo?.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
+        width={item.portfolioFields.logoThumbnail?.mediaDetails?.width || item.portfolioFields.logo?.mediaDetails?.width || 100}
+        height={item.portfolioFields.logoThumbnail?.mediaDetails?.height || item.portfolioFields.logo?.mediaDetails?.height || 100}
+        className={`mb-4 absolute top-4 left-3 w-2/3 object-contain transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        onLoad={() => onLogoLoad(itemId)}
+        onError={() => onLogoError(itemId)}
+        unoptimized={logoUrl.endsWith('.svg')} // Disable optimization for SVGs
+        priority={false} // Don't prioritize logo loading
+      />
+    </div>
+  );
+};
+
 export default function PortfolioClient({ title, content, portfolioItems, categories, stages }) {
   const searchParams = useSearchParams();
   const groupedCategories = useMemo(() => groupCategories(categories), [categories]);
@@ -38,6 +79,26 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   const dropdownRefs = useRef({});
   const portalDropdownRefs = useRef({});
   const [fundraisingOnly, setFundraisingOnly] = useState(false);
+  
+  // Logo loading states
+  const [logoLoadingStates, setLogoLoadingStates] = useState({});
+  const [logoErrorStates, setLogoErrorStates] = useState({});
+
+  // Logo loading handlers
+  const initializeLogoState = useCallback((itemId) => {
+    setLogoLoadingStates(prev => ({ ...prev, [itemId]: true }));
+    setLogoErrorStates(prev => ({ ...prev, [itemId]: false }));
+  }, []);
+
+  const handleLogoLoad = useCallback((itemId) => {
+    setLogoLoadingStates(prev => ({ ...prev, [itemId]: false }));
+    setLogoErrorStates(prev => ({ ...prev, [itemId]: false }));
+  }, []);
+
+  const handleLogoError = useCallback((itemId) => {
+    setLogoLoadingStates(prev => ({ ...prev, [itemId]: false }));
+    setLogoErrorStates(prev => ({ ...prev, [itemId]: true }));
+  }, []);
 
   // Dropdown portal logic
   const [dropdownPosition, setDropdownPosition] = useState({});
@@ -71,23 +132,57 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   // When opening a dropdown, measure its button position
   useEffect(() => {
     if (openDropdown && dropdownButtonRefs.current[openDropdown]) {
-      const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
-      setDropdownPosition({
-        left: rect.left,
-        top: rect.bottom,
-        width: rect.width,
+      // Use requestAnimationFrame to ensure layout is complete
+      requestAnimationFrame(() => {
+        const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        
+        setDropdownPosition({
+          left: rect.left + scrollLeft,
+          top: rect.bottom + scrollTop,
+          width: rect.width,
+        });
       });
     }
   }, [openDropdown]);
-  // Update isMobileDropdown on resize
+  // Update isMobileDropdown on resize and handle scroll for dropdown positioning
   useEffect(() => {
+    let timeoutId;
+    
     function handleResize() {
-      setIsMobileDropdown(window.innerWidth < 1021);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsMobileDropdown(window.innerWidth < 1021);
+      }, 100);
     }
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    
+    function handleScroll() {
+      if (openDropdown && dropdownButtonRefs.current[openDropdown]) {
+        const rect = dropdownButtonRefs.current[openDropdown].getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        
+        setDropdownPosition({
+          left: rect.left + scrollLeft,
+          top: rect.bottom + scrollTop,
+          width: rect.width,
+        });
+      }
+    }
+    
+    // Initial check
+    setIsMobileDropdown(window.innerWidth < 1021);
+    
+    window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [openDropdown]);
 
   // Helper to render dropdown in portal
   function DropdownPortal({ children, dropdownKey }) {
@@ -147,12 +242,26 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   // GSAP animation (must be after filteredItems definition)
   useEffect(() => {
     const portfolioItems = document.querySelectorAll(".portfolio-item");
-    portfolioItems.forEach(item => {
-      gsap.to(item, { opacity: 1, y: 0, duration: 1, stagger: 0.1, scrollTrigger: { trigger: item, start: "top bottom", scrub: false } });
-    });
-    ScrollTrigger.refresh();
+    if (portfolioItems.length > 0) {
+      // Use batch for better performance
+      ScrollTrigger.batch(portfolioItems, {
+        onEnter: (elements) => {
+          gsap.fromTo(elements, 
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 1, stagger: 0.1 }
+          );
+        },
+        start: "top 90%",
+        once: true
+      });
+    }
+    
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.vars && trigger.vars.onEnter) {
+          trigger.kill();
+        }
+      });
     };
   }, [filteredItems, fundraisingOnly, selectedCategory, selectedStage]);
 
@@ -160,10 +269,10 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
     <>
       <HeaderWithMeganavLinks fixed={true} />
       <Container>
-        <div className="flex flex-col gap-10 items-center justify-center text-center lg:pb-20 pt-50">
-          <div className="w-full lg:w-120">
-            <h1 className="text-7xl/18 md:text-8xl/23 2xl:text-8xl/27 text-darkblue mb-5">{title}</h1>
-            <div className="text-base lg:text-xl mb-10" dangerouslySetInnerHTML={{ __html: content }} />
+        <div className="flex flex-col gap-10 items-center justify-center text-center pb-10 lg:pb-9 pt-45 lg:pt-50 2xl:pt-60">
+          <div className="w-full">
+            <h1 className="text-6xl text-darkblue mb-4">{title}</h1>
+            <div className="text-base lg:text-lg" dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         </div>
 
@@ -241,6 +350,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                                 onMouseDown={e => {
                                   e.stopPropagation();
                                   setSelectedCategory(opt.id);
+                                  setOpenDropdown(null);
                                 }}
                               >
                                 <span>{opt.name === 'Deep Tech' ? 'All' : opt.name}</span>
@@ -260,6 +370,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                               onMouseDown={e => {
                                 e.stopPropagation();
                                 setSelectedCategory(opt.id);
+                                setOpenDropdown(null);
                               }}
                             >
                               <span>{opt.name === 'Deep Tech' ? 'Deep Tech' : opt.name}</span>
@@ -325,6 +436,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                         onMouseDown={e => {
                           e.stopPropagation();
                           setSelectedStage(null);
+                          setOpenDropdown(null);
                         }}
                       >
                         <span>All Stages</span>
@@ -339,6 +451,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                           onMouseDown={e => {
                             e.stopPropagation();
                             setSelectedStage(stage.id);
+                            setOpenDropdown(null);
                           }}
                         >
                           <span>{stage.name}</span>
@@ -358,6 +471,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                       onMouseDown={e => {
                         e.stopPropagation();
                         setSelectedStage(null);
+                        setOpenDropdown(null);
                       }}
                     >
                       <span>All Stages</span>
@@ -372,6 +486,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                         onMouseDown={e => {
                           e.stopPropagation();
                           setSelectedStage(stage.id);
+                          setOpenDropdown(null);
                         }}
                       >
                         <span>{stage.name}</span>
@@ -399,8 +514,9 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
             </button>
           </div>
         </div>
+
         {/* Portfolio grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 text-left mb-20">
           {filteredItems.slice().sort((a, b) => a.title.localeCompare(b.title)).map((item, idx) => {
             const gridThumb = item.portfolioFields?.gridThumbnail?.mediaItemUrl;
             const featuredImg = item.featuredImage?.node?.mediaItemUrl;
@@ -413,24 +529,24 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                 prefetch={false}
               >
                 <div
-                  className="relative bg-white rounded-2xl shadow flex flex-col gap-2 overflow-hidden min-h-[330px] h-full transition-transform duration-200 group-hover:-translate-y-1"
+                  className="relative bg-white rounded-2xl shadow flex flex-col gap-2 overflow-hidden min-h-[200px] md:min-h-[250px] 2xl:min-h-[300px] h-full transition-transform duration-200 group-hover:-translate-y-1"
                   style={bgImage ? { backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
                 >
                   {/* Overlay */}
                   {bgImage && <div className="absolute inset-0 bg-black/40 z-0" />}
                   {/* Card content */}
                   <div className="relative z-10 p-6 flex flex-col h-full justify-end text-white">
-                    {item.portfolioFields?.logo?.mediaItemUrl ? (
-                      <img
-                        src={item.portfolioFields.logoThumbnail?.mediaItemUrl || item.portfolioFields.logo.mediaItemUrl}
-                        alt={item.portfolioFields.logo.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
-                        className="mb-4 absolute top-4 left-3 w-2/3 object-contain"
-                      />
-                    ) : (
-                      <h2 className="text-xl font-bold text-white drop-shadow mb-2" dangerouslySetInnerHTML={{ __html: item.title }} />
-                    )}
+                    <LogoImage 
+                      item={item} 
+                      itemId={item.id || idx} 
+                      logoLoadingStates={logoLoadingStates}
+                      logoErrorStates={logoErrorStates}
+                      onInitializeLogo={initializeLogoState}
+                      onLogoLoad={handleLogoLoad}
+                      onLogoError={handleLogoError}
+                    />
                     {item.portfolioFields?.portfolioTitle && (
-                      <div className="text-base xl:text-2xl font-medium" dangerouslySetInnerHTML={{ __html: item.portfolioFields.portfolioTitle }} />
+                      <div className="text-base lg:text-xl 2xl:text-2xl font-medium" dangerouslySetInnerHTML={{ __html: item.portfolioFields.portfolioTitle }} />
                     )}
                   </div>
                 </div>

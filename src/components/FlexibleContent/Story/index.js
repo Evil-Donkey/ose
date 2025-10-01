@@ -143,7 +143,7 @@ const Story = ({ data }) => {
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}>
-            <div className="relative w-full lg:min-h-[100vh] h-full">
+            <div className="relative w-full lg:min-h-[100vh] h-full overflow-hidden">
                 {backgroundImage && 
                     <>
                         <div ref={imageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage})` }} />
@@ -164,13 +164,13 @@ const Story = ({ data }) => {
                 }
             </div>
 
-            <div className="bg-linear-to-t from-black/10 to-black/0">
+            <div className="bg-linear-to-t from-black/10 to-black/0 overflow-hidden md:overflow-visible">
                 <Container className="py-10 md:py-25 2xl:py-45">
                     <div className="flex flex-col lg:flex-row gap-10">
                         {content &&
                             <div ref={el => copyRef.current[1] = el} className="w-full lg:w-1/2 xl:pe-20 flex flex-col gap-10 opacity-0 translate-y-20 transition-all duration-1000">
-                                <div className="text-base 2xl:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: displayContent }} />
-                                <Link href={uri} className="hidden lg:flex font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline">Read More</Link>
+                                <div className="text-base 2xl:text-lg flex flex-col gap-5" dangerouslySetInnerHTML={{ __html: secondCopyBlock || displayContent }} />
+                                <Link href={uri} className="hidden lg:flex font-medium text-base 2xl:text-lg text-lightblue uppercase hover:underline">Read full story</Link>
                             </div>
                         }
                         {quote &&
@@ -201,7 +201,7 @@ const Story = ({ data }) => {
                     </div>
 
                     <div ref={el => copyRef.current[2] = el} className="flex justify-center mt-16 opacity-0 translate-y-20 transition-all duration-1000">
-                        <Button href="/stories">Read more stories</Button>
+                        <Button href="/stories">See all stories</Button>
                     </div>
                 </Container>
             </div>

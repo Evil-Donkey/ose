@@ -97,12 +97,18 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     checkAuthStatus(); // Check authentication on mount
     
-    // Check if password was already verified in this session
-    // const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
-    // if (isPasswordVerified) {
-    //   setPasswordVerified(true);
-    // }
-    setPasswordVerified(true);
+    // TEMPORARY: Disable password overlay
+    const TEMPORARILY_DISABLE_PASSWORD = true;
+    
+    if (TEMPORARILY_DISABLE_PASSWORD) {
+      setPasswordVerified(true);
+    } else {
+      // Check if password was already verified in this session
+      const isPasswordVerified = sessionStorage.getItem('passwordVerified') === 'true';
+      if (isPasswordVerified) {
+        setPasswordVerified(true);
+      }
+    }
     setPasswordLoading(false);
   }, []);
 

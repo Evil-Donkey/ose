@@ -1,15 +1,17 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import { Spinner } from "@/components/Icons/Spinner";
+import ReCAPTCHA from "@/components/ReCAPTCHA";
 
 export default function SignupForm({ title, content }) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const recaptchaRef = useRef(null);
 
   const {
     register,
@@ -23,10 +25,29 @@ export default function SignupForm({ title, content }) {
     const { terms, ...dataWithoutTerms } = formData;
   
     try {
+      // Get reCAPTCHA token
+      let recaptchaToken = null;
+      if (recaptchaRef.current && recaptchaRef.current.executeRecaptcha) {
+        console.log('Attempting to get reCAPTCHA token...');
+        recaptchaToken = await recaptchaRef.current.executeRecaptcha();
+        console.log('reCAPTCHA token received:', recaptchaToken ? 'Yes' : 'No');
+      } else {
+        console.error('reCAPTCHA ref not available');
+      }
+
+      if (!recaptchaToken) {
+        setMessage("reCAPTCHA verification failed. Please refresh the page and try again.");
+        setIsLoading(false);
+        return;
+      }
+
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataWithoutTerms),
+        body: JSON.stringify({
+          ...dataWithoutTerms,
+          recaptchaToken
+        }),
       });
     
       const data = await response.json();
@@ -58,7 +79,7 @@ export default function SignupForm({ title, content }) {
       </div>
       <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10 flex flex-col justify-center">
         {isSuccess ? (
-          <div className="text-center">
+          <div className="text-center p-10 rounded-sm border bg-blue-02/30 border-white">
             {/* <div className="mb-6">
               <svg className="mx-auto h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -155,6 +176,12 @@ export default function SignupForm({ title, content }) {
                 </label>
               </div>
               {errors.terms && <p className="text-white">{errors.terms.message}</p>}
+
+              {/* Hidden reCAPTCHA */}
+              <ReCAPTCHA 
+                ref={recaptchaRef}
+                siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              />
 
               {/* Submit Button */}
               <Button type="submit" disabled={isLoading}>

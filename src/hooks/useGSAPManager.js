@@ -17,7 +17,7 @@ const useGSAPManager = (animationFunction) => {
         // Refresh after a small delay to ensure DOM is ready
         const timer = setTimeout(() => {
             gsapManager.refresh();
-        }, 100);
+        }, 150); // Slightly longer delay to ensure DOM is fully ready
 
         return () => {
             clearTimeout(timer);

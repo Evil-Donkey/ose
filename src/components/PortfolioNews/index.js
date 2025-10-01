@@ -20,8 +20,6 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
     setCurrentPage(1); // Reset to first page when filtering
   };
 
-  console.log(`Portfolio News Items: ${portfolioNewsItems?.length || 0} total items`);
-
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {

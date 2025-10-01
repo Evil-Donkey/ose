@@ -31,60 +31,68 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
         { 
             label: 'Why', 
             href: '/why',
-            meganavHeading: 'Why<br/>We Exist',
+            meganavHeading: 'Why<br/>we exist',
             meganavLinks: meganavLinks?.Why || [],
             meganavPageLinks: meganavData?.Why?.pageLinks || null
         },
         { 
             label: 'What', 
             href: '/what',
-            meganavHeading: 'What<br/>We Do',
+            meganavHeading: 'What<br/>we do',
             meganavLinks: meganavLinks?.What || [],
             meganavPageLinks: meganavData?.What?.pageLinks || null
         },
         { 
             label: 'How', 
             href: '/how',
-            meganavHeading: 'How<br/>We Work',
+            meganavHeading: 'How<br/>we work',
             meganavLinks: meganavLinks?.How || [],
             meganavPageLinks: meganavData?.How?.pageLinks || null
         },
         { 
             label: 'Who', 
             href: '/who',
-            meganavHeading: 'Who<br/>We Are',
+            meganavHeading: 'Who<br/>we are',
             meganavLinks: meganavLinks?.Who || [],
             meganavPageLinks: meganavData?.Who?.pageLinks || null
         }
     ];
 
     useEffect(() => {
+        let ticking = false;
+        
         const handleScroll = () => {
-            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            
-            // When scrolling down and past 200px, hide the nav and set the threshold
-            if (currentScrollTop > lastScrollTop && currentScrollTop > 200) {
-                setIsScrollingUp(false);
-                setHideThreshold(currentScrollTop);
-            } 
-            // When scrolling up, only show nav if we've scrolled up more than 300px from where it was hidden
-            else if (currentScrollTop < lastScrollTop) {
-                const scrollUpDistance = hideThreshold - currentScrollTop;
-                if (scrollUpDistance >= 300 || currentScrollTop <= 200) {
-                    setIsScrollingUp(true);
-                }
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // When scrolling down and past 200px, hide the nav and set the threshold
+                    if (currentScrollTop > lastScrollTop && currentScrollTop > 200) {
+                        setIsScrollingUp(false);
+                        setHideThreshold(currentScrollTop);
+                    } 
+                    // When scrolling up, only show nav if we've scrolled up more than 300px from where it was hidden
+                    else if (currentScrollTop < lastScrollTop) {
+                        const scrollUpDistance = hideThreshold - currentScrollTop;
+                        if (scrollUpDistance >= 300 || currentScrollTop <= 200) {
+                            setIsScrollingUp(true);
+                        }
+                    }
+                    
+                    if (currentScrollTop > 0) {
+                        setIsHeaderScrolled(true);
+                    } else {
+                        setIsHeaderScrolled(false);
+                    }
+                    setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
+                    ticking = false;
+                });
+                ticking = true;
             }
-            
-            if (currentScrollTop > 0) {
-                setIsHeaderScrolled(true);
-            } else {
-                setIsHeaderScrolled(false);
-            }
-            setLastScrollTop(currentScrollTop <= 0 ? 0 : currentScrollTop);
         };
+        
         if (!isMobileMenuOpen) {
-            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('scroll', handleScroll, { passive: true });
         }
         return () => {
             window.removeEventListener('scroll', handleScroll);
@@ -115,7 +123,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
                         <div className="text-xl font-bold">
                             {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                            <Link href="/">
+                            <Link href="/" aria-label="Oxford Science Enterprises - Go to homepage">
                                 <LottieLogo />
                             </Link>
                         </div>
@@ -126,7 +134,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                     >
                         <div className={`transform transition-transform duration-300 ease-in-out lg:transform-none flex flex-col items-center lg:items-end justify-center lg:justify-start gap-5 lg:gap-0 absolute top-0 left-0 w-svw h-svh lg:h-auto lg:w-auto bg-blue-02 lg:bg-transparent lg:static ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-none'}`}>
                             <div className={`flex justify-end transition-all duration-500 order-last lg:order-first ${isHeaderScrolled ? 'mb-0 2xl:mb-3' : 'md:mb-2 2xl:mb-4'}`}>
-                                <nav className={`space-x-4 ${isHeaderScrolled ? 'lg:space-x-6' : 'xl:space-x-9'} flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 lg:gap-0`}>
+                                <nav className={`${isHeaderScrolled ? 'lg:space-x-6' : 'xl:space-x-9'} flex flex-col lg:flex-row items-center lg:items-end justify-center lg:justify-start gap-3 xl:gap-0`}>
                                     {topNavItems.map((item, index) => {
                                         const isActive = pathname === item.href;
                                         return (
@@ -242,6 +250,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                         <a
                                                                             href='/deep-tech'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                            aria-label="Learn about our Deep Tech sector"
                                                                         >
                                                                             Deep Tech
                                                                         </a>
@@ -267,6 +276,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                         <a
                                                                             href='/life-sciences'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                            aria-label="Learn about our Life Sciences sector"
                                                                         >
                                                                             Life Sciences
                                                                         </a>
@@ -292,6 +302,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                         <a
                                                                             href='/health-tech'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
+                                                                            aria-label="Learn about our HealthTech sector"
                                                                         >
                                                                             HealthTech
                                                                         </a>

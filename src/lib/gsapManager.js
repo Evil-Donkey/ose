@@ -37,11 +37,21 @@ class GSAPManager {
             }
         });
         this.triggers.clear();
-        ScrollTrigger.refresh();
+        // Debounce refresh to prevent excessive calls
+        this.debouncedRefresh();
+    }
+
+    debouncedRefresh() {
+        if (this.refreshTimeout) {
+            clearTimeout(this.refreshTimeout);
+        }
+        this.refreshTimeout = setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 50);
     }
 
     refresh() {
-        ScrollTrigger.refresh();
+        this.debouncedRefresh();
     }
 }
 

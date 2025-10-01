@@ -101,7 +101,7 @@ function check_email_exists($request) {
                         'success' => true,
                         'exists' => true,
                         'status' => 'approved',
-                        'message' => 'We\'ve sent you a password reset link',
+                        'message' => 'We\'ve sent you an email to reset your password.',
                         'emailSent' => true,
                         'user' => array(
                             'id' => $user->ID,
@@ -132,7 +132,7 @@ function check_email_exists($request) {
                     'success' => true,
                     'exists' => true,
                     'status' => $user_status,
-                    'message' => 'Your email has not been approved yet. Please get in touch with a link to investors@oxfordsciences.com',
+                    'message' => 'Your email has not been approved yet. Please get in touch at investors@oxfordsciences.com',
                     'user' => array(
                         'id' => $user->ID,
                         'username' => $user->user_login,
@@ -150,7 +150,7 @@ function check_email_exists($request) {
                         'success' => true,
                         'exists' => true,
                         'status' => 'approved',
-                        'message' => 'We\'ve sent you a password reset link',
+                        'message' => 'We\'ve sent you an email to reset your password.',
                         'emailSent' => true,
                         'user' => array(
                             'id' => $user->ID,
@@ -183,7 +183,7 @@ function check_email_exists($request) {
             'success' => true,
             'exists' => false,
             'status' => 'not_found',
-            'message' => 'The email doesn\'t exist. Please sign up'
+            'message' => 'This email does not exist as an approved user. Please use the link below to request access.'
         );
     }
 }
@@ -234,7 +234,9 @@ function add_cors_headers() {
             'http://localhost:3001', 
             'http://localhost:3002',
             'http://localhost:3003',
-            'https://yourdomain.com' // Replace with your actual domain
+            'https://ose-six.vercel.app',
+			'https://ose-git-staging-evildonkeyuk.vercel.app',
+			'https://www.oxfordscienceenterprises.com'
         );
         
         $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
@@ -364,10 +366,15 @@ function send_forgot_password_email($user_id) {
     ])));
 
     // URL to Next.js password reset page
-    $reset_link = "https://ose-git-staging-evildonkeyuk.vercel.app/reset-password?token=" . $reset_token;
+    $reset_link = "https://ose-six.vercel.app/reset-password?token=" . $reset_token;
 
     // Email subject and copy (you can customize these)
-    $subject = "Reset Your Password - Oxford Science Enterprises";
+    $subject = "OSE Shareholder Portal: Reset Your password";
+	
+	$first_name = get_user_meta( $user->ID, 'first_name', true );
+	if ( empty( $first_name ) ) {
+		$first_name = $user->display_name; // fallback
+	}
     
     // Styled HTML email template
     $message = '
@@ -380,7 +387,7 @@ function send_forgot_password_email($user_id) {
             .logo img { max-width: 150px; }
             p { color: #666; }
             .button {
-                display: block; width: 200px; margin: 20px auto; padding: 10px 20px;
+                display: block; width: 200px; margin: 20px 0; padding: 10px 20px;
                 text-align: center; background-color: #0073e6; color: white !important;
                 text-decoration: none; border-radius: 5px; font-size: 16px;
             }
@@ -390,11 +397,8 @@ function send_forgot_password_email($user_id) {
     </head>
     <body>
         <div class="container">
-            <div class="logo">
-                <img src="https://oxfordscienceenterprises-cms.com/wp-content/uploads/2025/08/ose-logo.jpg" alt="Oxford Science Enterprises Logo" />
-            </div>
-            <p>Hi ' . esc_html($user->display_name) . ',</p>
-            <p>We received a request to reset your password for your Oxford Science Enterprises account.</p>
+            <p>Hi ' . esc_html( $first_name ) . '</p>
+            <p>A request has been made to reset the password for your Oxford Science Enterprises’ shareholder portal account. You can reset your password using the link below:</p>
             
             <a class="button" href="' . esc_url($reset_link) . '">Reset Your Password</a>
             
@@ -402,18 +406,16 @@ function send_forgot_password_email($user_id) {
             <a href="' . esc_url($reset_link) . '">' . esc_url($reset_link) . '</a>
             
             <div class="warning">
-                <p><strong>Important:</strong> This link will expire in 24 hours for security reasons.</p>
-                <p>If you did not request this password reset, please ignore this email or contact us immediately.</p>
+                <p><strong>Important:</strong> This link can only be used once and will expire in 24 hours for security. </p>
+                <p>If you did not request this reset or need assistance, please contact us at <a href="mailto:investors@oxfordsciences.com">investors@oxfordsciences.com</a>.</p>
             </div>
             
-            <p>Once you\'ve reset your password, you can log in using:</p>
-            <p><b>Username:</b> ' . esc_html($user->user_login) . '</p>
+            <p>Kind regards</p>
             
-            <p>If you need any assistance, please contact us at <a href="mailto:investors@oxfordsciences.com">investors@oxfordsciences.com</a>.</p>
-            
-            <p>Kind regards,<br/>
-            Oxford Science Enterprises (OSE)</p>
-            
+			<div class="logo">
+                <img src="https://oxfordscienceenterprises-cms.com/wp-content/uploads/2025/09/OSE-POSITIVE-RGB-LOGO.png" alt="Oxford Science Enterprises Logo" />
+            </div>
+			
             <div class="footer">
                 <p>&copy; ' . date('Y') . ' Oxford Science Enterprises. All rights reserved.</p>
             </div>
@@ -424,7 +426,7 @@ function send_forgot_password_email($user_id) {
     $headers = [
         'Content-Type: text/html; charset=UTF-8',
         'From: Oxford Science Enterprises <investors@oxfordsciences.com>',
-        'Reply-To: investors@oxfordsciences.com'
+        'Reply-To: noreply@oxfordscienceenterprises-cms.com'
     ];
 
     $mail_sent = wp_mail($email, $subject, $message, $headers);

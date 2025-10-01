@@ -33,7 +33,7 @@ const StoryCopy = ({ data }) => {
     }, []);
 
     return (
-        <Container className="py-10 md:py-25">
+        <Container className="pt-10">
             <div ref={copyRef} className="xl:px-20 opacity-0 translate-y-20">
                 <div className="flex flex-col">
                     {quote && <div className="bg-[url('/quote-blue.svg')] bg-contain bg-center bg-no-repeat w-10 h-10 md:w-12 md:h-12 2xl:w-15 2xl:h-15 mb-3" />}

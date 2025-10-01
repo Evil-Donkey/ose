@@ -85,18 +85,18 @@ export default function ResetPassword() {
             <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 pb-10 relative h-full min-h-screen">
                 <Container className="pt-40 pb-10 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
                     <div className="w-full lg:w-2/5">
-                        <h1 className="text-4xl lg:text-6xl mb-4">Create Password</h1>
+                        <h1 className="text-4xl lg:text-6xl mb-4">Reset Password</h1>
                         <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3">
-                            <p>An account has been created for you to access Oxford Science Enterprises&apos; shareholder portal. Please create a secure password to complete your account setup.</p>
+                            <p>You&apos;ve requested to reset your password. Enter a new, secure password below to regain access to your Oxford Science Enterprises shareholder portal account.</p>
                             <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
                         </div>
                     </div>
-                    <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10">
+                    <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10 flex flex-col justify-center">
                         {error ? (
                             <p className="text-white text-center">{error}</p>
                         ) : message === "success" ? (
                             <div className="flex flex-col gap-4 text-center items-center justify-center">
-                                <p className="text-white text-lg">Password successfully created. You can now <Link href="/shareholder-portal" className="text-white underline">log in</Link>.</p>
+                                <p className="w-full text-white text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Password successfully created.<br/>You can now <a href="/shareholder-portal" className="text-white underline">log in</a>.</p>
                             </div>
                         ) : (
                             tokenData && (
@@ -114,7 +114,7 @@ export default function ResetPassword() {
                                                             message: "Password must be at least 8 characters long.",
                                                         },
                                                         pattern: {
-                                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/,
                                                             message: "Must include uppercase, lowercase, number, and symbol.",
                                                         },
                                                     })}

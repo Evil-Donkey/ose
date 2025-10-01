@@ -13,7 +13,7 @@ export async function POST(req) {
       console.log("❌ No WordPress refresh token found");
       return NextResponse.json(
         { success: false, message: 'No refresh token provided' },
-        { status: 401 }
+        { status: 200 }
       );
     }
 
@@ -76,14 +76,14 @@ export async function POST(req) {
       console.log("❌ WordPress refresh failed:", data.errors || data);
       return NextResponse.json(
         { success: false, message: 'Failed to refresh WordPress token' },
-        { status: 401 }
+        { status: 200 }
       );
     }
   } catch (error) {
     console.error("❌ Error refreshing token:", error);
     return NextResponse.json(
       { success: false, message: 'Failed to refresh token' },
-      { status: 401 }
+      { status: 200 }
     );
   }
 }

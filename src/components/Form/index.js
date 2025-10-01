@@ -188,7 +188,7 @@ const Form = () => {
         </div>
         
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="challenge" className="text-sm">What challenge does your work aim to address?</label>
+            <label htmlFor="challenge" className="text-sm">What challenge does your work aim to solve?</label>
             <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("challenge")} />
             {errors.challenge && <p className="text-red-500 text-sm">{errors.challenge.message}</p>}
         </div>
@@ -223,7 +223,7 @@ const Form = () => {
             <label htmlFor="file" className="text-sm">Upload any relevant non-confidential material</label>
             <input 
                 type="file" 
-                className="bg-lightblue text-white font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer self-start uppercase" 
+                className="bg-lightblue text-white font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer self-start uppercase w-full md:w-auto" 
                 accept=".txt,.pdf"
                 {...register("file", { 
                     validate: {
@@ -250,7 +250,7 @@ const Form = () => {
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
             <label htmlFor="privacyPolicy" className="text-white rounded-md bg-blue-02 p-4 flex items-start gap-2 text-sm">
                 <input type="checkbox" className="mt-1" {...register("privacyPolicy", { required: "You must accept the Privacy Policy" })} />
-                <span>By submitting this form, I agree to the <Link href="/privacy-policy">Privacy Policy</Link> and consent to the collection, use, and storage of my information as described.</span>
+                <span>By submitting this form, I agree to the <Link href="/privacy-policy" className="underline">Privacy Policy</Link> and consent to the collection, use, and storage of my information as described.</span>
             </label>
             {errors.privacyPolicy && <p className="text-red-500 text-sm">{errors.privacyPolicy.message}</p>}
         </div>

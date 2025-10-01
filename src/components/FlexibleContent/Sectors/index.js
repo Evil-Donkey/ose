@@ -10,6 +10,7 @@ import Link from "next/link";
 import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import Button from "../../Button";
+import { getOptimizedVideoProps, getVideoSources } from "@/lib/videoUtils";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,15 +79,45 @@ const Sectors = ({ data }) => {
                             <div key={index} ref={el => sectorsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
                                 {url ? (    
                                     <Link href={link} className="relative aspect-square overflow-hidden rounded-lg flex text-center items-end justify-center py-10 xl:px-18 group">
-                                        <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0 transition-transform duration-300 group-hover:scale-110" />
-                                        {video && <video src={video.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />}
+                                        <Image src={image.mediaItemUrl} alt={image.altText} width={1000} height={1000} className="object-cover absolute inset-0 transition-transform duration-300 group-hover:scale-110 w-full h-full" />
+                                        {video && (
+                                            <video 
+                                                {...getOptimizedVideoProps(video, {
+                                                    context: 'card',
+                                                    className: "absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                                                    controls: false,
+                                                    muted: true,
+                                                    loop: true,
+                                                    playsInline: true
+                                                })}
+                                            >
+                                                {getVideoSources(video).map((source, index) => (
+                                                    <source key={index} src={source.src} type={source.type} />
+                                                ))}
+                                            </video>
+                                        )}
                                         <div className="absolute inset-0 bg-gradient-to-t w-full h-3/5 bottom-0 top-auto from-black/60 to-black/0 pointer-events-none" />
                                         <h4 className="text-white text-4xl md:text-5xl/13 font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />
                                     </Link>
                                 ) : (
                                     <div className="relative aspect-square overflow-hidden rounded-lg flex items-end py-10 px-10 lg:p-6 2xl:ps-10 2xl:pe-18">
-                                        <Image src={image.mediaItemUrl} alt={image.altText} fill className="object-cover absolute inset-0" />
-                                        {video && <video src={video.mediaItemUrl} autoPlay muted loop className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300" />}
+                                        <Image src={image.mediaItemUrl} alt={image.altText} width={1000} height={1000} className="object-cover absolute inset-0 w-full h-full" />
+                                        {video && (
+                                            <video 
+                                                {...getOptimizedVideoProps(video, {
+                                                    context: 'card',
+                                                    className: "absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                                                    controls: false,
+                                                    muted: true,
+                                                    loop: true,
+                                                    playsInline: true
+                                                })}
+                                            >
+                                                {getVideoSources(video).map((source, index) => (
+                                                    <source key={index} src={source.src} type={source.type} />
+                                                ))}
+                                            </video>
+                                        )}
                                         <div className="absolute inset-0 bg-gradient-to-t w-full h-3/5 bottom-0 top-auto from-black/60 to-black/0 pointer-events-none" />
                                         <h4 className="text-white text-4xl 2xl:text-5xl/13 font-medium drop-shadow-lg z-10" dangerouslySetInnerHTML={{ __html: title }} />
                                     </div>

@@ -33,11 +33,14 @@ const Expertise = ({ data }) => {
     const handleClick = (index) => {
         setActiveIndex(index);
         if (containerRef.current) {
-            const yOffset = -100;
-            const y = containerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({
-                top: y,
-                behavior: 'smooth'
+            // Use requestAnimationFrame to ensure layout is stable
+            requestAnimationFrame(() => {
+                const yOffset = -100;
+                const y = containerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({
+                    top: y,
+                    behavior: 'smooth'
+                });
             });
         }
     }
