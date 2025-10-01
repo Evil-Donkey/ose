@@ -28,9 +28,9 @@ export default async function ContactPage() {
     <>
       <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 relative">
           <Container className="py-40 2xl:pt-50 relative z-10 flex flex-col lg:flex-row justify-between gap-10">
-            <div className="w-full lg:w-1/2 contact-form-section">
+            <div className="w-full lg:w-2/5 contact-form-section">
               {title && <h1 className="text-4xl md:text-6xl/18 mb-10" dangerouslySetInnerHTML={{ __html: title }} />}
-              {content && <div className="text-base md:text-lg mb-10" dangerouslySetInnerHTML={{ __html: content }} />}
+              {content && <div className="text-base md:text-lg mb-10 prose max-w-none text-white prose-h2:mb-0 prose-h2:mt-3 prose-h2:text-xl prose-a:text-white prose-a:underline marker:text-white" dangerouslySetInnerHTML={{ __html: content }} />}
             </div>
             <div className="w-full lg:w-2/5">
               <div className="text-base md:text-lg mb-10">

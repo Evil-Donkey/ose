@@ -24,6 +24,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const footerData = await getFooterData();
+  const GA_TRACKING_ID = process.env.GA_TRACKING_ID;
   return (
     <html lang="en">
       <body className={`${montserrat.variable} overflow-x-hidden`}>
@@ -40,7 +41,7 @@ export default async function RootLayout({ children }) {
             </Suspense>
           </PasswordWrapper>
         </AuthProvider>
-        {/* <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} /> */}
+        <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} />
       </body>
     </html>
   );

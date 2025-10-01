@@ -64,7 +64,7 @@ export default async function PortfolioSinglePage({ params }) {
             <Container className="py-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <div>
-                        {title && <h1 className="text-2xl lg:text-3xl font-medium text-lightblue">{title}</h1>}
+                        {title && <h1 className="text-2xl lg:text-3xl font-medium text-lightblue mb-4">{title}</h1>}
                         {portfolioTitle && <h2 className="text-2xl lg:text-3xl font-medium">{portfolioTitle}</h2>}
                         {content && <div className="mt-4 flex flex-col gap-4 text-base lg:text-lg" dangerouslySetInnerHTML={{ __html: content }} />}
                     </div>
@@ -172,20 +172,12 @@ export default async function PortfolioSinglePage({ params }) {
                 
                 {(() => {
                     const currentIndex = sortedItems.findIndex(i => i.slug === slug);
-                    const prev = currentIndex > 0 ? sortedItems[currentIndex - 1] : null;
-                    const next = currentIndex < sortedItems.length - 1 ? sortedItems[currentIndex + 1] : null;
+                    const prev = currentIndex > 0 ? sortedItems[currentIndex - 1] : sortedItems[sortedItems.length - 1];
+                    const next = currentIndex < sortedItems.length - 1 ? sortedItems[currentIndex + 1] : sortedItems[0];
                     return (
-                        <div className="grid grid-cols-2 gap-8 mt-16">
-                            <div className="justify-self-end">
-                                {prev && (
-                                    <Button href={`/portfolio/${prev.slug}`}>Previous</Button>
-                                )}
-                            </div>
-                            <div>
-                                {next && (
-                                    <Button href={`/portfolio/${next.slug}`}>Next</Button>
-                                )}
-                            </div>
+                        <div className="flex justify-center gap-8 mt-16">
+                            <Button className="w-40!" href={`/portfolio/${prev.slug}`}>Previous</Button>
+                            <Button className="w-40!" href={`/portfolio/${next.slug}`}>Next</Button>
                         </div>
                     );
                 })()}

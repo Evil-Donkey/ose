@@ -126,7 +126,7 @@ const ContactForm = () => {
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
             <label htmlFor="privacyPolicy" className="text-white rounded-md bg-blue-02 p-4 flex items-start gap-2 text-sm">
                 <input type="checkbox" className="mt-1" {...register("privacyPolicy", { required: "You must accept the Privacy Policy" })} />
-                <span>By submitting this form, I agree to the <Link href="/privacy-policy">Privacy Policy</Link> and consent to the collection, use, and storage of my information as described.</span>
+                <span>By submitting this form, I agree to the <Link href="/privacy-policy" className="underline">Privacy Policy</Link> and consent to the collection, use, and storage of my information as described.</span>
             </label>
             {errors.privacyPolicy && <p className="text-red-500 text-sm">{errors.privacyPolicy.message}</p>}
         </div>

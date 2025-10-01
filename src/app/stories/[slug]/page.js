@@ -97,13 +97,9 @@ export default async function StoryPage({ params }) {
 
             {/* Story Pagination */}
             <Container className="pt-10 md:pt-25 2xl:pt-45">
-                <div className="grid grid-cols-2 gap-8">
-                    <div className="justify-self-end">
-                        <Button href={`/stories/${previousStory.slug}`}>Previous</Button>
-                    </div>
-                    <div>
-                        <Button href={`/stories/${nextStory.slug}`}>Next</Button>
-                    </div>
+                <div className="flex justify-center gap-8">
+                    <Button className="w-40!" href={`/stories/${previousStory.slug}`}>Previous</Button>
+                    <Button className="w-40!" href={`/stories/${nextStory.slug}`}>Next</Button>
                 </div>
             </Container>
         </div>
