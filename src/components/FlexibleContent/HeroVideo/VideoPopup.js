@@ -65,7 +65,7 @@ const VideoPopup = ({ isOpen, onClose, fullMovie }) => {
 
     return (
         <div ref={popupRef} className="fixed z-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-screen h-screen">
-            <div ref={popupBgRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 bg-darkblue/80 origin-center rounded-full"></div>
+            <div ref={popupBgRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-80 bg-darkblue origin-center rounded-full"></div>
             <div ref={popupContentRef} className="opacity-0 w-full h-full z-50 relative">
                 <button
                     onClick={onClose}
