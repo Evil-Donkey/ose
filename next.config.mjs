@@ -130,6 +130,7 @@ const nextConfig = {
             { source: "/uncover-translational-funding", destination: "/uncover", permanent: true },
             { source: "/investors/register", destination: "/shareholder-portal", permanent: true },
             { source: "/investors/forgot", destination: "/shareholder-portal", permanent: true },
+            { source: "/team", destination: "https://www.oxfordscienceenterprises.com/who#team-members", permanent: true },
             { source: "/team/andrew-straiton", destination: "https://www.oxfordscienceenterprises.com/who/andrew-straiton", permanent: true },
             { source: "/team/george-todd", destination: "https://www.oxfordscienceenterprises.com/who/george-todd", permanent: true },
             { source: "/team/karandeep-bhogal", destination: "https://www.oxfordscienceenterprises.com/who/karandeep-bhogal", permanent: true },
