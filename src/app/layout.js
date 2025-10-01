@@ -4,7 +4,7 @@ import GoogleAnalytics from '../lib/googleAnalytics'
 import "./globals.css";
 import ScrollToHashOnRouteChange from "../components/ScrollToHashOnRouteChange";
 import getFooterData from "../lib/getFooterData";
-import Footer from "../components/Footer";
+import Script from "next/script";
 import PasswordWrapper from "../components/PasswordOverlay/PasswordWrapper";
 import { Suspense } from 'react';
 import LayoutClient from "../components/LayoutClient";
