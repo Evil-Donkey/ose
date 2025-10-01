@@ -9,7 +9,7 @@ import formatSectionLabel from '@/lib/formatSectionLabel';
 gsap.registerPlugin(ScrollTrigger);
 
 const Advantages = ({ data }) => {
-    const { title, advantages, backgroundImage, backgroundImageMobile, sectionLabel } = data;
+    const { title, copy, advantages, backgroundImage, backgroundImageMobile, sectionLabel } = data;
     const blocksRef = useRef([]);
     const titleRef = useRef(null);
 
@@ -86,7 +86,7 @@ const Advantages = ({ data }) => {
                                         )}
                                         {copy && (
                                             <div 
-                                                className="text-sm text-blue-0 text-blue-02 relative z-10" 
+                                                className="text-sm text-blue-02 relative z-10" 
                                                 dangerouslySetInnerHTML={{ __html: copy }} 
                                             />
                                         )}
@@ -97,6 +97,12 @@ const Advantages = ({ data }) => {
                     }
                 </div>
             </Container>
+            {copy && (
+                <div 
+                    className="w-full md:w-2/3 lg:w-3/5 text-center text-sm md:text-base text-white z-10 absolute bottom-10 left-1/2 -translate-x-1/2 px-10 text-balance" 
+                    dangerouslySetInnerHTML={{ __html: copy }} 
+                />
+            )}
         </div>
     )
 }

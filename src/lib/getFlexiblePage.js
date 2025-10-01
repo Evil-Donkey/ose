@@ -560,6 +560,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             fieldGroupName
             sectionLabel
             title
+            copy
             backgroundImage {
               mediaItemUrl
             }

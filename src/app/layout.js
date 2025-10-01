@@ -41,6 +41,7 @@ export default async function RootLayout({ children }) {
             </Suspense>
           </PasswordWrapper>
         </AuthProvider>
+        <Script src='https://cdn-cookieyes.com/client_data/057bd4483d07fa02fa3b4a27/script.js' strategy='beforeInteractive' />
         <GoogleAnalytics GA_TRACKING_ID={GA_TRACKING_ID} />
       </body>
     </html>
