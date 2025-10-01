@@ -35,7 +35,7 @@ export default async function ContactPage() {
             </div>
             <div className="w-full lg:w-2/5">
               <div className="text-base md:text-lg mb-10">
-                Use this short form to get in touch and tell us about your research.
+                Send us a message and our team will be in touch.
               </div>
               <ContactForm />
             </div>
