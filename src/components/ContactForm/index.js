@@ -22,7 +22,7 @@ const ContactForm = () => {
         const formData = new FormData();
 
         // Contact Form 7 required fields
-        formData.append("_wpcf7", process.env.NEXT_PUBLIC_CF7_FORM_ID || "3365");
+        formData.append("_wpcf7", process.env.NEXT_PUBLIC_CF7_CONTACT_FORM_ID || "3365");
         formData.append("_wpcf7_version", "6.0.5");
         formData.append("_wpcf7_locale", "en_UK");
         formData.append("_wpcf7_unit_tag", `wpcf7-f${process.env.NEXT_PUBLIC_CF7_CONTACT_FORM_ID || "3365"}-p3366-o1`);
