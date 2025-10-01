@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
     checkAuthStatus(); // Check authentication on mount
     
     // TEMPORARY: Disable password overlay
-    const TEMPORARILY_DISABLE_PASSWORD = true;
+    const TEMPORARILY_DISABLE_PASSWORD = false;
     
     if (TEMPORARILY_DISABLE_PASSWORD) {
       setPasswordVerified(true);

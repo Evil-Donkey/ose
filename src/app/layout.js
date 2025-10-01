@@ -1,25 +1,14 @@
 import { AuthProvider } from "../context/AuthContext";
 import { Montserrat } from "next/font/google";
+import GoogleAnalytics from '../lib/googleAnalytics'
 import "./globals.css";
+import ScrollToHashOnRouteChange from "../components/ScrollToHashOnRouteChange";
 import getFooterData from "../lib/getFooterData";
 import Script from "next/script";
 import PasswordWrapper from "../components/PasswordOverlay/PasswordWrapper";
 import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
-
-// Dynamic imports for client-side components
-const LayoutClient = dynamic(() => import("../components/LayoutClient"), {
-  loading: () => <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>
-});
-
-const NavigationLoading = dynamic(() => import("../components/NavigationLoading"));
-
-const ScrollToHashOnRouteChange = dynamic(() => import("../components/ScrollToHashOnRouteChange"));
-
-const PasswordWrapper = dynamic(() => import("../components/PasswordOverlay/PasswordWrapper"));
-
-// Google Analytics - load only in production
-const GoogleAnalytics = dynamic(() => import('../lib/googleAnalytics'));
+import LayoutClient from "../components/LayoutClient";
+import NavigationLoading from "../components/NavigationLoading";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
