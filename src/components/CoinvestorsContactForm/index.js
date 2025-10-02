@@ -25,7 +25,7 @@ const CoinvestorsContactForm = () => {
         formData.append("_wpcf7", process.env.NEXT_PUBLIC_CF7_COINVESTORS_CONTACT_FORM_ID || "3486");
         formData.append("_wpcf7_version", "6.0.5");
         formData.append("_wpcf7_locale", "en_UK");
-        formData.append("_wpcf7_unit_tag", `wpcf7-f${process.env.NEXT_PUBLIC_CF7_COINVESTORS_CONTACT_FORM_ID || "3486"}-p3366-o1`);
+        formData.append("_wpcf7_unit_tag", `wpcf7-f${process.env.NEXT_PUBLIC_CF7_COINVESTORS_CONTACT_FORM_ID || "3486"}-p3487-o1`);
         formData.append("_wpcf7_container_post", "3487");
 
         // Form fields - match exactly with WordPress Contact Form 7 field names
@@ -41,7 +41,7 @@ const CoinvestorsContactForm = () => {
         }
 
         try {
-            const endpoint = `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/contact-form-7/v1/contact-forms/${process.env.NEXT_PUBLIC_CF7_CONTACT_FORM_ID || "3365"}/feedback`;
+            const endpoint = `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/contact-form-7/v1/contact-forms/${process.env.NEXT_PUBLIC_CF7_COINVESTORS_CONTACT_FORM_ID || "3365"}/feedback`;
             console.log("Submitting to endpoint:", endpoint);
 
             const response = await fetch(endpoint, {
