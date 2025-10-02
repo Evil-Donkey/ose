@@ -20,16 +20,16 @@ const montserrat = Montserrat({
 export const metadata = {
   title: "Oxford Science Enterprises",
   description: "We help transform Oxford's cutting-edge research into world-changing companies",
-  icons: {
-    icon: [
-      { url: '/icon.ico', sizes: 'any' },
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon.ico', type: 'image/x-icon' },
-      { url: '/favicon.ico', type: 'image/x-icon' }
-    ],
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
-  },
+  // icons: {
+  //   icon: [
+  //     { url: '/icon.ico', sizes: 'any' },
+  //     { url: '/favicon.ico', sizes: 'any' },
+  //     { url: '/icon.ico', type: 'image/x-icon' },
+  //     { url: '/favicon.ico', type: 'image/x-icon' }
+  //   ],
+  //   shortcut: '/favicon.ico',
+  //   apple: '/favicon.ico',
+  // },
 };
 
 export default async function RootLayout({ children }) {

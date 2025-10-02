@@ -21,7 +21,7 @@ const OneColumnCopyAlternate = ({ data }) => {
     const titleRef = useRef([]);
     const titleMobileRef = useRef([]);
 
-    const size = headingSize === "small" ? "text-4xl md:text-[3rem]/15 2xl:text-[4rem]/20" : "text-8xl md:text-[8rem]/30 2xl:text-[10rem]/50";
+    const size = headingSize === "small" ? "text-4xl md:text-[2.9rem]/15 2xl:text-[4rem]/20" : "text-8xl md:text-[8rem]/30 2xl:text-[10rem]/50";
     
     useEffect(() => {
         const titleTl = gsap.timeline();

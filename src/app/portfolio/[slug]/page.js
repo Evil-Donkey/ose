@@ -1,7 +1,6 @@
 import getPortfolioItems from "@/lib/getPortfolioItems";
 import Container from "@/components/Container";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
-import Image from "next/image";
 import ResponsiveImage from "../../../components/ResponsiveImage";
 import { X as XIcon, LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import { getOptimizedImageProps } from "../../../lib/imageUtils";
@@ -41,7 +40,7 @@ export default async function PortfolioSinglePage({ params }) {
   return (
     <>
         <HeaderWithMeganavLinks fixed={true} />
-        <div className="py-20 min-h-screen flex items-center justify-center px-4 bg-cover bg-center relative" style={{
+        <div className="mt-30 pb-20 min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 bg-cover bg-center relative" style={{
             backgroundImage: featuredImage ? `url(${featuredImage.node.mediaItemUrl})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/30" />

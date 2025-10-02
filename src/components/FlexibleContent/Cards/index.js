@@ -114,7 +114,7 @@ const Cards = ({ data }) => {
             <Container className="py-20 2xl:py-40">
                 {title && 
                     <div className="flex flex-col">
-                        <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full" dangerouslySetInnerHTML={{ __html: title }} />
+                        <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full text-balance" dangerouslySetInnerHTML={{ __html: title }} />
                     </div>
                 }
                 {copy && 

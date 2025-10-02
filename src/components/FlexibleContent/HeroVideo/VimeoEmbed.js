@@ -27,7 +27,7 @@ const VimeoEmbed = ({ vimeoUrl, className = "", background = true, controls = fa
         return null;
     }
 
-    const embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&background=${background && !controls ? 1 : 0}&controls=${controls ? 1 : 0}&title=0&byline=0&portrait=0&dnt=1`;
+    const embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&muted=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&background=${background && !controls ? 1 : 0}&controls=${controls ? 1 : 0}&title=0&byline=0&portrait=0&dnt=1&rel=0`;
 
     return (
         <div className={`relative w-full h-full overflow-hidden ${className}`} {...props}>
