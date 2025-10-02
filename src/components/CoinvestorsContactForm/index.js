@@ -138,7 +138,7 @@ const CoinvestorsContactForm = () => {
         </div>
 
         <div className="flex flex-col gap-4 text-center items-center justify-center w-full mt-5 mt-md-0 px-4">
-            {success && <p className="w-full text-white font-medium text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Thank you for your message! Our team will be in touch soon.</p>}
+            {success && <p className="w-full text-white font-medium text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Thank you for your message!<br/>Our team will be in touch soon.</p>}
             {error && <p className="w-full text-red-500 font-medium text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">{error}</p>}
         </div>
     </form>
