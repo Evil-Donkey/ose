@@ -9,7 +9,7 @@ import Container from "@/components/Container";
 import ContactForm from "@/components/ContactForm";
 
 export async function generateMetadata() {
-  return await generateMetadataFromLib("1566");
+  return await generateMetadataFromLib("3366");
 }
 
 export default async function ContactPage() {
