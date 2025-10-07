@@ -99,7 +99,7 @@ const Advantages = ({ data }) => {
             </Container>
             {copy && (
                 <div 
-                    className="w-full md:w-2/3 lg:w-3/5 text-center text-sm md:text-base text-white z-10 absolute lg:bottom-15 2xl:bottom-30 left-1/2 -translate-x-1/2 px-10 text-balance" 
+                    className="advantages__copy w-full md:w-2/3 lg:w-3/5 text-center text-sm md:text-base text-white z-10 absolute lg:bottom-15 2xl:bottom-30 left-1/2 -translate-x-1/2 px-10 text-balance" 
                     dangerouslySetInnerHTML={{ __html: copy }} 
                 />
             )}

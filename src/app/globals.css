@@ -66,6 +66,9 @@ body {
   .min-h-section-height {
     @apply min-h-[100vh];
   }
+  .advantages__copy {
+    @apply bottom-20;
+  }
 }
 /* html {
   scroll-behavior: smooth !important;
