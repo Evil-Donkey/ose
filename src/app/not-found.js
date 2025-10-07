@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import Container from '../components/Container'
-import HeaderWithMeganavLinks from '@/components/Header/HeaderWithMeganavLinks'
+import HeaderServer from '@/components/Header/HeaderServer'
  
 export default function NotFound() {
   return (
     <div>
-        <HeaderWithMeganavLinks fixed={true} />
+        <HeaderServer fixed={true} />
         <Container className="pt-50 pb-20">
             <div className="flex justify-between">
                 <div className="w-full lg:w-1/2 mb-5">

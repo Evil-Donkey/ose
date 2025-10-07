@@ -1,7 +1,7 @@
 import getPageTitleAndContent from "@/lib/getPageTitleAndContent";
 import generateMetadataFromLib from "@/lib/generateMetadata";
 import Container from "@/components/Container";
-import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import HeaderServer from "@/components/Header/HeaderServer";
 
 export async function generateMetadata() {
   return await generateMetadataFromLib("1590");
@@ -12,7 +12,7 @@ export default async function TermsAndConditionsPage() {
 
   return (
     <>
-    <HeaderWithMeganavLinks fixed={true} />
+    <HeaderServer fixed={true} />
     <Container className="pt-50 pb-20">
         <div className="flex flex-col gap-4 lg:px-40">
             <div className="space-y-4">

@@ -60,7 +60,7 @@ const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onInitial
   );
 };
 
-export default function PortfolioClient({ title, content, portfolioItems, categories, stages }) {
+export default function PortfolioClient({ title, content, portfolioItems, categories, stages, meganavLinks = {}, meganavData = {} }) {
   const searchParams = useSearchParams();
   const groupedCategories = useMemo(() => groupCategories(categories), [categories]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -257,7 +257,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
 
   return (
     <>
-      <HeaderWithMeganavLinks fixed={true} />
+      <HeaderWithMeganavLinks fixed={true} meganavLinks={meganavLinks} meganavData={meganavData} />
       <Container>
         <div className="flex flex-col gap-10 items-center justify-center text-center pb-10 lg:pb-9 pt-45 lg:pt-50 2xl:pt-60">
           <div className="w-full">

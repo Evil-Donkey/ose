@@ -1,6 +1,6 @@
 import getTeamMembers from "@/lib/getTeamMembers";
 import Container from "@/components/Container";
-import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import HeaderServer from "@/components/Header/HeaderServer";
 import { LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import MailIcon from "@/components/Icons/MailIcon";
 import getFooterData from "@/lib/getFooterData";
@@ -45,7 +45,7 @@ export default async function TeamMemberSinglePage({ params }) {
 
   return (
     <>
-        <HeaderWithMeganavLinks fixed={true} />
+        <HeaderServer fixed={true} />
         <div className={`mt-20 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
             backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined
         }}>

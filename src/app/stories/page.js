@@ -8,19 +8,25 @@ import getStoriesTypes from "@/lib/getStoriesTypes";
 import getStoriesItems from "@/lib/getStoriesItems";
 import getStoriesSectors from "@/lib/getStoriesSectors";
 import getFooterData from "@/lib/getFooterData";
+import getMeganavLinksLite from "@/lib/getMeganavLinksLite";
+import getMeganavDataLite from "@/lib/getMeganavDataLite";
 
 export async function generateMetadata() {
   return await generateMetadataFromLib("1254");
 }
 
 export default async function StoriesPage() {
-  const flexibleContent = await getFlexiblePage("1254");
-  const { title, content } = await getPageTitleAndContent("1254");
-  const popOutData = await getPopOutData();
-  const types = await getStoriesTypes();
-  const stories = await getStoriesItems();
-  const sectors = await getStoriesSectors();
-  const footerData = await getFooterData();
+  const [flexibleContent, { title, content }, popOutData, types, stories, sectors, footerData, meganavLinks, meganavData] = await Promise.all([
+    getFlexiblePage("1254"),
+    getPageTitleAndContent("1254"),
+    getPopOutData(),
+    getStoriesTypes(),
+    getStoriesItems(),
+    getStoriesSectors(),
+    getFooterData(),
+    getMeganavLinksLite(),
+    getMeganavDataLite()
+  ]);
 
   const ctaData = {
     copy: footerData.ctaCopy,
@@ -36,6 +42,8 @@ export default async function StoriesPage() {
         title={title}
         isStoriesPage={true}
         fixedHeader={true}
+        meganavLinks={meganavLinks}
+        meganavData={meganavData}
       />
 
       <StoriesWrapper types={types} stories={stories} sectors={sectors} ctaData={ctaData} />

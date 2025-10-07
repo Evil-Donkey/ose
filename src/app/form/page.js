@@ -7,16 +7,22 @@ import CTA from "@/components/CTA";
 import getFooterData from "@/lib/getFooterData";
 import Container from "@/components/Container";
 import Form from "@/components/Form";
+import getMeganavLinksLite from "@/lib/getMeganavLinksLite";
+import getMeganavDataLite from "@/lib/getMeganavDataLite";
 
 export async function generateMetadata() {
   return await generateMetadataFromLib("1566");
 }
 
 export default async function ContactPage() {
-  const flexibleContent = await getFlexiblePage("1566");
-  const { title, content } = await getPageTitleAndContent("1566");
-  const popOutData = await getPopOutData();
-  const footerData = await getFooterData();
+  const [flexibleContent, { title, content }, popOutData, footerData, meganavLinks, meganavData] = await Promise.all([
+    getFlexiblePage("1566"),
+    getPageTitleAndContent("1566"),
+    getPopOutData(),
+    getFooterData(),
+    getMeganavLinksLite(),
+    getMeganavDataLite()
+  ]);
 
   const ctaData = {
     copy: footerData.ctaCopy,
@@ -44,6 +50,8 @@ export default async function ContactPage() {
       <FlexiblePageClient 
         flexibleContent={flexibleContent} 
         popOutData={popOutData}
+        meganavLinks={meganavLinks}
+        meganavData={meganavData}
       />
       <CTA data={ctaData} />
     </>

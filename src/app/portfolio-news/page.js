@@ -7,6 +7,8 @@ import getFooterData from "@/lib/getFooterData";
 import getPortfolioNewsItems from "@/lib/getPortfolioNewsItems";
 import getPortfolioNewsCategories from "@/lib/getPortfolioNewsCategories";
 import PortfolioNews from "@/components/PortfolioNews";
+import getMeganavLinksLite from "@/lib/getMeganavLinksLite";
+import getMeganavDataLite from "@/lib/getMeganavDataLite";
 
 export async function generateMetadata() {
   return await generateMetadataFromLib("1573");
@@ -14,10 +16,14 @@ export async function generateMetadata() {
 
 export default async function ContactPage() {
   // const flexibleContent = await getFlexiblePage("1573");
-  const popOutData = await getPopOutData();
-  const footerData = await getFooterData();
-  const portfolioNewsItems = await getPortfolioNewsItems();
-  const portfolioNewsCategories = await getPortfolioNewsCategories();
+  const [popOutData, footerData, portfolioNewsItems, portfolioNewsCategories, meganavLinks, meganavData] = await Promise.all([
+    getPopOutData(),
+    getFooterData(),
+    getPortfolioNewsItems(),
+    getPortfolioNewsCategories(),
+    getMeganavLinksLite(),
+    getMeganavDataLite()
+  ]);
   
   const ctaData = {
     copy: footerData.ctaCopy,
@@ -30,6 +36,8 @@ export default async function ContactPage() {
       <PortfolioNews portfolioNewsItems={portfolioNewsItems} portfolioNewsCategories={portfolioNewsCategories} />
       <FlexiblePageClient 
         popOutData={popOutData}
+        meganavLinks={meganavLinks}
+        meganavData={meganavData}
       />
       <CTA data={ctaData} />
     </>

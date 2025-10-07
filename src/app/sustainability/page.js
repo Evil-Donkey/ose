@@ -3,7 +3,7 @@ import generateMetadataFromLib from "@/lib/generateMetadata";
 import Container from "@/components/Container";
 import Image from "next/image";
 import ResponsiveImage from "../../components/ResponsiveImage";
-import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import HeaderServer from "@/components/Header/HeaderServer";
 import { getOptimizedImageProps } from "../../lib/imageUtils";
 import Link from "next/link";
 import getFooterData from "@/lib/getFooterData";
@@ -25,7 +25,7 @@ export default async function SustainabilityPage() {
 
   return (
     <>
-      <HeaderWithMeganavLinks fixed={true} />
+      <HeaderServer fixed={true} />
       {featuredImage && 
       <div className="relative mt-30 h-[500px]">
         {/* <ResponsiveImage 

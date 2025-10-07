@@ -8,7 +8,7 @@ import Popup from "@/components/FlexibleContent/InfographicEcosystem/Popup";
 import VideoPopup from "@/components/FlexibleContent/HeroVideo/VideoPopup";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 
-export default function FlexiblePage({ flexibleContent, className, popOutData, title, titleInHero, content, fixedHeader, hideHeader, isStoriesPage }) {
+export default function FlexiblePage({ flexibleContent, className, popOutData, title, titleInHero, content, fixedHeader, hideHeader, isStoriesPage, meganavLinks = {}, meganavData = {} }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState(null);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function FlexiblePage({ flexibleContent, className, popOutData, t
   return (
     <div className={className}>
       <LazyLoadInitializer />
-      {!hideHeader && <HeaderWithMeganavLinks fixed={fixedHeader} />}
+      {!hideHeader && <HeaderWithMeganavLinks fixed={fixedHeader} meganavLinks={meganavLinks} meganavData={meganavData} />}
 
       {!titleInHero && title && (
         <div className={`text-center flex flex-col items-center gap-5 2xl:pt-60 ${isStoriesPage ? 'mb-15 lg:mb-20 pt-45 lg:pt-50' : 'mb-20 pt-50'}`}>

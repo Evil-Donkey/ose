@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 const FlexiblePage = dynamic(() => import("./FlexiblePage"), { ssr: false });
 
-export default function FlexiblePageClient({ children, ...props }) {
+export default function FlexiblePageClient({ children, meganavLinks, meganavData, ...props }) {
   const [isContentReady, setIsContentReady] = useState(false);
   const contentRef = useRef(null);
 
@@ -44,7 +44,7 @@ export default function FlexiblePageClient({ children, ...props }) {
   return (
     <>
       <div ref={contentRef}>
-        <FlexiblePage {...props} />
+        <FlexiblePage {...props} meganavLinks={meganavLinks} meganavData={meganavData} />
       </div>
       {isContentReady && children}
     </>

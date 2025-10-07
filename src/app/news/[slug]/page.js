@@ -1,6 +1,6 @@
 import getNewsItems from "@/lib/getNewsItems";
 import Container from "@/components/Container";
-import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import HeaderServer from "@/components/Header/HeaderServer";
 import Link from "next/link";
 import Button from "@/components/Button";
 import { formatDate } from "@/lib/formatDate";
@@ -37,7 +37,7 @@ export default async function NewsSinglePage({ params }) {
 
   return (
     <>
-        <HeaderWithMeganavLinks fixed={false} />
+        <HeaderServer fixed={false} />
         <div className="text-white pt-16 relative pb-4 lg:pb-0 lg:min-h-screen">
             <div className="absolute inset-0 bg-cover bg-center bg-[url('/gradient.png')] top-0 left-0 w-full lg:h-[calc(100%-80px)]" />
             <Container className="pt-30 relative z-10">

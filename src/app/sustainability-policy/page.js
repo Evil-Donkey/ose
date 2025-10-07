@@ -1,7 +1,7 @@
 import getPageTitleAndContent from "@/lib/getPageTitleAndContent";
 import generateMetadataFromLib from "@/lib/generateMetadata";
 import Container from "@/components/Container";
-import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import HeaderServer from "@/components/Header/HeaderServer";
 
 export async function generateMetadata() {
   return await generateMetadataFromLib("1623");
@@ -12,7 +12,7 @@ export default async function SustainabilityPage() {
 
   return (
     <>
-    <HeaderWithMeganavLinks fixed={true} />
+    <HeaderServer fixed={true} />
     <Container className="pb-20 pt-50">
         <div className="flex flex-col gap-4 lg:px-40">
             <div className="space-y-4">

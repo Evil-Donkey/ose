@@ -4,15 +4,21 @@ import getPopOutData from "@/lib/getPopOutData";
 import FlexiblePageClient from "@/components/Templates/FlexiblePageClient";
 import CTA from "@/components/CTA";
 import getFooterData from "@/lib/getFooterData";
+import getMeganavLinksLite from "@/lib/getMeganavLinksLite";
+import getMeganavDataLite from "@/lib/getMeganavDataLite";
 
 export async function generateMetadata() {
   return await generateMetadataFromLib("26");
 }
 
 export default async function WhatPage() {
-  const flexibleContent = await getFlexiblePage("26");
-  const popOutData = await getPopOutData();
-  const footerData = await getFooterData();
+  const [flexibleContent, popOutData, footerData, meganavLinks, meganavData] = await Promise.all([
+    getFlexiblePage("26"),
+    getPopOutData(),
+    getFooterData(),
+    getMeganavLinksLite(),
+    getMeganavDataLite()
+  ]);
 
   const ctaData = {
     copy: footerData.ctaCopy,
@@ -24,6 +30,8 @@ export default async function WhatPage() {
     <FlexiblePageClient 
       flexibleContent={flexibleContent} 
       popOutData={popOutData}
+      meganavLinks={meganavLinks}
+      meganavData={meganavData}
     >
       <CTA data={ctaData} />
     </FlexiblePageClient>

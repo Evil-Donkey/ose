@@ -3,7 +3,7 @@ import generateMetadataFromLib from "@/lib/generateMetadata";
 import Container from "@/components/Container";
 import Image from "next/image";
 import ResponsiveImage from "../../components/ResponsiveImage";
-import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
+import HeaderServer from "@/components/Header/HeaderServer";
 import { getOptimizedImageProps } from "../../lib/imageUtils";
 import Link from "next/link";
 import getFooterData from "@/lib/getFooterData";
@@ -30,7 +30,7 @@ export default async function UncoverPage() {
 
   return (
     <>
-      <HeaderWithMeganavLinks fixed={true} />
+      <HeaderServer fixed={true} />
       {featuredImage && 
         <div className="uncover__hero-image relative mt-30 min-h-[500px] lg:min-h-[700px]">
           {/* <ResponsiveImage 
