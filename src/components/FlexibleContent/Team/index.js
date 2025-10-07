@@ -146,7 +146,7 @@ const Team = ({ data }) => {
     .filter(member =>
       member.teamCategories.nodes.some(cat => cat.slug === selectedCategory)
     )
-    .reverse();
+    //.reverse();
 
   // Get the current selected category object to access its description
   const selectedCategoryData = categories.find(cat => cat.slug === selectedCategory);
