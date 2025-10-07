@@ -67,7 +67,7 @@ body {
     @apply min-h-[100vh];
   }
   .advantages__copy {
-    @apply bottom-20;
+    @apply bottom-22;
   }
 }
 /* html {
