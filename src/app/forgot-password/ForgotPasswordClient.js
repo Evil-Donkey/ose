@@ -28,31 +28,27 @@ export default function ForgotPasswordClient({ meganavLinks, meganavData }) {
             const response = await fetch("/api/auth/check-email", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: formData.email }),
+                body: JSON.stringify({
+                    email: formData.email,
+                }),
             });
 
             const result = await response.json();
-
-            if (result.exists && result.approved) {
-                const resetResponse = await fetch("/api/auth/forgot-password", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: formData.email }),
+            
+            if (result.success) {
+                // Display the status-specific message from the API
+                setEmailCheckResult({
+                    type: result.status === 'approved' ? 'success' : 
+                          result.status === 'not_found' ? 'error' : 'warning',
+                    message: result.message,
+                    user: result.user,
+                    status: result.status
                 });
-
-                const resetResult = await resetResponse.json();
-
-                if (resetResult.success) {
-                    setEmailCheckResult("success");
-                } else {
-                    setError(resetResult.error || "Failed to send reset email.");
-                }
-            } else if (result.exists && !result.approved) {
-                setEmailCheckResult("pending");
             } else {
-                setEmailCheckResult("notFound");
+                setError(result.message || "Something went wrong. Please try again.");
             }
         } catch (error) {
+            console.error("❌ Email check error:", error);
             setError("Something went wrong. Please try again.");
         } finally {
             setIsLoading(false);
@@ -67,62 +63,95 @@ export default function ForgotPasswordClient({ meganavLinks, meganavData }) {
                     <div className="w-full lg:w-2/5">
                         <h1 className="text-4xl lg:text-6xl mb-4">Forgot Password</h1>
                         <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3">
-                            <p>If you've forgotten your password, we can help you reset it. Simply enter your email address below, and if your account is approved, we'll send you a link to create a new password.</p>
-                            <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
+                            <p>Enter your email address and we&apos;ll check if it exists in our system. If it does, we&apos;ll send you an email to reset your password.</p>
                         </div>
                     </div>
-                    <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10 flex flex-col justify-center">
-                        {emailCheckResult === "success" ? (
-                            <div className="flex flex-col gap-4 text-center items-center justify-center">
-                                <p className="w-full text-white text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Password reset email sent successfully.<br/>Check your inbox for further instructions.</p>
-                                <Link href="/shareholder-portal" className="text-white underline text-center">Back to Login</Link>
+                    <div className="w-full lg:w-2/5 lg:ps-2 2xl:ps-10">
+                        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+                            {/* Email */}
+                            <div className="w-full flex flex-col gap-2">
+                                <label htmlFor="email" className="text-sm">Email Address*</label>
+                                <input
+                                    type="email"
+                                    placeholder="Enter your email address"
+                                    {...register("email", {
+                                        required: "Email is required",
+                                        pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                            message: "Please enter a valid email address",
+                                        },
+                                    })}
+                                    className="bg-white text-blue-02 rounded-sm p-2"
+                                />
+                                {errors.email && <p className="text-white">{errors.email.message}</p>}
                             </div>
-                        ) : emailCheckResult === "pending" ? (
-                            <div className="flex flex-col gap-4 text-center items-center justify-center">
-                                <p className="w-full text-white text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Your account is pending approval.<br/>You'll receive an email once approved.</p>
-                                <Link href="/shareholder-portal" className="text-white underline text-center">Back to Login</Link>
+
+                            {/* Submit Button */}
+                            <Button type="submit" disabled={isLoading}>
+                                {isLoading ? (
+                                    <div className="flex items-center gap-2">
+                                        <Spinner size={16} />
+                                        <span>Checking...</span>
+                                    </div>
+                                ) : (
+                                    "Check Email"
+                                )}
+                            </Button>
+                        </form>
+
+                        {/* Error message */}
+                        {error && (
+                            <div className="mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded">
+                                <p className="text-white">{error}</p>
                             </div>
-                        ) : emailCheckResult === "notFound" ? (
-                            <div className="flex flex-col gap-4 text-center items-center justify-center">
-                                <p className="w-full text-white text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">No account found with this email.<br/>Please check your email or contact support.</p>
-                                <Link href="/shareholder-portal" className="text-white underline text-center">Back to Login</Link>
-                            </div>
-                        ) : (
-                            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
-                                <div>
-                                    <label className="text-base">Email Address:</label>
-                                    <input
-                                        type="email"
-                                        {...register("email", {
-                                            required: "Email is required.",
-                                            pattern: {
-                                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                                message: "Please enter a valid email address.",
-                                            },
-                                        })}
-                                        className="bg-white text-blue-02 rounded-sm p-2 w-full"
-                                        disabled={isLoading}
-                                    />
-                                    {errors.email && <p className="text-white">{errors.email.message}</p>}
-                                </div>
-                                <Button type="submit" disabled={isLoading}>
-                                    {isLoading ? (
-                                        <div className="flex items-center gap-2">
-                                            <Spinner size={16} />
-                                            <span>Sending...</span>
-                                        </div>
-                                    ) : (
-                                        "Send Reset Link"
-                                    )}
-                                </Button>
-                                {error && <p className="text-white">{error}</p>}
-                                <div className="pt-4">
-                                    <Link href="/shareholder-portal" className="text-white underline">
-                                        Back to Login
-                                    </Link>
-                                </div>
-                            </form>
                         )}
+
+                        {/* Email check result */}
+                        {emailCheckResult && (
+                            <div className={`mt-8 text-center p-4 rounded-sm border bg-blue-02/30 border-white`}>
+                                <p className="text-white font-medium">{emailCheckResult.message}</p>
+                                
+                                {/* Show additional info for approved users */}
+                                {/* {emailCheckResult.status === 'approved' && emailCheckResult.user && (
+                                    <div className="mt-3 p-3 bg-green-500/10 rounded border border-green-500/30">
+                                        <p className="text-sm text-green-200">
+                                            <strong>Email:</strong> {emailCheckResult.user.email}
+                                        </p>
+                                        <p className="text-sm text-green-200 mt-1">
+                                            <strong>Status:</strong> {emailCheckResult.user.userStatus}
+                                        </p>
+                                    </div>
+                                )} */}
+                                
+                                {/* Show contact info for denied/pending users */}
+                                {/* {emailCheckResult.status === 'denied' || emailCheckResult.status === 'pending' ? (
+                                    <div className="mt-3">
+                                        <p className="text-base">
+                                            <strong>Contact:</strong> investors@oxfordsciences.com
+                                        </p>
+                                    </div>
+                                ) : null} */}
+                                
+                                {/* Show signup link for non-existent emails */}
+                                {/* {emailCheckResult.status === 'not_found' && (
+                                    <div className="mt-3">
+                                        <p className="text-base text-white">
+                                            <Link href="/shareholder-portal-signup" className="underline">
+                                                Click here to sign up
+                                            </Link>
+                                        </p>
+                                    </div>
+                                )} */}
+                            </div>
+                        )}
+
+                        <div className="flex flex-col gap-2 mt-8">
+                            <p className="text-sm flex items-center gap-2">
+                                <Link href="/shareholder-portal" className="text-white underline">Back to login</Link>
+                                <span className="text-white">|</span>
+                                <Link href="/shareholder-portal-signup" className="text-white underline">Request access</Link>
+                            </p>
+                        </div>
                     </div>
                 </Container>
             </div>

@@ -30,7 +30,7 @@ export default function CreatePasswordClient({ meganavLinks, meganavData }) {
             const rawToken = urlParams.get("token");
 
             if (!rawToken) {
-                setError("No activation token provided.");
+                setError("No reset token provided.");
                 return;
             }
 
@@ -38,25 +38,25 @@ export default function CreatePasswordClient({ meganavLinks, meganavData }) {
 
             // Check if the token is expired
             if (decoded.expires < Math.floor(Date.now() / 1000)) {
-                setError("This activation link has expired. Please request a new one.");
+                setError("This reset link has expired. Please request a new one.");
                 return;
             }
 
             setTokenData(decoded);
         } catch (e) {
-            setError("Invalid or expired activation link.");
+            setError("Invalid or expired reset link.");
         }
     }, []);
 
     const onSubmit = async (data) => {
         setIsLoading(true);
         if (!tokenData?.key || !tokenData?.login) {
-            setMessage("Invalid activation request.");
+            setMessage("Invalid reset request.");
             return;
         }
 
         try {
-            const response = await fetch("/api/auth/create-password", {
+            const response = await fetch("/api/auth/reset-password", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -70,7 +70,7 @@ export default function CreatePasswordClient({ meganavLinks, meganavData }) {
             if (result.success) {
                 setMessage("success");
             } else {
-                setMessage(result.error || "Failed to create password.");
+                setMessage(result.error || "Failed to reset password.");
             }
         } catch (error) {
             setMessage("Something went wrong. Please try again.");
@@ -87,7 +87,7 @@ export default function CreatePasswordClient({ meganavLinks, meganavData }) {
                     <div className="w-full lg:w-2/5">
                         <h1 className="text-4xl lg:text-6xl mb-4">Create Password</h1>
                         <div className="text-base flex flex-col gap-4 lg:w-4/5 2xl:w-2/3">
-                            <p>Welcome! Your account has been approved. Create a secure password below to activate your Oxford Science Enterprises shareholder portal account.</p>
+                            <p>An account has been created for you to access Oxford Science Enterprises&apos; shareholder portal. Please create a secure password to complete your account setup.</p>
                             <p>Need assistance? Contact us at <a href="mailto:investors@oxfordsciences.com" className="text-white underline">investors@oxfordsciences.com</a>.</p>
                         </div>
                     </div>
@@ -158,10 +158,10 @@ export default function CreatePasswordClient({ meganavLinks, meganavData }) {
                                             {isLoading ? (
                                                 <div className="flex items-center gap-2">
                                                     <Spinner size={16} />
-                                                    <span>Creating...</span>
+                                                    <span>Resetting...</span>
                                                 </div>
                                             ) : (
-                                                "Create Password"
+                                                "Reset Password"
                                             )}
                                         </Button>
                                     </form>
