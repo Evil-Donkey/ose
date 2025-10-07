@@ -195,7 +195,6 @@ const nextConfig = {
             { source: "/team/sive-ozer", destination: "https://www.oxfordscienceenterprises.com/who/sive-ozer", permanent: true },
             { source: "/team/wallace-wallace", destination: "https://www.oxfordscienceenterprises.com/who/wallace-wallace", permanent: true },
             { source: "/news/science-innovation-must-be-at-the-heart-of-government-action", destination: "https://www.oxfordscienceenterprises.com/news", permanent: true },
-            { source: "/news/oxford-science-enterprises-welcomes-benny-axt-as-healthtech-entrepreneur-in-residence", destination: "https://www.oxfordscienceenterprises.com/news", permanent: true },
             { source: "/news/oxford-science-enterprises-partners-with-tokyu-land-to-connect-oxford-spinouts-with-japans-innovation-ecosystem-2", destination: "https://www.oxfordscienceenterprises.com/news", permanent: true },
             { source: "/news/oxford-science-enterprises-appoints-harry-clifford-as-health-tech-entrepreneur-in-residence", destination: "https://www.oxfordscienceenterprises.com/news", permanent: true },
             { source: "/news/oxford-science-enterprises-appoints-mark-chadwick-as-deep-tech-scientist-in-residence", destination: "https://www.oxfordscienceenterprises.com/news", permanent: true },
