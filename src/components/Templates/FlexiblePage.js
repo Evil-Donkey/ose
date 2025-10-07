@@ -8,7 +8,7 @@ import Popup from "@/components/FlexibleContent/InfographicEcosystem/Popup";
 import VideoPopup from "@/components/FlexibleContent/HeroVideo/VideoPopup";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 
-export default function FlexiblePage({ flexibleContent, className, popOutData, title, titleInHero, content, fixedHeader, hideHeader, isStoriesPage, meganavLinks = {}, meganavData = {} }) {
+export default function FlexiblePage({ flexibleContent, className, popOutData, title, titleInHero, content, fixedHeader, hideHeader, isStoriesPage, meganavLinks = {}, meganavData = {}, foundersData = null, teamData = null }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState(null);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
@@ -53,6 +53,8 @@ export default function FlexiblePage({ flexibleContent, className, popOutData, t
             title={titleInHero ? title : null}
             onPopupOpen={handlePopupOpen}
             onVideoPopupOpen={handleVideoPopupOpen}
+            foundersData={foundersData}
+            teamData={teamData}
           />
         </div>
       </div>

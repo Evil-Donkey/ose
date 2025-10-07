@@ -6,10 +6,10 @@ import Container from '../../Container';
 import Link from 'next/link';
 import formatSectionLabel from '@/lib/formatSectionLabel';
 
-const Team = ({ data }) => {
+const Team = ({ data, teamData = null }) => {
 
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [members, setMembers] = useState(teamData || []);
+  const [loading, setLoading] = useState(!teamData);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -39,53 +39,93 @@ const Team = ({ data }) => {
     return null;
   };
   
+  // Set initial category when team data is available
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getTeamMembers();
-        setMembers(data);
-        
-        // Extract categories
-        const categories = Array.from(
-          new Set(
-            data.flatMap(member =>
-              member.teamCategories?.nodes?.map(cat => cat.slug)
-            )
+    if (teamData && teamData.length > 0 && !selectedCategory) {
+      const categories = Array.from(
+        new Set(
+          teamData.flatMap(member =>
+            member.teamCategories?.nodes?.map(cat => cat.slug)
           )
         )
-          .filter(Boolean)
-          .map(slug => {
-            const cat = data
-              .flatMap(member => member.teamCategories?.nodes)
-              .find(cat => cat.slug === slug);
-            return cat;
-          })
-          .sort((a, b) => {
-            // Sort by customOrder from lowest to highest
-            const orderA = a.customOrder || 0;
-            const orderB = b.customOrder || 0;
-            return orderA - orderB;
-          });
-        
-        // Check for filter parameter in hash first
-        const hashParams = parseHashParams();
-        let initialCategory = '';
-        
-        if (hashParams?.filter && categories.some(cat => cat.slug === hashParams.filter)) {
-          initialCategory = hashParams.filter;
-        } else if (categories.length > 0) {
-          initialCategory = categories[0].slug;
-        }
-        
-        setSelectedCategory(initialCategory);
-        setLoading(false);
-      } catch (err) {
-        setError('Error loading team members.');
-        setLoading(false);
+      )
+        .filter(Boolean)
+        .map(slug => {
+          const cat = teamData
+            .flatMap(member => member.teamCategories?.nodes)
+            .find(cat => cat.slug === slug);
+          return cat;
+        })
+        .sort((a, b) => {
+          const orderA = a.customOrder || 0;
+          const orderB = b.customOrder || 0;
+          return orderA - orderB;
+        });
+      
+      // Check for filter parameter in hash first
+      const hashParams = parseHashParams();
+      let initialCategory = '';
+      
+      if (hashParams?.filter && categories.some(cat => cat.slug === hashParams.filter)) {
+        initialCategory = hashParams.filter;
+      } else if (categories.length > 0) {
+        initialCategory = categories[0].slug;
       }
+      
+      setSelectedCategory(initialCategory);
     }
-    fetchData();
-  }, [sectionLabel]);
+  }, [teamData, selectedCategory, sectionLabel]);
+  
+  // Fetch team data only if not provided via props
+  useEffect(() => {
+    if (!teamData) {
+      async function fetchData() {
+        try {
+          const data = await getTeamMembers();
+          setMembers(data);
+          
+          // Extract categories
+          const categories = Array.from(
+            new Set(
+              data.flatMap(member =>
+                member.teamCategories?.nodes?.map(cat => cat.slug)
+              )
+            )
+          )
+            .filter(Boolean)
+            .map(slug => {
+              const cat = data
+                .flatMap(member => member.teamCategories?.nodes)
+                .find(cat => cat.slug === slug);
+              return cat;
+            })
+            .sort((a, b) => {
+              // Sort by customOrder from lowest to highest
+              const orderA = a.customOrder || 0;
+              const orderB = b.customOrder || 0;
+              return orderA - orderB;
+            });
+          
+          // Check for filter parameter in hash first
+          const hashParams = parseHashParams();
+          let initialCategory = '';
+          
+          if (hashParams?.filter && categories.some(cat => cat.slug === hashParams.filter)) {
+            initialCategory = hashParams.filter;
+          } else if (categories.length > 0) {
+            initialCategory = categories[0].slug;
+          }
+          
+          setSelectedCategory(initialCategory);
+          setLoading(false);
+        } catch (err) {
+          setError('Error loading team members.');
+          setLoading(false);
+        }
+      }
+      fetchData();
+    }
+  }, [teamData, sectionLabel]);
 
   // Check for hash and scroll to component when loaded
   useEffect(() => {

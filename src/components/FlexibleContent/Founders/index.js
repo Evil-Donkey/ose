@@ -10,7 +10,7 @@ import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Cards = ({ data }) => {
+const Cards = ({ data, foundersData = null }) => {
 
     const cardsRef = useRef([]);
     const copyRef = useRef([]);
@@ -19,8 +19,8 @@ const Cards = ({ data }) => {
     const cardsWrapperRef = useRef();
 
     const { title, copy, sectionLabel } = data;
-    const [founders, setFounders] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [founders, setFounders] = useState(foundersData || []);
+    const [loading, setLoading] = useState(!foundersData);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('');
     const [openDropdown, setOpenDropdown] = useState(null);
@@ -47,47 +47,78 @@ const Cards = ({ data }) => {
         return orderA - orderB;
     });
 
-    // Fetch founders data
+    // Set initial active tab when founders data is available
     useEffect(() => {
-        async function fetchFounders() {
-            try {
-                const data = await getFounders();
-                setFounders(data);
-                
-                // Set initial active tab to first category
-                if (data.length > 0) {
-                    const categories = Array.from(
-                        new Set(
-                            data.flatMap(founder => 
-                                founder.foundersCategories?.nodes?.map(cat => cat.slug)
-                            )
-                        )
+        if (foundersData && foundersData.length > 0 && !activeTab) {
+            const categories = Array.from(
+                new Set(
+                    foundersData.flatMap(founder => 
+                        founder.foundersCategories?.nodes?.map(cat => cat.slug)
                     )
-                    .filter(Boolean)
-                    .map(slug => {
-                        const cat = data
-                            .flatMap(founder => founder.foundersCategories?.nodes)
-                            .find(cat => cat.slug === slug);
-                        return cat;
-                    })
-                    .sort((a, b) => {
-                        const orderA = a.customOrder || 0;
-                        const orderB = b.customOrder || 0;
-                        return orderA - orderB;
-                    });
-                    
-                    if (categories.length > 0) {
-                        setActiveTab(categories[0].slug);
-                    }
-                }
-                setLoading(false);
-            } catch (err) {
-                setError('Error loading founders.');
-                setLoading(false);
+                )
+            )
+            .filter(Boolean)
+            .map(slug => {
+                const cat = foundersData
+                    .flatMap(founder => founder.foundersCategories?.nodes)
+                    .find(cat => cat.slug === slug);
+                return cat;
+            })
+            .sort((a, b) => {
+                const orderA = a.customOrder || 0;
+                const orderB = b.customOrder || 0;
+                return orderA - orderB;
+            });
+            
+            if (categories.length > 0) {
+                setActiveTab(categories[0].slug);
             }
         }
-        fetchFounders();
-    }, []);
+    }, [foundersData, activeTab]);
+
+    // Fetch founders data only if not provided via props
+    useEffect(() => {
+        if (!foundersData) {
+            async function fetchFounders() {
+                try {
+                    const data = await getFounders();
+                    setFounders(data);
+                    
+                    // Set initial active tab to first category
+                    if (data.length > 0) {
+                        const categories = Array.from(
+                            new Set(
+                                data.flatMap(founder => 
+                                    founder.foundersCategories?.nodes?.map(cat => cat.slug)
+                                )
+                            )
+                        )
+                        .filter(Boolean)
+                        .map(slug => {
+                            const cat = data
+                                .flatMap(founder => founder.foundersCategories?.nodes)
+                                .find(cat => cat.slug === slug);
+                            return cat;
+                        })
+                        .sort((a, b) => {
+                            const orderA = a.customOrder || 0;
+                            const orderB = b.customOrder || 0;
+                            return orderA - orderB;
+                        });
+                        
+                        if (categories.length > 0) {
+                            setActiveTab(categories[0].slug);
+                        }
+                    }
+                    setLoading(false);
+                } catch (err) {
+                    setError('Error loading founders.');
+                    setLoading(false);
+                }
+            }
+            fetchFounders();
+        }
+    }, [foundersData]);
 
     useEffect(() => {
         gsap.to(titleRef.current, {

@@ -6,6 +6,9 @@ import CTA from "@/components/CTA";
 import getFooterData from "@/lib/getFooterData";
 import getMeganavLinksLite from "@/lib/getMeganavLinksLite";
 import getMeganavDataLite from "@/lib/getMeganavDataLite";
+import getTeamMembers from "@/lib/getTeamMembers";
+import getFounders from "@/lib/getFounders";
+import { hasTeamComponent, hasFoundersComponent } from "@/lib/checkFlexibleComponents";
 
 export async function generateMetadata() {
   return await generateMetadataFromLib("226");
@@ -20,6 +23,10 @@ export default async function WhyPage() {
     getMeganavDataLite()
   ]);
 
+  // Conditionally fetch team/founders data if components are present
+  const teamData = hasTeamComponent(flexibleContent) ? await getTeamMembers() : null;
+  const foundersData = hasFoundersComponent(flexibleContent) ? await getFounders() : null;
+
   const ctaData = {
     copy: footerData.ctaCopy,
     title: footerData.ctaTitle,
@@ -32,6 +39,8 @@ export default async function WhyPage() {
       popOutData={popOutData}
       meganavLinks={meganavLinks}
       meganavData={meganavData}
+      teamData={teamData}
+      foundersData={foundersData}
     >
       <CTA data={ctaData} />
     </FlexiblePageClient>

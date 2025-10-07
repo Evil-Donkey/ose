@@ -31,7 +31,7 @@ import FullWidthLargeHeading from "./FullWidthLargeHeading";
 import Founders from "./Founders";
 import Advantages from "./Advantages";
 
-const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }) => {
+const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title, foundersData = null, teamData = null }) => {
 
     let flexibleContentArray = [];
 
@@ -99,7 +99,7 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }
             flexibleContentArray.push(<Faqs data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Team") {
-            flexibleContentArray.push(<Team data={item} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Team data={item} index={i} key={i.toString()} teamData={teamData} />);
         }
         if (fieldGroupName === "Story_Story_FlexibleContent_CopyBlock") {
             flexibleContentArray.push(<StoryCopy data={item} index={i} key={i.toString()} />);
@@ -126,7 +126,7 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title }
             flexibleContentArray.push(<FullWidthLargeHeading data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Founders") {
-            flexibleContentArray.push(<Founders data={item} index={i} key={i.toString()} />);
+            flexibleContentArray.push(<Founders data={item} index={i} key={i.toString()} foundersData={foundersData} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Advantages") {
             flexibleContentArray.push(<Advantages data={item} index={i} key={i.toString()} />);
