@@ -97,8 +97,11 @@ export const getOptimizedImageProps = (imageData, options = {}) => {
   
   const shouldPriority = priority || shouldPriorityLoad({ isAboveFold, isHero, isFirstInList: index === 0, index });
   
+  // Import proxyImageUrl dynamically to avoid circular dependencies
+  const { proxyImageUrl } = require('./proxyImage');
+  
   return {
-    src: imageData.mediaItemUrl,
+    src: proxyImageUrl(imageData.mediaItemUrl, true), // Force proxy for VPN compatibility
     alt: imageData.altText || imageData.caption || alt,
     width,
     height,
@@ -106,6 +109,7 @@ export const getOptimizedImageProps = (imageData, options = {}) => {
     loading: shouldPriority ? 'eager' : loading,
     sizes: getResponsiveSizes({ context, maxWidth }),
     quality: getOptimalQuality({ context, width, height }),
-    className
+    className,
+    unoptimized: true // Bypass Next.js image optimization since we're using proxy
   };
 };

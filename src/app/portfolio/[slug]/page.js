@@ -5,6 +5,7 @@ import ResponsiveImage from "../../../components/ResponsiveImage";
 import { X as XIcon, LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import { getOptimizedImageProps } from "../../../lib/imageUtils";
 import Button from "@/components/Button";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
@@ -41,7 +42,7 @@ export default async function PortfolioSinglePage({ params }) {
     <>
         <HeaderServer fixed={true} />
         <div className="mt-30 pb-20 min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 bg-cover bg-center relative" style={{
-            backgroundImage: featuredImage ? `url(${featuredImage.node.mediaItemUrl})` : undefined
+            backgroundImage: featuredImage ? `url(${proxyImageUrl(featuredImage.node.mediaItemUrl, true)})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/30" />
             {featuredImage.node.caption && <div className="absolute bottom-8 right-10 text-white text-sm">{featuredImage.node.caption}</div>}
