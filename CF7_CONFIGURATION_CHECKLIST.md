@@ -150,3 +150,4 @@ If files still aren't attaching:
 4. Consider using SMTP plugin
 5. As last resort, switch to URL-based approach (see CF7_FILE_URL_SETUP.md)
 
+

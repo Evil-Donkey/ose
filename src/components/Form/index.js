@@ -229,8 +229,8 @@ const Form = () => {
                     validate: {
                         fileSize: (files) => {
                             if (files && files[0]) {
-                                const maxSize = 3 * 1024 * 1024; // 3MB
-                                return files[0].size <= maxSize || "File size must be less than 3MB";
+                                const maxSize = 5 * 1024 * 1024; // 3MB
+                                return files[0].size <= maxSize || "File size must be less than 5MB";
                             }
                             return true;
                         },
