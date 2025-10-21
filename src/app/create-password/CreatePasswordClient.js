@@ -70,9 +70,10 @@ export default function CreatePasswordClient({ meganavLinks, meganavData }) {
             if (result.success) {
                 setMessage("success");
             } else {
-                setMessage(result.error || "Failed to reset password.");
+                setMessage(result.message || "Failed to reset password.");
             }
         } catch (error) {
+            console.error("Password reset error:", error);
             setMessage("Something went wrong. Please try again.");
         } finally {
             setIsLoading(false);
@@ -158,10 +159,10 @@ export default function CreatePasswordClient({ meganavLinks, meganavData }) {
                                             {isLoading ? (
                                                 <div className="flex items-center gap-2">
                                                     <Spinner size={16} />
-                                                    <span>Resetting...</span>
+                                                    <span>Creating password...</span>
                                                 </div>
                                             ) : (
-                                                "Reset Password"
+                                                "Create Password"
                                             )}
                                         </Button>
                                     </form>

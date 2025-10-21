@@ -38,6 +38,7 @@ export const useResetUserPassword = () => {
                 setStatus('error');
             }
         } catch (errors) {
+            console.error("Password reset error:", errors);
             const message = errorCodes[errors.message] || `Error: ${errors.message}` || 'Something went wrong. Please try again.';
             setError(message);
             setStatus('error');
