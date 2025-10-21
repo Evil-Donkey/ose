@@ -229,8 +229,35 @@ const Form = () => {
                     validate: {
                         fileSize: (files) => {
                             if (files && files[0]) {
-                                const maxSize = 5 * 1024 * 1024; // 3MB
-                                return files[0].size <= maxSize || "File size must be less than 5MB";
+                                const maxSize = 5 * 1024 * 1024; // 5MB
+                                const fileSize = files[0].size;
+                                const fileSizeMB = (fileSize / (1024 * 1024)).toFixed(2);
+                                
+                                if (fileSize > maxSize) {
+                                    // Log the oversized file attempt
+                                    console.warn(`File upload rejected - Size: ${fileSizeMB}MB exceeds 5MB limit`, {
+                                        fileName: files[0].name,
+                                        fileSize: fileSize,
+                                        fileSizeMB: fileSizeMB,
+                                        timestamp: new Date().toISOString()
+                                    });
+                                    
+                                    // Optional: Send to analytics/logging endpoint
+                                    fetch('/api/log-file-rejection', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            fileName: files[0].name,
+                                            fileSize: fileSize,
+                                            fileSizeMB: fileSizeMB,
+                                            reason: 'size_exceeded',
+                                            timestamp: new Date().toISOString()
+                                        })
+                                    }).catch(err => console.error('Failed to log file rejection:', err));
+                                    
+                                    return "File size must be less than 5MB";
+                                }
+                                return true;
                             }
                             return true;
                         },

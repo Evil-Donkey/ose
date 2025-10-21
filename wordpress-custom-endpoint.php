@@ -29,6 +29,13 @@ function register_email_check_endpoint() {
             ),
         ),
     ));
+    
+    // Register file rejection logging endpoint
+    register_rest_route('file-logging/v1', '/rejection', array(
+        'methods' => 'POST',
+        'callback' => 'log_file_rejection',
+        'permission_callback' => '__return_true', // Public endpoint
+    ));
 }
 add_action('rest_api_init', 'register_email_check_endpoint');
 
@@ -224,10 +231,62 @@ function log_email_check_attempt($ip, $action, $email, $user_id = null) {
 }
 
 /**
+ * Log file rejection to file on WordPress server
+ */
+function log_file_rejection($request) {
+    $params = $request->get_json_params();
+    
+    // Get log directory path
+    $upload_dir = wp_upload_dir();
+    $log_dir = $upload_dir['basedir'] . '/file-rejection-logs';
+    
+    // Create directory if it doesn't exist
+    if (!file_exists($log_dir)) {
+        wp_mkdir_p($log_dir);
+        
+        // Create .htaccess to protect log files
+        $htaccess_content = "Order deny,allow\nDeny from all";
+        file_put_contents($log_dir . '/.htaccess', $htaccess_content);
+    }
+    
+    // Log file path - organize by month
+    $log_file = $log_dir . '/rejections-' . date('Y-m') . '.log';
+    
+    // Prepare log entry
+    $log_entry = array(
+        'timestamp' => current_time('mysql'),
+        'fileName' => sanitize_text_field($params['fileName'] ?? ''),
+        'fileSize' => intval($params['fileSize'] ?? 0),
+        'fileSizeMB' => sanitize_text_field($params['fileSizeMB'] ?? ''),
+        'reason' => sanitize_text_field($params['reason'] ?? ''),
+        'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+        'userAgent' => sanitize_text_field($_SERVER['HTTP_USER_AGENT'] ?? 'unknown')
+    );
+    
+    // Write to log file
+    $log_line = json_encode($log_entry) . "\n";
+    $result = file_put_contents($log_file, $log_line, FILE_APPEND | LOCK_EX);
+    
+    if ($result !== false) {
+        return array(
+            'success' => true,
+            'message' => 'File rejection logged successfully'
+        );
+    } else {
+        return new WP_Error('log_failed', 'Failed to write to log file', array('status' => 500));
+    }
+}
+
+/**
  * Add CORS headers for the custom endpoint
  */
 function add_cors_headers() {
-    if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/wp-json/email-check/') !== false) {
+    $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+    
+    // Check for email-check or file-logging endpoints
+    if (strpos($request_uri, '/wp-json/email-check/') !== false || 
+        strpos($request_uri, '/wp-json/file-logging/') !== false) {
+        
         // Only allow specific origins (your frontend domain)
         $allowed_origins = array(
             'http://localhost:3000',
@@ -267,6 +326,14 @@ function add_email_check_admin_page() {
         'manage_options',
         'email-check-security',
         'email_check_admin_page'
+    );
+    
+    add_options_page(
+        'File Rejection Logs',
+        'File Rejection Logs',
+        'manage_options',
+        'file-rejection-logs',
+        'file_rejection_logs_admin_page'
     );
 }
 add_action('admin_menu', 'add_email_check_admin_page');
@@ -345,6 +412,129 @@ function clear_email_check_rate_limits() {
     );
 }
 
+/**
+ * Admin page for file rejection logs
+ */
+function file_rejection_logs_admin_page() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+    
+    $upload_dir = wp_upload_dir();
+    $log_dir = $upload_dir['basedir'] . '/file-rejection-logs';
+    
+    echo '<div class="wrap">';
+    echo '<h1>File Rejection Logs</h1>';
+    echo '<p>Track file uploads that exceeded the 5MB size limit.</p>';
+    
+    if (!file_exists($log_dir)) {
+        echo '<p>No logs directory found yet. Logs will be created when the first file rejection occurs.</p>';
+        echo '</div>';
+        return;
+    }
+    
+    // Get all log files
+    $log_files = glob($log_dir . '/rejections-*.log');
+    
+    if (empty($log_files)) {
+        echo '<p>No log files found yet.</p>';
+        echo '</div>';
+        return;
+    }
+    
+    // Sort files by name (newest first)
+    rsort($log_files);
+    
+    // Show dropdown to select log file
+    $selected_file = isset($_GET['log_file']) ? $_GET['log_file'] : basename($log_files[0]);
+    
+    echo '<form method="get">';
+    echo '<input type="hidden" name="page" value="file-rejection-logs">';
+    echo '<label>Select Month: </label>';
+    echo '<select name="log_file" onchange="this.form.submit()">';
+    
+    foreach ($log_files as $log_file) {
+        $filename = basename($log_file);
+        $selected = ($filename === $selected_file) ? 'selected' : '';
+        echo '<option value="' . esc_attr($filename) . '" ' . $selected . '>' . esc_html($filename) . '</option>';
+    }
+    
+    echo '</select>';
+    echo '</form>';
+    
+    // Read and display selected log file
+    $current_log_file = $log_dir . '/' . $selected_file;
+    
+    if (!file_exists($current_log_file)) {
+        echo '<p>Log file not found.</p>';
+        echo '</div>';
+        return;
+    }
+    
+    $log_content = file_get_contents($current_log_file);
+    $log_lines = array_filter(explode("\n", $log_content));
+    
+    if (empty($log_lines)) {
+        echo '<p>No rejections logged in this file.</p>';
+        echo '</div>';
+        return;
+    }
+    
+    // Parse log entries
+    $log_entries = array();
+    $total_size = 0;
+    $file_sizes = array();
+    
+    foreach ($log_lines as $line) {
+        $entry = json_decode($line, true);
+        if ($entry) {
+            $log_entries[] = $entry;
+            $file_sizes[] = floatval($entry['fileSizeMB']);
+            $total_size += floatval($entry['fileSizeMB']);
+        }
+    }
+    
+    // Calculate statistics
+    $count = count($log_entries);
+    $avg_size = $count > 0 ? $total_size / $count : 0;
+    $max_size = !empty($file_sizes) ? max($file_sizes) : 0;
+    $min_size = !empty($file_sizes) ? min($file_sizes) : 0;
+    
+    // Display statistics
+    echo '<div style="background: #fff; padding: 20px; margin: 20px 0; border-left: 4px solid #0073aa;">';
+    echo '<h2>Statistics for ' . esc_html($selected_file) . '</h2>';
+    echo '<p><strong>Total Rejections:</strong> ' . $count . '</p>';
+    echo '<p><strong>Average File Size:</strong> ' . number_format($avg_size, 2) . ' MB</p>';
+    echo '<p><strong>Largest File:</strong> ' . number_format($max_size, 2) . ' MB</p>';
+    echo '<p><strong>Smallest File:</strong> ' . number_format($min_size, 2) . ' MB</p>';
+    echo '</div>';
+    
+    // Display log entries table
+    echo '<h2>Rejection Details</h2>';
+    echo '<table class="wp-list-table widefat fixed striped">';
+    echo '<thead><tr>';
+    echo '<th>Timestamp</th>';
+    echo '<th>File Name</th>';
+    echo '<th>Size (MB)</th>';
+    echo '<th>IP Address</th>';
+    echo '<th>User Agent</th>';
+    echo '</tr></thead>';
+    echo '<tbody>';
+    
+    foreach (array_reverse($log_entries) as $entry) {
+        echo '<tr>';
+        echo '<td>' . esc_html($entry['timestamp']) . '</td>';
+        echo '<td>' . esc_html($entry['fileName']) . '</td>';
+        echo '<td>' . esc_html($entry['fileSizeMB']) . '</td>';
+        echo '<td>' . esc_html($entry['ip']) . '</td>';
+        echo '<td>' . esc_html(substr($entry['userAgent'], 0, 50)) . '...</td>';
+        echo '</tr>';
+    }
+    
+    echo '</tbody></table>';
+    echo '</div>';
+}
+
 
 
 // Send forgot password email to approved users
@@ -366,7 +556,7 @@ function send_forgot_password_email($user_id) {
     ])));
 
     // URL to Next.js password reset page
-    $reset_link = "https://ose-six.vercel.app/reset-password?token=" . $reset_token;
+    $reset_link = "https://www.oxfordscienceenterprises.com/reset-password?token=" . $reset_token;
 
     // Email subject and copy (you can customize these)
     $subject = "OSE Shareholder Portal: Reset Your password";
