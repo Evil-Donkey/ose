@@ -386,6 +386,19 @@ function add_subscribers_submenu() {
 }
 add_action( 'admin_menu', 'add_subscribers_submenu' );
 
+// Add Admins menu item
+// ------------------------------
+function add_admins_submenu() {
+    add_submenu_page(
+        'users.php',
+        __( 'Site Admins' ),
+        __( 'Site Admins' ),
+        'list_users',
+        'users.php?role=administrator'
+    );
+}
+add_action( 'admin_menu', 'add_admins_submenu' );
+
 /////////////////////// my_admin_hide_profile_sections
 function my_admin_hide_profile_sections($hook) {
     // Only load on user profile and user edit pages
@@ -475,4 +488,20 @@ function my_track_last_login($login, $user) {
     update_user_meta($user->ID, 'last_login', current_time('mysql'));
 }
 add_action('wp_login', 'my_track_last_login', 10, 2);
+
+/**
+ * Disable SiteGround Security 2FA for Subscriber role
+ * This allows subscribers to login to the investor portal without 2FA
+ */
+function disable_sg_2fa_for_subscribers($is_2fa_enabled, $user_id) {
+    $user = get_userdata($user_id);
+    
+    // If user has subscriber role, disable 2FA
+    if ($user && in_array('subscriber', $user->roles)) {
+        return false;
+    }
+    
+    return $is_2fa_enabled;
+}
+add_filter('sgs_2fa_user_enabled', 'disable_sg_2fa_for_subscribers', 10, 2);
 
