@@ -183,10 +183,9 @@ const FullPanelCarousel = ({ data }) => {
                                 
                                 // Track button click in Google Analytics
                                 if (typeof window !== 'undefined' && window.gtag) {
-                                    window.gtag('event', 'click', {
-                                        event_category: 'FullPanelCarousel',
-                                        event_label: slide.title || 'Untitled',
-                                        button_text: slide.title || 'Untitled'
+                                    window.gtag('event', 'carousel_click', {
+                                        component: 'FullPanelCarousel',
+                                        find_fund_build: slide.title || 'Untitled'
                                     });
                                 }
                             }}
