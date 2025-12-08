@@ -180,6 +180,15 @@ const FullPanelCarousel = ({ data }) => {
                             onClick={() => {
                                 swiperRef.current?.swiper?.slideTo(index);
                                 setActiveIndex(index);
+                                
+                                // Track button click in Google Analytics
+                                if (typeof window !== 'undefined' && window.gtag) {
+                                    window.gtag('event', 'click', {
+                                        event_category: 'FullPanelCarousel',
+                                        event_label: slide.title || 'Untitled',
+                                        button_text: slide.title || 'Untitled'
+                                    });
+                                }
                             }}
                             className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
                         >
