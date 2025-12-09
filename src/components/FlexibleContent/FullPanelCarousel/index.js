@@ -107,45 +107,86 @@ const FullPanelCarousel = ({ data }) => {
         console.log('=== handlePaginationClick END ===');
     }, []);
 
-    // Debug: Verify buttons are attached in production and attach event listeners as fallback
+    // CRITICAL: Attach event listeners directly as primary method (production-safe)
     useEffect(() => {
-        if (typeof window !== 'undefined' && paginationRef.current.length > 0) {
-            console.log('🔍 FullPanelCarousel: Buttons mounted', {
-                buttonCount: paginationRef.current.length,
-                buttons: paginationRef.current.map((btn, idx) => ({
-                    index: idx,
-                    hasOnClick: btn?.onclick !== null,
-                    hasEventListener: btn?.addEventListener ? 'yes' : 'no',
-                    zIndex: window.getComputedStyle(btn)?.zIndex,
-                    pointerEvents: window.getComputedStyle(btn)?.pointerEvents,
-                    opacity: window.getComputedStyle(btn)?.opacity
-                }))
-            });
+        if (typeof window === 'undefined' || !slides || slides.length === 0) return;
 
-            // Fallback: Attach event listeners directly via refs (in case onClick prop isn't working in production)
+        // Wait a bit for DOM to be ready
+        const timer = setTimeout(() => {
+            const buttons = paginationRef.current.filter(Boolean);
+            
+            if (buttons.length === 0) return;
+
             const cleanupFunctions = [];
-            paginationRef.current.forEach((button, index) => {
-                if (button && slides[index]) {
-                    const slide = slides[index];
-                    const clickHandler = (e) => {
-                        console.log('🔵 Direct event listener fired:', { index, slideTitle: slide?.title });
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handlePaginationClick(index, slide);
-                    };
+            
+            buttons.forEach((button, idx) => {
+                if (!button || !slides[idx]) return;
+                
+                const slide = slides[idx];
+                const index = idx;
+                
+                // Primary click handler - direct DOM event
+                const clickHandler = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     
-                    button.addEventListener('click', clickHandler, { passive: false });
-                    cleanupFunctions.push(() => {
-                        button.removeEventListener('click', clickHandler);
-                    });
+                    // Navigate to slide
+                    if (swiperRef.current?.swiper) {
+                        swiperRef.current.swiper.slideTo(index);
+                    }
+                    setActiveIndex(index);
+                    
+                    // Track in GA
+                    const buttonText = slide?.title || 'Untitled';
+                    if (window.gtag) {
+                        window.gtag('event', 'carousel_click', {
+                            find_fund_build: buttonText
+                        });
+                    } else if (window.dataLayer) {
+                        window.dataLayer.push({
+                            event: 'carousel_click',
+                            find_fund_build: buttonText
+                        });
+                    }
+                };
+                
+                // Remove any existing listener first (in case of re-render)
+                const oldHandler = button._clickHandler;
+                if (oldHandler) {
+                    button.removeEventListener('click', oldHandler);
                 }
+                
+                // Store handler reference on element for cleanup
+                button._clickHandler = clickHandler;
+                
+                // Add new listener
+                button.addEventListener('click', clickHandler, { passive: false, capture: false });
+                
+                cleanupFunctions.push(() => {
+                    if (button._clickHandler) {
+                        button.removeEventListener('click', button._clickHandler);
+                        delete button._clickHandler;
+                    }
+                });
             });
 
+            // Return cleanup function
             return () => {
                 cleanupFunctions.forEach(cleanup => cleanup());
             };
-        }
-    }, [slides, handlePaginationClick]);
+        }, 100);
+
+        return () => {
+            clearTimeout(timer);
+            // Also cleanup any listeners on unmount
+            paginationRef.current.forEach(button => {
+                if (button?._clickHandler) {
+                    button.removeEventListener('click', button._clickHandler);
+                    delete button._clickHandler;
+                }
+            });
+        };
+    }, [slides]);
 
     // Update Swiper when modal state changes
     useEffect(() => {
@@ -258,25 +299,52 @@ const FullPanelCarousel = ({ data }) => {
             {heading && <h2 ref={el => headingRef.current[0] = el} className="text-white uppercase tracking-widest text-lg md:text-xl px-15 mb-8 text-center font-medium w-full lg:w-110 absolute top-20 left-1/2 -translate-x-1/2 translate-y-full opacity-0 z-50">{heading}</h2>}
             <div className={`absolute top-15 2xl:top-25 left-1/2 w-full transform -translate-x-1/2 z-50`}>
                 <div className="flex justify-center space-x-2 md:space-x-4">
-                    {slides.map((slide, index) => (
-                        <button
-                            key={index}
-                            ref={el => paginationRef.current[index] = el}
-                            onClick={(e) => {
-                                console.log('🔵 Button onClick triggered:', { index, slideTitle: slide?.title });
+                    {slides.map((slide, index) => {
+                        // Create a stable handler function for each button
+                        const handleClick = (e) => {
+                            if (e) {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                handlePaginationClick(index, slide);
-                            }}
-                            onMouseDown={(e) => {
-                                console.log('🔵 Button onMouseDown triggered:', { index });
-                            }}
-                            style={{ pointerEvents: 'auto' }}
-                            className={`text-8xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
-                        >
-                            {slide.title}
-                        </button>
-                    ))}
+                            }
+                            // Direct execution - don't rely on function reference
+                            if (swiperRef.current?.swiper) {
+                                swiperRef.current.swiper.slideTo(index);
+                            }
+                            setActiveIndex(index);
+
+                            console.log('buttonText');
+                            
+                            // Track in GA
+                            const buttonText = slide?.title || 'Untitled';
+                            if (typeof window !== 'undefined') {
+                                if (window.gtag) {
+                                    window.gtag('event', 'carousel_click', {
+                                        find_fund_build: buttonText
+                                    });
+                                } else if (window.dataLayer) {
+                                    window.dataLayer.push({
+                                        event: 'carousel_click',
+                                        find_fund_build: buttonText
+                                    });
+                                }
+                            }
+                        };
+                        
+                        return (
+                            <button
+                                key={`carousel-btn-${index}`}
+                                ref={el => paginationRef.current[index] = el}
+                                onClick={handleClick}
+                                data-index={index}
+                                data-slide-title={slide?.title || ''}
+                                type="button"
+                                style={{ pointerEvents: 'auto' }}
+                                className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
+                            >
+                                {slide.title}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
             <Swiper
