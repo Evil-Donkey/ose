@@ -272,7 +272,7 @@ const FullPanelCarousel = ({ data }) => {
                                 console.log('🔵 Button onMouseDown triggered:', { index });
                             }}
                             style={{ pointerEvents: 'auto' }}
-                            className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
+                            className={`text-8xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
                         >
                             {slide.title}
                         </button>
