@@ -180,6 +180,8 @@ const FullPanelCarousel = ({ data }) => {
                             onClick={() => {
                                 swiperRef.current?.swiper?.slideTo(index);
                                 setActiveIndex(index);
+
+                                console.log('buttonText', buttonText);
                                 
                                 // Track button click in Google Analytics
                                 const buttonText = slide.title || 'Untitled';
