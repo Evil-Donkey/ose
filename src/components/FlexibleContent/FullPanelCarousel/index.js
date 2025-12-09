@@ -182,11 +182,26 @@ const FullPanelCarousel = ({ data }) => {
                                 setActiveIndex(index);
                                 
                                 // Track button click in Google Analytics
-                                if (typeof window !== 'undefined' && window.gtag) {
-                                    window.gtag('event', 'carousel_click', {
-                                        component: 'FullPanelCarousel',
-                                        find_fund_build: slide.title || 'Untitled'
-                                    });
+                                const buttonText = slide.title || 'Untitled';
+                                
+                                if (typeof window !== 'undefined') {
+                                    // Try gtag first (preferred method)
+                                    if (window.gtag) {
+                                        window.gtag('event', 'carousel_click', {
+                                            find_fund_build: buttonText
+                                        });
+                                        console.log('GA Event sent via gtag:', { event: 'carousel_click', find_fund_build: buttonText });
+                                    } 
+                                    // Fallback to dataLayer if gtag not available yet
+                                    else if (window.dataLayer) {
+                                        window.dataLayer.push({
+                                            event: 'carousel_click',
+                                            find_fund_build: buttonText
+                                        });
+                                        console.log('GA Event sent via dataLayer:', { event: 'carousel_click', find_fund_build: buttonText });
+                                    } else {
+                                        console.warn('Google Analytics not loaded - gtag and dataLayer not available');
+                                    }
                                 }
                             }}
                             className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
