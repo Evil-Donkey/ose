@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -61,6 +61,38 @@ const FullPanelCarousel = ({ data }) => {
         setModalOpen(false);
         setModalContent(null);
     };
+
+    // Handle pagination button click with GA tracking
+    const handlePaginationClick = useCallback((index, slide) => {
+        // Navigate to slide
+        swiperRef.current?.swiper?.slideTo(index);
+        setActiveIndex(index);
+
+        // Track button click in Google Analytics
+        const buttonText = slide?.title || 'Untitled';
+        
+        console.log('handlePaginationClick fired:', { index, buttonText });
+
+        if (typeof window !== 'undefined') {
+            // Try gtag first (preferred method)
+            if (window.gtag) {
+                window.gtag('event', 'carousel_click', {
+                    find_fund_build: buttonText
+                });
+                console.log('GA Event sent via gtag:', { event: 'carousel_click', find_fund_build: buttonText });
+            } 
+            // Fallback to dataLayer if gtag not available yet
+            else if (window.dataLayer) {
+                window.dataLayer.push({
+                    event: 'carousel_click',
+                    find_fund_build: buttonText
+                });
+                console.log('GA Event sent via dataLayer:', { event: 'carousel_click', find_fund_build: buttonText });
+            } else {
+                console.warn('Google Analytics not loaded - gtag and dataLayer not available');
+            }
+        }
+    }, []);
 
     // Update Swiper when modal state changes
     useEffect(() => {
@@ -177,34 +209,10 @@ const FullPanelCarousel = ({ data }) => {
                         <button
                             key={index}
                             ref={el => paginationRef.current[index] = el}
-                            onClick={() => {
-                                swiperRef.current?.swiper?.slideTo(index);
-                                setActiveIndex(index);
-
-                                console.log('buttonText', index);
-                                
-                                // Track button click in Google Analytics
-                                const buttonText = slide.title || 'Untitled';
-                                
-                                if (typeof window !== 'undefined') {
-                                    // Try gtag first (preferred method)
-                                    if (window.gtag) {
-                                        window.gtag('event', 'carousel_click', {
-                                            find_fund_build: buttonText
-                                        });
-                                        console.log('GA Event sent via gtag:', { event: 'carousel_click', find_fund_build: buttonText });
-                                    } 
-                                    // Fallback to dataLayer if gtag not available yet
-                                    else if (window.dataLayer) {
-                                        window.dataLayer.push({
-                                            event: 'carousel_click',
-                                            find_fund_build: buttonText
-                                        });
-                                        console.log('GA Event sent via dataLayer:', { event: 'carousel_click', find_fund_build: buttonText });
-                                    } else {
-                                        console.warn('Google Analytics not loaded - gtag and dataLayer not available');
-                                    }
-                                }
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handlePaginationClick(index, slide);
                             }}
                             className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
                         >
