@@ -64,35 +64,88 @@ const FullPanelCarousel = ({ data }) => {
 
     // Handle pagination button click with GA tracking
     const handlePaginationClick = useCallback((index, slide) => {
-        // Navigate to slide
-        swiperRef.current?.swiper?.slideTo(index);
-        setActiveIndex(index);
-
-        // Track button click in Google Analytics
-        const buttonText = slide?.title || 'Untitled';
+        console.log('=== handlePaginationClick START ===', { index, slide: slide?.title });
         
-        console.log('handlePaginationClick fired:', { index, buttonText });
-
-        if (typeof window !== 'undefined') {
-            // Try gtag first (preferred method)
-            if (window.gtag) {
-                window.gtag('event', 'carousel_click', {
-                    find_fund_build: buttonText
-                });
-                console.log('GA Event sent via gtag:', { event: 'carousel_click', find_fund_build: buttonText });
-            } 
-            // Fallback to dataLayer if gtag not available yet
-            else if (window.dataLayer) {
-                window.dataLayer.push({
-                    event: 'carousel_click',
-                    find_fund_build: buttonText
-                });
-                console.log('GA Event sent via dataLayer:', { event: 'carousel_click', find_fund_build: buttonText });
-            } else {
-                console.warn('Google Analytics not loaded - gtag and dataLayer not available');
+        try {
+            // Navigate to slide
+            if (swiperRef.current?.swiper) {
+                swiperRef.current.swiper.slideTo(index);
             }
+            setActiveIndex(index);
+
+            // Track button click in Google Analytics
+            const buttonText = slide?.title || 'Untitled';
+            
+            console.log('handlePaginationClick - buttonText:', buttonText);
+            console.log('handlePaginationClick - window check:', typeof window !== 'undefined');
+            console.log('handlePaginationClick - gtag available:', typeof window !== 'undefined' && !!window.gtag);
+            console.log('handlePaginationClick - dataLayer available:', typeof window !== 'undefined' && !!window.dataLayer);
+
+            if (typeof window !== 'undefined') {
+                // Try gtag first (preferred method)
+                if (window.gtag) {
+                    window.gtag('event', 'carousel_click', {
+                        find_fund_build: buttonText
+                    });
+                    console.log('✅ GA Event sent via gtag:', { event: 'carousel_click', find_fund_build: buttonText });
+                } 
+                // Fallback to dataLayer if gtag not available yet
+                else if (window.dataLayer) {
+                    window.dataLayer.push({
+                        event: 'carousel_click',
+                        find_fund_build: buttonText
+                    });
+                    console.log('✅ GA Event sent via dataLayer:', { event: 'carousel_click', find_fund_build: buttonText });
+                } else {
+                    console.warn('⚠️ Google Analytics not loaded - gtag and dataLayer not available');
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error in handlePaginationClick:', error);
         }
+        
+        console.log('=== handlePaginationClick END ===');
     }, []);
+
+    // Debug: Verify buttons are attached in production and attach event listeners as fallback
+    useEffect(() => {
+        if (typeof window !== 'undefined' && paginationRef.current.length > 0) {
+            console.log('🔍 FullPanelCarousel: Buttons mounted', {
+                buttonCount: paginationRef.current.length,
+                buttons: paginationRef.current.map((btn, idx) => ({
+                    index: idx,
+                    hasOnClick: btn?.onclick !== null,
+                    hasEventListener: btn?.addEventListener ? 'yes' : 'no',
+                    zIndex: window.getComputedStyle(btn)?.zIndex,
+                    pointerEvents: window.getComputedStyle(btn)?.pointerEvents,
+                    opacity: window.getComputedStyle(btn)?.opacity
+                }))
+            });
+
+            // Fallback: Attach event listeners directly via refs (in case onClick prop isn't working in production)
+            const cleanupFunctions = [];
+            paginationRef.current.forEach((button, index) => {
+                if (button && slides[index]) {
+                    const slide = slides[index];
+                    const clickHandler = (e) => {
+                        console.log('🔵 Direct event listener fired:', { index, slideTitle: slide?.title });
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handlePaginationClick(index, slide);
+                    };
+                    
+                    button.addEventListener('click', clickHandler, { passive: false });
+                    cleanupFunctions.push(() => {
+                        button.removeEventListener('click', clickHandler);
+                    });
+                }
+            });
+
+            return () => {
+                cleanupFunctions.forEach(cleanup => cleanup());
+            };
+        }
+    }, [slides, handlePaginationClick]);
 
     // Update Swiper when modal state changes
     useEffect(() => {
@@ -210,10 +263,15 @@ const FullPanelCarousel = ({ data }) => {
                             key={index}
                             ref={el => paginationRef.current[index] = el}
                             onClick={(e) => {
+                                console.log('🔵 Button onClick triggered:', { index, slideTitle: slide?.title });
                                 e.preventDefault();
                                 e.stopPropagation();
                                 handlePaginationClick(index, slide);
                             }}
+                            onMouseDown={(e) => {
+                                console.log('🔵 Button onMouseDown triggered:', { index });
+                            }}
+                            style={{ pointerEvents: 'auto' }}
                             className={`text-4xl sm:text-3xl md:text-5xl hover:text-lightblue focus:outline-none cursor-pointer transition-colors opacity-0 translate-y-full relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-lightblue before:opacity-0 ${activeIndex === index ? 'text-lightblue before:opacity-100' : 'text-white'}`}
                         >
                             {slide.title}
