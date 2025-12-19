@@ -4,11 +4,11 @@ import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 
 export async function generateMetadata() {
-  return await generateMetadataFromLib("1588");
+  return await generateMetadataFromLib("3684");
 }
 
 export default async function ModernSlaveryStatementPage() {
-    const { title, content } = await getPageTitleAndContent("1588");
+    const { title, content } = await getPageTitleAndContent("3684");
 
   return (
     <>

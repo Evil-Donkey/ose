@@ -135,10 +135,10 @@ const Footer = ({ data }) => {
                             <Link href="/terms-conditions" className="hover:text-lightblue">Terms & Conditions</Link>
                             <span>|</span>
                             <Link href="/privacy-policy" className="hover:text-lightblue">Privacy policy</Link>
-                            {/* <span>|</span>
-                            <Link href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</Link> */}
-                            {/* <span>|</span>
-                            <a href="/cookie-policy" className="hover:text-lightblue">Cookie policy</a> */}
+                            <span>|</span>
+                            <Link href="/modern-slavery" className="hover:text-lightblue">Modern Slavery Statement</Link>
+                            <span>|</span>
+                            <Link href="/complaints-policy" className="hover:text-lightblue">Complaints policy</Link>
                         </div>
                     </div>
                 </Container>
