@@ -17,11 +17,6 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Invalid file URL' }, { status: 403 });
     }
 
-    // Additional security: Only allow files from protected directories
-    if (!fileUrl.includes('/protected/') && !fileUrl.includes('/wp-content/uploads/protected/')) {
-      return NextResponse.json({ error: 'Only protected files are allowed' }, { status: 403 });
-    }
-
     // Check authentication using your existing auth system
     const cookieStore = await cookies();
     const authToken = cookieStore.get("authToken")?.value;
@@ -56,79 +51,95 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Invalid or expired token' }, { status: 401 });
     }
 
-    // Since .htaccess blocks direct access, we need to use WordPress's authentication
-    // to access the protected files. We'll try a few approaches:
+    // Parse the file URL - it could be a proxy URL (with ?protected_file=) or direct URL
+    let protectedFilePath = null;
+    let proxyUrl = fileUrl;
     
-    // Approach 1: Try to access the file with WordPress authentication
-    let fileResponse;
-    
-    try {
-      // First, try with Bearer token
-      fileResponse = await fetch(fileUrl, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          'User-Agent': 'OxfordScienceEnterprises-InvestorPortal/1.0',
-        },
-      });
-    } catch (error) {
-      console.log('Bearer token approach failed, trying alternative methods...');
+    // Check if it's a proxy URL format
+    const urlObj = new URL(fileUrl);
+    if (urlObj.searchParams.has('protected_file')) {
+      // Extract the file path from the proxy URL
+      protectedFilePath = urlObj.searchParams.get('protected_file');
+      // Build the proxy URL with authentication
+      proxyUrl = `${allowedDomain}/?protected_file=${encodeURIComponent(protectedFilePath)}`;
+    } else if (fileUrl.includes('/wp-content/uploads/protected/')) {
+      // Extract relative path from direct URL
+      const match = fileUrl.match(/\/wp-content\/uploads\/protected\/(.+)$/);
+      if (match) {
+        protectedFilePath = match[1];
+        proxyUrl = `${allowedDomain}/?protected_file=${encodeURIComponent(protectedFilePath)}`;
+      }
+    } else {
+      return NextResponse.json({ error: 'Only protected files are allowed' }, { status: 403 });
     }
 
-    // Approach 2: If Bearer token fails, try with WordPress session cookies
-    if (!fileResponse || !fileResponse.ok) {
-      try {
-        // Get WordPress session cookies by making an authenticated request first
-        const sessionResponse = await fetch(`${allowedDomain}/wp-json/wp/v2/users/me`, {
+    if (!protectedFilePath) {
+      return NextResponse.json({ error: 'Could not extract file path from URL' }, { status: 400 });
+    }
+
+    // Fetch the file through WordPress proxy endpoint with authentication
+    // Note: The WordPress proxy endpoint needs to accept the auth token
+    // We'll pass it as a header, but WordPress may need to be configured to accept it
+    const fileResponse = await fetch(proxyUrl, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'User-Agent': 'OxfordScienceEnterprises-InvestorPortal/1.0',
+      },
+      // Don't follow redirects automatically
+      redirect: 'manual',
+    });
+
+    // Handle redirects (WordPress might redirect)
+    if (fileResponse.status >= 300 && fileResponse.status < 400) {
+      const redirectUrl = fileResponse.headers.get('location');
+      if (redirectUrl) {
+        const redirectResponse = await fetch(redirectUrl, {
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            'Authorization': `Bearer ${authToken}`,
+            'User-Agent': 'OxfordScienceEnterprises-InvestorPortal/1.0',
           },
         });
         
-        if (sessionResponse.ok) {
-          // Now try to access the file with the session established
-          fileResponse = await fetch(fileUrl, {
-            credentials: 'include',
-            headers: {
-              'User-Agent': 'OxfordScienceEnterprises-InvestorPortal/1.0',
-            },
-          });
+        if (redirectResponse.ok) {
+          return streamFileResponse(redirectResponse, protectedFilePath);
         }
-      } catch (error) {
-        console.log('Session-based approach failed:', error);
       }
     }
 
-    // If all approaches fail, return an error
-    if (!fileResponse || !fileResponse.ok) {
+    // Check if the response is successful
+    if (!fileResponse.ok) {
+      // Try to get error message
+      const errorText = await fileResponse.text();
+      let errorMessage = 'File access denied';
+      
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorMessage = errorJson.message || errorMessage;
+      } catch (e) {
+        // Not JSON, use the text or default message
+        if (errorText && errorText.length < 200) {
+          errorMessage = errorText;
+        }
+      }
+      
       return NextResponse.json({ 
-        error: 'File access blocked by server configuration. Please contact support.',
-        status: fileResponse?.status || 403,
-        suggestion: 'The .htaccess file may be blocking all access to protected files.'
-      }, { status: fileResponse?.status || 403 });
+        error: errorMessage || 'File wasn\'t available on site',
+        status: fileResponse.status
+      }, { status: fileResponse.status });
     }
 
-    // File access successful, now stream it to the user
-    const contentType = fileResponse.headers.get('content-type') || 'application/octet-stream';
-    const contentLength = fileResponse.headers.get('content-length');
-    
-    // Extract filename from URL
-    const urlParts = fileUrl.split('/');
-    const filename = urlParts[urlParts.length - 1] || 'download';
+    // Check if response is actually a file (not JSON error)
+    const contentType = fileResponse.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      // Likely an error response
+      const errorData = await fileResponse.json();
+      return NextResponse.json({ 
+        error: errorData.error || errorData.message || 'File wasn\'t available on site',
+        status: fileResponse.status
+      }, { status: fileResponse.status || 403 });
+    }
 
-    // Create response with appropriate headers
-    const response = new NextResponse(fileResponse.body, {
-      status: 200,
-      headers: {
-        'Content-Type': contentType,
-        'Content-Length': contentLength,
-        'Content-Disposition': `attachment; filename="${filename}"`,
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
-      },
-    });
-
-    return response;
+    return streamFileResponse(fileResponse, protectedFilePath);
 
   } catch (error) {
     console.error('Download error:', error);
@@ -137,4 +148,26 @@ export async function GET(request) {
       details: error.message 
     }, { status: 500 });
   }
+}
+
+// Helper function to stream file response
+function streamFileResponse(fileResponse, filePath) {
+  const contentType = fileResponse.headers.get('content-type') || 'application/octet-stream';
+  const contentLength = fileResponse.headers.get('content-length');
+  
+  // Extract filename from path
+  const filename = filePath.split('/').pop() || 'download';
+  
+  // Create response with appropriate headers
+  return new NextResponse(fileResponse.body, {
+    status: 200,
+    headers: {
+      'Content-Type': contentType,
+      ...(contentLength && { 'Content-Length': contentLength }),
+      'Content-Disposition': `attachment; filename="${filename}"`,
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    },
+  });
 }

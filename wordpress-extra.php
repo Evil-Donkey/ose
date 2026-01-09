@@ -1276,6 +1276,9 @@ function acf_private_upload_dir($upload) {
         $upload['subdir'] = '/protected' . $upload['subdir'];
         $upload['path']   = $upload['basedir'] . $upload['subdir'];
         $upload['url']    = $upload['baseurl'] . $upload['subdir'];
+        
+        // Ensure .htaccess exists in protected directory
+        ensure_protected_directory_htaccess();
     }
     return $upload;
 }
@@ -1291,6 +1294,33 @@ function serve_protected_file() {
         return;
     }
 
+    // Get Bearer token from Authorization header
+    $auth_header = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+    $token = null;
+    
+    if (preg_match('/Bearer\s+(.*)$/i', $auth_header, $matches)) {
+        $token = trim($matches[1]);
+    }
+    
+    // Validate token is present
+    // Note: Full token validation happens in Next.js API route before this is called
+    // This is a secondary check for defense in depth
+    if ( ! $token || empty(trim($token)) ) {
+        status_header(401);
+        wp_die('Authentication required to access protected files.', 'Unauthorized', ['response' => 401]);
+    }
+    
+    // Basic token format validation (JWT tokens are base64 encoded and have 3 parts)
+    $token_parts = explode('.', $token);
+    if ( count($token_parts) !== 3 ) {
+        status_header(401);
+        wp_die('Invalid token format.', 'Unauthorized', ['response' => 401]);
+    }
+    
+    // Optional: You can add more validation here if needed
+    // For now, we trust the Next.js API route validation since it already verified
+    // the token before making this request
+
     $file = sanitize_text_field($_GET['protected_file']);
     $upload_dir = wp_upload_dir();
     $base = $upload_dir['basedir'] . '/protected/';
@@ -1298,19 +1328,28 @@ function serve_protected_file() {
 
     // Security: ensure the requested path is inside /protected/
     if ( ! $path || strpos($path, $base) !== 0 || ! file_exists($path) ) {
-        wp_die('File not found or access denied.', 403);
+        status_header(403);
+        wp_die('File not found or access denied.', 'Forbidden', ['response' => 403]);
     }
 
-    // ✅ Optional: add your own auth checks here
-    // Example: require login
-    // if ( ! is_user_logged_in() ) {
-    //     wp_die('You must be logged in to access this file.', 403);
-    // }
+    // Determine MIME type
+    $mime_type = 'application/octet-stream';
+    if ( function_exists('mime_content_type') ) {
+        $mime_type = mime_content_type($path);
+    } elseif ( function_exists('wp_check_filetype') ) {
+        $filetype = wp_check_filetype($path);
+        if ( $filetype['type'] ) {
+            $mime_type = $filetype['type'];
+        }
+    }
 
     // Serve file
-    header("Content-Type: " . mime_content_type($path));
+    header("Content-Type: " . $mime_type);
     header("Content-Length: " . filesize($path));
     header('Content-Disposition: inline; filename="' . basename($path) . '"');
+    header('Cache-Control: no-cache, no-store, must-revalidate');
+    header('Pragma: no-cache');
+    header('Expires: 0');
     readfile($path);
     exit;
 }
@@ -1336,12 +1375,51 @@ add_filter('graphql_acf_register_field', function($config, $field_name, $field_c
     return $config;
 }, 10, 3);
 
-// Block direct access to protected uploads
-add_action('template_redirect', function() {
-    $request_uri = $_SERVER['REQUEST_URI'];
+// -------------------------------------------------
+// 4. Block direct access to protected uploads
+// -------------------------------------------------
 
-    if (strpos($request_uri, '/wp-content/uploads/protected/') !== false) {
-        header('X-Robots-Tag: noindex');
-        wp_die('Access denied.', 'Forbidden', ['response' => 403]);
+// Create/update .htaccess file in protected directory to deny direct access
+add_action('admin_init', 'ensure_protected_directory_htaccess');
+add_action('init', 'ensure_protected_directory_htaccess'); // Also run on frontend init
+
+function ensure_protected_directory_htaccess() {
+    $upload_dir = wp_upload_dir();
+    $protected_dir = $upload_dir['basedir'] . '/protected';
+    
+    // Create protected directory if it doesn't exist
+    if (!file_exists($protected_dir)) {
+        wp_mkdir_p($protected_dir);
     }
-});
+    
+    $htaccess_file = $protected_dir . '/.htaccess';
+    $htaccess_content = "# Deny direct access to protected files\n";
+    $htaccess_content .= "# Files must be accessed through WordPress proxy endpoint\n";
+    $htaccess_content .= "Order deny,allow\n";
+    $htaccess_content .= "Deny from all\n";
+    
+    // Only update if content is different or file doesn't exist
+    if (!file_exists($htaccess_file) || file_get_contents($htaccess_file) !== $htaccess_content) {
+        file_put_contents($htaccess_file, $htaccess_content);
+    }
+}
+
+// Also block via PHP as a fallback (though .htaccess is primary protection)
+// This catches requests that somehow bypass .htaccess
+add_action('parse_request', function($wp) {
+    $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+    
+    // Check if this is a direct request to a protected file
+    if (strpos($request_uri, '/wp-content/uploads/protected/') !== false) {
+        // Check if this is coming through our proxy endpoint (allow it)
+        // The proxy endpoint uses ?protected_file= parameter, not direct file path
+        if (isset($_GET['protected_file'])) {
+            return; // Allow proxy requests
+        }
+        
+        // Block direct access
+        header('X-Robots-Tag: noindex');
+        status_header(403);
+        wp_die('Access denied. Files in this directory are protected and cannot be accessed directly.', 'Forbidden', ['response' => 403]);
+    }
+}, 1); // Priority 1 to run early
