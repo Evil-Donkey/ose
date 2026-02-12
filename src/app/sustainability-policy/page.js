@@ -4,11 +4,11 @@ import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 
 export async function generateMetadata() {
-  return await generateMetadataFromLib("1623");
+  return await generateMetadataFromLib("3729");
 }
 
 export default async function SustainabilityPage() {
-    const { title, content } = await getPageTitleAndContent("1623");
+    const { title, content } = await getPageTitleAndContent("3729");
 
   return (
     <>

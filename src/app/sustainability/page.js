@@ -68,8 +68,8 @@ export default async function SustainabilityPage() {
                     className="flex-1 bg-[#EAEAEA] hover:bg-gray-200 transition-colors duration-200 rounded-lg p-6 flex items-center justify-between group"
                   >
                     <div className="flex flex-col">
-                      <span className="font-bold text-blue-02 text-lg">View our</span>
-                      <span className="text-blue-02 text-lg underline">Sustainability Policy</span>
+                      <span className="text-blue-02 text-lg">View our</span>
+                      <span className="font-bold text-blue-02 text-lg">Sustainability Policy</span>
                     </div>
                     <svg 
                       width="24" 
@@ -91,8 +91,8 @@ export default async function SustainabilityPage() {
                       className="flex-1 bg-[#EAEAEA] hover:bg-gray-200 transition-colors duration-200 rounded-lg p-6 flex items-center justify-between group"
                     >
                       <div className="flex flex-col">
-                        <span className="font-bold text-blue-02 text-lg">Download our</span>
-                        <span className="text-blue-02 text-lg">Sustainability Report</span>
+                        <span className="text-blue-02 text-lg">Download our</span>
+                        <span className="font-bold text-blue-02 text-lg">2024 Sustainability Report</span>
                       </div>
                       <svg 
                         width="24" 
