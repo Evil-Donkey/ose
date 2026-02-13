@@ -81,7 +81,29 @@ export default async function SustainabilityPage() {
                       <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </Link>
-
+                  
+                  {/* Sustainability Disclosure CTA */}
+                  <Link 
+                    href="/sustainability-disclosure"
+                    className="flex-1 bg-[#EAEAEA] hover:bg-gray-200 transition-colors duration-200 rounded-lg p-6 flex items-center justify-between group"
+                  >
+                    <div className="flex flex-col">
+                      <span className="text-blue-02 text-lg">View our</span>
+                      <span className="font-bold text-blue-02 text-lg">Sustainability Disclosure</span>
+                    </div>
+                    <svg 
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      className="text-blue-02 group-hover:translate-x-1 transition-transform duration-200"
+                    >
+                      <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </Link>
+                </div>
+                
+                <div className="flex flex-col md:flex-row justify-center gap-6 mt-2">
                   {/* Sustainability Report Download CTA */}
                   {sustainability && (
                     <a 
