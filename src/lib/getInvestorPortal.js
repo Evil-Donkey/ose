@@ -36,6 +36,9 @@ const INVESTOR_PORTAL_QUERY = `
           }
         }
       }
+      shareholderPortalStatement {
+        statement
+      }
     }
   }
 `;
@@ -44,6 +47,7 @@ export default async function getInvestorPortal() {
   const data = await fetchAPI(INVESTOR_PORTAL_QUERY);
   return {
     folders: data?.page?.investorPortal?.folderStructure?.folders || [],
-    regulatoryInformation: data?.page?.regulatoryInformation?.regulatoryInformation || []
+    regulatoryInformation: data?.page?.regulatoryInformation?.regulatoryInformation || [],
+    shareholderPortalStatement: data?.page?.shareholderPortalStatement?.statement || []
   };
 } 

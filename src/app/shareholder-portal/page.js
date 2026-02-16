@@ -31,6 +31,9 @@ export default async function InvestorPortal() {
             <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 pb-10 relative">
                 <InvestorPortalClient ctaData={ctaData} title={title} content={content} investorPortal={investorPortal} />
                 <Container className="py-10 relative z-10">
+                    <p>{investorPortal.shareholderPortalStatement}</p>
+                </Container>
+                <Container className="py-10 relative z-10">
                     <RegulatoryInformation 
                         documents={investorPortal.regulatoryInformation.map(doc => ({
                             title: doc.title,

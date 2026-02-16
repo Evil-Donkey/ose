@@ -64,15 +64,10 @@ const Team = ({ data, teamData = null }) => {
       
       // Check for filter parameter in hash first
       const hashParams = parseHashParams();
-      let initialCategory = '';
       
       if (hashParams?.filter && categories.some(cat => cat.slug === hashParams.filter)) {
-        initialCategory = hashParams.filter;
-      } else if (categories.length > 0) {
-        initialCategory = categories[0].slug;
+        setSelectedCategory(hashParams.filter);
       }
-      
-      setSelectedCategory(initialCategory);
     }
   }, [teamData, selectedCategory, sectionLabel]);
   
@@ -108,15 +103,11 @@ const Team = ({ data, teamData = null }) => {
           
           // Check for filter parameter in hash first
           const hashParams = parseHashParams();
-          let initialCategory = '';
           
           if (hashParams?.filter && categories.some(cat => cat.slug === hashParams.filter)) {
-            initialCategory = hashParams.filter;
-          } else if (categories.length > 0) {
-            initialCategory = categories[0].slug;
+            setSelectedCategory(hashParams.filter);
           }
           
-          setSelectedCategory(initialCategory);
           setLoading(false);
         } catch (err) {
           setError('Error loading team members.');
@@ -181,12 +172,12 @@ const Team = ({ data, teamData = null }) => {
       return orderA - orderB;
     });
 
-  // Filter members by selected category and reverse the order (already sorted by MENU_ORDER)
-  const filteredMembers = members
-    .filter(member =>
-      member.teamCategories.nodes.some(cat => cat.slug === selectedCategory)
-    )
-    //.reverse();
+  // Filter members by selected category, or show all if none selected
+  const filteredMembers = selectedCategory
+    ? members.filter(member =>
+        member.teamCategories.nodes.some(cat => cat.slug === selectedCategory)
+      )
+    : members;
 
   // Get the current selected category object to access its description
   const selectedCategoryData = categories.find(cat => cat.slug === selectedCategory);
@@ -210,7 +201,7 @@ const Team = ({ data, teamData = null }) => {
                         className={`bg-[#00A0CC] p-4 text-white font-bold text-xl cursor-pointer select-none flex items-center justify-between whitespace-nowrap ${openDropdown === 'team' ? 'rounded-t-xl' : 'rounded-xl'}`}
                         onClick={() => setOpenDropdown(openDropdown === 'team' ? null : 'team')}
                     >
-                        <span>{categories.find(cat => cat.slug === selectedCategory)?.name || 'Select Team'}</span>
+                        <span>{categories.find(cat => cat.slug === selectedCategory)?.name || 'All'}</span>
                         <span>
                             <span className="ml-2 -mr-2 w-9 h-5 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
@@ -221,6 +212,18 @@ const Team = ({ data, teamData = null }) => {
                     </div>
                     {openDropdown === 'team' && (
                         <div className="absolute left-0 right-0 bg-[#00A0CC] text-white rounded-b-xl shadow-lg overflow-hidden z-10">
+                            <div
+                                className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${selectedCategory === '' ? "bg-white text-[#00A0CC] font-bold" : ""}`}
+                                onClick={() => {
+                                    setSelectedCategory('');
+                                    setOpenDropdown(null);
+                                }}
+                            >
+                                <span>All</span>
+                                <span>
+                                    <span className={`ml-2 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${selectedCategory === '' ? "bg-[#00A0CC] border-[#00A0CC]" : ""}`}></span>
+                                </span>
+                            </div>
                             {categories.map(cat => (
                                 <div
                                     key={cat.slug}
@@ -242,6 +245,18 @@ const Team = ({ data, teamData = null }) => {
 
                 {/* Desktop List */}
                 <ul className="hidden md:block space-y-1 text-lg">
+                    <li>
+                        <button
+                            className={`block text-left cursor-pointer ${
+                            selectedCategory === ''
+                                ? 'text-lightblue font-semibold'
+                                : 'text-blue-02 hover:text-darkblue'
+                            }`}
+                            onClick={() => setSelectedCategory('')}
+                        >
+                            All
+                        </button>
+                    </li>
                     {categories.map(cat => (
                         <li key={cat.slug}>
                         <button

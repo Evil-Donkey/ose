@@ -1266,9 +1266,36 @@ add_filter('acf/upload_prefilter/key=field_68888890f60b8', 'acf_restrict_file_up
 add_filter('acf/upload_prefilter/key=field_688889ddf60bb', 'acf_restrict_file_upload');
 
 function acf_restrict_file_upload($errors) {
-    // Hook upload_dir now that we know it's one of our restricted fields
+    $upload_dir = wp_upload_dir();
+    $base_dir = isset($upload_dir['basedir']) ? $upload_dir['basedir'] : '';
+    $protected_root = $base_dir ? $base_dir . '/protected' : '';
+
+    // Fail early with a clean ACF error instead of a 500 during async-upload.
+    if (empty($base_dir) || !is_dir($base_dir) || !is_writable($base_dir)) {
+        $errors['acf_protected_upload'] = 'Protected upload is unavailable: uploads directory is not writable.';
+        return $errors;
+    }
+
+    if (!is_dir($protected_root) && !wp_mkdir_p($protected_root)) {
+        $errors['acf_protected_upload'] = 'Protected upload is unavailable: could not create protected directory.';
+        return $errors;
+    }
+
+    if (!is_writable($protected_root)) {
+        $errors['acf_protected_upload'] = 'Protected upload is unavailable: protected directory is not writable.';
+        return $errors;
+    }
+
+    // Scope the upload_dir override to this upload lifecycle only.
     add_filter('upload_dir', 'acf_private_upload_dir');
+    add_filter('wp_handle_upload', 'acf_restrict_file_upload_complete');
     return $errors;
+}
+
+function acf_restrict_file_upload_complete($upload) {
+    remove_filter('upload_dir', 'acf_private_upload_dir');
+    remove_filter('wp_handle_upload', 'acf_restrict_file_upload_complete');
+    return $upload;
 }
 
 function acf_private_upload_dir($upload) {
@@ -1276,9 +1303,6 @@ function acf_private_upload_dir($upload) {
         $upload['subdir'] = '/protected' . $upload['subdir'];
         $upload['path']   = $upload['basedir'] . $upload['subdir'];
         $upload['url']    = $upload['baseurl'] . $upload['subdir'];
-        
-        // Ensure .htaccess exists in protected directory
-        ensure_protected_directory_htaccess();
     }
     return $upload;
 }
@@ -1381,27 +1405,51 @@ add_filter('graphql_acf_register_field', function($config, $field_name, $field_c
 
 // Create/update .htaccess file in protected directory to deny direct access
 add_action('admin_init', 'ensure_protected_directory_htaccess');
-add_action('init', 'ensure_protected_directory_htaccess'); // Also run on frontend init
+add_action('init', 'ensure_protected_directory_htaccess');
 
 function ensure_protected_directory_htaccess() {
     $upload_dir = wp_upload_dir();
-    $protected_dir = $upload_dir['basedir'] . '/protected';
-    
-    // Create protected directory if it doesn't exist
-    if (!file_exists($protected_dir)) {
-        wp_mkdir_p($protected_dir);
+    if (empty($upload_dir['basedir'])) {
+        return false;
     }
-    
+
+    $protected_dir = $upload_dir['basedir'] . '/protected';
+
+    // Never risk noisy output during async upload requests.
+    if (defined('DOING_AJAX') && DOING_AJAX) {
+        return true;
+    }
+
+    // Create protected directory if it does not exist.
+    if (!is_dir($protected_dir) && !wp_mkdir_p($protected_dir)) {
+        return false;
+    }
+
     $htaccess_file = $protected_dir . '/.htaccess';
     $htaccess_content = "# Deny direct access to protected files\n";
     $htaccess_content .= "# Files must be accessed through WordPress proxy endpoint\n";
     $htaccess_content .= "Order deny,allow\n";
     $htaccess_content .= "Deny from all\n";
-    
-    // Only update if content is different or file doesn't exist
-    if (!file_exists($htaccess_file) || file_get_contents($htaccess_file) !== $htaccess_content) {
-        file_put_contents($htaccess_file, $htaccess_content);
+
+    // If file exists and content matches, nothing to do.
+    if (file_exists($htaccess_file) && is_readable($htaccess_file)) {
+        $existing = file_get_contents($htaccess_file);
+        if ($existing === $htaccess_content) {
+            return true;
+        }
     }
+
+    // Avoid warnings/notices that can corrupt uploader JSON.
+    if (!is_writable($protected_dir)) {
+        return false;
+    }
+
+    $bytes = @file_put_contents($htaccess_file, $htaccess_content, LOCK_EX);
+    if ($bytes === false) {
+        return false;
+    }
+
+    return true;
 }
 
 // Also block via PHP as a fallback (though .htaccess is primary protection)

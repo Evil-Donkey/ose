@@ -128,7 +128,7 @@ const Footer = ({ data }) => {
                 <Container>
                     {/* Copyright */}
                     <div className="text-xs flex flex-col lg:flex-row justify-between items-center gap-4">
-                        <div>© 2025 Oxford Science Enterprises</div>
+                        <div>© 2026 Oxford Science Enterprises</div>
                         <div className="flex flex-wrap justify-center lg:justify-end gap-x-1">
                             <Link href="/sustainability" className="hover:text-lightblue">Sustainability</Link>
                             <span>|</span>
