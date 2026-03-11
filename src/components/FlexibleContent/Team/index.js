@@ -1,10 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import getTeamMembers from '@/lib/getTeamMembers';
 import Container from '../../Container';
 import Link from 'next/link';
 import formatSectionLabel from '@/lib/formatSectionLabel';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Team = ({ data, teamData = null }) => {
 
@@ -136,6 +140,15 @@ const Team = ({ data, teamData = null }) => {
       }
     }
   }, [loading, componentId, sectionLabel]);
+
+  // Refresh ScrollTrigger when the filtered list changes so downstream
+  // lazy-load triggers recalculate against the new DOM height.
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [selectedCategory]);
 
   // Close dropdown on outside click
   useEffect(() => {
