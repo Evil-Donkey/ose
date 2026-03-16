@@ -21,18 +21,39 @@ function groupCategories(categories) {
 }
 
 // LogoImage component moved outside to prevent re-creation on every render
-const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onInitializeLogo, onLogoLoad, onLogoError }) => {
+const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onLogoLoad, onLogoError }) => {
+  const wrapperRef = useRef(null);
   const logoUrl = item.portfolioFields?.logoThumbnail?.mediaItemUrl || item.portfolioFields?.logo?.mediaItemUrl;
-  const isLoading = logoLoadingStates[itemId] === true;
+  // Treat undefined and true as loading so we don't get stuck when onLoad fires before init effect
+  const isLoading = logoLoadingStates[itemId] !== false;
   const hasError = logoErrorStates[itemId] === true;
-  
-  // Initialize loading state for this item
+
+  // Fallback: cached images may not fire onLoad; check img.complete after paint
   useEffect(() => {
-    if (logoUrl && logoLoadingStates[itemId] === undefined) {
-      onInitializeLogo(itemId);
-    }
-  }, [logoUrl, itemId, logoLoadingStates, onInitializeLogo]);
-  
+    if (!logoUrl || hasError || !isLoading) return;
+    let cleanup;
+    const attachOrComplete = () => {
+      const wrapper = wrapperRef.current;
+      if (!wrapper) return;
+      const img = wrapper.querySelector('img');
+      if (!img) return;
+      if (img.complete) {
+        onLogoLoad(itemId);
+        return;
+      }
+      const handleLoad = () => onLogoLoad(itemId);
+      img.addEventListener('load', handleLoad);
+      cleanup = () => img.removeEventListener('load', handleLoad);
+    };
+    const id = requestAnimationFrame(() => attachOrComplete());
+    const tid = setTimeout(attachOrComplete, 50);
+    return () => {
+      cancelAnimationFrame(id);
+      clearTimeout(tid);
+      if (cleanup) cleanup();
+    };
+  }, [logoUrl, hasError, isLoading, itemId, onLogoLoad]);
+
   if (!logoUrl || hasError) {
     // Fallback to text title
     return (
@@ -41,7 +62,7 @@ const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onInitial
   }
 
   return (
-    <div>
+    <div ref={wrapperRef}>
       {isLoading && (
         <div className="absolute top-4 left-3 w-2/3 h-16 bg-white/20 rounded animate-pulse" />
       )}
@@ -75,11 +96,6 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   const [logoErrorStates, setLogoErrorStates] = useState({});
 
   // Logo loading handlers
-  const initializeLogoState = useCallback((itemId) => {
-    setLogoLoadingStates(prev => ({ ...prev, [itemId]: true }));
-    setLogoErrorStates(prev => ({ ...prev, [itemId]: false }));
-  }, []);
-
   const handleLogoLoad = useCallback((itemId) => {
     setLogoLoadingStates(prev => ({ ...prev, [itemId]: false }));
     setLogoErrorStates(prev => ({ ...prev, [itemId]: false }));
@@ -531,7 +547,6 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                       itemId={item.id || idx} 
                       logoLoadingStates={logoLoadingStates}
                       logoErrorStates={logoErrorStates}
-                      onInitializeLogo={initializeLogoState}
                       onLogoLoad={handleLogoLoad}
                       onLogoError={handleLogoError}
                     />
