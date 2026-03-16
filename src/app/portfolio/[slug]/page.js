@@ -31,12 +31,12 @@ export default async function PortfolioSinglePage({ params }) {
   const sortedItems = items.slice().sort((a, b) => a.title.localeCompare(b.title));
   const item = sortedItems.find(i => i.slug === slug);
 
-  const { title, content, featuredImage, portfolioFields, portfolioCategories, portfolioStages } = item;
-  const { logo, portfolioTitle, websiteUrl, linkedinUrl, xUrl } = portfolioFields;
-
   if (!item) {
     return <Container className="pt-50 pb-20"><h1>Portfolio item not found</h1></Container>;
   }
+
+  const { title, content, featuredImage, portfolioFields, portfolioCategories, portfolioStages } = item;
+  const { logo, portfolioTitle, websiteUrl, linkedinUrl, xUrl } = portfolioFields;
 
   return (
     <>
@@ -45,7 +45,7 @@ export default async function PortfolioSinglePage({ params }) {
             backgroundImage: featuredImage ? `url(${proxyImageUrl(featuredImage.node.mediaItemUrl, true)})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/30" />
-            {featuredImage.node.caption && <div className="absolute bottom-8 right-10 text-white text-sm">{featuredImage.node.caption}</div>}
+            {featuredImage?.node?.caption && <div className="absolute bottom-8 right-10 text-white text-sm">{featuredImage.node.caption}</div>}
             <div className="w-full md:w-200 mx-auto text-center text-white relative">
                 {logo 
                     ? <ResponsiveImage 

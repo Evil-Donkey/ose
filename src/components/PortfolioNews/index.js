@@ -193,39 +193,48 @@ const PortfolioNews = ({ portfolioNewsItems, portfolioNewsCategories }) => {
                   bgColor = "bg-white"; // White background
                 }
               }
-              
-              return (
-                <Link 
-                  key={item.databaseId || index} 
-                  href={item.portfolioNews.url} 
-                  target="_blank" 
-                  className={`block group p-5 lg:p-8 rounded-2xl ${bgColor} ${colSpan} transition-all duration-300 hover:-translate-y-1`}
-                >
-                  <div>
-                    <div className="space-y-2">
-                      {/* Category Tag */}
-                      <span className="inline-block bg-lightblue-02 text-blue-02 px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
-                        {getCategoryName(item)}
+
+              const url = item.portfolioNews?.url;
+              const cardClassName = `h-full block group p-5 lg:p-8 rounded-2xl ${bgColor} ${colSpan} transition-all duration-300 ${url ? 'hover:-translate-y-1' : ''}`;
+              const cardContent = (
+                <div>
+                  <div className="space-y-2">
+                    {/* Category Tag */}
+                    <span className="inline-block bg-lightblue-02 text-blue-02 px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wide">
+                      {getCategoryName(item)}
+                    </span>
+
+                    {/* Date */}
+                    <p className={`text-sm font-medium mt-3 ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
+                      {formatDate(item.date)}
+                    </p>
+
+                    {/* Title */}
+                    <h1 className={`${bgColor === 'bg-white' ? 'text-2xl 2xl:text-3xl' : 'text-xl'} leading-tight overflow-hidden ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
+                      {item.title}
+                    </h1>
+
+                    {item.portfolioNews?.hashtag && (
+                      <span className={`${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'} text-sm font-medium tracking-wide mt-5 block`}>
+                        {item.portfolioNews.hashtag}
                       </span>
-
-                      {/* Date */}
-                      <p className={`text-sm font-medium mt-3 ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
-                        {formatDate(item.date)}
-                      </p>
-
-                      {/* Title */}
-                      <h1 className={`${bgColor === 'bg-white' ? 'text-2xl 2xl:text-3xl' : 'text-xl'} leading-tight overflow-hidden ${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'}`}>
-                        {item.title}
-                      </h1>
-
-                      {item.portfolioNews.hashtag && (
-                        <span className={`${bgColor === 'bg-white' ? 'text-blue-02' : 'text-white'} text-sm font-medium tracking-wide mt-5 block`}>
-                          {item.portfolioNews.hashtag}
-                        </span>
-                      )}
-                    </div>
+                    )}
                   </div>
-                </Link>
+                </div>
+              );
+
+              return (
+                <div key={item.databaseId || index}>
+                  {url ? (
+                    <Link href={url} target="_blank" rel="noopener noreferrer" className={cardClassName}>
+                      {cardContent}
+                    </Link>
+                  ) : (
+                    <div className={cardClassName}>
+                      {cardContent}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
