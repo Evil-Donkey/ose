@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Container from "@/components/Container";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Link from "next/link";
@@ -20,42 +20,22 @@ function groupCategories(categories) {
   }));
 }
 
-// LogoImage component moved outside to prevent re-creation on every render
-const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onLogoLoad, onLogoError }) => {
+const LogoImage = ({ item }) => {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
   const wrapperRef = useRef(null);
   const logoUrl = item.portfolioFields?.logoThumbnail?.mediaItemUrl || item.portfolioFields?.logo?.mediaItemUrl;
-  // Treat undefined and true as loading so we don't get stuck when onLoad fires before init effect
-  const isLoading = logoLoadingStates[itemId] !== false;
-  const hasError = logoErrorStates[itemId] === true;
 
-  // Fallback: cached images may not fire onLoad; check img.complete after paint
+  // Fallback for cached images where onLoad may not fire
   useEffect(() => {
-    if (!logoUrl || hasError || !isLoading) return;
-    let cleanup;
-    const attachOrComplete = () => {
-      const wrapper = wrapperRef.current;
-      if (!wrapper) return;
-      const img = wrapper.querySelector('img');
-      if (!img) return;
-      if (img.complete) {
-        onLogoLoad(itemId);
-        return;
-      }
-      const handleLoad = () => onLogoLoad(itemId);
-      img.addEventListener('load', handleLoad);
-      cleanup = () => img.removeEventListener('load', handleLoad);
-    };
-    const id = requestAnimationFrame(() => attachOrComplete());
-    const tid = setTimeout(attachOrComplete, 50);
-    return () => {
-      cancelAnimationFrame(id);
-      clearTimeout(tid);
-      if (cleanup) cleanup();
-    };
-  }, [logoUrl, hasError, isLoading, itemId, onLogoLoad]);
+    if (loaded || error || !logoUrl) return;
+    const img = wrapperRef.current?.querySelector('img');
+    if (img?.complete && img.naturalWidth > 0) {
+      setLoaded(true);
+    }
+  }, [loaded, error, logoUrl]);
 
-  if (!logoUrl || hasError) {
-    // Fallback to text title
+  if (!logoUrl || error) {
     return (
       <h2 className="text-lg 2xl:text-xl font-bold text-white drop-shadow mb-2" dangerouslySetInnerHTML={{ __html: item.title }} />
     );
@@ -63,7 +43,7 @@ const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onLogoLoa
 
   return (
     <div ref={wrapperRef}>
-      {isLoading && (
+      {!loaded && (
         <div className="absolute top-4 left-3 w-2/3 h-16 bg-white/20 rounded animate-pulse" />
       )}
       <Image
@@ -71,11 +51,11 @@ const LogoImage = ({ item, itemId, logoLoadingStates, logoErrorStates, onLogoLoa
         alt={item.portfolioFields.logo?.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
         width={item.portfolioFields.logoThumbnail?.mediaDetails?.width || item.portfolioFields.logo?.mediaDetails?.width || 100}
         height={item.portfolioFields.logoThumbnail?.mediaDetails?.height || item.portfolioFields.logo?.mediaDetails?.height || 100}
-        className={`mb-4 absolute top-4 left-3 w-2/3 object-contain transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-        onLoad={() => onLogoLoad(itemId)}
-        onError={() => onLogoError(itemId)}
-        unoptimized={logoUrl.endsWith('.svg')} // Disable optimization for SVGs
-        priority={false} // Don't prioritize logo loading
+        className={`mb-4 absolute top-4 left-3 w-2/3 object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+        unoptimized={logoUrl.endsWith('.svg')}
+        priority={false}
       />
     </div>
   );
@@ -90,21 +70,6 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
   const dropdownRefs = useRef({});
   const portalDropdownRefs = useRef({});
   const [fundraisingOnly, setFundraisingOnly] = useState(false);
-  
-  // Logo loading states
-  const [logoLoadingStates, setLogoLoadingStates] = useState({});
-  const [logoErrorStates, setLogoErrorStates] = useState({});
-
-  // Logo loading handlers
-  const handleLogoLoad = useCallback((itemId) => {
-    setLogoLoadingStates(prev => ({ ...prev, [itemId]: false }));
-    setLogoErrorStates(prev => ({ ...prev, [itemId]: false }));
-  }, []);
-
-  const handleLogoError = useCallback((itemId) => {
-    setLogoLoadingStates(prev => ({ ...prev, [itemId]: false }));
-    setLogoErrorStates(prev => ({ ...prev, [itemId]: true }));
-  }, []);
 
   // Dropdown portal logic
   const [dropdownPosition, setDropdownPosition] = useState({});
@@ -542,14 +507,7 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                   {bgImage && <div className="absolute inset-0 bg-black/40 z-0" />}
                   {/* Card content */}
                   <div className="relative z-10 p-6 flex flex-col h-full justify-end text-white">
-                    <LogoImage 
-                      item={item} 
-                      itemId={item.id || idx} 
-                      logoLoadingStates={logoLoadingStates}
-                      logoErrorStates={logoErrorStates}
-                      onLogoLoad={handleLogoLoad}
-                      onLogoError={handleLogoError}
-                    />
+                    <LogoImage item={item} />
                     {item.portfolioFields?.portfolioTitle && (
                       <div className="text-base lg:text-xl 2xl:text-2xl font-medium" dangerouslySetInnerHTML={{ __html: item.portfolioFields.portfolioTitle }} />
                     )}
