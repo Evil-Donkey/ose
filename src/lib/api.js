@@ -24,7 +24,7 @@ export default async function fetchAPI(query, { variables } = {}) {
         variables,
       }),
       // Only use Next.js cache on server-side
-      ...(isServer && { next: { revalidate: 300 } })
+      ...(isServer && { next: { revalidate: 3600 } })
     });
 
     const json = await res.json();
