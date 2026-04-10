@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 const POST_TYPE_TO_PATHS = {
@@ -68,6 +68,7 @@ export async function POST(request) {
     console.log("[revalidate] Payload:", JSON.stringify({ post_type, slug, revalidate_all }));
 
     if (revalidate_all) {
+      revalidateTag("cms");
       revalidatePath("/", "layout");
       console.log("[revalidate] Full site revalidation triggered");
       return NextResponse.json({
@@ -98,11 +99,12 @@ export async function POST(request) {
       paths.push("/");
     }
 
+    revalidateTag("cms");
     for (const path of paths) {
       revalidatePath(path);
     }
 
-    console.log("[revalidate] Revalidated paths:", paths);
+    console.log("[revalidate] Revalidated tag 'cms' + paths:", paths);
     return NextResponse.json({ revalidated: true, paths });
   } catch (error) {
     console.error("[revalidate] Error:", error);

@@ -7,7 +7,7 @@ const API_URL = isServer
   : '/api/graphql';
 
 // Fetch API
-export default async function fetchAPI(query, { variables } = {}) {
+export default async function fetchAPI(query, { variables, tags = [] } = {}) {
   const headers = { 'Content-Type': 'application/json' };
 
   // Only add auth token on server-side requests
@@ -23,8 +23,7 @@ export default async function fetchAPI(query, { variables } = {}) {
         query,
         variables,
       }),
-      // Only use Next.js cache on server-side
-      ...(isServer && { next: { revalidate: 3600 } })
+      ...(isServer && { next: { revalidate: 3600, tags: ['cms', ...tags] } })
     });
 
     const json = await res.json();
