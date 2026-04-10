@@ -24,7 +24,7 @@ export default async function fetchAPI(query, { variables, tags = [] } = {}) {
         variables,
         _v: 2,
       }),
-      ...(isServer && { next: { revalidate: 3600, tags: ['cms', ...tags] } })
+      ...(isServer && { next: { revalidate: 120, tags: ['cms', ...tags] } })
     });
 
     const json = await res.json();
