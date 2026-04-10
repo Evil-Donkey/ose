@@ -22,6 +22,7 @@ export default async function fetchAPI(query, { variables, tags = [] } = {}) {
       body: JSON.stringify({
         query,
         variables,
+        _v: 2,
       }),
       ...(isServer && { next: { revalidate: 3600, tags: ['cms', ...tags] } })
     });
