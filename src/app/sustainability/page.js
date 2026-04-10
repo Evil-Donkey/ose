@@ -83,7 +83,7 @@ export default async function SustainabilityPage() {
                   </Link>
                   
                   {/* Sustainability Disclosure CTA */}
-                  <Link 
+                  {/* <Link 
                     href="/sustainability-disclosure"
                     className="flex-1 bg-[#EAEAEA] hover:bg-gray-200 transition-colors duration-200 rounded-lg p-6 flex items-center justify-between group"
                   >
@@ -100,10 +100,8 @@ export default async function SustainabilityPage() {
                     >
                       <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                  </Link>
-                </div>
-                
-                <div className="flex flex-col md:flex-row justify-center gap-6 mt-2">
+                  </Link> */}
+
                   {/* Sustainability Report Download CTA */}
                   {sustainability && (
                     <a 
@@ -131,6 +129,36 @@ export default async function SustainabilityPage() {
                       </svg>
                     </a>
                   )}
+                </div>
+                
+                <div className="flex flex-col md:flex-row justify-center gap-6 mt-2">
+                  {/* Sustainability Report Download CTA */}
+                  {/* {sustainability && (
+                    <a 
+                      href={sustainability}
+                      download
+                      target="_blank"
+                      className="flex-1 bg-[#EAEAEA] hover:bg-gray-200 transition-colors duration-200 rounded-lg p-6 flex items-center justify-between group"
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-bold text-blue-02 text-lg">2024 Sustainability Report</span>
+                        <span className="text-blue-02 text-lg">Download now</span>
+                      </div>
+                      <svg 
+                        width="24" 
+                        height="24" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        className="text-blue-02"
+                      >
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <polyline points="14,2 14,8 20,8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <polyline points="10,9 9,9 8,9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </a>
+                  )} */}
                 </div>
             </div>
         </Container>
