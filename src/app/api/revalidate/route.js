@@ -52,9 +52,12 @@ function getPathsToRevalidate(postType, slug) {
 }
 
 export async function POST(request) {
+  console.log("[revalidate] Received request");
+
   const secret = request.headers.get("x-revalidate-secret");
 
   if (secret !== process.env.REVALIDATE_SECRET) {
+    console.log("[revalidate] Invalid secret");
     return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
   }
 
@@ -62,8 +65,11 @@ export async function POST(request) {
     const body = await request.json();
     const { post_type, slug, revalidate_all } = body;
 
+    console.log("[revalidate] Payload:", JSON.stringify({ post_type, slug, revalidate_all }));
+
     if (revalidate_all) {
       revalidatePath("/", "layout");
+      console.log("[revalidate] Full site revalidation triggered");
       return NextResponse.json({
         revalidated: true,
         paths: ["/ (full site)"],
@@ -80,13 +86,13 @@ export async function POST(request) {
     const paths = getPathsToRevalidate(post_type, slug);
 
     if (paths.length === 0) {
+      console.log(`[revalidate] No paths mapped for post_type "${post_type}", slug "${slug}"`);
       return NextResponse.json(
         { message: `No paths mapped for post_type "${post_type}"` },
         { status: 200 }
       );
     }
 
-    // Also revalidate homepage for content types that appear on it
     const typesOnHomepage = ["post", "portfolio", "story", "team", "founder"];
     if (typesOnHomepage.includes(post_type) && !paths.includes("/")) {
       paths.push("/");
@@ -96,9 +102,10 @@ export async function POST(request) {
       revalidatePath(path);
     }
 
+    console.log("[revalidate] Revalidated paths:", paths);
     return NextResponse.json({ revalidated: true, paths });
   } catch (error) {
-    console.error("Revalidation error:", error);
+    console.error("[revalidate] Error:", error);
     return NextResponse.json(
       { message: "Revalidation failed", error: error.message },
       { status: 500 }
