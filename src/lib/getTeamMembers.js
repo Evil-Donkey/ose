@@ -4,6 +4,7 @@ const TEAM_MEMBERS_QUERY = `
   {
     allTeam(first: 1000, where: {orderby: {field: MENU_ORDER, order: ASC}}) {
         nodes {
+            id
             teamMember {
                 email
                 linkedinUrl

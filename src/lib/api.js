@@ -39,7 +39,7 @@ export default async function fetchAPI(query, { variables, tags = [] } = {}) {
       if (nonFieldErrors.length > 0) {
         console.error("GraphQL Errors:", nonFieldErrors);
       }
-      
+
       return null; // Don't throw an error, just return null
     }
 
