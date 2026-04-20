@@ -13,6 +13,8 @@ const nextConfig = {
                 port: "",
             },
         ],
+        minimumCacheTTL: 31536000,
+        formats: ['image/avif', 'image/webp'],
     },
     // Enable CSS optimization
     compiler: {

@@ -47,6 +47,7 @@ const ResponsiveImage = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [fallbackUnoptimized, setFallbackUnoptimized] = useState(false);
 
   const handleLoad = (e) => {
     setIsLoading(false);
@@ -54,6 +55,12 @@ const ResponsiveImage = ({
   };
 
   const handleError = (e) => {
+    // First failure: retry with the raw WordPress URL (skip Vercel optimizer).
+    // Only if that also fails do we show the error placeholder.
+    if (!fallbackUnoptimized) {
+      setFallbackUnoptimized(true);
+      return;
+    }
     setIsLoading(false);
     setHasError(true);
     onError?.(e);
@@ -96,6 +103,7 @@ const ResponsiveImage = ({
     onLoad: handleLoad,
     onError: handleError,
     sizes,
+    unoptimized: fallbackUnoptimized,
     ...props
   };
 
