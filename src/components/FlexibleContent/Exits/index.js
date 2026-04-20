@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -9,6 +9,23 @@ import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
+
+const ExitLogo = ({ logo, className }) => {
+    const [unoptimized, setUnoptimized] = useState(
+        logo.mediaItemUrl?.endsWith('.svg') ?? false
+    );
+    return (
+        <Image
+            src={logo.mediaItemUrl}
+            alt={logo.altText || ''}
+            width={logo.mediaDetails?.width || 300}
+            height={logo.mediaDetails?.height || 150}
+            className={className}
+            unoptimized={unoptimized}
+            onError={() => setUnoptimized(true)}
+        />
+    );
+};
 
 const Exits = ({ data }) => {
     const titleRef = useRef([]);
@@ -87,7 +104,7 @@ const Exits = ({ data }) => {
                                 <div className="h-full w-full flex flex-col md:flex-row md:gap-8 justify-between overflow-hidden rounded-xl bg-cover bg-center bg-[url('/mobile-gradient.jpg')] lg:bg-[url('/desktop-gradient.jpg')]">
                                     <div className="p-4 md:p-8 w-full md:w-3/5 flex flex-col md:flex-row justify-between text-white">
                                         <div className="flex flex-col justify-between h-full gap-8">
-                                            {logo && <Image src={logo.mediaItemUrl} alt={logo.altText} width={logo.mediaDetails.width} height={logo.mediaDetails.height} className="object-cover transition-transform xl:min-w-[80%]" />}
+                                            {logo && <ExitLogo logo={logo} className="object-cover transition-transform xl:min-w-[80%]" />}
                                             {title &&
                                                 <h3 className="text-3xl xl:text-4xl 2xl:text-5xl text-balance">
                                                     {title}
@@ -109,7 +126,7 @@ const Exits = ({ data }) => {
                             >
                                 <div className="h-full w-full flex flex-col gap-8 overflow-hidden rounded-xl bg-cover bg-center bg-[url('/mobile-gradient.jpg')] lg:bg-[url('/desktop-gradient.jpg')]">
                                     <div className="flex flex-col justify-between h-full gap-4 text-white p-4 md:p-8">
-                                        {logo && <Image src={logo.mediaItemUrl} alt={logo.altText} width={logo.mediaDetails.width} height={logo.mediaDetails.height} className="object-cover transition-transform" />}
+                                        {logo && <ExitLogo logo={logo} className="object-cover transition-transform" />}
                                         {title &&
                                             <h3 className="text-3xl xl:text-[1.5rem] 2xl:text-4xl text-balance">
                                                 {title}

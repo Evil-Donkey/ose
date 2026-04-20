@@ -33,7 +33,19 @@ const FOOTER_DATA_QUERY = `
   }
 `;
 
+const EMPTY_FOOTER_DATA = {
+  copyright: null,
+  address: null,
+  oxfordAcademicsEmail: null,
+  investorsEmail: null,
+  mediaEmail: null,
+  telephone: null,
+  ctaTitle: null,
+  ctaCopy: null,
+  cta: null,
+};
+
 export default async function getFooterData() {
   const data = await fetchAPI(FOOTER_DATA_QUERY);
-  return data?.acfOptionsThemeSettings?.globalSettings || null;
-} 
+  return data?.acfOptionsThemeSettings?.globalSettings || EMPTY_FOOTER_DATA;
+}
