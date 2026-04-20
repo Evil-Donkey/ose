@@ -1,10 +1,16 @@
 import fetchAPI from "./api";
 
 const PAGE_TITLE_CONTENT_QUERY = `
-  query getPageTitleAndContent($id: ID!, $asPreview: Boolean = false) {
-    page(id: $id, idType: DATABASE_ID, asPreview: $asPreview) {
+  query getPageTitleAndContent($id: ID!, $preview: Boolean = false) {
+    page(id: $id, idType: DATABASE_ID) {
       title(format: RENDERED)
       content(format: RENDERED)
+      preview @include(if: $preview) {
+        node {
+          title(format: RENDERED)
+          content(format: RENDERED)
+        }
+      }
       featuredImage {
         node {
           mediaItemUrl
@@ -42,19 +48,23 @@ export default async function getPageTitleAndContent(pageId) {
   }
 
   const data = await fetchAPI(PAGE_TITLE_CONTENT_QUERY, {
-    variables: { id: String(pageId), asPreview: preview },
+    variables: { id: String(pageId), preview },
     preview,
   });
+
+  const page = data?.page;
+  const previewNode = preview ? page?.preview?.node : null;
+
   return {
-    title: data?.page?.title || null,
-    content: data?.page?.content || null,
-    featuredImage: data?.page?.featuredImage?.node?.mediaItemUrl || null,
-    featuredImageAltText: data?.page?.featuredImage?.node?.altText || null,
-    featuredImageCaption: data?.page?.featuredImage?.node?.caption || null,
-    mobileFeaturedImage: data?.page?.mobileFeaturedImage?.mobileFeaturedImage?.mediaItemUrl || null,
-    mobileFeaturedImageAltText: data?.page?.mobileFeaturedImage?.mobileFeaturedImage?.altText || null,
-    mobileFeaturedImageCaption: data?.page?.mobileFeaturedImage?.mobileFeaturedImage?.caption || null,
-    sustainability: data?.page?.sustainability?.sustainabilityReport?.mediaItemUrl || null,
-    secondaryTitle: data?.page?.extraPageOptions?.secondaryTitle || null
+    title: previewNode?.title ?? page?.title ?? null,
+    content: previewNode?.content ?? page?.content ?? null,
+    featuredImage: page?.featuredImage?.node?.mediaItemUrl || null,
+    featuredImageAltText: page?.featuredImage?.node?.altText || null,
+    featuredImageCaption: page?.featuredImage?.node?.caption || null,
+    mobileFeaturedImage: page?.mobileFeaturedImage?.mobileFeaturedImage?.mediaItemUrl || null,
+    mobileFeaturedImageAltText: page?.mobileFeaturedImage?.mobileFeaturedImage?.altText || null,
+    mobileFeaturedImageCaption: page?.mobileFeaturedImage?.mobileFeaturedImage?.caption || null,
+    sustainability: page?.sustainability?.sustainabilityReport?.mediaItemUrl || null,
+    secondaryTitle: page?.extraPageOptions?.secondaryTitle || null
   };
-} 
+}
