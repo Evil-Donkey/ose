@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import LottieLogo from '../LottieLogo';
 import { IconHamburger, IconClose } from "../Icons/Hamburger";
 import Container from '../Container';
@@ -13,7 +13,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
     const [isScrollingUp, setIsScrollingUp] = useState(true);
     const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
     const [lastScrollTop, setLastScrollTop] = useState(0);
-    const [hideThreshold, setHideThreshold] = useState(0);
+    const hideThresholdRef = useRef(0);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const delays = ['delay-150', 'delay-300', 'delay-450', 'delay-600'];
     const pathname = usePathname();
@@ -69,11 +69,11 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                     // When scrolling down and past 200px, hide the nav and set the threshold
                     if (currentScrollTop > lastScrollTop && currentScrollTop > 200) {
                         setIsScrollingUp(false);
-                        setHideThreshold(currentScrollTop);
+                        hideThresholdRef.current = currentScrollTop;
                     } 
                     // When scrolling up, only show nav if we've scrolled up more than 300px from where it was hidden
                     else if (currentScrollTop < lastScrollTop) {
-                        const scrollUpDistance = hideThreshold - currentScrollTop;
+                        const scrollUpDistance = hideThresholdRef.current - currentScrollTop;
                         if (scrollUpDistance >= 300 || currentScrollTop <= 200) {
                             setIsScrollingUp(true);
                         }
@@ -122,7 +122,6 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                 <div className="flex justify-between items-center">
                     <div className={`transition-all duration-500 ${isHeaderScrolled ? 'w-40 2xl:w-65' : 'w-50 2xl:w-75'}`}> 
                         <div className="text-xl font-bold">
-                            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                             <Link href="/" aria-label="Oxford Science Enterprises - Go to homepage">
                                 <LottieLogo />
                             </Link>
@@ -247,13 +246,13 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                                 />
                                                                             </g>
                                                                         </svg>
-                                                                        <a
+                                                                        <Link
                                                                             href='/deep-tech'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
                                                                             aria-label="Learn about our Deep Tech sector"
                                                                         >
                                                                             Deep Tech
-                                                                        </a>
+                                                                        </Link>
                                                                     </li>
                                                                     <li className="flex gap-2">
                                                                         <svg
@@ -273,13 +272,13 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                                 />
                                                                             </g>
                                                                         </svg>
-                                                                        <a
+                                                                        <Link
                                                                             href='/life-sciences'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
                                                                             aria-label="Learn about our Life Sciences sector"
                                                                         >
                                                                             Life Sciences
-                                                                        </a>
+                                                                        </Link>
                                                                     </li>
                                                                     <li className="flex gap-2">
                                                                         <svg
@@ -299,13 +298,13 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
                                                                                 />
                                                                             </g>
                                                                         </svg>
-                                                                        <a
+                                                                        <Link
                                                                             href='/health-tech'
                                                                             className="hover:text-lightblue transition-colors text-sm 2xl:text-lg font-medium"
                                                                             aria-label="Learn about our HealthTech sector"
                                                                         >
                                                                             HealthTech
-                                                                        </a>
+                                                                        </Link>
                                                                     </li>
                                                                 </ul>
                                                             </div>
