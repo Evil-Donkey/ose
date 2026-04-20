@@ -1,5 +1,3 @@
-import { draftMode } from 'next/headers'
-
 const isServer = typeof window === 'undefined';
 
 const API_URL = isServer
@@ -16,6 +14,7 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
   let isPreview = preview;
   if (isServer && !isPreview) {
     try {
+      const { draftMode } = await import('next/headers');
       const { isEnabled } = await draftMode();
       isPreview = isEnabled;
     } catch {
