@@ -33,17 +33,25 @@ const TEAM_BY_SLUG_QUERY = `
 `;
 
 const TEAM_BY_ID_QUERY = `
-  query TeamById($id: ID!) {
-    team(id: $id, idType: DATABASE_ID) { ${TEAM_FIELDS} }
+  query TeamById($id: ID!, $asPreview: Boolean!) {
+    team(id: $id, idType: DATABASE_ID, asPreview: $asPreview) { ${TEAM_FIELDS} }
   }
 `;
 
-export default async function getTeamBySlug(slug) {
-  const draftIdMatch = slug.match(/^draft-(\d+)$/);
+export default async function getTeamBySlug(slugOrId, { preview = true } = {}) {
+  const idMatch = typeof slugOrId === "string" && slugOrId.match(/^(?:id|draft)-(\d+)$/);
 
-  const data = draftIdMatch
-    ? await fetchAPI(TEAM_BY_ID_QUERY, { variables: { id: draftIdMatch[1] }, preview: true })
-    : await fetchAPI(TEAM_BY_SLUG_QUERY, { variables: { slug }, preview: true });
+  if (idMatch) {
+    const data = await fetchAPI(TEAM_BY_ID_QUERY, {
+      variables: { id: idMatch[1], asPreview: preview },
+      preview,
+    });
+    return data?.team ?? null;
+  }
 
+  const data = await fetchAPI(TEAM_BY_SLUG_QUERY, {
+    variables: { slug: slugOrId },
+    preview,
+  });
   return data?.team ?? null;
 }

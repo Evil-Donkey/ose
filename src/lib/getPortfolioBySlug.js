@@ -80,24 +80,24 @@ const PORTFOLIO_BY_SLUG_QUERY = `
 `;
 
 const PORTFOLIO_BY_ID_QUERY = `
-  query PortfolioById($id: ID!) {
-    portfolio(id: $id, idType: DATABASE_ID) { ${PORTFOLIO_FIELDS} }
+  query PortfolioById($id: ID!, $asPreview: Boolean!) {
+    portfolio(id: $id, idType: DATABASE_ID, asPreview: $asPreview) { ${PORTFOLIO_FIELDS} }
   }
 `;
 
-export default async function getPortfolioBySlug(slug, preview = false) {
-  const draftIdMatch = slug.match(/^draft-(\d+)$/);
+export default async function getPortfolioBySlug(slugOrId, preview = false) {
+  const idMatch = typeof slugOrId === "string" && slugOrId.match(/^(?:id|draft)-(\d+)$/);
 
-  if (draftIdMatch) {
+  if (idMatch) {
     const data = await fetchAPI(PORTFOLIO_BY_ID_QUERY, {
-      variables: { id: draftIdMatch[1] },
+      variables: { id: idMatch[1], asPreview: preview },
       preview,
     });
     return data?.portfolio ?? null;
   }
 
   const data = await fetchAPI(PORTFOLIO_BY_SLUG_QUERY, {
-    variables: { slug },
+    variables: { slug: slugOrId },
     preview,
   });
   return data?.allPortfolio?.nodes?.[0] ?? null;

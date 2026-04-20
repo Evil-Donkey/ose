@@ -29,17 +29,25 @@ const POST_BY_SLUG_QUERY = `
 `;
 
 const POST_BY_ID_QUERY = `
-  query PostById($id: ID!) {
-    post(id: $id, idType: DATABASE_ID) { ${POST_FIELDS} }
+  query PostById($id: ID!, $asPreview: Boolean!) {
+    post(id: $id, idType: DATABASE_ID, asPreview: $asPreview) { ${POST_FIELDS} }
   }
 `;
 
-export default async function getNewsBySlug(slug) {
-  const draftIdMatch = slug.match(/^draft-(\d+)$/);
+export default async function getNewsBySlug(slugOrId, { preview = true } = {}) {
+  const idMatch = typeof slugOrId === "string" && slugOrId.match(/^(?:id|draft)-(\d+)$/);
 
-  const data = draftIdMatch
-    ? await fetchAPI(POST_BY_ID_QUERY, { variables: { id: draftIdMatch[1] }, preview: true })
-    : await fetchAPI(POST_BY_SLUG_QUERY, { variables: { slug }, preview: true });
+  if (idMatch) {
+    const data = await fetchAPI(POST_BY_ID_QUERY, {
+      variables: { id: idMatch[1], asPreview: preview },
+      preview,
+    });
+    return data?.post ?? null;
+  }
 
+  const data = await fetchAPI(POST_BY_SLUG_QUERY, {
+    variables: { slug: slugOrId },
+    preview,
+  });
   return data?.post ?? null;
 }

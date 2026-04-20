@@ -43,9 +43,10 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
 
   if (isServer) {
     headers['User-Agent'] = SERVER_USER_AGENT;
-    // Only attach the WordPress auth token when we actually need authenticated
-    // access (preview / draft mode). Sending an expired or invalid JWT on
-    // public queries causes WPGraphQL to reject the whole request with 403.
+    // Only attach auth on preview/draft requests. Sending an expired/invalid
+    // JWT on public queries would cause WPGraphQL to reject the whole request
+    // with 403. The env var holds a JWT from the WordPress JWT Auth plugin;
+    // it's validated server-side against JWT_AUTH_SECRET_KEY.
     if (preview && process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
       headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
     }
@@ -72,6 +73,14 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
       const res = await doFetch(API_URL, fetchInit, timeoutMs);
 
       if (!res.ok) {
+        if (preview && (res.status === 401 || res.status === 403)) {
+          console.error(
+            `[preview auth] ${res.status} from WPGraphQL — WORDPRESS_AUTH_REFRESH_TOKEN ` +
+            `is probably expired or invalid. Re-issue a JWT from ` +
+            `/wp-json/jwt-auth/v1/token and update .env.local.`
+          );
+          return null;
+        }
         if (RETRYABLE_STATUS.has(res.status) && attempt < maxAttempts) {
           await sleep(300 * attempt);
           continue;
