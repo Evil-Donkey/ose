@@ -42,7 +42,7 @@ const FOUNDERS_QUERY = `
   }
 `;
 
-export default async function getFounders() {
-  const data = await fetchAPI(FOUNDERS_QUERY);
+export default async function getFounders(preview = false) {
+  const data = await fetchAPI(FOUNDERS_QUERY, { preview });
   return data?.allFounders?.nodes || [];
 }

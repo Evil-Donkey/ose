@@ -37,9 +37,10 @@ const EMPTY_STORY_DATA = {
   flexibleContent: [],
 };
 
-export default async function getStoryData(id) {
+export default async function getStoryData(id, preview = false) {
   const data = await fetchAPI(STORY_DATA_QUERY, {
-    variables: { id: String(id) }
+    variables: { id: String(id) },
+    preview,
   });
   return data?.story?.story || EMPTY_STORY_DATA;
 }

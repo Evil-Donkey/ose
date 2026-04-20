@@ -46,7 +46,7 @@ const TEAM_MEMBERS_QUERY = `
   }
 `;
 
-export default async function getTeamMembers() {
-  const data = await fetchAPI(TEAM_MEMBERS_QUERY);
+export default async function getTeamMembers(preview = false) {
+  const data = await fetchAPI(TEAM_MEMBERS_QUERY, { preview });
   return data?.allTeam?.nodes || [];
 }

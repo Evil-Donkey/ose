@@ -578,9 +578,10 @@ const FLEXIBLE_CONTENT_QUERY = `
   }
 `;
 
-export default async function getFlexiblePage(pageId) {
+export default async function getFlexiblePage(pageId, preview = false) {
   const data = await fetchAPI(FLEXIBLE_CONTENT_QUERY, {
-    variables: { id: String(pageId) }
+    variables: { id: String(pageId) },
+    preview,
   });
 
   return data?.page?.flexibleContent?.flexibleContent || [];

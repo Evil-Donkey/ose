@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm /Users/jeffceriello/Sites/react/oxfordscienceenterprises/src/app/\\\\[...slug\\\\]/page.js)",
+      "Bash(rmdir /Users/jeffceriello/Sites/react/oxfordscienceenterprises/src/app/\\\\[...slug\\\\])"
+    ]
+  }
+}

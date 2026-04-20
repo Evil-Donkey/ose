@@ -14,41 +14,13 @@
 import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-const POST_TYPE_TO_PATH = {
-  post:      (slug) => `/news/${slug}`,
-  story:     (slug) => `/stories/${slug}`,
-  portfolio: (slug) => `/portfolio/${slug}`,
-  team:      (slug) => `/who/${slug}`,
-  founder:   (slug) => `/founders/${slug}`,
-}
-
-const PAGE_SLUG_TO_PATH = {
-  home:                       '/',
-  'front-page':               '/',
-  what:                       '/what',
-  why:                        '/why',
-  how:                        '/how',
-  who:                        '/who',
-  'deep-tech':                '/deep-tech',
-  'health-tech':              '/health-tech',
-  'life-sciences':            '/life-sciences',
-  sustainability:             '/sustainability',
-  'sustainability-policy':    '/sustainability-policy',
-  'sustainability-disclosure':'/sustainability-disclosure',
-  uncover:                    '/uncover',
-  news:                       '/news',
-  portfolio:                  '/portfolio',
-  stories:                    '/stories',
-  contact:                    '/contact',
-  'privacy-policy':           '/privacy-policy',
-  'terms-conditions':         '/terms-conditions',
-  'complaints-policy':        '/complaints-policy',
-  'modern-slavery-statement': '/modern-slavery-statement',
-  'coinvestors-contact-form': '/coinvestors-contact-form',
-  'shareholder-contact-form': '/shareholder-contact-form',
-  'shareholder-portal':       '/shareholder-portal',
-  'shareholder-portal-signup':'/shareholder-portal-signup',
-  form:                       '/form',
+const PREVIEW_PATH_BY_POST_TYPE = {
+  post:      (slug) => `/preview/post/${slug}`,
+  story:     (slug) => `/preview/story/${slug}`,
+  portfolio: (slug) => `/preview/portfolio/${slug}`,
+  team:      (slug) => `/preview/team/${slug}`,
+  founder:   (slug) => `/preview/founder/${slug}`,
+  page:      (slug) => `/preview/page/${slug}`,
 }
 
 export async function GET(request) {
@@ -65,16 +37,13 @@ export async function GET(request) {
     return new Response('Missing postType or slug', { status: 400 })
   }
 
+  const pathBuilder = PREVIEW_PATH_BY_POST_TYPE[postType]
+  if (!pathBuilder) {
+    return new Response(`Unsupported postType: ${postType}`, { status: 400 })
+  }
+
   const draft = await draftMode()
   draft.enable()
 
-  let redirectPath = '/'
-
-  if (postType === 'page') {
-    redirectPath = PAGE_SLUG_TO_PATH[slug] ?? `/${slug}`
-  } else if (POST_TYPE_TO_PATH[postType]) {
-    redirectPath = POST_TYPE_TO_PATH[postType](slug)
-  }
-
-  redirect(redirectPath)
+  redirect(pathBuilder(slug))
 }
