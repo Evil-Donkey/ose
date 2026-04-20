@@ -497,7 +497,6 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
                 key={idx}
                 href={`/portfolio/${item.slug}`}
                 className="block group portfolio-item opacity-0 translate-y-10"
-                prefetch={false}
               >
                 <div
                   className="relative bg-white rounded-2xl shadow flex flex-col gap-2 overflow-hidden min-h-[200px] md:min-h-[250px] 2xl:min-h-[300px] h-full transition-transform duration-200 group-hover:-translate-y-1"

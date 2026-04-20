@@ -6,20 +6,23 @@ import { X as XIcon, LinkedIn as LinkedInIcon } from "@/components/Icons/Social"
 import { getOptimizedImageProps } from "../../../lib/imageUtils";
 import Button from "@/components/Button";
 import { proxyImageUrl } from "@/lib/proxyImage";
-import { draftMode } from 'next/headers';
+
+export async function generateStaticParams() {
+    const items = await getPortfolioItems();
+    return items.map(item => ({ slug: item.slug }));
+}
 
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
-    const { isEnabled: preview } = await draftMode();
-    const items = await getPortfolioItems(preview);
+    const items = await getPortfolioItems();
     const item = items.find(s => s.slug === resolvedParams.slug);
-    
+
     if (!item) {
       return {
         title: 'Portfolio Item Not Found',
       };
     }
-  
+
     return {
       title: item.title,
       description: item.content ? item.content.replace(/<[^>]*>/g, '').substring(0, 160) : '',
@@ -28,10 +31,9 @@ export async function generateMetadata({ params }) {
 
 export default async function PortfolioSinglePage({ params }) {
   const { slug } = await params;
-  const { isEnabled: preview } = await draftMode();
-  const items = await getPortfolioItems(preview);
-  // Sort items alphabetically by title for navigation
-  const sortedItems = items.slice().sort((a, b) => a.title.localeCompare(b.title));
+  const items = await getPortfolioItems();
+  // Sort items alphabetically by title for navigation (null-safe)
+  const sortedItems = items.slice().sort((a, b) => (a.title || '').localeCompare(b.title || ''));
   const item = sortedItems.find(i => i.slug === slug);
 
   if (!item) {

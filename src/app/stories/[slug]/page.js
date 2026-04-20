@@ -9,16 +9,19 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
-import { draftMode } from 'next/headers';
 
 gsap.registerPlugin(ScrollTrigger);
 
+export async function generateStaticParams() {
+  const stories = await getStoriesItems();
+  return stories.map(story => ({ slug: story.slug }));
+}
+
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
-  const { isEnabled: preview } = await draftMode();
-  const stories = await getStoriesItems(preview);
+  const stories = await getStoriesItems();
   const story = stories.find(s => s.slug === resolvedParams.slug);
-  
+
   if (!story) {
     return {
       title: 'Story Not Found',
@@ -33,8 +36,7 @@ export async function generateMetadata({ params }) {
 
 export default async function StoryPage({ params }) {
   const resolvedParams = await params;
-  const { isEnabled: preview } = await draftMode();
-  const stories = await getStoriesItems(preview);
+  const stories = await getStoriesItems();
   const story = stories.find(s => s.slug === resolvedParams.slug);
   
   if (!story) {

@@ -4,20 +4,23 @@ import HeaderServer from "@/components/Header/HeaderServer";
 import Link from "next/link";
 import Button from "@/components/Button";
 import { formatDate } from "@/lib/formatDate";
-import { draftMode } from 'next/headers';
+
+export async function generateStaticParams() {
+    const items = await getNewsItems();
+    return items.map(item => ({ slug: item.slug }));
+}
 
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
-    const { isEnabled: preview } = await draftMode();
-    const items = await getNewsItems(preview);
+    const items = await getNewsItems();
     const item = items.find(s => s.slug === resolvedParams.slug);
-    
+
     if (!item) {
       return {
         title: 'News Item Not Found',
       };
     }
-  
+
     return {
       title: item.title,
       description: item.content ? item.content.replace(/<[^>]*>/g, '').substring(0, 160) : '',
@@ -26,17 +29,16 @@ export async function generateMetadata({ params }) {
 
 export default async function NewsSinglePage({ params }) {
   const { slug } = await params;
-  const { isEnabled: preview } = await draftMode();
-  const items = await getNewsItems(preview);
-  // Sort items alphabetically by title for navigation
-  const sortedItems = items.slice().sort((a, b) => a.title.localeCompare(b.title));
+  const items = await getNewsItems();
+  // Sort items alphabetically by title for navigation (null-safe)
+  const sortedItems = items.slice().sort((a, b) => (a.title || '').localeCompare(b.title || ''));
   const item = sortedItems.find(i => i.slug === slug);
-
-  const { title, content, featuredImage, categories, date } = item;
 
   if (!item) {
     return <Container className="pt-50 pb-20"><h1>News item not found</h1></Container>;
   }
+
+  const { title, content, featuredImage, categories, date } = item;
 
   return (
     <>
