@@ -52,16 +52,7 @@ async function fetchPreviewContent(pageId) {
   }
 }
 
-export default async function getPageTitleAndContent(pageId) {
-  let preview = false;
-  try {
-    const { draftMode } = await import('next/headers');
-    const { isEnabled } = await draftMode();
-    preview = isEnabled;
-  } catch {
-    // build time — no request context
-  }
-
+export default async function getPageTitleAndContent(pageId, preview = false) {
   const [data, previewContent] = await Promise.all([
     fetchAPI(PAGE_TITLE_CONTENT_QUERY, { variables: { id: String(pageId) }, preview }),
     preview ? fetchPreviewContent(pageId) : Promise.resolve(null),
