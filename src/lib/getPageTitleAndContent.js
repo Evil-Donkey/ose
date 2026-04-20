@@ -36,7 +36,7 @@ async function fetchPreviewContent(pageId) {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/wp/v2/pages/${pageId}/autosaves?per_page=1&orderby=date&order=desc`,
       {
-        headers: { 'Authorization': `Basic ${process.env.WORDPRESS_APP_PASSWORD}` },
+        headers: { 'Authorization': `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}` },
         cache: 'no-store',
       }
     );
