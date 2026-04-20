@@ -11,17 +11,6 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
     headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
   }
 
-  let isPreview = preview;
-  if (isServer && !isPreview) {
-    try {
-      const { draftMode } = await import('next/headers');
-      const { isEnabled } = await draftMode();
-      isPreview = isEnabled;
-    } catch {
-      // Not in a request context (e.g. build time static generation)
-    }
-  }
-
   try {
     const res = await fetch(API_URL, {
       headers,
@@ -32,7 +21,7 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
         _v: 2,
       }),
       ...(isServer && (
-        isPreview
+        preview
           ? { cache: 'no-store' }
           : { next: { revalidate: 120, tags: ['cms', ...tags] } }
       ))

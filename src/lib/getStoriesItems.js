@@ -1,8 +1,8 @@
 import fetchAPI from "./api";
 
 const STORIES_ITEMS_QUERY = `
-  query Stories($stati: [PostStatusEnum]) {
-    stories(first: 1000, where: {orderby: {field: MENU_ORDER, order: ASC}, stati: $stati}) {
+  query Stories {
+    stories(first: 1000, where: {orderby: {field: MENU_ORDER, order: ASC}}) {
       nodes {
         title
         slug
@@ -46,9 +46,6 @@ const STORIES_ITEMS_QUERY = `
 `;
 
 export default async function getStoriesItems(preview = false) {
-  const data = await fetchAPI(STORIES_ITEMS_QUERY, {
-    variables: { stati: preview ? ['PUBLISH', 'DRAFT'] : ['PUBLISH'] },
-    preview,
-  });
+  const data = await fetchAPI(STORIES_ITEMS_QUERY, { preview });
   return data?.stories?.nodes || [];
 } 

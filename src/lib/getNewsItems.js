@@ -1,8 +1,8 @@
 import fetchAPI from "./api";
 
 const NEWS_ITEMS_QUERY = `
-  query News($stati: [PostStatusEnum]) {
-    posts(first: 1000, where: { stati: $stati }) {
+  query News {
+    posts(first: 1000) {
       nodes {
         title
         slug
@@ -38,9 +38,6 @@ const NEWS_ITEMS_QUERY = `
 `;
 
 export default async function getNewsItems(preview = false) {
-  const data = await fetchAPI(NEWS_ITEMS_QUERY, {
-    variables: { stati: preview ? ['PUBLISH', 'DRAFT'] : ['PUBLISH'] },
-    preview,
-  });
+  const data = await fetchAPI(NEWS_ITEMS_QUERY, { preview });
   return data?.posts?.nodes || [];
 } 
