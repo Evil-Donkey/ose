@@ -1,8 +1,8 @@
 import fetchAPI from "./api";
 
 const PAGE_TITLE_CONTENT_QUERY = `
-  query getPageTitleAndContent($id: ID!) {
-    page(id: $id, idType: DATABASE_ID) {
+  query getPageTitleAndContent($id: ID!, $asPreview: Boolean = false) {
+    page(id: $id, idType: DATABASE_ID, asPreview: $asPreview) {
       title(format: RENDERED)
       content(format: RENDERED)
       featuredImage {
@@ -32,8 +32,18 @@ const PAGE_TITLE_CONTENT_QUERY = `
 `;
 
 export default async function getPageTitleAndContent(pageId) {
+  let preview = false;
+  try {
+    const { draftMode } = await import('next/headers');
+    const { isEnabled } = await draftMode();
+    preview = isEnabled;
+  } catch {
+    // build time — no request context
+  }
+
   const data = await fetchAPI(PAGE_TITLE_CONTENT_QUERY, {
-    variables: { id: String(pageId) }
+    variables: { id: String(pageId), asPreview: preview },
+    preview,
   });
   return {
     title: data?.page?.title || null,

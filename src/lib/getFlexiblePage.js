@@ -1,8 +1,8 @@
 import fetchAPI from "./api";
 
 const FLEXIBLE_CONTENT_QUERY = `
-  query getFlexiblePage($id: ID!) {
-    page(id: $id, idType: DATABASE_ID) {
+  query getFlexiblePage($id: ID!, $asPreview: Boolean = false) {
+    page(id: $id, idType: DATABASE_ID, asPreview: $asPreview) {
       content(format: RENDERED)
       title(format: RENDERED)
       flexibleContent {
@@ -579,8 +579,18 @@ const FLEXIBLE_CONTENT_QUERY = `
 `;
 
 export default async function getFlexiblePage(pageId) {
+  let preview = false;
+  try {
+    const { draftMode } = await import('next/headers');
+    const { isEnabled } = await draftMode();
+    preview = isEnabled;
+  } catch {
+    // build time — no request context
+  }
+
   const data = await fetchAPI(FLEXIBLE_CONTENT_QUERY, {
-    variables: { id: String(pageId) }
+    variables: { id: String(pageId), asPreview: preview },
+    preview,
   });
 
   return data?.page?.flexibleContent?.flexibleContent;
