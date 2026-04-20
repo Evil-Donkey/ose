@@ -4,10 +4,12 @@ import HeaderServer from "@/components/Header/HeaderServer";
 import Link from "next/link";
 import Button from "@/components/Button";
 import { formatDate } from "@/lib/formatDate";
+import { draftMode } from 'next/headers';
 
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
-    const items = await getNewsItems();
+    const { isEnabled: preview } = await draftMode();
+    const items = await getNewsItems(preview);
     const item = items.find(s => s.slug === resolvedParams.slug);
     
     if (!item) {
@@ -24,7 +26,8 @@ export async function generateMetadata({ params }) {
 
 export default async function NewsSinglePage({ params }) {
   const { slug } = await params;
-  const items = await getNewsItems();
+  const { isEnabled: preview } = await draftMode();
+  const items = await getNewsItems(preview);
   // Sort items alphabetically by title for navigation
   const sortedItems = items.slice().sort((a, b) => a.title.localeCompare(b.title));
   const item = sortedItems.find(i => i.slug === slug);

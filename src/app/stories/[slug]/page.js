@@ -9,12 +9,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
+import { draftMode } from 'next/headers';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
-  const stories = await getStoriesItems();
+  const { isEnabled: preview } = await draftMode();
+  const stories = await getStoriesItems(preview);
   const story = stories.find(s => s.slug === resolvedParams.slug);
   
   if (!story) {
@@ -31,7 +33,8 @@ export async function generateMetadata({ params }) {
 
 export default async function StoryPage({ params }) {
   const resolvedParams = await params;
-  const stories = await getStoriesItems();
+  const { isEnabled: preview } = await draftMode();
+  const stories = await getStoriesItems(preview);
   const story = stories.find(s => s.slug === resolvedParams.slug);
   
   if (!story) {

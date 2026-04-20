@@ -1,8 +1,8 @@
 import fetchAPI from "./api";
 
 const PORTFOLIO_ITEMS_QUERY = `
-  query Portfolio {
-    allPortfolio(first: 1000) {
+  query Portfolio($stati: [PostStatusEnum]) {
+    allPortfolio(first: 1000, where: { stati: $stati }) {
       nodes {
         title(format: RENDERED)
         content(format: RENDERED)
@@ -73,7 +73,10 @@ const PORTFOLIO_ITEMS_QUERY = `
   }
 `;
 
-export default async function getPortfolioItems() {
-  const data = await fetchAPI(PORTFOLIO_ITEMS_QUERY);
+export default async function getPortfolioItems(preview = false) {
+  const data = await fetchAPI(PORTFOLIO_ITEMS_QUERY, {
+    variables: { stati: preview ? ['PUBLISH', 'DRAFT'] : ['PUBLISH'] },
+    preview,
+  });
   return data?.allPortfolio?.nodes || [];
 } 

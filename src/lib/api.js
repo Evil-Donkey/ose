@@ -1,18 +1,26 @@
-// Determine if we're on server or client
+import { draftMode } from 'next/headers'
+
 const isServer = typeof window === 'undefined';
 
-// Use proxy for client-side requests, direct endpoint for server-side
-const API_URL = isServer 
+const API_URL = isServer
   ? process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT
   : '/api/graphql';
 
-// Fetch API
-export default async function fetchAPI(query, { variables, tags = [] } = {}) {
+export default async function fetchAPI(query, { variables, tags = [], preview = false } = {}) {
   const headers = { 'Content-Type': 'application/json' };
 
-  // Only add auth token on server-side requests
   if (isServer && process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
     headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
+  }
+
+  let isPreview = preview;
+  if (isServer && !isPreview) {
+    try {
+      const { isEnabled } = await draftMode();
+      isPreview = isEnabled;
+    } catch {
+      // Not in a request context (e.g. build time static generation)
+    }
   }
 
   try {
@@ -24,7 +32,11 @@ export default async function fetchAPI(query, { variables, tags = [] } = {}) {
         variables,
         _v: 2,
       }),
-      ...(isServer && { next: { revalidate: 120, tags: ['cms', ...tags] } })
+      ...(isServer && (
+        isPreview
+          ? { cache: 'no-store' }
+          : { next: { revalidate: 120, tags: ['cms', ...tags] } }
+      ))
     });
 
     const json = await res.json();

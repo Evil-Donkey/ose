@@ -6,10 +6,12 @@ import { X as XIcon, LinkedIn as LinkedInIcon } from "@/components/Icons/Social"
 import { getOptimizedImageProps } from "../../../lib/imageUtils";
 import Button from "@/components/Button";
 import { proxyImageUrl } from "@/lib/proxyImage";
+import { draftMode } from 'next/headers';
 
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
-    const items = await getPortfolioItems();
+    const { isEnabled: preview } = await draftMode();
+    const items = await getPortfolioItems(preview);
     const item = items.find(s => s.slug === resolvedParams.slug);
     
     if (!item) {
@@ -26,7 +28,8 @@ export async function generateMetadata({ params }) {
 
 export default async function PortfolioSinglePage({ params }) {
   const { slug } = await params;
-  const items = await getPortfolioItems();
+  const { isEnabled: preview } = await draftMode();
+  const items = await getPortfolioItems(preview);
   // Sort items alphabetically by title for navigation
   const sortedItems = items.slice().sort((a, b) => a.title.localeCompare(b.title));
   const item = sortedItems.find(i => i.slug === slug);
