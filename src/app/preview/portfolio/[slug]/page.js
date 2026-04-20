@@ -15,7 +15,7 @@ export default async function PortfolioPreviewPage({ params }) {
   if (!isEnabled) notFound();
 
   const { slug } = await params;
-  const item = await getPortfolioBySlug(slug);
+  const item = await getPortfolioBySlug(slug, true);
 
   if (!item) notFound();
 

@@ -80,12 +80,12 @@ const PORTFOLIO_BY_ID_QUERY = `
   }
 `;
 
-export default async function getPortfolioBySlug(slug) {
+export default async function getPortfolioBySlug(slug, preview = false) {
   const draftIdMatch = slug.match(/^draft-(\d+)$/);
 
   const data = draftIdMatch
-    ? await fetchAPI(PORTFOLIO_BY_ID_QUERY, { variables: { id: draftIdMatch[1] }, preview: true })
-    : await fetchAPI(PORTFOLIO_BY_SLUG_QUERY, { variables: { slug }, preview: true });
+    ? await fetchAPI(PORTFOLIO_BY_ID_QUERY, { variables: { id: draftIdMatch[1] }, preview })
+    : await fetchAPI(PORTFOLIO_BY_SLUG_QUERY, { variables: { slug }, preview });
 
   return data?.portfolio ?? null;
 }
