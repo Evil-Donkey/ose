@@ -1,89 +1,93 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-export async function POST(req) {
+const isProd = process.env.NODE_ENV === 'production';
+
+// Clears the auth/refresh cookies so a stale or invalid refresh token
+// doesn't keep triggering the refresh flow on every page load.
+function clearAuthCookies(response) {
+  const expired = {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: 'Strict',
+    path: '/',
+    maxAge: 0,
+  };
+  response.cookies.set('authToken', '', expired);
+  response.cookies.set('wpRefreshToken', '', expired);
+  return response;
+}
+
+export async function POST() {
   try {
-    // ✅ Correct way to retrieve cookies
     const cookieStore = await cookies();
     const wpRefreshToken = cookieStore.get('wpRefreshToken')?.value;
 
-    console.log("🔄 Refresh route - WordPress refresh token exists:", !!wpRefreshToken);
-
     if (!wpRefreshToken) {
-      console.log("❌ No WordPress refresh token found");
       return NextResponse.json(
         { success: false, message: 'No refresh token provided' },
         { status: 200 }
       );
     }
 
-    // ✅ Use WordPress refresh token to get new auth token
-    console.log("🔄 Requesting new WordPress auth token...");
+    // WPGraphQL JWT's refreshToken mutation payload only exposes `authToken`.
+    // Earlier versions also returned `refreshToken` / `user`, but those were
+    // removed — requesting them causes WordPress to reject the whole mutation
+    // with "Cannot query field" errors.
     const response = await fetch(process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         query: `
           mutation RefreshToken($input: RefreshTokenInput!) {
             refreshToken(input: $input) {
               authToken
-              refreshToken
-              user {
-                id
-                username
-                email
-              }
             }
           }
         `,
         variables: {
-          input: {
-            refreshToken: wpRefreshToken,
-          },
+          input: { refreshToken: wpRefreshToken },
         },
       }),
     });
 
     const data = await response.json();
-    console.log("🔄 WordPress refresh response:", data);
+    const newAuthToken = data?.data?.refreshToken?.authToken;
 
-    if (data?.data?.refreshToken?.authToken) {
-      // ✅ Set the new WordPress auth token in cookies
-      const result = NextResponse.json({ success: true, newAuthToken: data.data.refreshToken.authToken });
-      
-      cookieStore.set('authToken', data.data.refreshToken.authToken, {
+    if (newAuthToken) {
+      const result = NextResponse.json({ success: true });
+      result.cookies.set('authToken', newAuthToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: isProd,
         sameSite: 'Strict',
-        maxAge: 60 * 60, // 1 hour
+        maxAge: 60 * 60,
         path: '/',
       });
-
-      // Update the refresh token if WordPress provides a new one
-      if (data.data.refreshToken.refreshToken) {
-        cookieStore.set('wpRefreshToken', data.data.refreshToken.refreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'Strict',
-          path: '/',
-          maxAge: 7 * 24 * 60 * 60, // 7 days
-        });
-      }
-
-      console.log("✅ New WordPress auth token set successfully");
       return result;
-    } else {
-      console.log("❌ WordPress refresh failed:", data.errors || data);
-      return NextResponse.json(
-        { success: false, message: 'Failed to refresh WordPress token' },
-        { status: 200 }
+    }
+
+    // Refresh failed — the refresh token is stale/invalid. Clear both cookies
+    // so the client doesn't keep calling /api/auth/refresh on every page load.
+    if (data?.errors?.length) {
+      console.warn(
+        'WordPress refresh failed:',
+        data.errors.map((e) => e?.message).filter(Boolean).join(' | ')
       );
     }
+
+    return clearAuthCookies(
+      NextResponse.json(
+        { success: false, message: 'Failed to refresh WordPress token' },
+        { status: 200 }
+      )
+    );
   } catch (error) {
-    console.error("❌ Error refreshing token:", error);
-    return NextResponse.json(
-      { success: false, message: 'Failed to refresh token' },
-      { status: 200 }
+    console.error('Error refreshing token:', error);
+    return clearAuthCookies(
+      NextResponse.json(
+        { success: false, message: 'Failed to refresh token' },
+        { status: 200 }
+      )
     );
   }
 }

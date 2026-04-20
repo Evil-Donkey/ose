@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import getTeamMembers from "@/lib/getTeamMembers";
 import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
@@ -7,16 +8,16 @@ import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
 
 export async function generateMetadata({ params }) {
-    const resolvedParams = await params;
+    const { slug } = await params;
     const items = await getTeamMembers();
-    const item = items.find(s => s.slug === resolvedParams.slug);
-    
+    const item = items.find(s => s.slug === slug);
+
     if (!item) {
       return {
         title: 'Team Member Not Found',
       };
     }
-  
+
     return {
       title: item.title,
       description: item.content ? item.content.replace(/<[^>]*>/g, '').substring(0, 160) : '',
@@ -25,23 +26,24 @@ export async function generateMetadata({ params }) {
 
 export default async function TeamMemberSinglePage({ params }) {
   const { slug } = await params;
-  const items = await getTeamMembers(slug);
+  const [items, footerData] = await Promise.all([
+    getTeamMembers(),
+    getFooterData(),
+  ]);
   const item = items.find(s => s.slug === slug);
 
-  const { title, teamMember, content } = item;
-  const { heroDesktopImage, heroMobileImage, email, linkedinUrl, role, heroCopyToTheRight } = teamMember;
+  if (!item) {
+    notFound();
+  }
 
-  const footerData = await getFooterData();
+  const { title, teamMember, content } = item;
+  const { heroDesktopImage, heroMobileImage, email, linkedinUrl, role, heroCopyToTheRight } = teamMember || {};
 
   const ctaData = {
     copy: footerData.ctaCopy,
     title: footerData.ctaTitle,
     cta: footerData.cta
   };
-
-  if (!item) {
-    return <Container className="pt-50 pb-20"><h1>Team member not found</h1></Container>;
-  }
 
   return (
     <>

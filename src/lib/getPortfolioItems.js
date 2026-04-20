@@ -5,7 +5,6 @@ const PORTFOLIO_ITEMS_QUERY = `
     allPortfolio(first: 1000) {
       nodes {
         title(format: RENDERED)
-        content(format: RENDERED)
         slug
         featuredImage {
             node {
@@ -74,6 +73,9 @@ const PORTFOLIO_ITEMS_QUERY = `
 `;
 
 export default async function getPortfolioItems(preview = false) {
-  const data = await fetchAPI(PORTFOLIO_ITEMS_QUERY, { preview });
+  const data = await fetchAPI(PORTFOLIO_ITEMS_QUERY, {
+    preview,
+    tags: ["portfolio-items"],
+  });
   return data?.allPortfolio?.nodes || [];
 } 

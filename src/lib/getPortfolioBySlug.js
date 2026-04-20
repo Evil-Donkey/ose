@@ -68,9 +68,14 @@ const PORTFOLIO_FIELDS = `
   }
 `;
 
+// The Portfolio CPT's PortfolioIdType enum on this WPGraphQL install doesn't
+// expose SLUG, so we look up the single portfolio item via the list query
+// using the generic WordPress "name" filter (which is the post's slug).
 const PORTFOLIO_BY_SLUG_QUERY = `
-  query PortfolioBySlug($slug: ID!) {
-    portfolio(id: $slug, idType: SLUG) { ${PORTFOLIO_FIELDS} }
+  query PortfolioBySlug($slug: String!) {
+    allPortfolio(first: 1, where: { name: $slug }) {
+      nodes { ${PORTFOLIO_FIELDS} }
+    }
   }
 `;
 
@@ -83,9 +88,17 @@ const PORTFOLIO_BY_ID_QUERY = `
 export default async function getPortfolioBySlug(slug, preview = false) {
   const draftIdMatch = slug.match(/^draft-(\d+)$/);
 
-  const data = draftIdMatch
-    ? await fetchAPI(PORTFOLIO_BY_ID_QUERY, { variables: { id: draftIdMatch[1] }, preview })
-    : await fetchAPI(PORTFOLIO_BY_SLUG_QUERY, { variables: { slug }, preview });
+  if (draftIdMatch) {
+    const data = await fetchAPI(PORTFOLIO_BY_ID_QUERY, {
+      variables: { id: draftIdMatch[1] },
+      preview,
+    });
+    return data?.portfolio ?? null;
+  }
 
-  return data?.portfolio ?? null;
+  const data = await fetchAPI(PORTFOLIO_BY_SLUG_QUERY, {
+    variables: { slug },
+    preview,
+  });
+  return data?.allPortfolio?.nodes?.[0] ?? null;
 }

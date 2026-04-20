@@ -17,28 +17,26 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await fetch("/api/auth/me", {
         method: "GET",
-        credentials: "include", // Required for cookies to be sent
+        credentials: "include",
       });
 
       const data = await response.json();
-      console.log("Auth check response:", data);
 
       if (data.success) {
         setUser(data.user);
-      } else {
-        console.warn("Auth check failed, attempting refresh...");
-        const refreshSuccess = await refreshToken();
-        if (!refreshSuccess) {
-          console.warn("Refresh failed, logging out.");
-          setUser(null);
-        }
+        return;
       }
-    } catch (error) {
-      console.error("Error checking auth:", error);
+
+      // /me failed — try to refresh the token silently. If there's no
+      // refresh token cookie, the refresh endpoint will short-circuit and
+      // we just end up anonymous, which is fine for public pages.
       const refreshSuccess = await refreshToken();
       if (!refreshSuccess) {
         setUser(null);
       }
+    } catch (error) {
+      console.error("Error checking auth:", error);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -49,34 +47,26 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await fetch("/api/auth/refresh", {
         method: "POST",
-        credentials: "include", // ✅ Ensure cookies are sent
+        credentials: "include",
       });
 
-      console.log("Response Headers:", [...response.headers.entries()]);
-
       const data = await response.json();
-      console.log("Refresh token response:", data);
 
-      if (data.success) {
-        console.log("Token refreshed successfully.");
-        // Retry checking the user's status with the new token
-        const retryResponse = await fetch("/api/auth/me", {
-          method: "GET",
-          credentials: "include",
-        });
-        const retryData = await retryResponse.json();
-        
-        if (retryData.success) {
-          setUser(retryData.user);
-          return true;
-        } else {
-          console.warn("Auth check after refresh failed.");
-          return false;
-        }
-      } else {
-        console.warn("Refresh token failed:", data.message);
+      if (!data.success) {
         return false;
       }
+
+      const retryResponse = await fetch("/api/auth/me", {
+        method: "GET",
+        credentials: "include",
+      });
+      const retryData = await retryResponse.json();
+
+      if (retryData.success) {
+        setUser(retryData.user);
+        return true;
+      }
+      return false;
     } catch (error) {
       console.error("Error refreshing token:", error);
       return false;

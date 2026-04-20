@@ -1,10 +1,20 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import getPortfolioBySlug from "@/lib/getPortfolioBySlug";
-import getPortfolioItems from "@/lib/getPortfolioItems";
+import getPortfolioNav from "@/lib/getPortfolioNav";
 import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 import { X as XIcon, LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import Button from "@/components/Button";
+
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const items = await getPortfolioNav();
+  return items
+    .filter((item) => item?.slug)
+    .map((item) => ({ slug: item.slug }));
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -21,25 +31,23 @@ export async function generateMetadata({ params }) {
 export default async function PortfolioSinglePage({ params }) {
   const { slug } = await params;
 
-  const [item, items] = await Promise.all([
+  const [item, navItems] = await Promise.all([
     getPortfolioBySlug(slug),
-    getPortfolioItems(),
+    getPortfolioNav(),
   ]);
 
   if (!item) {
-    return (
-      <>
-        <HeaderServer fixed={true} />
-        <Container className="pt-50 pb-20"><h1>Portfolio item not found</h1></Container>
-      </>
-    );
+    notFound();
   }
 
   const { title, content, featuredImage, portfolioFields, portfolioCategories, portfolioStages } = item;
   const { logo, portfolioTitle, websiteUrl, linkedinUrl, xUrl } = portfolioFields || {};
 
-  const sortedItems = items.slice().sort((a, b) => (a.title || "").localeCompare(b.title || ""));
-  const currentIndex = sortedItems.findIndex(i => i.slug === slug);
+  const sortedItems = (navItems || [])
+    .filter((i) => i?.slug)
+    .slice()
+    .sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+  const currentIndex = sortedItems.findIndex((i) => i.slug === slug);
   const hasNav = sortedItems.length > 1 && currentIndex !== -1;
   const prev = hasNav ? (currentIndex > 0 ? sortedItems[currentIndex - 1] : sortedItems[sortedItems.length - 1]) : null;
   const next = hasNav ? (currentIndex < sortedItems.length - 1 ? sortedItems[currentIndex + 1] : sortedItems[0]) : null;
