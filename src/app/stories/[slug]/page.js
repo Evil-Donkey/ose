@@ -12,11 +12,6 @@ import CTA from "@/components/CTA";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export async function generateStaticParams() {
-  const stories = await getStoriesItems();
-  return stories.map(story => ({ slug: story.slug }));
-}
-
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const stories = await getStoriesItems();

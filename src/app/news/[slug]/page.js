@@ -5,11 +5,6 @@ import Link from "next/link";
 import Button from "@/components/Button";
 import { formatDate } from "@/lib/formatDate";
 
-export async function generateStaticParams() {
-    const items = await getNewsItems();
-    return items.map(item => ({ slug: item.slug }));
-}
-
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
     const items = await getNewsItems();

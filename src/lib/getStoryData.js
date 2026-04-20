@@ -33,9 +33,13 @@ const STORY_DATA_QUERY = `
   }
 `;
 
+const EMPTY_STORY_DATA = {
+  flexibleContent: [],
+};
+
 export default async function getStoryData(id) {
   const data = await fetchAPI(STORY_DATA_QUERY, {
     variables: { id: String(id) }
   });
-  return data?.story?.story || null;
-} 
+  return data?.story?.story || EMPTY_STORY_DATA;
+}

@@ -583,5 +583,5 @@ export default async function getFlexiblePage(pageId) {
     variables: { id: String(pageId) }
   });
 
-  return data?.page?.flexibleContent?.flexibleContent;
+  return data?.page?.flexibleContent?.flexibleContent || [];
 }

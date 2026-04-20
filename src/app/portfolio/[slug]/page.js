@@ -7,11 +7,6 @@ import { getOptimizedImageProps } from "../../../lib/imageUtils";
 import Button from "@/components/Button";
 import { proxyImageUrl } from "@/lib/proxyImage";
 
-export async function generateStaticParams() {
-    const items = await getPortfolioItems();
-    return items.map(item => ({ slug: item.slug }));
-}
-
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
     const items = await getPortfolioItems();

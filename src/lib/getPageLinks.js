@@ -33,9 +33,14 @@ const PAGE_LINKS_QUERY = `
   }
 `;
 
+const EMPTY_PAGE_LINKS = {
+  heading: null,
+  links: [],
+};
+
 export default async function getPageLinks(pageId) {
   const data = await fetchAPI(PAGE_LINKS_QUERY, {
     variables: { id: String(pageId) }
   });
-  return data?.page?.pageLinks || null;
-} 
+  return data?.page?.pageLinks || EMPTY_PAGE_LINKS;
+}

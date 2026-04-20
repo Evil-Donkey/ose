@@ -16,7 +16,12 @@ const POPOUT_DATA_QUERY = `
   }
 `;
 
+const EMPTY_POPOUT_DATA = {
+  popoutLabel: null,
+  popoutContent: null,
+};
+
 export default async function getPopOutData() {
   const data = await fetchAPI(POPOUT_DATA_QUERY);
-  return data?.acfOptionsThemeSettings?.globalSettings || null;
-} 
+  return data?.acfOptionsThemeSettings?.globalSettings || EMPTY_POPOUT_DATA;
+}
