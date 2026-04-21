@@ -1,16 +1,19 @@
-import { headers } from "next/headers";
-
-const HEADER = "x-ose-preview-cms-auth";
+import { draftMode } from "next/headers";
 
 /**
- * True when middleware marked this request as the /preview/* tree, so CMS
- * fetches should attach Headless Login auth (see root `src/middleware.js`).
+ * True when Next.js Draft Mode is on (after a valid `/api/draft` redirect).
+ * Used so layout/footer/meganav GraphQL calls attach Headless Login auth.
+ *
+ * We use `draftMode()` instead of a middleware-injected request header because
+ * custom headers are not always visible to `headers()` across runtimes/regions,
+ * which led to mixed 403/200 GraphQL on Vercel preview.
+ *
  * Do not import this module from client components.
  */
 export async function isPreviewCmsAuthRequest() {
   try {
-    const h = await headers();
-    return h.get(HEADER) === "1";
+    const { isEnabled } = await draftMode();
+    return isEnabled;
   } catch {
     return false;
   }
