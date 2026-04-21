@@ -110,7 +110,10 @@ async function refreshAuthToken() {
     'Content-Type': 'application/json',
     'User-Agent': SERVER_USER_AGENT,
   };
-  if (SERVER_ORIGIN) reqHeaders['Origin'] = SERVER_ORIGIN;
+  if (SERVER_ORIGIN) {
+    reqHeaders['Origin'] = SERVER_ORIGIN;
+    reqHeaders['Referer'] = SERVER_ORIGIN;
+  }
 
   try {
     const res = await fetch(API_URL, {
@@ -186,7 +189,10 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
     headers['User-Agent'] = SERVER_USER_AGENT;
     // Headless Login's Access Control checks the Origin header even for
     // non-login queries on some versions, so always send it from the server.
-    if (SERVER_ORIGIN) headers['Origin'] = SERVER_ORIGIN;
+    if (SERVER_ORIGIN) {
+      headers['Origin'] = SERVER_ORIGIN;
+      headers['Referer'] = SERVER_ORIGIN;
+    }
 
     if (preview) {
       // Exchange the long-lived refresh token for a short-lived authToken,
