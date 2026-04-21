@@ -1,5 +1,6 @@
 import fetchAPI from "./api";
-import getPageLinks from './getPageLinks';
+import getPageLinks from "./getPageLinks";
+import { isCmsDraftRequest } from "./cmsDraftAuth";
 
 // Lightweight query that only fetches section labels - much faster than full flexible content
 const MEGANAV_LINKS_QUERY = `
@@ -125,13 +126,15 @@ const PAGE_IDS = {
 };
 
 export default async function getMeganavDataLite() {
+  const draftAuth = await isCmsDraftRequest();
   const entries = await Promise.all(
     Object.entries(PAGE_IDS).map(async ([key, id]) => {
       const [flexData, pageLinks] = await Promise.all([
         fetchAPI(MEGANAV_LINKS_QUERY, {
-          variables: { id: String(id) }
+          variables: { id: String(id) },
+          preview: draftAuth,
         }),
-        getPageLinks(id)
+        getPageLinks(id),
       ]);
       
       const content = flexData?.page?.flexibleContent?.flexibleContent;

@@ -1,4 +1,5 @@
 import fetchAPI from "./api";
+import { isCmsDraftRequest } from "./cmsDraftAuth";
 
 const FOOTER_DATA_QUERY = `
   query NewQuery {
@@ -46,6 +47,8 @@ const EMPTY_FOOTER_DATA = {
 };
 
 export default async function getFooterData() {
-  const data = await fetchAPI(FOOTER_DATA_QUERY);
+  const data = await fetchAPI(FOOTER_DATA_QUERY, {
+    preview: await isCmsDraftRequest(),
+  });
   return data?.acfOptionsThemeSettings?.globalSettings || EMPTY_FOOTER_DATA;
 }

@@ -1,4 +1,5 @@
 import fetchAPI from "./api";
+import { isCmsDraftRequest } from "./cmsDraftAuth";
 
 const POPOUT_DATA_QUERY = `
   query NewQuery {
@@ -22,6 +23,8 @@ const EMPTY_POPOUT_DATA = {
 };
 
 export default async function getPopOutData() {
-  const data = await fetchAPI(POPOUT_DATA_QUERY);
+  const data = await fetchAPI(POPOUT_DATA_QUERY, {
+    preview: await isCmsDraftRequest(),
+  });
   return data?.acfOptionsThemeSettings?.globalSettings || EMPTY_POPOUT_DATA;
 }
