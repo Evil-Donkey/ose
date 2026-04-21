@@ -31,12 +31,31 @@ const CLIENT_TIMEOUT_MS = 20000;
 const SERVER_USER_AGENT = 'OSE-NextJS/1.0 (+server-render)';
 
 // The Next.js origin that WordPress's Headless Login Access Control list
-// must allow-list. We always send Origin so the CMS treats these requests
-// as coming from our first-party app, even though they're server-to-server.
-const SERVER_ORIGIN = process.env.NEXT_PUBLIC_SITE_URL
-  || (process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000'
-      : null);
+// must allow-list. We send Origin on server GraphQL so the CMS accepts
+// server-to-server preview calls.
+//
+// On Vercel Preview/Production, NODE_ENV is "production". If NEXT_PUBLIC_SITE_URL
+// is missing from the deployment env, Headless Login often 403s without Origin.
+// VERCEL_URL is always set by Vercel (hostname only, no scheme).
+function resolveServerOrigin() {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit && String(explicit).trim()) {
+    return String(explicit).trim().replace(/\/+$/, "");
+  }
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
+  const vercelHost = process.env.VERCEL_URL;
+  if (vercelHost && String(vercelHost).trim()) {
+    const host = String(vercelHost).trim().replace(/\/+$/, "");
+    return host.startsWith("http://") || host.startsWith("https://")
+      ? host
+      : `https://${host}`;
+  }
+  return null;
+}
+
+const SERVER_ORIGIN = resolveServerOrigin();
 
 // Status codes that are worth retrying once — transient WAF blocks, upstream
 // timeouts and rate-limiting. We do NOT retry on 4xx that look permanent
