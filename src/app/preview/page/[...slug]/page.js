@@ -94,11 +94,32 @@ export default async function PagePreviewPage({ params }) {
     return (
       <>
         <HeaderServer fixed={false} />
-        <Container className="pt-40 pb-20">
+        <Container className="pt-40 pb-20 max-w-3xl">
           <h1 className="text-3xl mb-4">Page not found in WordPress</h1>
-          <p className="text-gray-500">
-            No draft or published page found for slug: <code>{slugString}</code>
+          <p className="text-gray-600 mb-4">
+            The preview route could not load this page from the CMS (path token:{" "}
+            <code>{slugString}</code>). That token is resolved as a numeric post ID in GraphQL,
+            not as a WordPress slug.
           </p>
+          <p className="text-gray-600 mb-2 font-medium">Most often on Vercel Preview:</p>
+          <ul className="list-disc ps-5 text-gray-600 space-y-2 mb-6">
+            <li>
+              <code className="text-sm">WORDPRESS_AUTH_REFRESH_TOKEN</code> is missing for the{" "}
+              <strong>Preview</strong> environment (Production-only vars are not available on
+              branch deployments).
+            </li>
+            <li>
+              Headless Login allow-list includes this deployment origin (e.g. your{" "}
+              <code className="text-sm">*.vercel.app</code> URL) and{" "}
+              <code className="text-sm">NEXT_PUBLIC_SITE_URL</code> or the automatic{" "}
+              <code className="text-sm">VERCEL_URL</code> origin matches it.
+            </li>
+            <li>
+              Check this deployment&apos;s runtime logs for{" "}
+              <code className="text-sm">[preview auth]</code> or{" "}
+              <code className="text-sm">GraphQL Errors</code>.
+            </li>
+          </ul>
         </Container>
       </>
     );

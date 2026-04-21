@@ -98,7 +98,13 @@ function decodeJwtExpiry(jwt) {
 
 async function refreshAuthToken() {
   const refreshToken = process.env.WORDPRESS_AUTH_REFRESH_TOKEN;
-  if (!refreshToken) return null;
+  if (!refreshToken) {
+    console.error(
+      '[preview auth] WORDPRESS_AUTH_REFRESH_TOKEN is unset — preview GraphQL will fail. ' +
+      'On Vercel, enable this variable for Preview (not only Production).'
+    );
+    return null;
+  }
 
   const reqHeaders = {
     'Content-Type': 'application/json',
@@ -187,7 +193,14 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
       // cached in-memory between requests. Only attach it on preview calls —
       // an expired token on a public query would 403 the whole request.
       const authToken = await getAuthToken();
-      if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      } else {
+        console.error(
+          '[preview] No authToken available for GraphQL — asPreview queries usually return null. ' +
+          `Origin=${SERVER_ORIGIN || '(none — set NEXT_PUBLIC_SITE_URL or rely on VERCEL_URL)'}.`
+        );
+      }
     }
   }
 
@@ -255,6 +268,17 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
         // schema-drift warnings AND we still got partial data back, prefer the
         // partial data over discarding the whole response.
         if (nonFieldErrors.length === 0 && json.data) {
+          return json.data;
+        }
+
+        // WPGraphQL often returns usable `page` / `post` data together with
+        // non-fatal extension or field-level errors; discarding the whole payload
+        // breaks preview with "Page not found" even when the node resolved.
+        if (preview && json.data && (json.data.page != null || json.data.post != null)) {
+          console.error(
+            '[preview] GraphQL returned errors but keeping partial node data. ' +
+            'Fix upstream warnings when possible.'
+          );
           return json.data;
         }
 
