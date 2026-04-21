@@ -1,20 +1,36 @@
 import { draftMode } from "next/headers";
+import { headers } from "next/headers";
+
+const PATHNAME_HEADER = "x-ose-pathname";
 
 /**
- * True when Next.js Draft Mode is on (after a valid `/api/draft` redirect).
- * Used so layout/footer/meganav GraphQL calls attach Headless Login auth.
+ * True when CMS GraphQL should send Headless Login auth (Bearer).
  *
- * We use `draftMode()` instead of a middleware-injected request header because
- * custom headers are not always visible to `headers()` across runtimes/regions,
- * which led to mixed 403/200 GraphQL on Vercel preview.
+ * 1) `draftMode().isEnabled` after `/api/draft` — correct on most routes.
+ * 2) Fallback: middleware sets `x-ose-pathname` only for `/preview/*`. During
+ *    Partial Prerender, `draftMode()` can return a disabled stub in the root
+ *    layout while the page still runs with a real draft cookie — that produced
+ *    mixed 403/200 on Vercel (layout/footer without Bearer, page with Bearer).
  *
  * Do not import this module from client components.
  */
 export async function isPreviewCmsAuthRequest() {
   try {
     const { isEnabled } = await draftMode();
-    return isEnabled;
+    if (isEnabled) return true;
   } catch {
-    return false;
+    // ignore
   }
+
+  try {
+    const h = await headers();
+    const p = h.get(PATHNAME_HEADER);
+    if (typeof p === "string" && p.startsWith("/preview")) {
+      return true;
+    }
+  } catch {
+    // ignore
+  }
+
+  return false;
 }
