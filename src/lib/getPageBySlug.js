@@ -2,6 +2,7 @@ import fetchAPI from "./api";
 
 const PAGE_FIELDS = `
   databaseId
+  slug
   title(format: RENDERED)
   content(format: RENDERED)
   status

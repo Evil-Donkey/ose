@@ -1,8 +1,8 @@
 import fetchAPI from "./api";
 
 const PAGE_TITLE_CONTENT_QUERY = `
-  query getPageTitleAndContent($id: ID!) {
-    page(id: $id, idType: DATABASE_ID) {
+  query getPageTitleAndContent($id: ID!, $asPreview: Boolean!) {
+    page(id: $id, idType: DATABASE_ID, asPreview: $asPreview) {
       title(format: RENDERED)
       content(format: RENDERED)
       featuredImage {
@@ -31,38 +31,17 @@ const PAGE_TITLE_CONTENT_QUERY = `
   }
 `;
 
-async function fetchPreviewContent(pageId) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/wp/v2/pages/${pageId}/autosaves?per_page=1&orderby=date&order=desc`,
-      {
-        headers: { 'Authorization': `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}` },
-        cache: 'no-store',
-      }
-    );
-    if (!res.ok) return null;
-    const autosaves = await res.json();
-    if (!Array.isArray(autosaves) || autosaves.length === 0) return null;
-    return {
-      title: autosaves[0].title?.rendered ?? null,
-      content: autosaves[0].content?.rendered ?? null,
-    };
-  } catch {
-    return null;
-  }
-}
-
 export default async function getPageTitleAndContent(pageId, preview = false) {
-  const [data, previewContent] = await Promise.all([
-    fetchAPI(PAGE_TITLE_CONTENT_QUERY, { variables: { id: String(pageId) }, preview }),
-    preview ? fetchPreviewContent(pageId) : Promise.resolve(null),
-  ]);
+  const data = await fetchAPI(PAGE_TITLE_CONTENT_QUERY, {
+    variables: { id: String(pageId), asPreview: preview },
+    preview,
+  });
 
   const page = data?.page;
 
   return {
-    title: previewContent?.title ?? page?.title ?? null,
-    content: previewContent?.content ?? page?.content ?? null,
+    title: page?.title ?? null,
+    content: page?.content ?? null,
     featuredImage: page?.featuredImage?.node?.mediaItemUrl || null,
     featuredImageAltText: page?.featuredImage?.node?.altText || null,
     featuredImageCaption: page?.featuredImage?.node?.caption || null,

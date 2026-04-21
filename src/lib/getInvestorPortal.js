@@ -1,8 +1,8 @@
 import fetchAPI from "./api";
 
 const INVESTOR_PORTAL_QUERY = `
-  query InvestorPortal {
-    page(id: "1597", idType: DATABASE_ID) {
+  query InvestorPortal($id: ID!, $asPreview: Boolean!) {
+    page(id: $id, idType: DATABASE_ID, asPreview: $asPreview) {
       investorPortal {
         folderStructure {
           folders {
@@ -43,8 +43,11 @@ const INVESTOR_PORTAL_QUERY = `
   }
 `;
 
-export default async function getInvestorPortal() {
-  const data = await fetchAPI(INVESTOR_PORTAL_QUERY);
+export default async function getInvestorPortal(preview = false) {
+  const data = await fetchAPI(INVESTOR_PORTAL_QUERY, {
+    variables: { id: "1597", asPreview: preview },
+    preview,
+  });
   return {
     folders: data?.page?.investorPortal?.folderStructure?.folders || [],
     regulatoryInformation: data?.page?.regulatoryInformation?.regulatoryInformation || [],

@@ -12,6 +12,16 @@ const nextConfig = {
                 hostname: "**.oxfordscienceenterprises-cms.com",
                 port: "",
             },
+            {
+                protocol: "http",
+                hostname: "oxfordscienceenterprises-cms.test",
+                port: "",
+            },
+            {
+                protocol: "http",
+                hostname: "**.oxfordscienceenterprises-cms.test",
+                port: "",
+            },
         ],
         minimumCacheTTL: 31536000,
         formats: ['image/avif', 'image/webp'],
