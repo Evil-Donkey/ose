@@ -1,4 +1,5 @@
-import fetchAPI from './api';
+import fetchAPI from "./api";
+import { isPreviewCmsAuthRequest } from "./previewCmsAuthHeader";
 
 const PAGE_LINKS_QUERY = `
   query GetPageLinks($id: ID!) {
@@ -40,7 +41,8 @@ const EMPTY_PAGE_LINKS = {
 
 export default async function getPageLinks(pageId) {
   const data = await fetchAPI(PAGE_LINKS_QUERY, {
-    variables: { id: String(pageId) }
+    variables: { id: String(pageId) },
+    preview: await isPreviewCmsAuthRequest(),
   });
   return data?.page?.pageLinks || EMPTY_PAGE_LINKS;
 }
