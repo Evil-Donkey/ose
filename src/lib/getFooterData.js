@@ -1,4 +1,5 @@
 import fetchAPI from "./api";
+import { isPreviewCmsAuthRequest } from "./previewCmsAuthHeader";
 
 const FOOTER_DATA_QUERY = `
   query NewQuery {
@@ -46,7 +47,9 @@ const EMPTY_FOOTER_DATA = {
 };
 
 export default async function getFooterData() {
-  const data = await fetchAPI(FOOTER_DATA_QUERY);
+  const data = await fetchAPI(FOOTER_DATA_QUERY, {
+    preview: await isPreviewCmsAuthRequest(),
+  });
 
   // Throw on fetch failure so the page's error boundary catches it. Returning
   // an all-null EMPTY_FOOTER_DATA used to render a footer with blank Call /

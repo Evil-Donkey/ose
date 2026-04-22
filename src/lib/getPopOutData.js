@@ -1,4 +1,5 @@
 import fetchAPI from "./api";
+import { isPreviewCmsAuthRequest } from "./previewCmsAuthHeader";
 
 const POPOUT_DATA_QUERY = `
   query NewQuery {
@@ -22,7 +23,9 @@ const EMPTY_POPOUT_DATA = {
 };
 
 export default async function getPopOutData() {
-  const data = await fetchAPI(POPOUT_DATA_QUERY);
+  const data = await fetchAPI(POPOUT_DATA_QUERY, {
+    preview: await isPreviewCmsAuthRequest(),
+  });
 
   // Throw on fetch failure so we don't silently render with the global popout
   // missing. See getFooterData for the same reasoning.
