@@ -93,6 +93,16 @@ export default async function getPortfolioBySlug(slugOrId, preview = false) {
       variables: { id: idMatch[1], asPreview: preview },
       preview,
     });
+    // data === null means fetchAPI failed (timeout, WAF, errors). Throw so the
+    // page's error boundary catches it instead of notFound() — otherwise
+    // Next.js ISR caches the 404 response and keeps serving it for the
+    // revalidate window. Skipped during `next build` so a transient WP blip
+    // doesn't fail the whole deploy; that static 404 self-heals on the next
+    // revalidate tick.
+    const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+    if (!preview && !isBuildPhase && data === null) {
+      throw new Error(`CMS_FETCH_FAILED: portfolio id ${idMatch[1]}`);
+    }
     return data?.portfolio ?? null;
   }
 
@@ -100,5 +110,9 @@ export default async function getPortfolioBySlug(slugOrId, preview = false) {
     variables: { slug: slugOrId },
     preview,
   });
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+  if (!preview && !isBuildPhase && data === null) {
+    throw new Error(`CMS_FETCH_FAILED: portfolio slug ${slugOrId}`);
+  }
   return data?.allPortfolio?.nodes?.[0] ?? null;
 }
