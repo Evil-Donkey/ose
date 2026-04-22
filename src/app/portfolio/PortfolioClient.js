@@ -61,8 +61,38 @@ const LogoImage = ({ item }) => {
   );
 };
 
-function PortfolioClientInner({ title, content, portfolioItems, categories, stages, meganavLinks = {}, meganavData = {} }) {
+// Reads the ?filter=... query param and syncs it into local state.
+// Isolated in its own component so only this tiny subtree has to sit inside
+// a <Suspense> boundary (useSearchParams forces CSR bailout during static
+// prerender). The rest of the portfolio page stays fully SSR'd.
+function PortfolioFilterSync({ categories, setSelectedCategory }) {
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const filterParam = searchParams.get('filter');
+
+    if (filterParam === null) {
+      // No filter parameter, keep current selection
+      return;
+    }
+
+    if (filterParam === '') {
+      // Empty filter parameter, clear selection
+      setSelectedCategory(null);
+      return;
+    }
+
+    // Find category by slug
+    const targetCategory = categories.find(cat => cat.slug === filterParam);
+    if (targetCategory) {
+      setSelectedCategory(targetCategory.id);
+    }
+  }, [searchParams, categories, setSelectedCategory]);
+
+  return null;
+}
+
+function PortfolioClientInner({ title, content, portfolioItems, categories, stages, meganavLinks = {}, meganavData = {} }) {
   const groupedCategories = useMemo(() => groupCategories(categories), [categories]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedStage, setSelectedStage] = useState(null);
@@ -75,28 +105,6 @@ function PortfolioClientInner({ title, content, portfolioItems, categories, stag
   const [dropdownPosition, setDropdownPosition] = useState({});
   const dropdownButtonRefs = useRef({});
   const [isMobileDropdown, setIsMobileDropdown] = useState(false);
-
-  // Parse URL parameters and set initial filter
-  useEffect(() => {
-    const filterParam = searchParams.get('filter');
-    
-    if (filterParam === null) {
-      // No filter parameter, keep current selection
-      return;
-    }
-    
-    if (filterParam === '') {
-      // Empty filter parameter, clear selection
-      setSelectedCategory(null);
-      return;
-    }
-    
-    // Find category by slug
-    const targetCategory = categories.find(cat => cat.slug === filterParam);
-    if (targetCategory) {
-      setSelectedCategory(targetCategory.id);
-    }
-  }, [searchParams, categories]);
 
 
 
@@ -238,6 +246,12 @@ function PortfolioClientInner({ title, content, portfolioItems, categories, stag
 
   return (
     <>
+      <Suspense fallback={null}>
+        <PortfolioFilterSync
+          categories={categories}
+          setSelectedCategory={setSelectedCategory}
+        />
+      </Suspense>
       <HeaderWithMeganavLinks fixed={true} meganavLinks={meganavLinks} meganavData={meganavData} />
       <Container>
         <div className="flex flex-col gap-10 items-center justify-center text-center pb-10 lg:pb-9 pt-45 lg:pt-50 2xl:pt-60">
@@ -522,9 +536,5 @@ function PortfolioClientInner({ title, content, portfolioItems, categories, stag
 }
 
 export default function PortfolioClient(props) {
-  return (
-    <Suspense fallback={null}>
-      <PortfolioClientInner {...props} />
-    </Suspense>
-  );
+  return <PortfolioClientInner {...props} />;
 }

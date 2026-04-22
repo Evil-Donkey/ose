@@ -25,8 +25,12 @@ export async function generateMetadata({ params }) {
 
 export default async function TeamMemberSinglePage({ params }) {
   const { slug } = await params;
-  const items = await getFounders(slug);
+  const items = await getFounders();
   const item = items.find(s => s.slug === slug);
+
+  if (!item) {
+    return <Container className="pt-50 pb-20"><h1>Founder not found</h1></Container>;
+  }
 
   const { title, founder, content } = item;
   const { heroDesktopImage, heroMobileImage, email, linkedinUrl, role, heroCopyToTheRight } = founder;
@@ -38,10 +42,6 @@ export default async function TeamMemberSinglePage({ params }) {
     title: footerData.ctaTitle,
     cta: footerData.cta
   };
-
-  if (!item) {
-    return <Container className="pt-50 pb-20"><h1>Founder not found</h1></Container>;
-  }
 
   return (
     <>
