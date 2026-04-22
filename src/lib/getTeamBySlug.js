@@ -28,7 +28,7 @@ const TEAM_FIELDS = `
 
 const TEAM_BY_SLUG_QUERY = `
   query TeamBySlug($slug: ID!) {
-    team(id: $slug, idType: SLUG) { ${TEAM_FIELDS} }
+    team(id: $slug, idType: URI) { ${TEAM_FIELDS} }
   }
 `;
 

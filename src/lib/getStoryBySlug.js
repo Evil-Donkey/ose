@@ -49,7 +49,7 @@ const STORY_FIELDS = `
 
 const STORY_BY_SLUG_QUERY = `
   query StoryBySlug($slug: ID!) {
-    story(id: $slug, idType: SLUG) { ${STORY_FIELDS} }
+    story(id: $slug, idType: URI) { ${STORY_FIELDS} }
   }
 `;
 
