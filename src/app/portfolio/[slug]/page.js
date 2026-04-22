@@ -6,6 +6,7 @@ import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 import { X as XIcon, LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import Button from "@/components/Button";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 export const revalidate = 300;
 
@@ -66,12 +67,13 @@ export default async function PortfolioSinglePage({ params }) {
       <div className="mt-30 pb-20 min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 relative overflow-hidden">
         {heroImageUrl && (
           <Image
-            src={heroImageUrl}
+            src={proxyImageUrl(heroImageUrl, true)}
             alt={heroAlt}
             fill
             priority
             sizes="100vw"
             className="object-cover"
+            unoptimized
           />
         )}
         <div className="absolute inset-0 bg-black/30" />
@@ -81,12 +83,12 @@ export default async function PortfolioSinglePage({ params }) {
         <div className="w-full md:w-200 mx-auto text-center text-white relative z-10">
           {logo?.mediaItemUrl ? (
             <Image
-              src={logo.mediaItemUrl}
+              src={proxyImageUrl(logo.mediaItemUrl, true)}
               alt={logo.altText || title || ""}
               width={logo.mediaDetails?.width || 600}
               height={logo.mediaDetails?.height || 300}
               priority
-              unoptimized={logo.mediaItemUrl.endsWith(".svg")}
+              unoptimized
               className="object-contain h-auto w-full"
             />
           ) : (

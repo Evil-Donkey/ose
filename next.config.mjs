@@ -37,75 +37,18 @@ const nextConfig = {
         // Optimize for modern browsers
         optimizePackageImports: ['framer-motion', 'gsap', 'lottie-react', 'swiper', 'react-hook-form'],
     },
-    // Optimize bundle for modern browsers
-    webpack: (config, { dev, isServer }) => {
-        if (!dev && !isServer) {
-            // Enhanced code splitting for better performance
-            config.optimization.splitChunks = {
-                chunks: 'all',
-                minSize: 20000,
-                maxSize: 244000,
-                cacheGroups: {
-                    // Vendor libraries
-                    vendor: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name: 'vendors',
-                        priority: 10,
-                        reuseExistingChunk: true,
-                    },
-                    // Heavy animation libraries
-                    animations: {
-                        test: /[\\/]node_modules[\\/](gsap|framer-motion|lottie-react)[\\/]/,
-                        name: 'animations',
-                        priority: 20,
-                        reuseExistingChunk: true,
-                    },
-                    // UI libraries
-                    ui: {
-                        test: /[\\/]node_modules[\\/](swiper|react-hook-form)[\\/]/,
-                        name: 'ui',
-                        priority: 15,
-                        reuseExistingChunk: true,
-                    },
-                    // Common components
-                    common: {
-                        name: 'common',
-                        minChunks: 2,
-                        priority: 5,
-                        reuseExistingChunk: true,
-                    },
-                    // CSS optimization
-                    styles: {
-                        name: 'styles',
-                        test: /\.(css|scss)$/,
-                        chunks: 'all',
-                        enforce: true,
-                    },
-                },
-            };
-
-            // Tree shaking optimization
-            config.optimization.usedExports = true;
-            config.optimization.sideEffects = false;
-        }
-
-        // Reduce polyfills for modern browsers
-        config.resolve.fallback = {
-            ...config.resolve.fallback,
-            // Only include essential polyfills
-            fs: false,
-            net: false,
-            tls: false,
-        };
-
-        // Optimize module resolution
-        config.resolve.alias = {
-            ...config.resolve.alias,
-            // Reduce bundle size by using lighter alternatives where possible
-        };
-
-        return config;
-    },
+    // NOTE: A custom webpack() block used to live here that overrode
+    // `optimization.splitChunks` with a hand-rolled vendor/animations/ui/common
+    // cacheGroup setup and set `optimization.sideEffects = false`. That config
+    // conflicted with Next.js's own server-side chunking and produced builds
+    // whose `.next/server/webpack-runtime.js` referenced vendor chunks
+    // (e.g. `./vendor-chunks/lottie-web.js`) that were never emitted, so
+    // every server render that transitively imported those modules threw
+    // MODULE_NOT_FOUND at runtime. In production this showed up as pages
+    // where the layout shell + Loading spinner would stream but flexible
+    // content never resolved. Leave chunk splitting to Next.js.
+    // The previous block also set `resolve.fallback = { fs:false, net:false, tls:false }`,
+    // which is already the Next.js default for client bundles.
     // Handle API routes properly
     async rewrites() {
         return [];

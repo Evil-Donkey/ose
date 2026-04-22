@@ -1,16 +1,18 @@
 import { notFound } from "next/navigation";
-import getTeamMembers from "@/lib/getTeamMembers";
+import getTeamBySlug from "@/lib/getTeamBySlug";
 import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 import { LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import MailIcon from "@/components/Icons/MailIcon";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
+import { proxyImageUrl } from "@/lib/proxyImage";
+
+export const revalidate = 60;
 
 export async function generateMetadata({ params }) {
     const { slug } = await params;
-    const items = await getTeamMembers();
-    const item = items.find(s => s.slug === slug);
+    const item = await getTeamBySlug(slug, { preview: false });
 
     if (!item) {
       return {
@@ -26,11 +28,10 @@ export async function generateMetadata({ params }) {
 
 export default async function TeamMemberSinglePage({ params }) {
   const { slug } = await params;
-  const [items, footerData] = await Promise.all([
-    getTeamMembers(),
+  const [item, footerData] = await Promise.all([
+    getTeamBySlug(slug, { preview: false }),
     getFooterData(),
   ]);
-  const item = items.find(s => s.slug === slug);
 
   if (!item) {
     notFound();
@@ -49,7 +50,7 @@ export default async function TeamMemberSinglePage({ params }) {
     <>
         <HeaderServer fixed={true} />
         <div className={`mt-20 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
-            backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined
+            backgroundImage: heroDesktopImage ? `url(${proxyImageUrl(heroDesktopImage.mediaItemUrl, true)})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/20" />
             <Container className={`py-20 relative flex ${heroCopyToTheRight ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -61,7 +62,7 @@ export default async function TeamMemberSinglePage({ params }) {
         </div>
         {heroMobileImage && (
             <div className={`mt-30 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
-                backgroundImage: heroMobileImage ? `url(${heroMobileImage.mediaItemUrl})` : undefined
+                backgroundImage: heroMobileImage ? `url(${proxyImageUrl(heroMobileImage.mediaItemUrl, true)})` : undefined
             }}>
             </div>
         )}

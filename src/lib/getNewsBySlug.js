@@ -42,6 +42,12 @@ export default async function getNewsBySlug(slugOrId, { preview = true } = {}) {
       variables: { id: idMatch[1], asPreview: preview },
       preview,
     });
+    // Throw on fetch failure so notFound() isn't ISR-cached for a WP outage.
+    // Skipped during `next build` so a blip doesn't fail the whole deploy.
+    const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+    if (!preview && !isBuildPhase && data === null) {
+      throw new Error(`CMS_FETCH_FAILED: post id ${idMatch[1]}`);
+    }
     return data?.post ?? null;
   }
 
@@ -49,5 +55,9 @@ export default async function getNewsBySlug(slugOrId, { preview = true } = {}) {
     variables: { slug: slugOrId },
     preview,
   });
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+  if (!preview && !isBuildPhase && data === null) {
+    throw new Error(`CMS_FETCH_FAILED: post slug ${slugOrId}`);
+  }
   return data?.post ?? null;
 }

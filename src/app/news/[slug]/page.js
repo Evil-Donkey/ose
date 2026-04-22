@@ -1,14 +1,16 @@
-import getNewsItems from "@/lib/getNewsItems";
+import { notFound } from "next/navigation";
+import getNewsBySlug from "@/lib/getNewsBySlug";
 import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 import Link from "next/link";
 import Button from "@/components/Button";
 import { formatDate } from "@/lib/formatDate";
 
+export const revalidate = 60;
+
 export async function generateMetadata({ params }) {
-    const resolvedParams = await params;
-    const items = await getNewsItems();
-    const item = items.find(s => s.slug === resolvedParams.slug);
+    const { slug } = await params;
+    const item = await getNewsBySlug(slug, { preview: false });
 
     if (!item) {
       return {
@@ -24,13 +26,10 @@ export async function generateMetadata({ params }) {
 
 export default async function NewsSinglePage({ params }) {
   const { slug } = await params;
-  const items = await getNewsItems();
-  // Sort items alphabetically by title for navigation (null-safe)
-  const sortedItems = items.slice().sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-  const item = sortedItems.find(i => i.slug === slug);
+  const item = await getNewsBySlug(slug, { preview: false });
 
   if (!item) {
-    return <Container className="pt-50 pb-20"><h1>News item not found</h1></Container>;
+    notFound();
   }
 
   const { title, content, featuredImage, categories, date } = item;

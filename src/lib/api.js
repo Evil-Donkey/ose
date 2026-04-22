@@ -1,16 +1,18 @@
+import { unstable_cache } from 'next/cache';
+
 const isServer = typeof window === 'undefined';
 
 const API_URL = isServer
   ? process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT
   : '/api/graphql';
 
-// Abort any individual CMS call that takes too long so a slow WordPress
-// can't hang server rendering and trigger the generic "Application error"
-// on the client. Server calls get more headroom than client calls.
+// Server gets more headroom because the FlexibleContent query is huge
+// (30+ ACF component types deeply nested). When WP is cold or under load,
+// 15s wasn't enough — responses arrived in 18-25s and we aborted them,
+// returning null and rendering an empty #smooth-content.
 //
-// Local stacks (e.g. MAMP) often answer much slower than production, and
-// pages may fire several GraphQL requests in parallel — each can exceed 15s.
-// Development uses a higher default; override with WORDPRESS_FETCH_SERVER_TIMEOUT_MS
+// Local stacks (e.g. MAMP) often answer much slower than production, so
+// development uses a higher default. Override with WORDPRESS_FETCH_SERVER_TIMEOUT_MS
 // (milliseconds, 5000–180000) if you still see AbortError timeouts locally.
 function readServerTimeoutMs() {
   const override = process.env.WORDPRESS_FETCH_SERVER_TIMEOUT_MS;
@@ -18,11 +20,15 @@ function readServerTimeoutMs() {
     const n = Number.parseInt(String(override), 10);
     if (Number.isFinite(n) && n >= 5000 && n <= 180_000) return n;
   }
-  return process.env.NODE_ENV === 'development' ? 60_000 : 15_000;
+  return process.env.NODE_ENV === 'development' ? 60_000 : 30_000;
 }
 
 const SERVER_TIMEOUT_MS = readServerTimeoutMs();
 const CLIENT_TIMEOUT_MS = 20000;
+
+// Default cache lifetime for successful CMS responses. Longer means a single
+// good fetch carries us further before the next revalidation roll of the dice.
+const DEFAULT_REVALIDATE_SECONDS = 600;
 
 // Many managed WordPress hosts / WAFs (Cloudflare, Sucuri, WP Engine,
 // Pantheon, Kinsta) block default Node fetch requests because they arrive
@@ -182,45 +188,16 @@ async function doFetch(url, init, timeoutMs) {
   }
 }
 
-export default async function fetchAPI(query, { variables, tags = [], preview = false } = {}) {
-  const headers = { 'Content-Type': 'application/json' };
-
-  if (isServer) {
-    headers['User-Agent'] = SERVER_USER_AGENT;
-    // Headless Login's Access Control checks the Origin header even for
-    // non-login queries on some versions, so always send it from the server.
-    if (SERVER_ORIGIN) {
-      headers['Origin'] = SERVER_ORIGIN;
-      headers['Referer'] = SERVER_ORIGIN;
-    }
-
-    if (preview) {
-      // Exchange the long-lived refresh token for a short-lived authToken,
-      // cached in-memory between requests. Only attach it on preview calls —
-      // an expired token on a public query would 403 the whole request.
-      const authToken = await getAuthToken();
-      if (authToken) {
-        headers['Authorization'] = `Bearer ${authToken}`;
-      } else {
-        console.error(
-          '[preview] No authToken available for GraphQL — asPreview queries usually return null. ' +
-          `Origin=${SERVER_ORIGIN || '(none — set NEXT_PUBLIC_SITE_URL or rely on VERCEL_URL)'}.`
-        );
-      }
-    }
-  }
-
-  const timeoutMs = isServer ? SERVER_TIMEOUT_MS : CLIENT_TIMEOUT_MS;
+// One full attempt-with-internal-retry cycle against the GraphQL endpoint.
+// Returns the parsed `data` field on success, or null on any kind of failure.
+// `cacheOptions` controls Next.js fetch caching for this attempt.
+async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions, preview }) {
   const body = JSON.stringify({ query, variables });
   const fetchInit = {
     headers,
     method: 'POST',
     body,
-    ...(isServer && (
-      preview
-        ? { cache: 'no-store' }
-        : { next: { revalidate: 120, tags: ['cms', ...tags] } }
-    )),
+    ...cacheOptions,
   };
 
   let lastError = null;
@@ -312,4 +289,107 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
     console.error("Fetch API Error (after retries):", lastError);
   }
   return null;
+}
+
+// Build the per-request headers (UA + Origin on server, auth token on preview).
+async function buildHeaders(preview) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (isServer) {
+    headers['User-Agent'] = SERVER_USER_AGENT;
+    // Headless Login's Access Control checks the Origin header even for
+    // non-login queries on some versions, so always send it from the server.
+    if (SERVER_ORIGIN) {
+      headers['Origin'] = SERVER_ORIGIN;
+      headers['Referer'] = SERVER_ORIGIN;
+    }
+
+    if (preview) {
+      // Exchange the long-lived refresh token for a short-lived authToken,
+      // cached in-memory between requests. Only attach it on preview calls —
+      // an expired token on a public query would 403 the whole request.
+      const authToken = await getAuthToken();
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      } else {
+        console.error(
+          '[preview] No authToken available for GraphQL — asPreview queries usually return null. ' +
+          `Origin=${SERVER_ORIGIN || '(none — set NEXT_PUBLIC_SITE_URL or rely on VERCEL_URL)'}.`
+        );
+      }
+    }
+  }
+  return headers;
+}
+
+// A short, stable cache key derived from the GraphQL operation name + variables.
+// Using the full query body would explode the key set; the operation name plus
+// its variables uniquely identifies the result for our purposes.
+function cacheKeyFor(query, variables) {
+  const opMatch = query.match(/(?:query|mutation)\s+(\w+)/);
+  const opName = opMatch ? opMatch[1] : 'anonymous';
+  return ['cms', opName, JSON.stringify(variables || {})];
+}
+
+export default async function fetchAPI(query, { variables, tags = [], revalidate, preview = false } = {}) {
+  const headers = await buildHeaders(preview);
+  const timeoutMs = isServer ? SERVER_TIMEOUT_MS : CLIENT_TIMEOUT_MS;
+
+  // Preview mode and client-side calls always bypass the data cache.
+  if (!isServer || preview) {
+    return attemptFetch({
+      query,
+      variables,
+      headers,
+      timeoutMs,
+      cacheOptions: preview ? { cache: 'no-store' } : {},
+      preview,
+    });
+  }
+
+  const ttl = typeof revalidate === 'number' ? revalidate : DEFAULT_REVALIDATE_SECONDS;
+  const cacheKey = cacheKeyFor(query, variables);
+
+  // Wrap in unstable_cache so only SUCCESSFUL responses get cached. When the
+  // inner function throws, unstable_cache propagates the throw without storing
+  // anything — the next call will re-execute the fetch instead of replaying a
+  // poisoned response. This is the core of the fix: previously we used
+  // `next: { revalidate }` directly on fetch(), which cached the underlying
+  // HTTP response even when WPGraphQL returned 200 + errors body, leaving us
+  // serving empty pages for the entire revalidate window.
+  const cached = unstable_cache(
+    async () => {
+      const data = await attemptFetch({
+        query,
+        variables,
+        headers,
+        timeoutMs,
+        cacheOptions: { cache: 'no-store' },
+        preview: false,
+      });
+      if (!data) {
+        throw new Error('CMS_FETCH_EMPTY');
+      }
+      return data;
+    },
+    cacheKey,
+    { revalidate: ttl, tags: ['cms', ...tags] }
+  );
+
+  try {
+    return await cached();
+  } catch (e) {
+    if (e?.message !== 'CMS_FETCH_EMPTY') {
+      console.error('[CMS] cached fetch errored:', e);
+    }
+    // Fall back to a direct fetch so the current render still has a chance.
+    // The bad cache slot stays unset, so the next request will try fresh too.
+    return attemptFetch({
+      query,
+      variables,
+      headers,
+      timeoutMs,
+      cacheOptions: { cache: 'no-store' },
+      preview: false,
+    });
+  }
 }

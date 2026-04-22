@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Spinner } from '@/components/Icons/Spinner';
 
-export default function NavigationLoading() {
+function NavigationLoadingInner() {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const pathname = usePathname();
@@ -14,7 +13,7 @@ export default function NavigationLoading() {
     // Show loading when route changes
     setIsLoading(true);
     setProgress(0);
-    
+
     // Simulate progress
     const progressInterval = setInterval(() => {
       setProgress(prev => {
@@ -43,11 +42,19 @@ export default function NavigationLoading() {
   return (
     <>
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-[9999]">
-        <div 
-          className="h-full bg-gradient-to-r from-lightblue to-darkblue transition-all duration-300 ease-out" 
+        <div
+          className="h-full bg-gradient-to-r from-lightblue to-darkblue transition-all duration-300 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
     </>
+  );
+}
+
+export default function NavigationLoading() {
+  return (
+    <Suspense fallback={null}>
+      <NavigationLoadingInner />
+    </Suspense>
   );
 }

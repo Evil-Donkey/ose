@@ -8,8 +8,13 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [passwordVerified, setPasswordVerified] = useState(false);
-  const [passwordLoading, setPasswordLoading] = useState(true);
+  // Defaults align with `TEMPORARILY_DISABLE_PASSWORD = true` below so SSR
+  // renders the real page tree instead of a blocking overlay/spinner. If
+  // password gating is ever re-enabled, both defaults need to be reconsidered
+  // together with `PasswordWrapper` / `LayoutClient` to avoid reintroducing
+  // the "blank page until hydration" bug this caused previously.
+  const [passwordVerified, setPasswordVerified] = useState(true);
+  const [passwordLoading, setPasswordLoading] = useState(false);
   const router = useRouter();
 
   // Function to check authentication status

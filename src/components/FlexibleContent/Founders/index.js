@@ -19,8 +19,13 @@ const Cards = ({ data, foundersData = null }) => {
     const cardsWrapperRef = useRef();
 
     const { title, copy, sectionLabel } = data;
-    const [founders, setFounders] = useState(foundersData || []);
-    const [loading, setLoading] = useState(!foundersData);
+    // An empty array from the server means the SSR fetch failed or returned
+    // nothing — treat it the same as "no data" so the client fetch below
+    // retries instead of rendering an empty grid. See Team/index.js for the
+    // same pattern.
+    const hasServerFoundersData = Array.isArray(foundersData) && foundersData.length > 0;
+    const [founders, setFounders] = useState(hasServerFoundersData ? foundersData : []);
+    const [loading, setLoading] = useState(!hasServerFoundersData);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('');
     const [openDropdown, setOpenDropdown] = useState(null);
@@ -49,7 +54,7 @@ const Cards = ({ data, foundersData = null }) => {
 
     // Set initial active tab when founders data is available
     useEffect(() => {
-        if (foundersData && foundersData.length > 0 && !activeTab) {
+        if (hasServerFoundersData && !activeTab) {
             const categories = Array.from(
                 new Set(
                     foundersData.flatMap(founder => 
@@ -76,14 +81,19 @@ const Cards = ({ data, foundersData = null }) => {
         }
     }, [foundersData, activeTab]);
 
-    // Fetch founders data only if not provided via props
+    // Fetch founders data only if not provided (or empty) via props
     useEffect(() => {
-        if (!foundersData) {
+        if (!hasServerFoundersData) {
             async function fetchFounders() {
                 try {
                     const data = await getFounders();
+                    if (!Array.isArray(data) || data.length === 0) {
+                        setError('Error loading founders.');
+                        setLoading(false);
+                        return;
+                    }
                     setFounders(data);
-                    
+
                     // Set initial active tab to first category
                     if (data.length > 0) {
                         const categories = Array.from(
