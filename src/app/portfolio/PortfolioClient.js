@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { Suspense, useState, useMemo, useRef, useEffect } from "react";
 import Container from "@/components/Container";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Link from "next/link";
@@ -61,7 +61,7 @@ const LogoImage = ({ item }) => {
   );
 };
 
-export default function PortfolioClient({ title, content, portfolioItems, categories, stages, meganavLinks = {}, meganavData = {} }) {
+function PortfolioClientInner({ title, content, portfolioItems, categories, stages, meganavLinks = {}, meganavData = {} }) {
   const searchParams = useSearchParams();
   const groupedCategories = useMemo(() => groupCategories(categories), [categories]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -519,4 +519,12 @@ export default function PortfolioClient({ title, content, portfolioItems, catego
       </Container>
     </>
   );
-} 
+}
+
+export default function PortfolioClient(props) {
+  return (
+    <Suspense fallback={null}>
+      <PortfolioClientInner {...props} />
+    </Suspense>
+  );
+}
