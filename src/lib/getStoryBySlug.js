@@ -49,7 +49,7 @@ const STORY_FIELDS = `
 
 const STORY_BY_SLUG_QUERY = `
   query StoryBySlug($slug: ID!) {
-    story(id: $slug, idType: SLUG) { ${STORY_FIELDS} }
+    story(id: $slug, idType: URI) { ${STORY_FIELDS} }
   }
 `;
 
@@ -67,6 +67,14 @@ export default async function getStoryBySlug(slugOrId, { preview = true } = {}) 
       variables: { id: idMatch[1], asPreview: preview },
       preview,
     });
+    // Throw on fetch failure so the page's error boundary catches it. If we
+    // returned null, the caller's notFound() would fire and Next.js would
+    // ISR-cache a 404 for a genuine WP outage. Skipped during `next build`
+    // so a transient blip doesn't fail the deploy.
+    const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+    if (!preview && !isBuildPhase && data === null) {
+      throw new Error(`CMS_FETCH_FAILED: story id ${idMatch[1]}`);
+    }
     return data?.story ?? null;
   }
 
@@ -74,5 +82,9 @@ export default async function getStoryBySlug(slugOrId, { preview = true } = {}) 
     variables: { slug: slugOrId },
     preview,
   });
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+  if (!preview && !isBuildPhase && data === null) {
+    throw new Error(`CMS_FETCH_FAILED: story slug ${slugOrId}`);
+  }
   return data?.story ?? null;
 }

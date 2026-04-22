@@ -12,8 +12,14 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Team = ({ data, teamData = null }) => {
 
-  const [members, setMembers] = useState(teamData || []);
-  const [loading, setLoading] = useState(!teamData);
+  // An empty array from the server means the SSR fetch failed or returned
+  // nothing — treat it the same as "no data" so the client-side fetch below
+  // retries. Otherwise we'd render an empty grid with only the "All" filter
+  // because !teamData is false for [].
+  const hasServerTeamData = Array.isArray(teamData) && teamData.length > 0;
+
+  const [members, setMembers] = useState(hasServerTeamData ? teamData : []);
+  const [loading, setLoading] = useState(!hasServerTeamData);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -45,7 +51,7 @@ const Team = ({ data, teamData = null }) => {
   
   // Set initial category when team data is available
   useEffect(() => {
-    if (teamData && teamData.length > 0 && !selectedCategory) {
+    if (hasServerTeamData && !selectedCategory) {
       const categories = Array.from(
         new Set(
           teamData.flatMap(member =>
@@ -75,14 +81,19 @@ const Team = ({ data, teamData = null }) => {
     }
   }, [teamData, selectedCategory, sectionLabel]);
   
-  // Fetch team data only if not provided via props
+  // Fetch team data only if not provided (or empty) via props
   useEffect(() => {
-    if (!teamData) {
+    if (!hasServerTeamData) {
       async function fetchData() {
         try {
           const data = await getTeamMembers();
+          if (!Array.isArray(data) || data.length === 0) {
+            setError('Error loading team members.');
+            setLoading(false);
+            return;
+          }
           setMembers(data);
-          
+
           // Extract categories
           const categories = Array.from(
             new Set(

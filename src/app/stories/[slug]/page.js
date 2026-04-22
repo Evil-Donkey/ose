@@ -1,3 +1,4 @@
+import getStoryBySlug from "@/lib/getStoryBySlug";
 import getStoryData from "@/lib/getStoryData";
 import getPopOutData from "@/lib/getPopOutData";
 import FlexiblePageClient from "@/components/Templates/FlexiblePageClient";
@@ -9,13 +10,15 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 gsap.registerPlugin(ScrollTrigger);
 
+export const revalidate = 60;
+
 export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
-  const stories = await getStoriesItems();
-  const story = stories.find(s => s.slug === resolvedParams.slug);
+  const { slug } = await params;
+  const story = await getStoryBySlug(slug, { preview: false });
 
   if (!story) {
     return {
@@ -30,18 +33,25 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function StoryPage({ params }) {
-  const resolvedParams = await params;
-  const stories = await getStoriesItems();
-  const story = stories.find(s => s.slug === resolvedParams.slug);
-  
+  const { slug } = await params;
+  const [story, stories] = await Promise.all([
+    getStoryBySlug(slug, { preview: false }),
+    getStoriesItems(),
+  ]);
+
   if (!story) {
     notFound();
   }
 
-  // Find current story index and get previous/next stories with circular pagination
-  const currentIndex = stories.findIndex(s => s.slug === resolvedParams.slug);
-  const previousStory = currentIndex > 0 ? stories[currentIndex - 1] : stories[stories.length - 1];
-  const nextStory = currentIndex < stories.length - 1 ? stories[currentIndex + 1] : stories[0];
+  // Navigation (prev/next) falls back gracefully if the list is empty.
+  const currentIndex = stories.findIndex(s => s.slug === slug);
+  const hasNav = stories.length > 1 && currentIndex !== -1;
+  const previousStory = hasNav
+    ? (currentIndex > 0 ? stories[currentIndex - 1] : stories[stories.length - 1])
+    : null;
+  const nextStory = hasNav
+    ? (currentIndex < stories.length - 1 ? stories[currentIndex + 1] : stories[0])
+    : null;
 
   const storyData = await getStoryData(story.databaseId);
   const flexibleContent = storyData.flexibleContent;
@@ -61,10 +71,10 @@ export default async function StoryPage({ params }) {
   return (
     <>
         <div className="relative w-full min-h-dvh h-full">
-            {(backgroundImage || backgroundImageMobile) && 
+            {(backgroundImage || backgroundImageMobile) &&
                 <>
-                    <div className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${backgroundImageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${backgroundImage})` }} />
-                    {backgroundImageMobile && <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile})` }} />}
+                    <div className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${backgroundImageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(backgroundImage, true)})` }} />
+                    {backgroundImageMobile && <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(backgroundImageMobile, true)})` }} />}
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/40 to-black/0" />
                     {story.featuredImage.node.caption && <div className="hidden lg:block absolute bottom-8 right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: story.featuredImage.node.caption }} />}
                 </>
@@ -96,12 +106,14 @@ export default async function StoryPage({ params }) {
             </div>
 
             {/* Story Pagination */}
-            <Container className="pt-10 md:pt-25 2xl:pt-45">
-                <div className="flex justify-center gap-8">
-                    <Button className="w-40!" href={`/stories/${previousStory.slug}`}>Previous</Button>
-                    <Button className="w-40!" href={`/stories/${nextStory.slug}`}>Next</Button>
-                </div>
-            </Container>
+            {(previousStory || nextStory) && (
+                <Container className="pt-10 md:pt-25 2xl:pt-45">
+                    <div className="flex justify-center gap-8">
+                        {previousStory && <Button className="w-40!" href={`/stories/${previousStory.slug}`}>Previous</Button>}
+                        {nextStory && <Button className="w-40!" href={`/stories/${nextStory.slug}`}>Next</Button>}
+                    </div>
+                </Container>
+            )}
         </div>
 
         <CTA data={ctaData} />

@@ -584,5 +584,21 @@ export default async function getFlexiblePage(pageId, preview = false) {
     preview,
   });
 
+  // Only throw when the CMS fetch actually failed (fetchAPI returns null on
+  // network error, timeout, WAF block, or GraphQL errors). In that case the
+  // error boundary (src/app/error.js) catches the render so Next.js doesn't
+  // cache an empty shell for the whole revalidate window.
+  //
+  // A SUCCESSFUL response with zero flexible modules is legitimate — some
+  // pages (e.g. /stories id=1254, /news id=1573) are container pages whose
+  // content is rendered by sibling components, not ACF flexible content.
+  //
+  // Skipped during `next build` and preview mode so transient WP blips don't
+  // fail the whole build and drafts can render empty.
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+  if (!preview && !isBuildPhase && data === null) {
+    throw new Error(`CMS_FETCH_FAILED: page ${pageId}`);
+  }
+
   return data?.page?.flexibleContent?.flexibleContent || [];
 }

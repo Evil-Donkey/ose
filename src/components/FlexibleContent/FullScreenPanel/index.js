@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import Button from "../../Button";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,7 +60,7 @@ const FullScreenPanel = ({ data }) => {
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={`relative ${autoHeight ? "h-auto" : "min-h-[100vh]"} w-full overflow-hidden`}>
-            <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} />
+            <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${proxyImageUrl(backgroundImage.mediaItemUrl, true)})` }} />
             {darkOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
             <div className={`${autoHeight ? "h-full" : "min-h-[100vh]"} flex flex-col justify-center`}>
                 <Container className={`py-30 ${autoHeight ? "md:py-40 2xl:py-60" : "md:py-25 2xl:py-45"} relative z-10 text-white flex flex-col h-full`}>
