@@ -584,5 +584,20 @@ export default async function getFlexiblePage(pageId, preview = false) {
     preview,
   });
 
-  return data?.page?.flexibleContent?.flexibleContent || [];
+  const content = data?.page?.flexibleContent?.flexibleContent;
+
+  // Throw on empty so Next.js doesn't cache a rendered-empty page for the
+  // whole revalidate window. The error boundary (src/app/error.js) catches
+  // it, shows a "try again" UI, and the next request re-runs the fetch.
+  //
+  // Skipped during `next build` (phase-production-build): at build time a
+  // genuinely content-less WP page would otherwise fail the entire build,
+  // and we still want the shell to prerender so ISR can fix it up later.
+  // Preview mode may also legitimately have empty drafts.
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+  if (!preview && !isBuildPhase && (!content || content.length === 0)) {
+    throw new Error(`CMS_EMPTY_FLEXIBLE_CONTENT: page ${pageId}`);
+  }
+
+  return content || [];
 }

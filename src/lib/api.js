@@ -1,14 +1,21 @@
+import { unstable_cache } from 'next/cache';
+
 const isServer = typeof window === 'undefined';
 
 const API_URL = isServer
   ? process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT
   : '/api/graphql';
 
-// Abort any individual CMS call that takes too long so a slow WordPress
-// can't hang server rendering and trigger the generic "Application error"
-// on the client. Server calls get more headroom than client calls.
-const SERVER_TIMEOUT_MS = 15000;
+// Server gets more headroom because the FlexibleContent query is huge
+// (30+ ACF component types deeply nested). When WP is cold or under load,
+// 15s wasn't enough — responses arrived in 18-25s and we aborted them,
+// returning null and rendering an empty #smooth-content.
+const SERVER_TIMEOUT_MS = 30000;
 const CLIENT_TIMEOUT_MS = 20000;
+
+// Default cache lifetime for successful CMS responses. Longer means a single
+// good fetch carries us further before the next revalidation roll of the dice.
+const DEFAULT_REVALIDATE_SECONDS = 600;
 
 // Many managed WordPress hosts / WAFs (Cloudflare, Sucuri, WP Engine,
 // Pantheon, Kinsta) block default Node fetch requests because they arrive
@@ -38,31 +45,16 @@ async function doFetch(url, init, timeoutMs) {
   }
 }
 
-export default async function fetchAPI(query, { variables, tags = [], preview = false } = {}) {
-  const headers = { 'Content-Type': 'application/json' };
-
-  if (isServer) {
-    headers['User-Agent'] = SERVER_USER_AGENT;
-    // Only attach auth on preview/draft requests. Sending an expired/invalid
-    // JWT on public queries would cause WPGraphQL to reject the whole request
-    // with 403. The env var holds a JWT from the WordPress JWT Auth plugin;
-    // it's validated server-side against JWT_AUTH_SECRET_KEY.
-    if (preview && process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
-      headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
-    }
-  }
-
-  const timeoutMs = isServer ? SERVER_TIMEOUT_MS : CLIENT_TIMEOUT_MS;
+// One full attempt-with-internal-retry cycle against the GraphQL endpoint.
+// Returns the parsed `data` field on success, or null on any kind of failure.
+// `cacheOptions` controls Next.js fetch caching for this attempt.
+async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions, preview }) {
   const body = JSON.stringify({ query, variables });
   const fetchInit = {
     headers,
     method: 'POST',
     body,
-    ...(isServer && (
-      preview
-        ? { cache: 'no-store' }
-        : { next: { revalidate: 120, tags: ['cms', ...tags] } }
-    )),
+    ...cacheOptions,
   };
 
   let lastError = null;
@@ -138,4 +130,89 @@ export default async function fetchAPI(query, { variables, tags = [], preview = 
     console.error("Fetch API Error (after retries):", lastError);
   }
   return null;
+}
+
+// Build the per-request headers (UA on server, JWT only when previewing).
+function buildHeaders(preview) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (isServer) {
+    headers['User-Agent'] = SERVER_USER_AGENT;
+    if (preview && process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
+      headers['Authorization'] = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
+    }
+  }
+  return headers;
+}
+
+// A short, stable cache key derived from the GraphQL operation name + variables.
+// Using the full query body would explode the key set; the operation name plus
+// its variables uniquely identifies the result for our purposes.
+function cacheKeyFor(query, variables) {
+  const opMatch = query.match(/(?:query|mutation)\s+(\w+)/);
+  const opName = opMatch ? opMatch[1] : 'anonymous';
+  return ['cms', opName, JSON.stringify(variables || {})];
+}
+
+export default async function fetchAPI(query, { variables, tags = [], revalidate, preview = false } = {}) {
+  const headers = buildHeaders(preview);
+  const timeoutMs = isServer ? SERVER_TIMEOUT_MS : CLIENT_TIMEOUT_MS;
+
+  // Preview mode and client-side calls always bypass the data cache.
+  if (!isServer || preview) {
+    return attemptFetch({
+      query,
+      variables,
+      headers,
+      timeoutMs,
+      cacheOptions: preview ? { cache: 'no-store' } : {},
+      preview,
+    });
+  }
+
+  const ttl = typeof revalidate === 'number' ? revalidate : DEFAULT_REVALIDATE_SECONDS;
+  const cacheKey = cacheKeyFor(query, variables);
+
+  // Wrap in unstable_cache so only SUCCESSFUL responses get cached. When the
+  // inner function throws, unstable_cache propagates the throw without storing
+  // anything — the next call will re-execute the fetch instead of replaying a
+  // poisoned response. This is the core of the fix: previously we used
+  // `next: { revalidate }` directly on fetch(), which cached the underlying
+  // HTTP response even when WPGraphQL returned 200 + errors body, leaving us
+  // serving empty pages for the entire revalidate window.
+  const cached = unstable_cache(
+    async () => {
+      const data = await attemptFetch({
+        query,
+        variables,
+        headers,
+        timeoutMs,
+        cacheOptions: { cache: 'no-store' },
+        preview: false,
+      });
+      if (!data) {
+        throw new Error('CMS_FETCH_EMPTY');
+      }
+      return data;
+    },
+    cacheKey,
+    { revalidate: ttl, tags: ['cms', ...tags] }
+  );
+
+  try {
+    return await cached();
+  } catch (e) {
+    if (e?.message !== 'CMS_FETCH_EMPTY') {
+      console.error('[CMS] cached fetch errored:', e);
+    }
+    // Fall back to a direct fetch so the current render still has a chance.
+    // The bad cache slot stays unset, so the next request will try fresh too.
+    return attemptFetch({
+      query,
+      variables,
+      headers,
+      timeoutMs,
+      cacheOptions: { cache: 'no-store' },
+      preview: false,
+    });
+  }
 }
