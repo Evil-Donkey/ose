@@ -9,6 +9,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,10 +62,10 @@ export default async function StoryPage({ params }) {
   return (
     <>
         <div className="relative w-full min-h-dvh h-full">
-            {(backgroundImage || backgroundImageMobile) && 
+            {(backgroundImage || backgroundImageMobile) &&
                 <>
-                    <div className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${backgroundImageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${backgroundImage})` }} />
-                    {backgroundImageMobile && <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile})` }} />}
+                    <div className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${backgroundImageMobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(backgroundImage, true)})` }} />
+                    {backgroundImageMobile && <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(backgroundImageMobile, true)})` }} />}
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/40 to-black/0" />
                     {story.featuredImage.node.caption && <div className="hidden lg:block absolute bottom-8 right-8 text-xs 2xl:text-sm lg:text-end mt-10 lg:mt-0 text-white" dangerouslySetInnerHTML={{ __html: story.featuredImage.node.caption }} />}
                 </>

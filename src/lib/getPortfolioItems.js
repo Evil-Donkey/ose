@@ -77,5 +77,14 @@ export default async function getPortfolioItems(preview = false) {
     preview,
     tags: ["portfolio-items"],
   });
+
+  // Throw on fetch failure so /portfolio pages don't render an empty grid
+  // and so ISR doesn't cache that empty state for the revalidate window.
+  // Skipped at build phase so a transient blip doesn't fail the deploy.
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+  if (!preview && !isBuildPhase && data === null) {
+    throw new Error('CMS_FETCH_FAILED: portfolio items list');
+  }
+
   return data?.allPortfolio?.nodes || [];
-} 
+}

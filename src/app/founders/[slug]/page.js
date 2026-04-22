@@ -5,6 +5,7 @@ import { LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import MailIcon from "@/components/Icons/MailIcon";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 export async function generateMetadata({ params }) {
     const resolvedParams = await params;
@@ -47,7 +48,7 @@ export default async function TeamMemberSinglePage({ params }) {
     <>
         <HeaderServer fixed={true} />
         <div className={`mt-20 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
-            backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined
+            backgroundImage: heroDesktopImage ? `url(${proxyImageUrl(heroDesktopImage.mediaItemUrl, true)})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/30" />
             <Container className={`py-20 relative flex ${heroCopyToTheRight ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -59,7 +60,7 @@ export default async function TeamMemberSinglePage({ params }) {
         </div>
         {heroMobileImage && (
             <div className={`mt-30 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
-                backgroundImage: heroMobileImage ? `url(${heroMobileImage.mediaItemUrl})` : undefined
+                backgroundImage: heroMobileImage ? `url(${proxyImageUrl(heroMobileImage.mediaItemUrl, true)})` : undefined
             }}>
             </div>
         )}
