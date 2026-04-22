@@ -1,4 +1,5 @@
-import getFounders from "@/lib/getFounders";
+import { notFound } from "next/navigation";
+import getFounderBySlug from "@/lib/getFounderBySlug";
 import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 import { LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
@@ -7,17 +8,18 @@ import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
 import { proxyImageUrl } from "@/lib/proxyImage";
 
+export const revalidate = 60;
+
 export async function generateMetadata({ params }) {
-    const resolvedParams = await params;
-    const items = await getFounders();
-    const item = items.find(s => s.slug === resolvedParams.slug);
-    
+    const { slug } = await params;
+    const item = await getFounderBySlug(slug, { preview: false });
+
     if (!item) {
       return {
         title: 'Founder Not Found',
       };
     }
-  
+
     return {
       title: item.title,
       description: item.content ? item.content.replace(/<[^>]*>/g, '').substring(0, 160) : '',
@@ -26,17 +28,17 @@ export async function generateMetadata({ params }) {
 
 export default async function TeamMemberSinglePage({ params }) {
   const { slug } = await params;
-  const items = await getFounders();
-  const item = items.find(s => s.slug === slug);
+  const [item, footerData] = await Promise.all([
+    getFounderBySlug(slug, { preview: false }),
+    getFooterData(),
+  ]);
 
   if (!item) {
-    return <Container className="pt-50 pb-20"><h1>Founder not found</h1></Container>;
+    notFound();
   }
 
   const { title, founder, content } = item;
-  const { heroDesktopImage, heroMobileImage, email, linkedinUrl, role, heroCopyToTheRight } = founder;
-
-  const footerData = await getFooterData();
+  const { heroDesktopImage, heroMobileImage, email, linkedinUrl, role, heroCopyToTheRight } = founder || {};
 
   const ctaData = {
     copy: footerData.ctaCopy,

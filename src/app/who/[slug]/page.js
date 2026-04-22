@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import getTeamMembers from "@/lib/getTeamMembers";
+import getTeamBySlug from "@/lib/getTeamBySlug";
 import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 import { LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
@@ -8,10 +8,11 @@ import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
 import { proxyImageUrl } from "@/lib/proxyImage";
 
+export const revalidate = 60;
+
 export async function generateMetadata({ params }) {
     const { slug } = await params;
-    const items = await getTeamMembers();
-    const item = items.find(s => s.slug === slug);
+    const item = await getTeamBySlug(slug, { preview: false });
 
     if (!item) {
       return {
@@ -27,11 +28,10 @@ export async function generateMetadata({ params }) {
 
 export default async function TeamMemberSinglePage({ params }) {
   const { slug } = await params;
-  const [items, footerData] = await Promise.all([
-    getTeamMembers(),
+  const [item, footerData] = await Promise.all([
+    getTeamBySlug(slug, { preview: false }),
     getFooterData(),
   ]);
-  const item = items.find(s => s.slug === slug);
 
   if (!item) {
     notFound();
