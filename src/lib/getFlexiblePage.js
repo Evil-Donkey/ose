@@ -584,20 +584,21 @@ export default async function getFlexiblePage(pageId, preview = false) {
     preview,
   });
 
-  const content = data?.page?.flexibleContent?.flexibleContent;
-
-  // Throw on empty so Next.js doesn't cache a rendered-empty page for the
-  // whole revalidate window. The error boundary (src/app/error.js) catches
-  // it, shows a "try again" UI, and the next request re-runs the fetch.
+  // Only throw when the CMS fetch actually failed (fetchAPI returns null on
+  // network error, timeout, WAF block, or GraphQL errors). In that case the
+  // error boundary (src/app/error.js) catches the render so Next.js doesn't
+  // cache an empty shell for the whole revalidate window.
   //
-  // Skipped during `next build` (phase-production-build): at build time a
-  // genuinely content-less WP page would otherwise fail the entire build,
-  // and we still want the shell to prerender so ISR can fix it up later.
-  // Preview mode may also legitimately have empty drafts.
+  // A SUCCESSFUL response with zero flexible modules is legitimate — some
+  // pages (e.g. /stories id=1254, /news id=1573) are container pages whose
+  // content is rendered by sibling components, not ACF flexible content.
+  //
+  // Skipped during `next build` and preview mode so transient WP blips don't
+  // fail the whole build and drafts can render empty.
   const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
-  if (!preview && !isBuildPhase && (!content || content.length === 0)) {
-    throw new Error(`CMS_EMPTY_FLEXIBLE_CONTENT: page ${pageId}`);
+  if (!preview && !isBuildPhase && data === null) {
+    throw new Error(`CMS_FETCH_FAILED: page ${pageId}`);
   }
 
-  return content || [];
+  return data?.page?.flexibleContent?.flexibleContent || [];
 }
