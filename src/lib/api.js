@@ -291,19 +291,19 @@ async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions
   return null;
 }
 
-// Build the per-request headers (UA + Origin on server, auth token on preview).
+// Build the per-request headers (UA on server, Origin + auth token on preview).
 async function buildHeaders(preview) {
   const headers = { 'Content-Type': 'application/json' };
   if (isServer) {
     headers['User-Agent'] = SERVER_USER_AGENT;
-    // Headless Login's Access Control checks the Origin header even for
-    // non-login queries on some versions, so always send it from the server.
-    if (SERVER_ORIGIN) {
-      headers['Origin'] = SERVER_ORIGIN;
-      headers['Referer'] = SERVER_ORIGIN;
-    }
 
     if (preview) {
+      // Headless Login's Access Control checks Origin. Only send it on preview
+      // calls — sending it on public requests can trigger WAF/CORS rejections.
+      if (SERVER_ORIGIN) {
+        headers['Origin'] = SERVER_ORIGIN;
+        headers['Referer'] = SERVER_ORIGIN;
+      }
       // Exchange the long-lived refresh token for a short-lived authToken,
       // cached in-memory between requests. Only attach it on preview calls —
       // an expired token on a public query would 403 the whole request.
