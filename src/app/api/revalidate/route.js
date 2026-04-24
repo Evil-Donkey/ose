@@ -34,8 +34,8 @@ const PAGE_SLUG_TO_PATH = {
   "modern-slavery-statement": "/modern-slavery-statement",
   "coinvestors-contact-form": "/coinvestors-contact-form",
   "shareholder-contact-form": "/shareholder-contact-form",
-  "shareholder-portal": "/shareholder-portal",
-  "shareholder-portal-signup": "/shareholder-portal-signup",
+  "shareholder-information": "/shareholder-information",
+  "shareholder-information-signup": "/shareholder-information-signup",
   form: "/form",
 };
 
