@@ -2,30 +2,19 @@
 
 import { Document, Download } from "@/components/Icons/Portal";
 
-const RegulatoryInformation = ({ documents = [], statement }) => {
-    const statementText =
-        typeof statement === "string"
-            ? statement
-            : statement != null && !Array.isArray(statement)
-              ? String(statement)
+const AnnualReporting = ({ documents = [], description }) => {
+    const descriptionText =
+        typeof description === "string"
+            ? description
+            : description != null && !Array.isArray(description)
+              ? String(description)
               : "";
-
-    const handleDownload = (document) => {
-        if (document.fileUrl) {
-            const link = document.createElement('a');
-            link.href = document.fileUrl;
-            link.download = document.fileName || 'document';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    };
 
     return (
         <div className="w-full bg-white rounded-lg p-6 lg:p-12">
-            <h2 className="text-2xl font-medium text-blue-02 mb-4">Regulatory Information</h2>
-            {statementText.trim() ? (
-                <p className="text-gray-700 mb-8">{statementText}</p>
+            <h2 className="text-2xl font-medium text-blue-02 mb-4">Annual Reporting</h2>
+            {descriptionText.trim() ? (
+                <p className="text-gray-700 mb-8">{descriptionText}</p>
             ) : null}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documents.map((doc, index) => (
@@ -55,4 +44,4 @@ const RegulatoryInformation = ({ documents = [], statement }) => {
     );
 };
 
-export default RegulatoryInformation; 
+export default AnnualReporting;
