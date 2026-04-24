@@ -14,7 +14,7 @@ import FlexiblePageClient from "@/components/Templates/FlexiblePageClient";
 import HeaderServer from "@/components/Header/HeaderServer";
 import Container from "@/components/Container";
 import CTA from "@/components/CTA";
-import ShareholderPortalView from "@/app/shareholder-portal/ShareholderPortalView";
+import ShareholderPortalView from "@/app/shareholder-information/ShareholderPortalView";
 import FormPageView from "@/app/form/FormPageView";
 import ContactPageView from "@/app/contact/ContactPageView";
 import ShareholderContactFormPageView from "@/app/shareholder-contact-form/ShareholderContactFormPageView";
@@ -22,7 +22,7 @@ import CoinvestorsContactFormPageView from "@/app/coinvestors-contact-form/Coinv
 import SustainabilityPageView from "@/app/sustainability/SustainabilityPageView";
 import StoriesPageView from "@/app/stories/StoriesPageView";
 import UncoverPageView from "@/app/uncover/UncoverPageView";
-import ShareholderPortalSignupView from "@/app/shareholder-portal-signup/ShareholderPortalSignupView";
+import ShareholderPortalSignupView from "@/app/shareholder-information-signup/ShareholderPortalSignupView";
 
 export const metadata = { title: "Preview" };
 
@@ -125,11 +125,11 @@ export default async function PagePreviewPage({ params }) {
     );
   }
 
-  if (pageSlugMatches(page, "shareholder-portal-signup")) {
+  if (pageSlugMatches(page, "shareholder-information-signup")) {
     return <ShareholderPortalSignupView preview />;
   }
 
-  if (pageSlugMatches(page, "shareholder-portal")) {
+  if (pageSlugMatches(page, "shareholder-information")) {
     return <ShareholderPortalView preview />;
   }
 
