@@ -41,6 +41,7 @@ const INVESTOR_PORTAL_QUERY = `
         annualReporting {
           description
           title
+          url
           file {
             link
             mediaItemUrl

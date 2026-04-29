@@ -51,6 +51,7 @@ export default async function ShareholderPortalSignupView({ preview = false }) {
                 documents={investorPortal.annualReporting.map((doc) => ({
                   title: doc.title,
                   description: doc.description,
+                  url: doc.url,
                   fileUrl: doc.file?.mediaItemUrl || doc.file?.link,
                   fileName:
                     doc.title?.toLowerCase().replace(/\s+/g, "-") + ".pdf",
