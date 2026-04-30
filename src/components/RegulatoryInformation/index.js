@@ -2,7 +2,14 @@
 
 import { Document, Download } from "@/components/Icons/Portal";
 
-const RegulatoryInformation = ({ documents = [] }) => {
+const RegulatoryInformation = ({ documents = [], statement }) => {
+    const statementText =
+        typeof statement === "string"
+            ? statement
+            : statement != null && !Array.isArray(statement)
+              ? String(statement)
+              : "";
+
     const handleDownload = (document) => {
         if (document.fileUrl) {
             const link = document.createElement('a');
@@ -16,7 +23,10 @@ const RegulatoryInformation = ({ documents = [] }) => {
 
     return (
         <div className="w-full bg-white rounded-lg p-6 lg:p-12">
-            <h2 className="text-2xl font-medium text-blue-02 mb-6">Regulatory Information</h2>
+            <h2 className="text-2xl font-medium text-blue-02 mb-4">Regulatory Information</h2>
+            {statementText.trim() ? (
+                <p className="text-gray-700 mb-8">{statementText}</p>
+            ) : null}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documents.map((doc, index) => (
                     <a

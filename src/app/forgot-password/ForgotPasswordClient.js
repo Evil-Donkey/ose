@@ -136,7 +136,7 @@ export default function ForgotPasswordClient({ meganavLinks, meganavData }) {
                                 {/* {emailCheckResult.status === 'not_found' && (
                                     <div className="mt-3">
                                         <p className="text-base text-white">
-                                            <Link href="/shareholder-portal-signup" className="underline">
+                                            <Link href="/shareholder-information-signup" className="underline">
                                                 Click here to sign up
                                             </Link>
                                         </p>
@@ -147,9 +147,9 @@ export default function ForgotPasswordClient({ meganavLinks, meganavData }) {
 
                         <div className="flex flex-col gap-2 mt-8">
                             <p className="text-sm flex items-center gap-2">
-                                <Link href="/shareholder-portal" className="text-white underline">Back to login</Link>
+                                <Link href="/shareholder-information" className="text-white underline">Back to login</Link>
                                 <span className="text-white">|</span>
-                                <Link href="/shareholder-portal-signup" className="text-white underline">Request access</Link>
+                                <Link href="/shareholder-information-signup" className="text-white underline">Request access</Link>
                             </p>
                         </div>
                     </div>

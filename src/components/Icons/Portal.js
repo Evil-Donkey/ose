@@ -78,3 +78,20 @@ export const Download = () => {
         </svg>
     );
 };
+
+export const ExternalLink = () => {
+    return (
+        <svg 
+            width="15" 
+            height="15" 
+            viewBox="0 0 15 15" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path 
+                d="M14.4955 0.500222L0.353314 14.6424M14.4955 0.500222L14.4955 9.92836M14.4955 0.500222L5.0674 0.500294" 
+                stroke="#000A70"
+            />
+        </svg>
+    );
+};

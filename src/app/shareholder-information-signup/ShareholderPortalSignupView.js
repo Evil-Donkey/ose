@@ -3,6 +3,7 @@ import getFooterData from "@/lib/getFooterData";
 import HeaderServer from "@/components/Header/HeaderServer";
 import CTA from "@/components/CTA";
 import InvestorPortalSignupClient from "./InvestorPortalSignupClient";
+import AnnualReporting from "@/components/AnnualReporting";
 import RegulatoryInformation from "@/components/RegulatoryInformation";
 import getInvestorPortal from "@/lib/getInvestorPortal";
 import { Suspense } from "react";
@@ -42,11 +43,23 @@ export default async function ShareholderPortalSignupView({ preview = false }) {
             content={content}
             investorPortal={investorPortal}
           />
-          <Container className="py-10 relative z-10">
-            <p>{investorPortal.shareholderPortalStatement}</p>
-          </Container>
-          <Container className="py-10 relative z-10">
+          <Container className="py-10 relative z-10 flex flex-col gap-6">
+            {investorPortal.annualReporting.length > 0 ||
+            String(investorPortal.annualReportingDescription ?? "").trim() ? (
+              <AnnualReporting
+                description={investorPortal.annualReportingDescription}
+                documents={investorPortal.annualReporting.map((doc) => ({
+                  title: doc.title,
+                  description: doc.description,
+                  url: doc.url,
+                  fileUrl: doc.file?.mediaItemUrl || doc.file?.link,
+                  fileName:
+                    doc.title?.toLowerCase().replace(/\s+/g, "-") + ".pdf",
+                }))}
+              />
+            ) : null}
             <RegulatoryInformation
+              statement={investorPortal.shareholderPortalStatement}
               documents={investorPortal.regulatoryInformation.map((doc) => ({
                 title: doc.title,
                 description: doc.description,

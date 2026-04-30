@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
       if (data.success) {
         setUser(data.user);
-        router.push("/shareholder-portal");
+        router.push("/shareholder-information");
       } else {
         console.error(data.error);
       }
@@ -147,7 +147,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
 
         // Redirect to login or home page
-        router.push("/shareholder-portal");
+        router.push("/shareholder-information");
       } else {
         console.error("Logout failed");
       }

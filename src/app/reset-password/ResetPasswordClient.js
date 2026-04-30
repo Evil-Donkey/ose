@@ -97,7 +97,7 @@ export default function ResetPasswordClient({ meganavLinks, meganavData }) {
                             <p className="text-white text-center">{error}</p>
                         ) : message === "success" ? (
                             <div className="flex flex-col gap-4 text-center items-center justify-center">
-                                <p className="w-full text-white text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Password successfully created.<br/>You can now <Link href="/shareholder-portal" className="text-white underline">log in</Link>.</p>
+                                <p className="w-full text-white text-lg text-center p-10 rounded-sm border bg-blue-02/30 border-white">Password successfully created.<br/>You can now <Link href="/shareholder-information" className="text-white underline">log in</Link>.</p>
                             </div>
                         ) : (
                             tokenData && (

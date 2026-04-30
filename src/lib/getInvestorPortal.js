@@ -36,6 +36,18 @@ const INVESTOR_PORTAL_QUERY = `
           }
         }
       }
+      annualReporting {
+        annualReportingDescription
+        annualReporting {
+          description
+          title
+          url
+          file {
+            link
+            mediaItemUrl
+          }
+        }
+      }
       shareholderPortalStatement {
         statement
       }
@@ -51,6 +63,10 @@ export default async function getInvestorPortal(preview = false) {
   return {
     folders: data?.page?.investorPortal?.folderStructure?.folders || [],
     regulatoryInformation: data?.page?.regulatoryInformation?.regulatoryInformation || [],
-    shareholderPortalStatement: data?.page?.shareholderPortalStatement?.statement || []
+    annualReporting: data?.page?.annualReporting?.annualReporting || [],
+    annualReportingDescription:
+      data?.page?.annualReporting?.annualReportingDescription ?? "",
+    shareholderPortalStatement:
+      data?.page?.shareholderPortalStatement?.statement ?? "",
   };
-} 
+}

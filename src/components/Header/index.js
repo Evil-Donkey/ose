@@ -24,7 +24,7 @@ const Header = ({ portal, meganavLinks = {}, meganavData = {}, fixed }) => {
         { label: 'Portfolio', href: '/portfolio' },
         { label: 'Stories', href: '/stories' },
         { label: 'News', href: '/news' },
-        { label: 'Shareholder Portal', href: '/shareholder-portal' }
+        { label: 'Shareholder information', href: '/shareholder-information' }
     ];
 
     const bottomNavItems = [

@@ -22,7 +22,7 @@ const Footer = ({ data }) => {
                             {/* <YouTube /> */}
                             <a href="https://www.linkedin.com/company/19776983/admin/dashboard/" target="_blank" rel="noopener noreferrer"><LinkedIn /></a>
                         </div>
-                        {/* <Button href="/shareholder-portal" className="text-sm lg:text-base">Shareholder Portal</Button> */}
+                        {/* <Button href="/shareholder-information" className="text-sm lg:text-base">Shareholder Information</Button> */}
                     </div>
                 </div>
 
@@ -115,7 +115,7 @@ const Footer = ({ data }) => {
                                 <li><Link href="/stories" className="hover:text-lightblue">Stories</Link></li>
                                 <li><Link href="/news" className="hover:text-lightblue">News</Link></li>
                                 <li><Link href="/contact" className="hover:text-lightblue">Contact</Link></li>
-                                <li><Link href="/shareholder-portal" className="hover:text-lightblue">Shareholder Portal</Link></li>
+                                <li><Link href="/shareholder-information" className="hover:text-lightblue">Shareholder Information</Link></li>
                             </ul>
                         </div>
                     </div>
