@@ -25,7 +25,7 @@ export default async function SustainabilityPageView({ preview = false }) {
   const sustainabilityReportCardContent = (
     <>
       <div className="flex flex-col">
-        <span className="font-bold text-blue-02 text-lg">Sustainability Report</span>
+        <span className="font-bold text-blue-02 text-lg">Sustainability Report 2025</span>
         <span className="text-blue-02 text-lg">
           {sustainabilityReportUrl ? "View now" : "Download now"}
         </span>
