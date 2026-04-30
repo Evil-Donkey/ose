@@ -20,6 +20,7 @@ const PAGE_TITLE_CONTENT_QUERY = `
         }
       }
       sustainability {
+        sustainabilityReportUrl
         sustainabilityReport {
           mediaItemUrl
         }
@@ -49,6 +50,7 @@ export default async function getPageTitleAndContent(pageId, preview = false) {
     mobileFeaturedImageAltText: page?.mobileFeaturedImage?.mobileFeaturedImage?.altText || null,
     mobileFeaturedImageCaption: page?.mobileFeaturedImage?.mobileFeaturedImage?.caption || null,
     sustainability: page?.sustainability?.sustainabilityReport?.mediaItemUrl || null,
+    sustainabilityReportUrl: page?.sustainability?.sustainabilityReportUrl || null,
     secondaryTitle: page?.extraPageOptions?.secondaryTitle || null
   };
 }
