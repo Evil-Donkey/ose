@@ -2,7 +2,7 @@ import fetchAPI from "./api";
 import { isPreviewCmsAuthRequest } from "./previewCmsAuthHeader";
 
 const POPOUT_DATA_QUERY = `
-  query NewQuery {
+  query getPopOutThemeSettings {
     acfOptionsThemeSettings {
       globalSettings {
         popoutLabel
