@@ -34,27 +34,33 @@ const Footer = ({ data }) => {
                             <div className="space-y-4">
                                 <div>
                                     <h3 className="text-lightblue">Oxford researchers &amp; innovators</h3>
+                                    {oxfordAcademicsEmail && (
                                     <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue">
                                         {oxfordAcademicsEmail}
                                     </a>
+                                    )}
                                     {/* <a href={`mailto:${oxfordAcademicsEmail}`} className="text-sm hover:text-lightblue lg:hidden">
                                         Oxford researchers &amp; innovators
                                     </a> */}
                                 </div>
                                 <div>
                                     <h3 className="text-lightblue">Investors &amp; co-investors</h3>
+                                    {investorsEmail && (
                                     <a href={`mailto:${investorsEmail}`} className="text-sm hover:text-lightblue">
                                         {investorsEmail}
                                     </a>
+                                    )}
                                     {/* <a href={`mailto:${investorsEmail}`} className="text-sm hover:text-lightblue lg:hidden">
                                         Investors &amp; co-investors
                                     </a> */}
                                 </div>
                                 <div>
                                     <h3 className="text-lightblue">Media</h3>
+                                    {mediaEmail && (
                                     <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue">
                                         {mediaEmail}
                                     </a>
+                                    )}
                                     {/* <a href={`mailto:${mediaEmail}`} className="text-sm hover:text-lightblue lg:hidden">
                                         Media
                                     </a> */}
@@ -66,16 +72,20 @@ const Footer = ({ data }) => {
                         <div className="w-full lg:w-1/2 mb-5 lg:mb-0 mt-4 md:mt-0">
                             <h2 className="text-3xl mb-4 hidden lg:block">&nbsp;</h2>
                             <div className="space-y-4">
+                                {telephone && (
                                 <div className="mb-4 md:mb-5">
                                     <h3 className="text-lightblue">Call</h3>
                                     <a href={`tel:${telephone}`} className="text-sm hover:text-lightblue">
                                         {telephone}
                                     </a>
                                 </div>
+                                )}
+                                {address && (
                                 <div className="mb-8 lg:mb-0">
                                     <h3 className="text-lightblue">Address</h3>
                                     <p className="text-sm" dangerouslySetInnerHTML={{ __html: address }} />
                                 </div>
+                                )}
                                 {/* <div>
                                     <div className="flex flex-row gap-x-2 items-center mb-5 lg:mb-0 lg:hidden">
                                         <a href="https://www.linkedin.com/company/19776983/admin/dashboard/" target="_blank" rel="noopener noreferrer"><LinkedIn /></a>

@@ -18,6 +18,10 @@ const montserrat = Montserrat({
   preload: true,   // This preloads the font
 });
 
+// Re-fetch layout data (footer contact info, CTA fields) on a timer so a
+// build-time CMS blip can't permanently serve mailto:undefined / empty CTA.
+export const revalidate = 300;
+
 export const metadata = {
   title: "Oxford Science Enterprises",
   description: "We help transform Oxford's cutting-edge research into world-changing companies",

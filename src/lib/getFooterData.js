@@ -2,7 +2,7 @@ import fetchAPI from "./api";
 import { isPreviewCmsAuthRequest } from "./previewCmsAuthHeader";
 
 const FOOTER_DATA_QUERY = `
-  query NewQuery {
+  query getFooterThemeSettings {
     acfOptionsThemeSettings {
       globalSettings {
         copyright
@@ -46,21 +46,56 @@ const EMPTY_FOOTER_DATA = {
   cta: null,
 };
 
-export default async function getFooterData() {
-  const data = await fetchAPI(FOOTER_DATA_QUERY, {
-    preview: await isPreviewCmsAuthRequest(),
-  });
+function extractFooterSettings(data) {
+  return data?.acfOptionsThemeSettings?.globalSettings ?? null;
+}
 
-  // Throw on fetch failure so the page's error boundary catches it. Returning
-  // an all-null EMPTY_FOOTER_DATA used to render a footer with blank Call /
-  // Address fields and a completely empty CTA component above it (because
-  // ctaData is built from `footerData.ctaCopy/ctaTitle/cta`, all of which
-  // were null). Skipped during `next build` so a transient WP blip doesn't
-  // fail the whole deploy — the empty footer self-heals on revalidate.
-  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
-  if (!isBuildPhase && data === null) {
-    throw new Error('CMS_FETCH_FAILED: footer data');
+/** True when the CMS responded but none of the fields we rely on resolved. */
+function isFooterSettingsEmpty(settings) {
+  if (!settings) return true;
+  const hasContact =
+    settings.telephone ||
+    settings.oxfordAcademicsEmail ||
+    settings.investorsEmail ||
+    settings.mediaEmail ||
+    settings.address;
+  const hasCta =
+    settings.ctaTitle ||
+    settings.ctaCopy ||
+    (Array.isArray(settings.cta) && settings.cta.length > 0);
+  return !hasContact && !hasCta;
+}
+
+async function fetchFooterSettings(preview) {
+  const data = await fetchAPI(FOOTER_DATA_QUERY, {
+    preview,
+    tags: ["footer"],
+  });
+  return extractFooterSettings(data);
+}
+
+export default async function getFooterData() {
+  const preview = await isPreviewCmsAuthRequest();
+  let settings = await fetchFooterSettings(preview);
+
+  // During `next build` the CMS can be cold or briefly unreachable.
+  const isBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
+  if (isBuildPhase && isFooterSettingsEmpty(settings)) {
+    await new Promise((r) => setTimeout(r, 1500));
+    settings = await fetchFooterSettings(preview);
   }
 
-  return data?.acfOptionsThemeSettings?.globalSettings || EMPTY_FOOTER_DATA;
+  if (isFooterSettingsEmpty(settings)) {
+    // Never crash the whole site for footer/CTA — log and render without contact
+    // fields rather than a 500. (Previously getFooterData and getPopOutData both
+    // used `query NewQuery {}` and shared one unstable_cache slot, so whichever
+    // ran second in Promise.all could receive the other's partial globalSettings.)
+    console.error(
+      "[getFooterData] global theme settings missing or empty after fetch — " +
+        "footer contact info and page CTA blocks will be blank for this render."
+    );
+    return EMPTY_FOOTER_DATA;
+  }
+
+  return settings;
 }
