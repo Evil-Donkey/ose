@@ -312,7 +312,12 @@ const Team = ({ data, teamData = null }) => {
 
               {/* Grid */}
               <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredMembers.map((member, idx) => (
+                {filteredMembers.map((member, idx) => {
+                const cardImageUrl =
+                  member.featuredImage?.node?.mediaItemUrl ||
+                  member.teamMember?.heroDesktopImage?.mediaItemUrl;
+
+                return (
                 <div
                     key={member.id || idx}
                     className="flex flex-col"
@@ -320,7 +325,7 @@ const Team = ({ data, teamData = null }) => {
                     <Link href={`/who/${member.slug}`} className="group overflow-hidden rounded-2xl mb-4 ">
                         <div 
                             className="w-full aspect-4/5 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
-                            style={member.featuredImage?.node?.mediaItemUrl ? { backgroundImage: `url(${member.featuredImage.node.mediaItemUrl})` } : {}}
+                            style={cardImageUrl ? { backgroundImage: `url(${cardImageUrl})` } : {}}
                         />
                     </Link>
                     <Link href={`/who/${member.slug}`} className="flex flex-col">
@@ -332,7 +337,8 @@ const Team = ({ data, teamData = null }) => {
                         </div>
                     </Link>
                 </div>
-                ))}
+                );
+                })}
               </section>
             </div>
           </div>
