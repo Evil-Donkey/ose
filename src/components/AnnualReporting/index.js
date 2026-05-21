@@ -22,14 +22,15 @@ const AnnualReporting = ({ documents = [], description }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {documents.map((doc, index) => {
                     const externalHref = getExternalHref(doc.url);
-                    const href = externalHref ?? doc.fileUrl;
+                    const fileHref =
+                        typeof doc.fileUrl === "string" && doc.fileUrl.trim()
+                            ? doc.fileUrl.trim()
+                            : null;
+
                     return (
-                        <a
+                        <div
                             key={index}
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-gray-100 hover:bg-gray-200 transition-colors duration-200 cursor-pointer rounded-lg p-6 flex flex-col h-full relative group"
+                            className="bg-gray-100 rounded-lg p-6 flex flex-col h-full relative"
                         >
                             <div className="flex flex-col gap-3 mb-4">
                                 <Document />
@@ -38,12 +39,34 @@ const AnnualReporting = ({ documents = [], description }) => {
                             <p className="text-gray-700 text-sm mb-6 flex-grow">
                                 {doc.description}
                             </p>
-                            <div className="flex justify-end">
-                                <div className="group-hover:scale-110 transition-transform duration-200">
-                                    {externalHref ? <ExternalLink /> : <Download />}
+                            {(fileHref || externalHref) && (
+                                <div className="flex justify-end items-center gap-4">
+                                    {fileHref ? (
+                                        <a
+                                            href={fileHref}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            download={doc.fileName || undefined}
+                                            className="hover:scale-110 transition-transform duration-200"
+                                            aria-label={`Download ${doc.title}`}
+                                        >
+                                            <Download />
+                                        </a>
+                                    ) : null}
+                                    {externalHref ? (
+                                        <a
+                                            href={externalHref}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="hover:scale-110 transition-transform duration-200"
+                                            aria-label={`Open ${doc.title} externally`}
+                                        >
+                                            <ExternalLink />
+                                        </a>
+                                    ) : null}
                                 </div>
-                            </div>
-                        </a>
+                            )}
+                        </div>
                     );
                 })}
             </div>
