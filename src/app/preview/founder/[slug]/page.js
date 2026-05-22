@@ -19,8 +19,12 @@ export default async function FounderPreviewPage({ params }) {
 
   if (!item) notFound();
 
-  const { title, founder, content } = item;
+  const { title, founder, content, featuredImage } = item;
   const { heroDesktopImage, heroMobileImage, email, linkedinUrl, role, heroCopyToTheRight } = founder || {};
+  const heroDesktopUrl =
+    heroDesktopImage?.mediaItemUrl ||
+    heroMobileImage?.mediaItemUrl ||
+    featuredImage?.node?.mediaItemUrl;
 
   const footerData = await getFooterData();
   const ctaData = {
@@ -34,7 +38,7 @@ export default async function FounderPreviewPage({ params }) {
       <HeaderServer fixed={true} />
       <div
         className="mt-20 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex"
-        style={{ backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined }}
+        style={{ backgroundImage: heroDesktopUrl ? `url(${heroDesktopUrl})` : undefined }}
       >
         <div className="absolute inset-0 bg-black/30" />
         <Container
