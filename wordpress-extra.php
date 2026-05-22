@@ -913,29 +913,118 @@ add_action('wp_ajax_get_attachment_url', function() {
    wp_send_json_error('Invalid attachment ID');
 });
 
-// Save the quick edit field values
-add_action('save_post_team', function($post_id) {
-   if (!current_user_can('edit_post', $post_id)) return;
-   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-   
-   if (isset($_POST['hero_desktop_image'])) {
-       $attachment_id = intval($_POST['hero_desktop_image']);
-       if ($attachment_id > 0) {
-           update_field('field_6899d3922fd7a', $attachment_id, $post_id);
-       } else {
-           update_field('field_6899d3922fd7a', '', $post_id);
+/**
+ * Resolve an ACF image field value to a media attachment ID.
+ * WPGraphQL for ACF v2 resolves image fields as MediaItem — URL strings return null.
+ */
+function ose_acf_image_value_to_attachment_id( $value ) {
+   if ( empty( $value ) ) {
+       return 0;
+   }
+   if ( is_numeric( $value ) ) {
+       return (int) $value;
+   }
+   if ( is_array( $value ) && ! empty( $value['ID'] ) ) {
+       return (int) $value['ID'];
+   }
+   if ( is_string( $value ) ) {
+       return (int) attachment_url_to_postid( $value );
+   }
+   return 0;
+}
+
+/**
+ * Persist an attachment ID on an ACF image field without re-triggering save hooks.
+ */
+function ose_acf_update_image_field_attachment_id( $field_key, $post_id, $attachment_id ) {
+   if ( ! function_exists( 'acf_get_field' ) ) {
+       return;
+   }
+   $field = acf_get_field( $field_key );
+   if ( ! $field || empty( $field['name'] ) ) {
+       return;
+   }
+   update_post_meta( $post_id, $field['name'], (int) $attachment_id );
+   update_post_meta( $post_id, '_' . $field['name'], $field_key );
+}
+
+/**
+ * Ensure ACF hero image meta is stored as an attachment ID so WPGraphQL can resolve it.
+ * Runs on save_post (after ACF) — not acf/save_post — to avoid recursive save loops.
+ */
+function ose_normalize_acf_hero_image_fields( $post_id ) {
+   static $running = false;
+
+   if ( $running ) {
+       return;
+   }
+   if ( ! function_exists( 'get_field' ) ) {
+       return;
+   }
+   if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+       return;
+   }
+
+   $post_id = (int) $post_id;
+   if ( $post_id <= 0 || wp_is_post_revision( $post_id ) ) {
+       return;
+   }
+   if ( ! in_array( get_post_type( $post_id ), [ 'team', 'founders' ], true ) ) {
+       return;
+   }
+
+   $running = true;
+
+   foreach ( [ 'field_6899d3922fd7a', 'field_6899c61546384' ] as $field_key ) {
+       $raw = get_field( $field_key, $post_id, false );
+       if ( empty( $raw ) || is_numeric( $raw ) ) {
+           continue;
+       }
+
+       $attachment_id = ose_acf_image_value_to_attachment_id( $raw );
+       if ( $attachment_id > 0 && get_post_type( $attachment_id ) === 'attachment' ) {
+           ose_acf_update_image_field_attachment_id( $field_key, $post_id, $attachment_id );
        }
    }
-   
-   if (isset($_POST['hero_mobile_image'])) {
-       $attachment_id = intval($_POST['hero_mobile_image']);
-       if ($attachment_id > 0) {
-           update_field('field_6899c61546384', $attachment_id, $post_id);
-       } else {
-           update_field('field_6899c61546384', '', $post_id);
+
+   $running = false;
+}
+
+add_action( 'save_post_team', 'ose_normalize_acf_hero_image_fields', 99 );
+add_action( 'save_post_founders', 'ose_normalize_acf_hero_image_fields', 99 );
+
+/**
+ * Quick Edit only — never clear hero images when the hidden field is empty.
+ * An empty hero_desktop_image POST value previously wiped ACF data while the
+ * admin UI still showed the image (stored as URL / unresolved attachment ID).
+ */
+function ose_save_quick_edit_hero_images( $post_id ) {
+   if ( ! current_user_can( 'edit_post', $post_id ) ) {
+       return;
+   }
+   if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+       return;
+   }
+   if ( ! isset( $_POST['_inline_edit'] ) || ! wp_verify_nonce( $_POST['_inline_edit'], 'inlineeditnonce' ) ) {
+       return;
+   }
+
+   if ( isset( $_POST['hero_desktop_image'] ) ) {
+       $attachment_id = intval( $_POST['hero_desktop_image'] );
+       if ( $attachment_id > 0 ) {
+           update_field( 'field_6899d3922fd7a', $attachment_id, $post_id );
        }
    }
-});
+
+   if ( isset( $_POST['hero_mobile_image'] ) ) {
+       $attachment_id = intval( $_POST['hero_mobile_image'] );
+       if ( $attachment_id > 0 ) {
+           update_field( 'field_6899c61546384', $attachment_id, $post_id );
+       }
+   }
+}
+
+add_action( 'save_post_team', 'ose_save_quick_edit_hero_images' );
 
 
 
@@ -1229,29 +1318,7 @@ add_action('admin_footer', function() {
    <?php
 });
 
-// Save the quick edit field values for founders
-add_action('save_post_founders', function($post_id) {
-   if (!current_user_can('edit_post', $post_id)) return;
-   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-   
-   if (isset($_POST['hero_desktop_image'])) {
-       $attachment_id = intval($_POST['hero_desktop_image']);
-       if ($attachment_id > 0) {
-           update_field('field_6899d3922fd7a', $attachment_id, $post_id);
-       } else {
-           update_field('field_6899d3922fd7a', '', $post_id);
-       }
-   }
-   
-   if (isset($_POST['hero_mobile_image'])) {
-       $attachment_id = intval($_POST['hero_mobile_image']);
-       if ($attachment_id > 0) {
-           update_field('field_6899c61546384', $attachment_id, $post_id);
-       } else {
-           update_field('field_6899c61546384', '', $post_id);
-       }
-   }
-});
+add_action( 'save_post_founders', 'ose_save_quick_edit_hero_images' );
 
 
 /**
