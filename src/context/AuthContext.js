@@ -1,9 +1,22 @@
 "use client";
 
 import { createContext, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const AuthContext = createContext();
+
+const PORTAL_PATH_PREFIXES = [
+  "/shareholder-information",
+  "/shareholder-information-signup",
+  "/forgot-password",
+  "/create-password",
+];
+
+function pathNeedsPortalAuth(pathname) {
+  return PORTAL_PATH_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
+}
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -16,6 +29,7 @@ export const AuthProvider = ({ children }) => {
   const [passwordVerified, setPasswordVerified] = useState(true);
   const [passwordLoading, setPasswordLoading] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   // Function to check authentication status
   const checkAuthStatus = async () => {
@@ -90,8 +104,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    checkAuthStatus(); // Check authentication on mount
-    
+    // Public marketing pages do not need WordPress auth. Checking on every route
+    // was sending viewer + refreshToken GraphQL calls to the CMS on each load,
+    // which SiteGround classifies as login/bruteforce traffic.
+    if (pathNeedsPortalAuth(pathname)) {
+      checkAuthStatus();
+    } else {
+      setLoading(false);
+    }
+
     // TEMPORARY: Disable password overlay
     const TEMPORARILY_DISABLE_PASSWORD = true;
     
@@ -105,7 +126,7 @@ export const AuthProvider = ({ children }) => {
       }
     }
     setPasswordLoading(false);
-  }, []);
+  }, [pathname]);
 
   // Login function
   const login = async (credentials) => {

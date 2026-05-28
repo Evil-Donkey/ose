@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 const isProd = process.env.NODE_ENV === 'production';
+const CMS_USER_AGENT = 'OSE-NextJS/1.0 (+auth)';
 
 // Clears the auth/refresh cookies so a stale or invalid refresh token
 // doesn't keep triggering the refresh flow on every page load.
@@ -36,7 +37,10 @@ export async function POST() {
     // with "Cannot query field" errors.
     const response = await fetch(process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': CMS_USER_AGENT,
+      },
       body: JSON.stringify({
         query: `
           mutation RefreshToken($input: RefreshTokenInput!) {

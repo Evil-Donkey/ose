@@ -75,19 +75,6 @@ function isCmsWafBlock(status, contentType, bodyPreview = '') {
   return bodyPreview.includes('sgcaptcha') || bodyPreview.trimStart().startsWith('<');
 }
 
-// After SiteGround sgcaptcha triggers, stop hammering the CMS for a short window.
-// Each failed fetch was previously retried immediately, doubling request volume.
-let cmsWafBlockedUntil = 0;
-const WAF_BACKOFF_MS = 90_000;
-
-function markCmsWafBlocked() {
-  cmsWafBlockedUntil = Date.now() + WAF_BACKOFF_MS;
-}
-
-function isCmsWafBackoffActive() {
-  return Date.now() < cmsWafBlockedUntil;
-}
-
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -225,10 +212,6 @@ async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      if (isCmsWafBackoffActive() && attempt === 1) {
-        return null;
-      }
-
       const res = await doFetch(API_URL, fetchInit, timeoutMs);
 
       const contentType = res.headers.get('content-type') || '';
@@ -252,11 +235,9 @@ async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions
           continue;
         }
         if (isCmsWafBlock(res.status, contentType)) {
-          markCmsWafBlocked();
           console.error(
             `Fetch API blocked by CMS WAF (HTTP ${res.status}, ${contentType || 'no content-type'}). ` +
-            'SiteGround captcha often triggers after a burst of dev-server requests — pausing CMS fetches for 90s. ' +
-            'Whitelist your IP or disable bot protection for /graphql and /wp-content/ in SiteGround Security.'
+            'SiteGround captcha can trigger after a burst of requests — whitelist your IP or relax bot protection for /graphql.'
           );
         } else {
           console.error(`Fetch API non-OK status: ${res.status} ${res.statusText}`);
@@ -336,9 +317,10 @@ async function buildHeaders(preview) {
   const headers = { 'Content-Type': 'application/json' };
   if (isServer) {
     headers['User-Agent'] = SERVER_USER_AGENT;
-    // Headless Login's Access Control checks the Origin header even for
-    // non-login queries on some versions, so always send it from the server.
-    if (SERVER_ORIGIN) {
+    // Headless Login Access Control checks Origin on authenticated preview calls.
+    // Sending Origin on every public server query was causing SiteGround to classify
+    // bursts of GraphQL traffic as login/bruteforce attempts.
+    if (preview && SERVER_ORIGIN) {
       headers['Origin'] = SERVER_ORIGIN;
       headers['Referer'] = SERVER_ORIGIN;
     }
@@ -420,9 +402,6 @@ export default async function fetchAPI(query, { variables, tags = [], revalidate
   } catch (e) {
     if (e?.message !== 'CMS_FETCH_EMPTY') {
       console.error('[CMS] cached fetch errored:', e);
-    }
-    if (isCmsWafBackoffActive()) {
-      return null;
     }
     // Fall back to a direct fetch so the current render still has a chance.
     // The bad cache slot stays unset, so the next request will try fresh too.

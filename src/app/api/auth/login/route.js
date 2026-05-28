@@ -8,7 +8,10 @@ export async function POST(req) {
 
     const response = await fetch(process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "OSE-NextJS/1.0 (+auth)",
+      },
       body: JSON.stringify({
         query: `
           mutation LoginUser($input: LoginInput!) {
