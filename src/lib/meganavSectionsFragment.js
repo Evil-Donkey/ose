@@ -88,6 +88,10 @@ export const MEGANAV_SECTIONS_FRAGMENT = `
     sectionLabel
     fieldGroupName
   }
+  ... on Page_Flexiblecontent_FlexibleContent_LogosSlider {
+    sectionLabel
+    fieldGroupName
+  }
   ... on Page_Flexiblecontent_FlexibleContent_Exits {
     sectionLabel
     fieldGroupName

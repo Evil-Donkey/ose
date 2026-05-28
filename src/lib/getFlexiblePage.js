@@ -522,6 +522,19 @@ const FLEXIBLE_CONTENT_QUERY = `
               altText
             }
           }
+          ... on Page_Flexiblecontent_FlexibleContent_LogosSlider {
+            fieldGroupName
+            sectionLabel
+            title
+            logos {
+              url
+              image {
+                mediaItemUrl
+                caption
+                altText
+              }
+            }
+          }
           ... on Page_Flexiblecontent_FlexibleContent_Exits {
             copy
             fieldGroupName
