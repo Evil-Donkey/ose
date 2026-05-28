@@ -29,7 +29,7 @@ export default async function PortfolioPreviewPage({ params }) {
         className="mt-30 pb-20 min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 bg-cover bg-center relative"
         style={{
           backgroundImage: featuredImage
-            ? `url(${proxyImageUrl(featuredImage.node.mediaItemUrl, true)})`
+            ? `url(${proxyImageUrl(featuredImage.node.mediaItemUrl)})`
             : undefined,
         }}
       >

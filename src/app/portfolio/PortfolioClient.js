@@ -8,6 +8,7 @@ import ReactDOM from "react-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSearchParams } from "next/navigation";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +25,8 @@ const LogoImage = ({ item }) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const wrapperRef = useRef(null);
-  const logoUrl = item.portfolioFields?.logoThumbnail?.mediaItemUrl || item.portfolioFields?.logo?.mediaItemUrl;
+  const rawLogoUrl = item.portfolioFields?.logoThumbnail?.mediaItemUrl || item.portfolioFields?.logo?.mediaItemUrl;
+  const logoUrl = rawLogoUrl ? proxyImageUrl(rawLogoUrl) : null;
 
   // Fallback for cached images where onLoad may not fire
   useEffect(() => {
@@ -54,7 +56,7 @@ const LogoImage = ({ item }) => {
         className={`mb-4 absolute top-4 left-3 w-2/3 object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
-        unoptimized={logoUrl.endsWith('.svg')}
+        unoptimized
         priority={false}
       />
     </div>

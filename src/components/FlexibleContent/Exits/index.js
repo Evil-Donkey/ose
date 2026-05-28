@@ -1,31 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { proxyImageUrl } from '@/lib/proxyImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ExitLogo = ({ logo, className }) => {
-    const [unoptimized, setUnoptimized] = useState(
-        logo.mediaItemUrl?.endsWith('.svg') ?? false
-    );
-    return (
-        <Image
-            src={logo.mediaItemUrl}
-            alt={logo.altText || ''}
-            width={logo.mediaDetails?.width || 300}
-            height={logo.mediaDetails?.height || 150}
-            className={className}
-            unoptimized={unoptimized}
-            onError={() => setUnoptimized(true)}
-        />
-    );
-};
+const ExitLogo = ({ logo, className }) => (
+    <Image
+        src={proxyImageUrl(logo.mediaItemUrl)}
+        alt={logo.altText || ''}
+        width={logo.mediaDetails?.width || 300}
+        height={logo.mediaDetails?.height || 150}
+        className={className}
+        unoptimized
+    />
+);
 
 const Exits = ({ data }) => {
     const titleRef = useRef([]);

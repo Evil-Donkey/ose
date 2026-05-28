@@ -49,10 +49,10 @@ const Advantages = ({ data }) => {
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="min-h-section-height text-white bg-cover bg-center bg-[url('/mobile-gradient.jpg')] lg:bg-[url('/desktop-gradient.jpg')] relative pt-10 pb-30">
             {backgroundImage?.mediaItemUrl && (
-                <div className={`absolute inset-0 bg-cover bg-center ${backgroundImageMobile?.mediaItemUrl ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${proxyImageUrl(backgroundImage.mediaItemUrl, true)})` }} />
+                <div className={`absolute inset-0 bg-cover bg-center ${backgroundImageMobile?.mediaItemUrl ? 'hidden lg:block' : ''}`} style={{ backgroundImage: `url(${proxyImageUrl(backgroundImage.mediaItemUrl)})` }} />
             )}
             {backgroundImageMobile?.mediaItemUrl && (
-                <div className="absolute inset-0 bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(backgroundImageMobile.mediaItemUrl, true)})` }} />
+                <div className="absolute inset-0 bg-cover bg-center lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(backgroundImageMobile.mediaItemUrl)})` }} />
             )}
             <Container className="py-20 2xl:py-40 relative z-10">
                 <div className="flex flex-col text-center">

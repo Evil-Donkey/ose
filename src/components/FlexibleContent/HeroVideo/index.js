@@ -81,8 +81,8 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                             ref={el => videoRef.current[0] = el}
                             className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 relative overflow-hidden ${mobileMovie || introMovieMobileVimeo ? "hidden lg:block" : ""}`}
                         >
-                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl, true)})` }} />}
-                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl, true)})` }} />}
+                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl)})` }} />}
+                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl)})` }} />}
 
                             <VimeoEmbed
                                 vimeoUrl={introMovieVimeo}
@@ -90,8 +90,8 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                         </div>
                     ) : introMovie && (  
                         <div className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 relative ${mobileMovie ? "hidden lg:block" : ""}`} ref={el => videoRef.current[0] = el}>
-                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl, true)})` }} />}
-                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl, true)})` }} />}
+                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl)})` }} />}
+                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl)})` }} />}
                             <video 
                                 {...getOptimizedVideoProps(introMovie, {
                                     context: 'hero',
@@ -116,16 +116,16 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                             ref={el => videoRef.current[1] = el}
                             className={`w-full aspect-5/7 md:aspect-auto md:w-full md:h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden lg:hidden relative ${mobileMovie ? "hidden lg:block" : ""}`}
                         >
-                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl, true)})` }} />}
-                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl, true)})` }} />}
+                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl)})` }} />}
+                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl)})` }} />}
                             <VimeoEmbed
                                 vimeoUrl={introMovieMobileVimeo}
                             />
                         </div>
                     ) : mobileMovie && (
                         <div className={`w-full h-full rounded-2xl shadow-xl opacity-0 scale-125 overflow-hidden lg:hidden relative ${mobileMovie ? "hidden lg:block" : ""}`} ref={el => videoRef.current[1] = el}>
-                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl, true)})` }} />}
-                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl, true)})` }} />}
+                            {desktopImage && <div className={`w-full h-full bg-cover bg-center absolute inset-0 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl)})` }} />}
+                            {mobileImage && <div className="w-full h-full bg-cover bg-center absolute inset-0 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl)})` }} />}
                             <video 
                                 {...getOptimizedVideoProps(mobileMovie, {
                                     context: 'hero',
@@ -147,10 +147,10 @@ const HeroVideo = ({ data, onVideoPopupOpen, title }) => {
                     )}
 
                     {desktopImage && !introMovieVimeo && !introMovie && (
-                        <div ref={el => videoRef.current[2] = el} className={`w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl, true)})` }} />
+                        <div ref={el => videoRef.current[2] = el} className={`w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 ${mobileImage ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(desktopImage.mediaItemUrl)})` }} />
                     )}
                     {mobileImage && !introMovieMobileVimeo && !mobileMovie && (
-                        <div ref={el => videoRef.current[3] = el} className="w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl, true)})` }} />
+                        <div ref={el => videoRef.current[3] = el} className="w-full h-full rounded-2xl shadow-xl bg-cover bg-center opacity-0 scale-125 lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(mobileImage.mediaItemUrl)})` }} />
                     )}
 
                     <div className={`absolute top-0 left-0 ${!copyOnTheLeft ? "lg:left-auto lg:right-[13%]" : ""} p-6 flex flex-col justify-center h-full text-white z-50`}>

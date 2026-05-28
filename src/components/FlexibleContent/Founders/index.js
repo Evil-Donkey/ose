@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import getFounders from '@/lib/getFounders';
 import Link from "next/link";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { proxyImageUrl } from '@/lib/proxyImage';
 import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -318,7 +319,7 @@ const Cards = ({ data, foundersData = null }) => {
                                                     <Link href={`/founders/${slug}`} className="group overflow-hidden rounded-2xl mb-4 ">
                                                         <div 
                                                             className="w-full aspect-4/3 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
-                                                            style={{ backgroundImage: `url(${featuredImage?.node?.mediaItemUrl})` }}
+                                                            style={{ backgroundImage: `url(${proxyImageUrl(featuredImage?.node?.mediaItemUrl)})` }}
                                                         />
                                                     </Link>
                                                 )}

@@ -101,7 +101,7 @@ export const getOptimizedImageProps = (imageData, options = {}) => {
   const { proxyImageUrl } = require('./proxyImage');
   
   return {
-    src: proxyImageUrl(imageData.mediaItemUrl, true), // Force proxy for VPN compatibility
+    src: proxyImageUrl(imageData.mediaItemUrl),
     alt: imageData.altText || imageData.caption || alt,
     width,
     height,

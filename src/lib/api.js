@@ -66,7 +66,27 @@ const SERVER_ORIGIN = resolveServerOrigin();
 // Status codes that are worth retrying once — transient WAF blocks, upstream
 // timeouts and rate-limiting. We do NOT retry on 4xx that look permanent
 // (400/401/404/422) because they'll fail the same way every time.
-const RETRYABLE_STATUS = new Set([408, 425, 429, 500, 502, 503, 504, 403]);
+// SiteGround WAF serves sgcaptcha HTML with HTTP 202; fetch treats 202 as ok.
+const RETRYABLE_STATUS = new Set([202, 408, 425, 429, 500, 502, 503, 504, 403]);
+
+function isCmsWafBlock(status, contentType, bodyPreview = '') {
+  if (status === 202) return true;
+  if (String(contentType).includes('text/html')) return true;
+  return bodyPreview.includes('sgcaptcha') || bodyPreview.trimStart().startsWith('<');
+}
+
+// After SiteGround sgcaptcha triggers, stop hammering the CMS for a short window.
+// Each failed fetch was previously retried immediately, doubling request volume.
+let cmsWafBlockedUntil = 0;
+const WAF_BACKOFF_MS = 90_000;
+
+function markCmsWafBlocked() {
+  cmsWafBlockedUntil = Date.now() + WAF_BACKOFF_MS;
+}
+
+function isCmsWafBackoffActive() {
+  return Date.now() < cmsWafBlockedUntil;
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -205,9 +225,15 @@ async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
+      if (isCmsWafBackoffActive() && attempt === 1) {
+        return null;
+      }
+
       const res = await doFetch(API_URL, fetchInit, timeoutMs);
 
-      if (!res.ok) {
+      const contentType = res.headers.get('content-type') || '';
+
+      if (!res.ok || isCmsWafBlock(res.status, contentType)) {
         // A 401/403 on a preview call usually means our cached authToken
         // went stale (clock skew, CMS restart). Drop it and retry once with
         // a freshly-minted token.
@@ -222,10 +248,24 @@ async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions
           continue;
         }
         if (RETRYABLE_STATUS.has(res.status) && attempt < maxAttempts) {
-          await sleep(300 * attempt);
+          await sleep(500 * attempt);
           continue;
         }
-        console.error(`Fetch API non-OK status: ${res.status} ${res.statusText}`);
+        if (isCmsWafBlock(res.status, contentType)) {
+          markCmsWafBlocked();
+          console.error(
+            `Fetch API blocked by CMS WAF (HTTP ${res.status}, ${contentType || 'no content-type'}). ` +
+            'SiteGround captcha often triggers after a burst of dev-server requests — pausing CMS fetches for 90s. ' +
+            'Whitelist your IP or disable bot protection for /graphql and /wp-content/ in SiteGround Security.'
+          );
+        } else {
+          console.error(`Fetch API non-OK status: ${res.status} ${res.statusText}`);
+        }
+        return null;
+      }
+
+      if (!contentType.includes('application/json')) {
+        console.error(`Fetch API unexpected content-type: ${contentType || '(none)'} (HTTP ${res.status})`);
         return null;
       }
 
@@ -380,6 +420,9 @@ export default async function fetchAPI(query, { variables, tags = [], revalidate
   } catch (e) {
     if (e?.message !== 'CMS_FETCH_EMPTY') {
       console.error('[CMS] cached fetch errored:', e);
+    }
+    if (isCmsWafBackoffActive()) {
+      return null;
     }
     // Fall back to a direct fetch so the current render still has a chance.
     // The bad cache slot stays unset, so the next request will try fresh too.

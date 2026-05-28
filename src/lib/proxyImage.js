@@ -5,32 +5,37 @@
  * avoiding CORS issues with VPNs and different network environments.
  * 
  * @param {string} imageUrl - The WordPress image URL
- * @param {boolean} forceProxy - Force proxying even on server-side (for HTML generation)
+ * @param {boolean} forceProxy - Rare override; SVGs are proxied automatically
  * @returns {string} - Proxied URL or original URL
  */
 export function proxyImageUrl(imageUrl, forceProxy = false) {
-  // Return early if no URL provided
   if (!imageUrl) return '';
 
-  // Check if we're on the server
   const isServer = typeof window === 'undefined';
+  const isSvg = /\.svg(\?|#|$)/i.test(imageUrl);
 
-  // Check if it's a WordPress image that needs proxying
-  const wordpressDomains = [
+  // Cross-origin SVGs in <img> are blocked by Chrome ORB. Proxy those only.
+  // JPG/PNG load directly from the CMS — proxying every hero/background image
+  // doubles server traffic and triggers SiteGround sgcaptcha during local dev.
+  // When sgcaptcha is active the CMS returns HTML for image URLs; the browser
+  // then reports that as net::ERR_BLOCKED_BY_ORB (not a separate CORS bug).
+  const wordpressHosts = [
     'oxfordscienceenterprises-cms.com',
+    process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT,
     process.env.NEXT_PUBLIC_WORDPRESS_URL,
-  ].filter(Boolean);
+  ]
+    .filter(Boolean)
+    .map((domain) => String(domain).replace(/^https?:\/\//, '').replace(/\/+$/, ''));
 
-  const needsProxy = wordpressDomains.some(domain => imageUrl.includes(domain));
+  const needsProxy = wordpressHosts.some((host) => imageUrl.includes(host));
 
-  // If it's a WordPress image, proxy it
-  // For server-side: only proxy if forceProxy is true (for HTML that will be sent to browser)
-  // For client-side: always proxy WordPress images
-  if (needsProxy && (!isServer || forceProxy)) {
+  if (!needsProxy) return imageUrl;
+  if (forceProxy || isSvg) {
     return `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
   }
+  // Server-rendered raster images do not need the proxy.
+  if (isServer) return imageUrl;
 
-  // Otherwise return the original URL
   return imageUrl;
 }
 

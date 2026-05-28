@@ -7,6 +7,7 @@ import getTeamMembers from '@/lib/getTeamMembers';
 import Container from '../../Container';
 import Link from 'next/link';
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { proxyImageUrl } from '@/lib/proxyImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -325,7 +326,7 @@ const Team = ({ data, teamData = null }) => {
                     <Link href={`/who/${member.slug}`} className="group overflow-hidden rounded-2xl mb-4 ">
                         <div 
                             className="w-full aspect-4/5 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
-                            style={cardImageUrl ? { backgroundImage: `url(${cardImageUrl})` } : {}}
+                            style={cardImageUrl ? { backgroundImage: `url(${proxyImageUrl(cardImageUrl)})` } : {}}
                         />
                     </Link>
                     <Link href={`/who/${member.slug}`} className="flex flex-col">
