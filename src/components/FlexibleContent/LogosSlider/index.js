@@ -22,7 +22,7 @@ const LogoImage = ({ image }) => (
         alt={image.altText || ""}
         width={210}
         height={105}
-        className="object-contain max-h-[100px] md:max-h-[140px] w-auto h-auto"
+        className="object-contain max-h-[105px] md:max-h-[105px] w-auto h-auto"
         unoptimized
     />
 );
@@ -81,7 +81,7 @@ const LogosSlider = ({ data }) => {
                     >
                         {slides.map(({ url, image }, index) => (
                             <SwiperSlide key={index}>
-                                <div className="flex items-center justify-center h-[100px] md:h-[140px] px-2">
+                                <div className="flex items-center justify-center h-[105px] md:h-[105px] px-2">
                                     {url ? (
                                         <Link
                                             href={url}
