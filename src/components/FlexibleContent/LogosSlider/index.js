@@ -6,12 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import formatSectionLabel from "@/lib/formatSectionLabel";
 import { proxyImageUrl } from "@/lib/proxyImage";
 import Container from "../../Container";
 
 import "swiper/css";
+import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -71,13 +72,14 @@ const LogosSlider = ({ data }) => {
                 <div className="relative w-full">
                     <Swiper
                         ref={swiperRef}
-                        modules={[Pagination]}
+                        modules={[Navigation, Pagination]}
+                        navigation={true}
                         pagination={{ clickable: true }}
                         breakpoints={{
                             1024: { slidesPerView: 4, slidesPerGroup: 4, spaceBetween: 40 },
                             0: { slidesPerView: 2, slidesPerGroup: 2, spaceBetween: 24 },
                         }}
-                        className="logos-slider-swiper pb-24!"
+                        className="logos-slider-swiper pb-24! px-12 md:px-16"
                     >
                         {slides.map(({ url, image }, index) => (
                             <SwiperSlide key={index}>
@@ -99,6 +101,42 @@ const LogosSlider = ({ data }) => {
                         ))}
                     </Swiper>
                     <style jsx global>{`
+                        .logos-slider-swiper .swiper-button-next,
+                        .logos-slider-swiper .swiper-button-prev {
+                            background: #00a0cc;
+                            color: #fff;
+                            width: 44px;
+                            height: 44px;
+                            border-radius: 9999px;
+                            display: flex !important;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: none !important;
+                            transition: background 0.2s;
+                            top: auto;
+                            bottom: 0;
+                            margin-top: -22px;
+                        }
+                        .logos-slider-swiper .swiper-button-next:hover,
+                        .logos-slider-swiper .swiper-button-prev:hover {
+                            background: #00004d;
+                        }
+                        .logos-slider-swiper .swiper-button-next::after,
+                        .logos-slider-swiper .swiper-button-prev::after {
+                            font-size: 1.25rem;
+                            font-weight: 700;
+                            color: #fff;
+                        }
+                        .logos-slider-swiper .swiper-button-prev {
+                            left: 0 !important;
+                        }
+                        .logos-slider-swiper .swiper-button-next {
+                            right: 0 !important;
+                        }
+                        .logos-slider-swiper .swiper-button-disabled {
+                            opacity: 0.35;
+                            pointer-events: none;
+                        }
                         .logos-slider-swiper .swiper-pagination {
                             position: absolute;
                             bottom: 0;
