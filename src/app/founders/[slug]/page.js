@@ -37,8 +37,12 @@ export default async function TeamMemberSinglePage({ params }) {
     notFound();
   }
 
-  const { title, founder, content } = item;
+  const { title, founder, content, featuredImage } = item;
   const { heroDesktopImage, heroMobileImage, email, linkedinUrl, role, heroCopyToTheRight } = founder || {};
+  const heroDesktopUrl =
+    heroDesktopImage?.mediaItemUrl ||
+    heroMobileImage?.mediaItemUrl ||
+    featuredImage?.node?.mediaItemUrl;
 
   const ctaData = {
     copy: footerData.ctaCopy,
@@ -50,7 +54,7 @@ export default async function TeamMemberSinglePage({ params }) {
     <>
         <HeaderServer fixed={true} />
         <div className={`mt-20 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex`} style={{
-            backgroundImage: heroDesktopImage ? `url(${proxyImageUrl(heroDesktopImage.mediaItemUrl, true)})` : undefined
+            backgroundImage: heroDesktopUrl ? `url(${proxyImageUrl(heroDesktopUrl)})` : undefined
         }}>
             <div className="absolute inset-0 bg-black/30" />
             <Container className={`py-20 relative flex ${heroCopyToTheRight ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -62,7 +66,7 @@ export default async function TeamMemberSinglePage({ params }) {
         </div>
         {heroMobileImage && (
             <div className={`mt-30 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden`} style={{
-                backgroundImage: heroMobileImage ? `url(${proxyImageUrl(heroMobileImage.mediaItemUrl, true)})` : undefined
+                backgroundImage: heroMobileImage ? `url(${proxyImageUrl(heroMobileImage.mediaItemUrl)})` : undefined
             }}>
             </div>
         )}

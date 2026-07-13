@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { proxyImageUrl } from '@/lib/proxyImage';
 import Container from "../../Container";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -61,7 +62,7 @@ const LogosGrid = ({ data }) => {
                                 <div key={index} ref={el => galleryRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
                                     <div className="relative overflow-hidden rounded-lg flex flex-col text-center items-center p-6 2xl:p-10 h-full justify-end">
                                         {image && (
-                                            <Image src={image.mediaItemUrl} alt={image.altText} width={1000} height={1000} />
+                                            <Image src={proxyImageUrl(image.mediaItemUrl)} alt={image.altText} width={1000} height={1000} unoptimized />
                                         )}
                                     </div>
                                 </div>

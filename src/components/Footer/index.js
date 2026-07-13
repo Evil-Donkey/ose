@@ -142,11 +142,11 @@ const Footer = ({ data }) => {
                         <div className="flex flex-wrap justify-center lg:justify-end gap-x-1">
                             <Link href="/sustainability" className="hover:text-lightblue">Sustainability</Link>
                             <span>|</span>
-                            <Link href="/terms-conditions" className="hover:text-lightblue">Terms & Conditions</Link>
+                            <Link href="/terms-conditions" className="hover:text-lightblue">Terms & conditions</Link>
                             <span>|</span>
                             <Link href="/privacy-policy" className="hover:text-lightblue">Privacy policy</Link>
                             <span>|</span>
-                            <Link href="/modern-slavery-statement" className="hover:text-lightblue">Modern Slavery Statement</Link>
+                            <Link href="/modern-slavery-statement" className="hover:text-lightblue">Modern slavery statement</Link>
                             <span>|</span>
                             <Link href="/complaints-policy" className="hover:text-lightblue">Complaints policy</Link>
                         </div>

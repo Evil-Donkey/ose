@@ -66,7 +66,14 @@ const SERVER_ORIGIN = resolveServerOrigin();
 // Status codes that are worth retrying once — transient WAF blocks, upstream
 // timeouts and rate-limiting. We do NOT retry on 4xx that look permanent
 // (400/401/404/422) because they'll fail the same way every time.
-const RETRYABLE_STATUS = new Set([408, 425, 429, 500, 502, 503, 504, 403]);
+// SiteGround WAF serves sgcaptcha HTML with HTTP 202; fetch treats 202 as ok.
+const RETRYABLE_STATUS = new Set([202, 408, 425, 429, 500, 502, 503, 504, 403]);
+
+function isCmsWafBlock(status, contentType, bodyPreview = '') {
+  if (status === 202) return true;
+  if (String(contentType).includes('text/html')) return true;
+  return bodyPreview.includes('sgcaptcha') || bodyPreview.trimStart().startsWith('<');
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -207,7 +214,9 @@ async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions
     try {
       const res = await doFetch(API_URL, fetchInit, timeoutMs);
 
-      if (!res.ok) {
+      const contentType = res.headers.get('content-type') || '';
+
+      if (!res.ok || isCmsWafBlock(res.status, contentType)) {
         // A 401/403 on a preview call usually means our cached authToken
         // went stale (clock skew, CMS restart). Drop it and retry once with
         // a freshly-minted token.
@@ -222,10 +231,22 @@ async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions
           continue;
         }
         if (RETRYABLE_STATUS.has(res.status) && attempt < maxAttempts) {
-          await sleep(300 * attempt);
+          await sleep(500 * attempt);
           continue;
         }
-        console.error(`Fetch API non-OK status: ${res.status} ${res.statusText}`);
+        if (isCmsWafBlock(res.status, contentType)) {
+          console.error(
+            `Fetch API blocked by CMS WAF (HTTP ${res.status}, ${contentType || 'no content-type'}). ` +
+            'SiteGround captcha can trigger after a burst of requests — whitelist your IP or relax bot protection for /graphql.'
+          );
+        } else {
+          console.error(`Fetch API non-OK status: ${res.status} ${res.statusText}`);
+        }
+        return null;
+      }
+
+      if (!contentType.includes('application/json')) {
+        console.error(`Fetch API unexpected content-type: ${contentType || '(none)'} (HTTP ${res.status})`);
         return null;
       }
 

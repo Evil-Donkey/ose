@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+const CMS_USER_AGENT = "OSE-NextJS/1.0 (+auth)";
+
 export async function GET() {
   const cookieStore = await cookies();
   const authToken = cookieStore.get("authToken")?.value;
@@ -14,6 +16,7 @@ export async function GET() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "User-Agent": CMS_USER_AGENT,
         Authorization: `Bearer ${authToken}`,
       },
       body: JSON.stringify({

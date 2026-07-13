@@ -67,7 +67,7 @@ export default async function PortfolioSinglePage({ params }) {
       <div className="mt-30 pb-20 min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 relative overflow-hidden">
         {heroImageUrl && (
           <Image
-            src={proxyImageUrl(heroImageUrl, true)}
+            src={proxyImageUrl(heroImageUrl)}
             alt={heroAlt}
             fill
             priority
@@ -83,7 +83,7 @@ export default async function PortfolioSinglePage({ params }) {
         <div className="w-full md:w-200 mx-auto text-center text-white relative z-10">
           {logo?.mediaItemUrl ? (
             <Image
-              src={proxyImageUrl(logo.mediaItemUrl, true)}
+              src={proxyImageUrl(logo.mediaItemUrl)}
               alt={logo.altText || title || ""}
               width={logo.mediaDetails?.width || 600}
               height={logo.mediaDetails?.height || 300}
