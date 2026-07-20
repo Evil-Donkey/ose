@@ -253,9 +253,12 @@ async function attemptFetch({ query, variables, headers, timeoutMs, cacheOptions
       const json = await res.json();
 
       if (json.errors) {
+        // Schema drift (field not registered yet / renamed) is non-fatal when
+        // we still got a data payload. Match with or without WPGraphQL's
+        // "Did you mean …" hint — e.g. optional featuredImageUrl before the
+        // WordPress helper is deployed.
         const nonFieldErrors = json.errors.filter(error =>
-          !(error?.message?.includes('Cannot query field') &&
-            error?.message?.includes('Did you mean'))
+          !String(error?.message || '').includes('Cannot query field')
         );
 
         if (nonFieldErrors.length > 0) {

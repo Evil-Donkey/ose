@@ -608,6 +608,7 @@ add_action('init', function() {
 
 // Add custom columns to the Team post type
 add_filter('manage_edit-team_columns', function($columns) {
+   $columns['featured_image_status'] = __('Featured (grid)');
    $columns['hero_desktop_image'] = __('Hero Desktop Image');
    $columns['hero_mobile_image'] = __('Hero Mobile Image');
    return $columns;
@@ -615,6 +616,21 @@ add_filter('manage_edit-team_columns', function($columns) {
 
 // Show the field values in the columns
 add_action('manage_team_posts_custom_column', function($column, $post_id) {
+   if ($column === 'featured_image_status') {
+       $thumb_id = (int) get_post_thumbnail_id( $post_id );
+       if ( $thumb_id > 0 && get_post_type( $thumb_id ) === 'attachment' ) {
+           $url = wp_get_attachment_image_url( $thumb_id, 'thumbnail' );
+           if ( $url ) {
+               echo '<img src="' . esc_url( $url ) . '" alt="" style="max-width: 50px; height: auto;">';
+           } else {
+               echo '<span style="color:#b32d2e;">Broken ID ' . esc_html( (string) $thumb_id ) . '</span>';
+           }
+       } else {
+           echo '<span style="color:#b32d2e;font-weight:600;">Missing</span>';
+       }
+       return;
+   }
+
    if ($column === 'hero_desktop_image') {
        $image = get_field('field_6899d3922fd7a', $post_id);
        $image_id = '';
@@ -950,6 +966,8 @@ function ose_acf_update_image_field_attachment_id( $field_key, $post_id, $attach
 
 /**
  * Ensure ACF hero image meta is stored as an attachment ID so WPGraphQL can resolve it.
+ * Also repairs Featured Image attachments that admin can see but WPGraphQL returns as null
+ * (common when attachment post_status is "publish" instead of "inherit").
  * Runs on save_post (after ACF) — not acf/save_post — to avoid recursive save loops.
  */
 function ose_normalize_acf_hero_image_fields( $post_id ) {
@@ -987,11 +1005,302 @@ function ose_normalize_acf_hero_image_fields( $post_id ) {
        }
    }
 
+   ose_repair_featured_image_for_graphql( $post_id );
+
    $running = false;
 }
 
+/**
+ * Make a post's Featured Image resolvable by WPGraphQL.
+ *
+ * WPGraphQL's media connection defaults to post_status=inherit. Attachments that
+ * were re-saved / imported with status "publish" (or another status) still show
+ * in wp-admin but featuredImage { node } resolves to null over GraphQL.
+ *
+ * @see https://github.com/wp-graphql/wp-graphql/issues/1999
+ */
+function ose_repair_featured_image_for_graphql( $post_id ) {
+   $thumb_id = (int) get_post_thumbnail_id( $post_id );
+   if ( $thumb_id <= 0 ) {
+       return;
+   }
+
+   $attachment = get_post( $thumb_id );
+   if ( ! $attachment || $attachment->post_type !== 'attachment' ) {
+       // Orphaned _thumbnail_id — admin can look confusing; clear it.
+       delete_post_thumbnail( $post_id );
+       return;
+   }
+
+   if ( $attachment->post_status !== 'inherit' ) {
+       wp_update_post(
+           [
+               'ID'          => $thumb_id,
+               'post_status' => 'inherit',
+           ]
+       );
+   }
+}
+
+/**
+ * WPGraphQL: allow featured-image / media lookups to find attachments that are
+ * not strictly "inherit" (publish/private). Without this, admin shows the image
+ * and GraphQL returns featuredImage: null.
+ */
+add_filter(
+   'graphql_post_object_connection_query_args',
+   function ( $query_args, $source, $args, $context, $info ) {
+       $post_type = $query_args['post_type'] ?? null;
+       $types     = is_array( $post_type ) ? $post_type : [ $post_type ];
+
+       if ( ! in_array( 'attachment', $types, true ) ) {
+           return $query_args;
+       }
+
+       $is_specific =
+           ! empty( $query_args['p'] ) ||
+           ! empty( $query_args['post__in'] ) ||
+           ! empty( $query_args['attachment_id'] );
+
+       if ( $is_specific ) {
+           $query_args['post_status'] = [ 'inherit', 'publish', 'private' ];
+       }
+
+       return $query_args;
+   },
+   10,
+   5
+);
+
+/**
+ * Bulletproof GraphQL fields: resolve Featured Image via PHP get_post_thumbnail_id()
+ * so the Next.js app can still get a URL even if the featuredImage connection fails.
+ */
+add_action(
+   'graphql_register_types',
+   function () {
+       $resolve_featured_url = function ( $post ) {
+           $post_id = 0;
+           if ( is_object( $post ) ) {
+               $post_id = (int) ( $post->databaseId ?? $post->ID ?? 0 );
+           } elseif ( is_array( $post ) ) {
+               $post_id = (int) ( $post['databaseId'] ?? $post['ID'] ?? 0 );
+           }
+           if ( $post_id <= 0 ) {
+               return null;
+           }
+           $thumb_id = (int) get_post_thumbnail_id( $post_id );
+           if ( $thumb_id <= 0 ) {
+               return null;
+           }
+           $url = wp_get_attachment_image_url( $thumb_id, 'full' );
+           return $url ? $url : null;
+       };
+
+       foreach ( [ 'Team', 'Founders' ] as $type_name ) {
+           register_graphql_field(
+               $type_name,
+               'featuredImageUrl',
+               [
+                   'type'        => 'String',
+                   'description' => 'Featured image URL resolved via PHP (works when featuredImage connection is null).',
+                   'resolve'     => $resolve_featured_url,
+               ]
+           );
+       }
+   }
+);
+
 add_action( 'save_post_team', 'ose_normalize_acf_hero_image_fields', 99 );
 add_action( 'save_post_founders', 'ose_normalize_acf_hero_image_fields', 99 );
+
+/**
+ * One-click repair on Team list screen: normalize attachment status for all
+ * published team members that have a Featured Image set.
+ */
+add_action(
+   'admin_init',
+   function () {
+       if ( ! current_user_can( 'edit_posts' ) ) {
+           return;
+       }
+       if ( empty( $_GET['ose_repair_team_featured'] ) || empty( $_GET['_wpnonce'] ) ) {
+           return;
+       }
+       if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'ose_repair_team_featured' ) ) {
+           return;
+       }
+
+       $ids = get_posts(
+           [
+               'post_type'      => 'team',
+               'post_status'    => 'publish',
+               'posts_per_page' => 500,
+               'fields'         => 'ids',
+               'no_found_rows'  => true,
+           ]
+       );
+
+       $repaired = 0;
+       foreach ( $ids as $id ) {
+           $thumb_id = (int) get_post_thumbnail_id( $id );
+           if ( $thumb_id <= 0 ) {
+               continue;
+           }
+           $attachment = get_post( $thumb_id );
+           if ( ! $attachment || $attachment->post_type !== 'attachment' ) {
+               ose_repair_featured_image_for_graphql( $id );
+               $repaired++;
+               continue;
+           }
+           if ( $attachment->post_status !== 'inherit' ) {
+               ose_repair_featured_image_for_graphql( $id );
+               $repaired++;
+           }
+       }
+
+       wp_safe_redirect(
+           add_query_arg(
+               [
+                   'ose_team_featured_repaired' => $repaired,
+                   'ose_repair_team_featured'   => false,
+               ],
+               admin_url( 'edit.php?post_type=team' )
+           )
+       );
+       exit;
+   }
+);
+
+/**
+ * Admin notice when team members are missing a Featured Image (portrait headshot).
+ * Hero Desktop/Mobile are landscape banners and look "shifted" in the portrait grid.
+ */
+add_action( 'admin_notices', function () {
+   $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+   if ( ! $screen || $screen->id !== 'edit-team' ) {
+       return;
+   }
+
+   $missing = get_posts( [
+       'post_type'              => 'team',
+       'post_status'            => 'publish',
+       'posts_per_page'         => 50,
+       'fields'                 => 'ids',
+       'meta_query'             => [
+           'relation' => 'OR',
+           [
+               'key'     => '_thumbnail_id',
+               'compare' => 'NOT EXISTS',
+           ],
+           [
+               'key'     => '_thumbnail_id',
+               'value'   => '',
+               'compare' => '=',
+           ],
+           [
+               'key'     => '_thumbnail_id',
+               'value'   => '0',
+               'compare' => '=',
+           ],
+       ],
+       'no_found_rows'          => true,
+       'update_post_meta_cache' => false,
+       'update_post_term_cache' => false,
+   ] );
+
+   // Also flag broken attachment IDs.
+   $all_ids = get_posts( [
+       'post_type'      => 'team',
+       'post_status'    => 'publish',
+       'posts_per_page' => 200,
+       'fields'         => 'ids',
+       'no_found_rows'  => true,
+   ] );
+   $broken = [];
+   foreach ( $all_ids as $id ) {
+       $thumb = (int) get_post_thumbnail_id( $id );
+       if ( $thumb > 0 && get_post_type( $thumb ) !== 'attachment' ) {
+           $broken[] = $id;
+       }
+   }
+
+   $missing = array_values( array_unique( array_merge( $missing ?: [], $broken ) ) );
+   if ( empty( $missing ) ) {
+       return;
+   }
+
+   $names = array_map( function ( $id ) {
+       return get_the_title( $id );
+   }, array_slice( $missing, 0, 12 ) );
+
+   echo '<div class="notice notice-warning"><p>';
+   echo esc_html(
+       sprintf(
+           /* translators: %d: count of team members */
+           _n(
+               '%d team member is missing a Featured Image (used for the Who page grid). Hero images alone appear cropped/shifted on the site. Set a portrait headshot as Featured Image for: ',
+               '%d team members are missing a Featured Image (used for the Who page grid). Hero images alone appear cropped/shifted on the site. Set a portrait headshot as Featured Image for: ',
+               count( $missing )
+           ),
+           count( $missing )
+       )
+   );
+   echo esc_html( implode( ', ', $names ) );
+   if ( count( $missing ) > 12 ) {
+       echo '…';
+   }
+   echo '</p><p>';
+   echo '<a class="button button-secondary" href="' . esc_url(
+       wp_nonce_url(
+           admin_url( 'edit.php?post_type=team&ose_repair_team_featured=1' ),
+           'ose_repair_team_featured'
+       )
+   ) . '">';
+   echo esc_html__( 'Repair Featured Images for GraphQL', 'your-textdomain' );
+   echo '</a> ';
+   echo esc_html__( 'Use this if Featured Image shows in admin but the site/GraphQL returns null (fixes attachment status inherit).', 'your-textdomain' );
+   echo '</p></div>';
+} );
+
+add_action(
+   'admin_notices',
+   function () {
+       $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+       if ( ! $screen || $screen->id !== 'edit-team' ) {
+           return;
+       }
+
+       if ( ! empty( $_GET['ose_team_featured_repaired'] ) ) {
+           $count = (int) $_GET['ose_team_featured_repaired'];
+           echo '<div class="notice notice-success is-dismissible"><p>';
+           echo esc_html(
+               sprintf(
+                   /* translators: %d: number of attachments repaired */
+                   __( 'Repaired %d Featured Image attachment(s) for GraphQL. Purge WPGraphQL / site cache if the frontend still shows old data.', 'your-textdomain' ),
+                   $count
+               )
+           );
+           echo '</p></div>';
+       }
+
+       // Always offer repair: the common bug is Featured Image SET in admin but
+       // GraphQL returns null because the attachment status is not "inherit".
+       echo '<div class="notice notice-info"><p>';
+       echo esc_html__(
+           'If a team Featured Image shows in admin but is missing on the website, click Repair — this fixes attachment status so WPGraphQL can resolve it.',
+           'your-textdomain'
+       );
+       echo ' <a class="button button-secondary" href="' . esc_url(
+           wp_nonce_url(
+               admin_url( 'edit.php?post_type=team&ose_repair_team_featured=1' ),
+               'ose_repair_team_featured'
+           )
+       ) . '">';
+       echo esc_html__( 'Repair Featured Images for GraphQL', 'your-textdomain' );
+       echo '</a></p></div>';
+   }
+);
 
 /**
  * Quick Edit only — never clear hero images when the hidden field is empty.
