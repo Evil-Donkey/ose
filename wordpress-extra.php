@@ -1013,33 +1013,41 @@ function ose_normalize_acf_hero_image_fields( $post_id ) {
 /**
  * Make a post's Featured Image resolvable by WPGraphQL.
  *
- * WPGraphQL's media connection defaults to post_status=inherit. Attachments that
- * were re-saved / imported with status "publish" (or another status) still show
- * in wp-admin but featuredImage { node } resolves to null over GraphQL.
+ * Common failure mode (Charo Bajo et al.): Featured Image shows in wp-admin and
+ * _thumbnail_id is set, but the attachment is unattached (post_parent = 0) and/or
+ * not status "inherit". Public WPGraphQL then returns featuredImage: null and
+ * mediaItem(id) is also null — while PHP wp_get_attachment_image_url() still works.
  *
  * @see https://github.com/wp-graphql/wp-graphql/issues/1999
  */
 function ose_repair_featured_image_for_graphql( $post_id ) {
    $thumb_id = (int) get_post_thumbnail_id( $post_id );
    if ( $thumb_id <= 0 ) {
-       return;
+       return false;
    }
 
    $attachment = get_post( $thumb_id );
    if ( ! $attachment || $attachment->post_type !== 'attachment' ) {
-       // Orphaned _thumbnail_id — admin can look confusing; clear it.
        delete_post_thumbnail( $post_id );
-       return;
+       return true;
    }
 
+   $update = [];
    if ( $attachment->post_status !== 'inherit' ) {
-       wp_update_post(
-           [
-               'ID'          => $thumb_id,
-               'post_status' => 'inherit',
-           ]
-       );
+       $update['post_status'] = 'inherit';
    }
+   // Unattached media is treated as private by WPGraphQL for public requests.
+   if ( (int) $attachment->post_parent !== (int) $post_id ) {
+       $update['post_parent'] = (int) $post_id;
+   }
+
+   if ( ! empty( $update ) ) {
+       $update['ID'] = $thumb_id;
+       wp_update_post( $update );
+       return true;
+   }
+
+   return false;
 }
 
 /**
@@ -1143,18 +1151,7 @@ add_action(
 
        $repaired = 0;
        foreach ( $ids as $id ) {
-           $thumb_id = (int) get_post_thumbnail_id( $id );
-           if ( $thumb_id <= 0 ) {
-               continue;
-           }
-           $attachment = get_post( $thumb_id );
-           if ( ! $attachment || $attachment->post_type !== 'attachment' ) {
-               ose_repair_featured_image_for_graphql( $id );
-               $repaired++;
-               continue;
-           }
-           if ( $attachment->post_status !== 'inherit' ) {
-               ose_repair_featured_image_for_graphql( $id );
+           if ( ose_repair_featured_image_for_graphql( $id ) ) {
                $repaired++;
            }
        }
@@ -1288,7 +1285,7 @@ add_action(
        // GraphQL returns null because the attachment status is not "inherit".
        echo '<div class="notice notice-info"><p>';
        echo esc_html__(
-           'If a team Featured Image shows in admin but is missing on the website, click Repair — this fixes attachment status so WPGraphQL can resolve it.',
+           'If a team Featured Image shows in admin but is missing on the website, click Repair — this re-attaches the image to the team member and fixes status so WPGraphQL can resolve it.',
            'your-textdomain'
        );
        echo ' <a class="button button-secondary" href="' . esc_url(
