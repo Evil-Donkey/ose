@@ -12,9 +12,17 @@ const TEAM_MEMBERS_QUERY = `
                 heroCopyToTheRight
                 heroDesktopImage {
                     mediaItemUrl
+                    mediaDetails {
+                        width
+                        height
+                    }
                 }
                 heroMobileImage {
                     mediaItemUrl
+                    mediaDetails {
+                        width
+                        height
+                    }
                 }
             }
             title(format: RENDERED)
@@ -33,6 +41,7 @@ const TEAM_MEMBERS_QUERY = `
                     }
                 }
             }
+            featuredImageUrl
             teamCategories {
                 nodes {
                     name

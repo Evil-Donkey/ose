@@ -11,6 +11,34 @@ import { proxyImageUrl } from '@/lib/proxyImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/**
+ * Card grid expects portrait headshots (Featured Image). When that's missing
+ * in GraphQL, hero images are landscape banners — bg-center crops faces badly.
+ */
+function getTeamCardImage(member) {
+  // Prefer the featuredImage connection; fall back to featuredImageUrl which
+  // WordPress resolves via PHP when WPGraphQL's media connection returns null
+  // (admin still shows the image).
+  const featured = member?.featuredImage?.node;
+  if (featured?.mediaItemUrl) {
+    return { url: featured.mediaItemUrl, preferTop: false };
+  }
+  if (member?.featuredImageUrl) {
+    return { url: member.featuredImageUrl, preferTop: false };
+  }
+
+  const heroMobile = member?.teamMember?.heroMobileImage;
+  const heroDesktop = member?.teamMember?.heroDesktopImage;
+  const fallback = heroMobile?.mediaItemUrl ? heroMobile : heroDesktop;
+  if (!fallback?.mediaItemUrl) return null;
+
+  const width = fallback.mediaDetails?.width;
+  const height = fallback.mediaDetails?.height;
+  const isLandscape = width && height ? width > height : true;
+
+  return { url: fallback.mediaItemUrl, preferTop: isLandscape };
+}
+
 const Team = ({ data, teamData = null }) => {
 
   // An empty array from the server means the SSR fetch failed or returned
@@ -314,9 +342,7 @@ const Team = ({ data, teamData = null }) => {
               {/* Grid */}
               <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredMembers.map((member, idx) => {
-                const cardImageUrl =
-                  member.featuredImage?.node?.mediaItemUrl ||
-                  member.teamMember?.heroDesktopImage?.mediaItemUrl;
+                const cardImage = getTeamCardImage(member);
 
                 return (
                 <div
@@ -325,8 +351,8 @@ const Team = ({ data, teamData = null }) => {
                 >
                     <Link href={`/who/${member.slug}`} className="group overflow-hidden rounded-2xl mb-4 ">
                         <div 
-                            className="w-full aspect-4/5 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
-                            style={cardImageUrl ? { backgroundImage: `url(${proxyImageUrl(cardImageUrl)})` } : {}}
+                            className={`w-full aspect-4/5 bg-cover group-hover:scale-105 transition-transform duration-300 ${cardImage?.preferTop ? 'bg-top' : 'bg-center'}`}
+                            style={cardImage?.url ? { backgroundImage: `url(${proxyImageUrl(cardImage.url)})` } : {}}
                         />
                     </Link>
                     <Link href={`/who/${member.slug}`} className="flex flex-col">

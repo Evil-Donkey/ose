@@ -110,35 +110,6 @@ export const MEGANAV_SECTIONS_FRAGMENT = `
   }
 `;
 
-export const MEGANAV_PAGE_LINKS_FRAGMENT = `
-  pageLinks {
-    heading
-    links {
-      label
-      link {
-        ... on Page {
-          id
-          link
-          slug
-          uri
-        }
-        ... on Portfolio {
-          id
-          link
-          slug
-          uri
-        }
-        ... on Story {
-          id
-          link
-          slug
-          uri
-        }
-      }
-    }
-  }
-`;
-
 export const MEGANAV_PAGE_ALIASES = {
   Why: 'why',
   What: 'what',
