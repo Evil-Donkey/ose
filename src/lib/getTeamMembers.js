@@ -41,7 +41,6 @@ const TEAM_MEMBERS_QUERY = `
                     }
                 }
             }
-            featuredImageUrl
             teamCategories {
                 nodes {
                     name
