@@ -40,17 +40,20 @@ export default async function PortfolioPreviewPage({ params }) {
           </div>
         )}
         <div className="w-full md:w-200 mx-auto text-center text-white relative">
-          {logo ? (
-            <ResponsiveImage
-              {...getOptimizedImageProps(logo, {
-                context: "content",
-                isAboveFold: true,
-                className: "object-contain h-auto w-full",
-              })}
-            />
-          ) : (
-            <h1 className="text-4xl font-bold mb-4" dangerouslySetInnerHTML={{ __html: title }} />
-          )}
+          {(() => {
+            const logoProps = logo
+              ? getOptimizedImageProps(logo, {
+                  context: "content",
+                  isAboveFold: true,
+                  className: "object-contain h-auto w-full",
+                })
+              : null;
+            return logoProps ? (
+              <ResponsiveImage {...logoProps} />
+            ) : (
+              <h1 className="text-4xl font-bold mb-4" dangerouslySetInnerHTML={{ __html: title }} />
+            );
+          })()}
         </div>
       </div>
 

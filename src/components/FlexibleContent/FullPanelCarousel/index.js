@@ -364,10 +364,10 @@ const FullPanelCarousel = ({ data }) => {
                             <div className="relative min-h-[100vh] h-full w-full overflow-hidden">
                                 <div 
                                     ref={el => backgroundImageRef.current[index] = el}
-                                    className={`background-image absolute top-0 left-0 w-full h-full bg-[100%_auto] bg-fixed bg-top-right scale-180 origin-top ${backgroundImageMobile ? 'hidden lg:block' : ''}`} 
-                                    style={{ backgroundImage: `url(${backgroundImage.mediaItemUrl})` }} 
+                                    className={`background-image absolute top-0 left-0 w-full h-full bg-[100%_auto] bg-fixed bg-top-right scale-180 origin-top ${backgroundImageMobile?.mediaItemUrl ? 'hidden lg:block' : ''}`} 
+                                    style={backgroundImage?.mediaItemUrl ? { backgroundImage: `url(${backgroundImage.mediaItemUrl})` } : undefined} 
                                 />
-                                {backgroundImageMobile && (
+                                {backgroundImageMobile?.mediaItemUrl && (
                                     <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-top-right lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
                                 )}
                                 {imageOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}

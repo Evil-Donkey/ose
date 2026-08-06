@@ -164,7 +164,7 @@ const Portfolio = ({ data }) => {
                             >
                                 <Link href={uri || '#'} className="block group h-full w-full">
                                     <div className="relative h-full w-full overflow-hidden rounded-lg">
-                                        {featuredImage?.node && (
+                                        {featuredImage?.node?.mediaItemUrl && (
                                             <Image
                                                 src={featuredImage.node.mediaItemUrl}
                                                 alt={featuredImage.node.altText || ''}

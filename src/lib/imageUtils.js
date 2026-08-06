@@ -91,6 +91,11 @@ export const getOptimizedImageProps = (imageData, options = {}) => {
     alt = '',
     loading = 'lazy'
   } = options;
+
+  // Draft/preview GraphQL (and empty ACF image fields) often return null media.
+  if (!imageData?.mediaItemUrl) {
+    return null;
+  }
   
   const width = imageData?.mediaDetails?.width || 800;
   const height = imageData?.mediaDetails?.height || 600;

@@ -14,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Story = ({ data }) => {
 
     const { content, title, story, featuredImage, uri, sectionLabel } = data.story;
-    const backgroundImage = featuredImage.node.mediaItemUrl || null;
+    const backgroundImage = featuredImage?.node?.mediaItemUrl || null;
     const { author, quote, quoteImage, secondCopyBlock } = story;
 
     const titleRef = useRef(null);
@@ -181,8 +181,8 @@ const Story = ({ data }) => {
                                         {quote && <div className="text-2xl md:text-[2rem]/10" dangerouslySetInnerHTML={{ __html: quote }} />}
                                         {author && <div className="text-xs md:text-sm font-medium drop-shadow-lg mt-3" dangerouslySetInnerHTML={{ __html: author }} />}
                                     </div>
-                                    {quoteImage &&
-                                        <Image src={quoteImage.mediaItemUrl} alt={quoteImage.altText} width={quoteImage.mediaDetails.width} height={quoteImage.mediaDetails.height} className="object-cover aspect-3/2" />
+                                    {quoteImage?.mediaItemUrl &&
+                                        <Image src={quoteImage.mediaItemUrl} alt={quoteImage.altText || ''} width={quoteImage.mediaDetails?.width || 800} height={quoteImage.mediaDetails?.height || 600} className="object-cover aspect-3/2" />
                                     }
                                 </div>
                             </div>
