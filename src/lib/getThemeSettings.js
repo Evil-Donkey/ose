@@ -49,6 +49,12 @@ async function fetchThemeSettings(preview) {
   });
 }
 
+// Last successful settings payload, kept for the lifetime of the serverless
+// instance. Theme settings change rarely, so serving a slightly stale copy
+// during a CMS blip is far better than rendering a blank footer/popout (or,
+// worse, failing the whole page render).
+let lastGoodSettings = null;
+
 const getThemeSettings = cache(async () => {
   const preview = await isPreviewCmsAuthRequest();
   let data = await fetchThemeSettings(preview);
@@ -59,7 +65,21 @@ const getThemeSettings = cache(async () => {
     data = await fetchThemeSettings(preview);
   }
 
-  return data?.acfOptionsThemeSettings?.globalSettings ?? null;
+  const settings = data?.acfOptionsThemeSettings?.globalSettings ?? null;
+
+  if (settings) {
+    lastGoodSettings = settings;
+    return settings;
+  }
+
+  if (lastGoodSettings) {
+    console.error(
+      '[getThemeSettings] CMS fetch failed — serving last-known-good settings from memory.'
+    );
+    return lastGoodSettings;
+  }
+
+  return null;
 });
 
 export default getThemeSettings;

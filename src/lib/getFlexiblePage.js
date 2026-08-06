@@ -182,6 +182,7 @@ const FLEXIBLE_CONTENT_QUERY = `
               copy
               title
               url
+              icon
               image {
                 mediaItemUrl
                 mediaDetails {
