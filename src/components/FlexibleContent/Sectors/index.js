@@ -73,8 +73,40 @@ const Sectors = ({ data }) => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
                     {sectors.map((sector, index) => {
-                        const { title, url, image, video, copy } = sector;
+                        const { title, url, image, video, copy, icon } = sector;
                         const link = url ? url : "#";
+
+                        if (icon) {
+                            return (
+                                <div key={index} ref={el => sectorsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col items-center text-center">
+                                    {image?.mediaItemUrl && (
+                                        <div className="flex items-center justify-center mb-6 2xl:mb-8">
+                                            <Image
+                                                src={image.mediaItemUrl}
+                                                alt={image.altText || ''}
+                                                width={image.mediaDetails?.width || 160}
+                                                height={image.mediaDetails?.height || 160}
+                                                className="object-contain w-24 h-24 md:w-28 md:h-28 2xl:w-32 2xl:h-32"
+                                            />
+                                        </div>
+                                    )}
+                                    {title && (
+                                        <h4 className="text-darkblue text-xl md:text-2xl 2xl:text-3xl font-medium mb-4 2xl:mb-5" dangerouslySetInnerHTML={{ __html: title }} />
+                                    )}
+                                    <div className="flex flex-col items-center gap-5 px-3 xl:px-8 2xl:px-12 flex-grow-1 justify-between">
+                                        {copy && (
+                                            <div className="text-base 2xl:text-xl text-blue-02" dangerouslySetInnerHTML={{ __html: copy }} />
+                                        )}
+                                        {url && (
+                                            <Link href={link} className="bg-lightblue text-white font-normal px-6 py-2 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase">
+                                                Discover {title}
+                                            </Link>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        }
+
                         return (
                             <div key={index} ref={el => sectorsRef.current[index] = el} className="opacity-0 translate-y-20 h-full flex flex-col">
                                 {url ? (    
