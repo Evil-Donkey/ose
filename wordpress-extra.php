@@ -1254,7 +1254,7 @@ add_action( 'admin_notices', function () {
            'ose_repair_team_featured'
        )
    ) . '">';
-   echo esc_html__( 'Repair Featured Images for GraphQL', 'your-textdomain' );
+   echo esc_html__( 'Refresh GraphQL Cache', 'your-textdomain' );
    echo '</a> ';
    echo esc_html__( 'Use this if Featured Image shows in admin but the site/GraphQL returns null (fixes attachment status inherit).', 'your-textdomain' );
    echo '</p></div>';
@@ -1274,27 +1274,21 @@ add_action(
            echo esc_html(
                sprintf(
                    /* translators: %d: number of attachments repaired */
-                   __( 'Repaired %d Featured Image attachment(s) for GraphQL. Purge WPGraphQL / site cache if the frontend still shows old data.', 'your-textdomain' ),
+                   __( 'Repaired %d Featured Image attachment(s) for GraphQL. Purge site cache if the frontend still shows old data.', 'your-textdomain' ),
                    $count
                )
            );
            echo '</p></div>';
        }
 
-       // Always offer repair: the common bug is Featured Image SET in admin but
-       // GraphQL returns null because the attachment status is not "inherit".
        echo '<div class="notice notice-info"><p>';
-       echo esc_html__(
-           'If a team Featured Image shows in admin but is missing on the website, click Repair — this re-attaches the image to the team member and fixes status so WPGraphQL can resolve it.',
-           'your-textdomain'
-       );
-       echo ' <a class="button button-secondary" href="' . esc_url(
+       echo '<a class="button button-secondary" href="' . esc_url(
            wp_nonce_url(
                admin_url( 'edit.php?post_type=team&ose_repair_team_featured=1' ),
                'ose_repair_team_featured'
            )
        ) . '">';
-       echo esc_html__( 'Repair Featured Images for GraphQL', 'your-textdomain' );
+       echo esc_html__( 'Refresh GraphQL Cache', 'your-textdomain' );
        echo '</a></p></div>';
    }
 );

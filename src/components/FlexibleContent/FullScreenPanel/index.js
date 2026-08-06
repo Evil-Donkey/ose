@@ -63,9 +63,9 @@ const FullScreenPanel = ({ data }) => {
             <div ref={backgroundImageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${proxyImageUrl(backgroundImage.mediaItemUrl)})` }} />
             {darkOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
             <div className={`${autoHeight ? "h-full" : "min-h-[100vh]"} flex flex-col justify-center`}>
-                <Container className={`py-30 ${autoHeight ? "md:py-40 2xl:py-60" : "md:py-25 2xl:py-45"} relative z-10 text-white flex flex-col h-full`}>
+                <Container className={`py-30 ${autoHeight ? "md:py-40 2xl:py-60" : "md:py-25 2xl:py-45"} relative z-10 text-white flex flex-col min-h-[100vh]`}>
                     {mainTitle && <h2 className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{mainTitle}</h2>}
-                    <div className="flex flex-col items-center text-center w-full gap-5">
+                    <div className="flex flex-col items-center text-center w-full gap-5 my-auto">
                         {heading && <h3 ref={titleRef} className="full-screen-panel__heading text-5xl md:text-[4rem]/20 lg:text-[6rem]/25 2xl:text-[7rem]/30 font-light tracking-tight w-full text-balance opacity-0 -translate-y-full">{heading}</h3>}
                         {copy && <div ref={copyRef} className={`w-full xl:px-17 ${!autoHeight && "lg:w-3/5"} text-xl md:text-2xl 2xl:text-[2.5rem]/12 opacity-0 translate-y-5`}>
                             <div className="full-screen-panel__copy text-center flex flex-col gap-8 items-center" dangerouslySetInnerHTML={{ __html: copy }} />
