@@ -1254,7 +1254,7 @@ add_action( 'admin_notices', function () {
            'ose_repair_team_featured'
        )
    ) . '">';
-   echo esc_html__( 'Refresh GraphQL Cache', 'your-textdomain' );
+   echo esc_html__( 'Repair Team Images', 'your-textdomain' );
    echo '</a> ';
    echo esc_html__( 'Use this if Featured Image shows in admin but the site/GraphQL returns null (fixes attachment status inherit).', 'your-textdomain' );
    echo '</p></div>';
@@ -1288,7 +1288,7 @@ add_action(
                'ose_repair_team_featured'
            )
        ) . '">';
-       echo esc_html__( 'Refresh GraphQL Cache', 'your-textdomain' );
+       echo esc_html__( 'Repair Team Images.', 'your-textdomain' );
        echo '</a></p></div>';
    }
 );

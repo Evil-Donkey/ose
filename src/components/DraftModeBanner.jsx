@@ -1,22 +1,19 @@
-"use client"
+import { draftMode } from 'next/headers'
 
-import { useEffect, useState } from 'react'
-
-export default function DraftModeBanner() {
-  const [isDraft, setIsDraft] = useState(false)
-
-  useEffect(() => {
-    setIsDraft(
-      document.cookie.split(';').some(c => c.trim().startsWith('__prerender_bypass='))
-    )
-  }, [])
-
-  if (!isDraft) return null
+// Server component: the draft cookie (__prerender_bypass) is httpOnly, so it
+// can't be detected from document.cookie on the client. draftMode() reads it
+// server-side; during static prerenders it reports disabled, and draft-mode
+// requests always render dynamically, so the banner shows exactly when needed.
+export default async function DraftModeBanner() {
+  const { isEnabled } = await draftMode()
+  if (!isEnabled) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-amber-400 text-black py-2 px-4 flex items-center justify-center gap-4 text-sm">
-      <span className="font-semibold">Draft Preview Mode</span>
-      <span className="text-black/60">— changes are live for editors only</span>
+    <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-amber-400 text-black py-2 px-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
+      <span className="font-semibold">Draft Preview Mode is ON in this browser</span>
+      <span className="text-black/60">
+        — pages load slower and may error while it&apos;s on. Click Exit Preview when you&apos;re done reviewing drafts.
+      </span>
       <a
         href="/api/disable-draft"
         className="ml-2 bg-black text-white text-xs font-medium px-3 py-1 rounded hover:bg-gray-800 transition-colors"
