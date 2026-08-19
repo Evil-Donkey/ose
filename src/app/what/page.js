@@ -11,12 +11,12 @@ import getFounders from "@/lib/getFounders";
 import { hasTeamComponent, hasFoundersComponent } from "@/lib/checkFlexibleComponents";
 
 export async function generateMetadata() {
-  return await generateMetadataFromLib("26");
+  return await generateMetadataFromLib("4349");
 }
 
 export default async function WhatPage() {
   const [flexibleContent, popOutData, footerData, meganavLinks, meganavData] = await Promise.all([
-    getFlexiblePage("26"),
+    getFlexiblePage("4349"),
     getPopOutData(),
     getFooterData(),
     getMeganavLinksLite(),
