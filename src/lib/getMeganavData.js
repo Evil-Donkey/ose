@@ -2,8 +2,8 @@ import getFlexiblePage from './getFlexiblePage';
 import getPageLinks from './getPageLinks';
 
 const PAGE_IDS = {
-  Why: '226',
-  What: '26',
+  Why: '4346',
+  What: '4349',
   How: '241',
   Who: '243',
 };
