@@ -1,4 +1,5 @@
 import { unstable_cache } from 'next/cache';
+import { cacheKeyFor } from './cmsCacheKey';
 
 const isServer = typeof window === 'undefined';
 
@@ -343,15 +344,6 @@ async function buildHeaders(preview) {
     }
   }
   return headers;
-}
-
-// A short, stable cache key derived from the GraphQL operation name + variables.
-// Using the full query body would explode the key set; the operation name plus
-// its variables uniquely identifies the result for our purposes.
-function cacheKeyFor(query, variables) {
-  const opMatch = query.match(/(?:query|mutation)\s+(\w+)/);
-  const opName = opMatch ? opMatch[1] : 'anonymous';
-  return ['cms', opName, JSON.stringify(variables || {})];
 }
 
 export default async function fetchAPI(query, { variables, tags = [], revalidate, preview = false } = {}) {

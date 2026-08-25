@@ -1,41 +1,44 @@
 import fetchAPI from './api';
 
-export default async function generateMetadata(id) {
-
-  const data = await fetchAPI(`
-    query getContactPage {
-      page(id: "${id}", idType: DATABASE_ID) {
-        seo {
-          title
-          metaDesc
-          opengraphUrl
-          opengraphTitle
-          opengraphDescription
-          opengraphType
-          opengraphSiteName
-          opengraphImage {
-            mediaItemUrl
-            mediaDetails {
-              height
-              width
-            }
+const PAGE_SEO_QUERY = `
+  query getPageSeo($id: ID!) {
+    page(id: $id, idType: DATABASE_ID) {
+      seo {
+        title
+        metaDesc
+        opengraphUrl
+        opengraphTitle
+        opengraphDescription
+        opengraphType
+        opengraphSiteName
+        opengraphImage {
+          mediaItemUrl
+          mediaDetails {
+            height
+            width
           }
-          twitterDescription
-          twitterTitle
-          twitterImage {
-            mediaItemUrl
-            mediaDetails {
-              height
-              width
-            }
+        }
+        twitterDescription
+        twitterTitle
+        twitterImage {
+          mediaItemUrl
+          mediaDetails {
+            height
+            width
           }
         }
       }
     }
-  `);
+  }
+`;
+
+export default async function generateMetadata(id) {
+  const data = await fetchAPI(PAGE_SEO_QUERY, {
+    variables: { id: String(id) },
+  });
 
   const seo = data?.page?.seo;
-  
+
   const opengraphType = seo?.opengraphType || 'website';
 
   return {
