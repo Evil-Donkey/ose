@@ -8,6 +8,7 @@ import Container from '../../Container';
 import Link from 'next/link';
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import { proxyImageUrl } from '@/lib/proxyImage';
+import RetryImage from '@/components/RetryImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -350,10 +351,20 @@ const Team = ({ data, teamData = null }) => {
                     className="flex flex-col"
                 >
                     <Link href={`/who/${member.slug}`} className="group overflow-hidden rounded-2xl mb-4 ">
-                        <div 
-                            className={`w-full aspect-4/5 bg-cover group-hover:scale-105 transition-transform duration-300 ${cardImage?.preferTop ? 'bg-top' : 'bg-center'}`}
-                            style={cardImage?.url ? { backgroundImage: `url(${proxyImageUrl(cardImage.url)})` } : {}}
-                        />
+                        {/* Real <img> instead of CSS background-image so failed
+                            loads surface an error event and can be retried. */}
+                        <div className="relative w-full aspect-4/5 bg-black/5">
+                            {cardImage?.url && (
+                                <RetryImage
+                                    src={proxyImageUrl(cardImage.url)}
+                                    alt={member.title || ''}
+                                    fill
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    className={`object-cover group-hover:scale-105 transition-transform duration-300 ${cardImage?.preferTop ? 'object-top' : 'object-center'}`}
+                                    unoptimized
+                                />
+                            )}
+                        </div>
                     </Link>
                     <Link href={`/who/${member.slug}`} className="flex flex-col">
                         <div className="text-lg font-medium text-blue-02">

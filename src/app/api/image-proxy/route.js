@@ -59,12 +59,28 @@ export async function GET(req) {
     );
   }
 
-  // Validate that the URL is from the allowed WordPress domain
-  const allowedDomain =
-    process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT ||
-    process.env.NEXT_PUBLIC_WORDPRESS_URL ||
-    'https://oxfordscienceenterprises-cms.com';
-  if (!imageUrl.startsWith(allowedDomain)) {
+  // Validate that the URL is from an allowed WordPress host (or subdomain).
+  const allowedHosts = [
+    'oxfordscienceenterprises-cms.com',
+    process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT,
+    process.env.NEXT_PUBLIC_WORDPRESS_URL,
+  ]
+    .filter(Boolean)
+    .map((domain) =>
+      String(domain).replace(/^https?:\/\//, '').replace(/\/.*$/, '')
+    );
+
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(imageUrl);
+  } catch {
+    return NextResponse.json({ error: "Invalid url parameter" }, { status: 400 });
+  }
+
+  const hostAllowed = allowedHosts.some(
+    (host) => parsedUrl.hostname === host || parsedUrl.hostname.endsWith(`.${host}`)
+  );
+  if (!hostAllowed) {
     return NextResponse.json(
       { error: "Invalid image URL domain" },
       { status: 403 }
@@ -119,7 +135,9 @@ export async function GET(req) {
         status: 200,
         headers: {
           'Content-Type': contentType,
-          'Cache-Control': 'public, max-age=31536000, immutable',
+          // s-maxage lets the CDN/edge cache serve repeat requests without
+          // invoking this function or touching the CMS again.
+          'Cache-Control': 'public, max-age=31536000, s-maxage=31536000, immutable',
           'Content-Length': imageBuffer.byteLength.toString(),
         },
       });

@@ -3,8 +3,8 @@ import { Suspense, useState, useMemo, useRef, useEffect } from "react";
 import Container from "@/components/Container";
 import HeaderWithMeganavLinks from "@/components/Header/HeaderWithMeganavLinks";
 import Link from "next/link";
-import Image from "next/image";
 import ReactDOM from "react-dom";
+import RetryImage from "@/components/RetryImage";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSearchParams } from "next/navigation";
@@ -48,7 +48,7 @@ const LogoImage = ({ item }) => {
       {!loaded && (
         <div className="absolute top-4 left-3 w-2/3 h-16 bg-white/20 rounded animate-pulse" />
       )}
-      <Image
+      <RetryImage
         src={logoUrl}
         alt={item.portfolioFields.logo?.altText || item.title?.replace(/<[^>]+>/g, '') || 'Logo'}
         width={item.portfolioFields.logoThumbnail?.mediaDetails?.width || item.portfolioFields.logo?.mediaDetails?.width || 100}
@@ -516,8 +516,19 @@ function PortfolioClientInner({ title, content, portfolioItems, categories, stag
               >
                 <div
                   className="relative bg-white rounded-2xl shadow flex flex-col gap-2 overflow-hidden min-h-[200px] md:min-h-[250px] 2xl:min-h-[300px] h-full transition-transform duration-200 group-hover:-translate-y-1"
-                  style={bgImage ? { backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
                 >
+                  {/* Card background: a real <img> (not CSS background-image) so
+                      failed loads surface an error event and can be retried. */}
+                  {bgImage && (
+                    <RetryImage
+                      src={proxyImageUrl(bgImage)}
+                      alt=""
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      className="object-cover object-center z-0"
+                      unoptimized
+                    />
+                  )}
                   {/* Overlay */}
                   {bgImage && <div className="absolute inset-0 bg-black/40 z-0" />}
                   {/* Card content */}

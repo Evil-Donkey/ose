@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
+import RetryImage from "@/components/RetryImage";
 import getPortfolioBySlug from "@/lib/getPortfolioBySlug";
 import getPortfolioNav from "@/lib/getPortfolioNav";
 import Container from "@/components/Container";
@@ -66,7 +66,7 @@ export default async function PortfolioSinglePage({ params }) {
       <HeaderServer fixed={true} />
       <div className="mt-30 pb-20 min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 relative overflow-hidden">
         {heroImageUrl && (
-          <Image
+          <RetryImage
             src={proxyImageUrl(heroImageUrl)}
             alt={heroAlt}
             fill
@@ -82,7 +82,7 @@ export default async function PortfolioSinglePage({ params }) {
         )}
         <div className="w-full md:w-200 mx-auto text-center text-white relative z-10">
           {logo?.mediaItemUrl ? (
-            <Image
+            <RetryImage
               src={proxyImageUrl(logo.mediaItemUrl)}
               alt={logo.altText || title || ""}
               width={logo.mediaDetails?.width || 600}
@@ -90,6 +90,7 @@ export default async function PortfolioSinglePage({ params }) {
               priority
               unoptimized
               className="object-contain h-auto w-full"
+              fallback={title ? <h1 className="text-4xl font-bold mb-4" dangerouslySetInnerHTML={{ __html: title }} /> : null}
             />
           ) : (
             title && <h1 className="text-4xl font-bold mb-4" dangerouslySetInnerHTML={{ __html: title }} />
