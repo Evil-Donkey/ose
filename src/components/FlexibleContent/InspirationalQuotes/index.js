@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { proxyImageUrl } from '@/lib/proxyImage';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Button from "../../Button";
 import { Pagination } from 'swiper/modules';
@@ -80,8 +81,8 @@ const InspirationalQuotes = ({ data }) => {
                                 <div className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
                                     {(image || mobile) && (
                                         <>
-                                            {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
-                                            {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
+                                            {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(image.mediaItemUrl)})` }} />}
+                                            {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(mobile.mediaItemUrl)})` }} />}
                                             {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${quoteOnTheRight ? "lg:left-auto lg:right-0" : ""} w-full lg:w-3/5 h-3/5 lg:h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                         </>
                                     )}
@@ -138,8 +139,8 @@ const InspirationalQuotes = ({ data }) => {
                         <div key={index.toString()} className="relative min-h-[100vh] h-full w-full overflow-hidden bg-white">
                             {(image || mobile) && (
                                 <>
-                                    {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${image.mediaItemUrl})` }} />}
-                                    {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${mobile.mediaItemUrl})` }} />}
+                                    {image && <div ref={el => imageRef.current[index] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top ${mobile ? "hidden lg:block" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(image.mediaItemUrl)})` }} />}
+                                    {mobile && <div ref={el => imageRef.current[index + 1] = el} className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${image ? "lg:hidden" : ""}`} style={{ backgroundImage: `url(${proxyImageUrl(mobile.mediaItemUrl)})` }} />}
                                     {darkOverlay && <div className={`absolute bottom-0 lg:top-0 left-0 ${quoteOnTheRight ? "lg:left-auto lg:right-0" : ""} w-full lg:w-3/5 h-3/5 lg:h-full bg-gradient-to-t ${quoteOnTheRight ? "lg:bg-gradient-to-l" : "lg:bg-gradient-to-r"} from-black/80 to-black/0`} />}
                                 </>
                             )}

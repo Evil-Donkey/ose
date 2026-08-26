@@ -6,6 +6,7 @@ import getFooterData from "@/lib/getFooterData";
 import FlexiblePageClient from "@/components/Templates/FlexiblePageClient";
 import Container from "@/components/Container";
 import CTA from "@/components/CTA";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 export const metadata = { title: "Preview" };
 
@@ -41,12 +42,12 @@ export default async function StoryPreviewPage({ params }) {
           <>
             <div
               className={`absolute top-0 left-0 w-full h-full bg-cover bg-center ${backgroundImageMobile ? "hidden lg:block" : ""}`}
-              style={{ backgroundImage: `url(${backgroundImage})` }}
+              style={{ backgroundImage: `url(${proxyImageUrl(backgroundImage)})` }}
             />
             {backgroundImageMobile && (
               <div
                 className="absolute top-0 left-0 w-full h-full bg-cover bg-center lg:hidden"
-                style={{ backgroundImage: `url(${backgroundImageMobile})` }}
+                style={{ backgroundImage: `url(${proxyImageUrl(backgroundImageMobile)})` }}
               />
             )}
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/40 to-black/0" />

@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Button from "../../Button";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { proxyImageUrl } from '@/lib/proxyImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -146,7 +147,7 @@ const Story = ({ data }) => {
             <div className="relative w-full lg:min-h-[100vh] h-full overflow-hidden">
                 {backgroundImage && 
                     <>
-                        <div ref={imageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${backgroundImage})` }} />
+                        <div ref={imageRef} className="absolute top-0 left-0 w-full h-full bg-cover bg-center scale-180 origin-top" style={{ backgroundImage: `url(${proxyImageUrl(backgroundImage)})` }} />
                         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/40 to-black/0" />
                     </>
                 }

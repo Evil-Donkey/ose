@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { proxyImageUrl } from '@/lib/proxyImage';
 import Container from "../../Container";
 import { useIsMobile } from "@/hooks/isMobile";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -105,7 +106,7 @@ const Expertise = ({ data }) => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.5 }}>
                                     <div className="absolute inset-0 bg-cover bg-center bg-blue-02" style={{
-                                        backgroundImage: activeItem.backgroundImage?.mediaItemUrl ? `url(${activeItem.backgroundImage.mediaItemUrl})` : undefined,
+                                        backgroundImage: activeItem.backgroundImage?.mediaItemUrl ? `url(${proxyImageUrl(activeItem.backgroundImage.mediaItemUrl)})` : undefined,
                                     }} />
                                     {/* Main expertise block */}
                                     <div

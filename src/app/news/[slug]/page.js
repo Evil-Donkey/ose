@@ -5,6 +5,7 @@ import HeaderServer from "@/components/Header/HeaderServer";
 import Link from "next/link";
 import Button from "@/components/Button";
 import { formatDate } from "@/lib/formatDate";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 export const revalidate = 60;
 
@@ -57,7 +58,7 @@ export default async function NewsSinglePage({ params }) {
                         {title && <h1 className="text-4xl 2xl:lg:text-6xl/18 text-white mb-10">{title}</h1>}
                     </div>
 
-                    {featuredImage && <div style={{ backgroundImage: `url(${featuredImage.node.mediaItemUrl})` }} className="aspect-6/3 h-auto w-full rounded-2xl bg-cover bg-center bg-no-repeat" />}
+                    {featuredImage && <div style={{ backgroundImage: `url(${proxyImageUrl(featuredImage.node.mediaItemUrl)})` }} className="aspect-6/3 h-auto w-full rounded-2xl bg-cover bg-center bg-no-repeat" />}
                 </div>
             </Container>
         </div>

@@ -1,4 +1,5 @@
 import Container from "../Container";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 const Contact = ({ title, featuredImage, footerData }) => {
 
@@ -7,7 +8,7 @@ const Contact = ({ title, featuredImage, footerData }) => {
     return (
         <div className="bg-cover bg-center bg-[url('/gradient.png')] text-white pt-16 relative">
             {featuredImage && <div className="absolute inset-0 left-auto right
-            -0 top-1/2 -translate-y-1/2 w-[60%] h-full bg-contain bg-center bg-no-repeat mix-blend-screen" style={{ backgroundImage: `url(${featuredImage})` }} />}
+            -0 top-1/2 -translate-y-1/2 w-[60%] h-full bg-contain bg-center bg-no-repeat mix-blend-screen" style={{ backgroundImage: `url(${proxyImageUrl(featuredImage)})` }} />}
             <Container className="py-40 2xl:pt-50 relative z-10">
                 {title && <h1 className="text-4xl md:text-6xl/13 mb-10" dangerouslySetInnerHTML={{ __html: title }} />}
                 <div className="flex flex-row flex-wrap font-medium">

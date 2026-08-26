@@ -7,6 +7,7 @@ import { LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
 import MailIcon from "@/components/Icons/MailIcon";
 import getFooterData from "@/lib/getFooterData";
 import CTA from "@/components/CTA";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 export const metadata = { title: "Preview" };
 
@@ -34,7 +35,7 @@ export default async function TeamPreviewPage({ params }) {
       <HeaderServer fixed={true} />
       <div
         className="mt-20 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative hidden lg:flex"
-        style={{ backgroundImage: heroDesktopImage ? `url(${heroDesktopImage.mediaItemUrl})` : undefined }}
+        style={{ backgroundImage: heroDesktopImage ? `url(${proxyImageUrl(heroDesktopImage.mediaItemUrl)})` : undefined }}
       >
         <div className="absolute inset-0 bg-black/20" />
         <Container
@@ -54,7 +55,7 @@ export default async function TeamPreviewPage({ params }) {
       {heroMobileImage && (
         <div
           className="mt-30 py-20 aspect-[16/8] items-center justify-center px-4 bg-cover bg-center relative flex lg:hidden"
-          style={{ backgroundImage: `url(${heroMobileImage.mediaItemUrl})` }}
+          style={{ backgroundImage: `url(${proxyImageUrl(heroMobileImage.mediaItemUrl)})` }}
         />
       )}
       <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0">

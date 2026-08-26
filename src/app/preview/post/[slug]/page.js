@@ -5,6 +5,7 @@ import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 import Link from "next/link";
 import { formatDate } from "@/lib/formatDate";
+import { proxyImageUrl } from "@/lib/proxyImage";
 
 export const metadata = { title: "Preview" };
 
@@ -51,7 +52,7 @@ export default async function NewsPreviewPage({ params }) {
 
             {featuredImage && (
               <div
-                style={{ backgroundImage: `url(${featuredImage.node.mediaItemUrl})` }}
+                style={{ backgroundImage: `url(${proxyImageUrl(featuredImage.node.mediaItemUrl)})` }}
                 className="aspect-6/3 h-auto w-full rounded-2xl bg-cover bg-center bg-no-repeat"
               />
             )}

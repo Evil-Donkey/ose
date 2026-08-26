@@ -9,6 +9,7 @@ import Container from "../../Container";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { proxyImageUrl } from '@/lib/proxyImage';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -365,10 +366,10 @@ const FullPanelCarousel = ({ data }) => {
                                 <div 
                                     ref={el => backgroundImageRef.current[index] = el}
                                     className={`background-image absolute top-0 left-0 w-full h-full bg-[100%_auto] bg-fixed bg-top-right scale-180 origin-top ${backgroundImageMobile?.mediaItemUrl ? 'hidden lg:block' : ''}`} 
-                                    style={backgroundImage?.mediaItemUrl ? { backgroundImage: `url(${backgroundImage.mediaItemUrl})` } : undefined} 
+                                    style={backgroundImage?.mediaItemUrl ? { backgroundImage: `url(${proxyImageUrl(backgroundImage.mediaItemUrl)})` } : undefined} 
                                 />
                                 {backgroundImageMobile?.mediaItemUrl && (
-                                    <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-top-right lg:hidden" style={{ backgroundImage: `url(${backgroundImageMobile.mediaItemUrl})` }} />
+                                    <div className="background-image absolute top-0 left-0 w-full h-full bg-cover bg-top-right lg:hidden" style={{ backgroundImage: `url(${proxyImageUrl(backgroundImageMobile.mediaItemUrl)})` }} />
                                 )}
                                 {imageOverlay && <div className="absolute top-0 left-0 w-full h-full bg-black/50 lg:bg-black/40" />}
                                 <div className="min-h-[100vh] h-full flex flex-col justify-start pt-20 2xl:pt-40 pb-10 lg:pb-0">
