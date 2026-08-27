@@ -46,6 +46,17 @@ describe("extractImagesFromHtml", () => {
     assert.deepEqual(images, []);
   });
 
+  it("ignores CMS PDFs and other documents, even when wrapped in the image proxy", () => {
+    const html = `
+      <a href="https://oxfordscienceenterprises-cms.com/wp-content/uploads/2026/04/OSE-SDR-CFDv265.pdf">Report</a>
+      <script>{"file":"/api/image-proxy?url=https%3A%2F%2Foxfordscienceenterprises-cms.com%2Fwp-content%2Fuploads%2Fprotected%2Fresults.pdf"}</script>
+      <img src="/api/image-proxy?url=https%3A%2F%2Foxfordscienceenterprises-cms.com%2Fwp-content%2Fuploads%2Flogo.png" />
+    `;
+    const images = extractImagesFromHtml(html, ORIGIN);
+    assert.ok(images.some((url) => url.includes("logo.png")));
+    assert.ok(!images.some((url) => url.toLowerCase().includes(".pdf")));
+  });
+
   it("treats next/image optimizer urls as the browser request, not the inner CMS url", () => {
     const html = `<img src="/_next/image?url=https%3A%2F%2Foxfordscienceenterprises-cms.com%2Fwp-content%2Fuploads%2Fhero.jpg&amp;w=3840&amp;q=85" />`;
     const images = extractImagesFromHtml(html, ORIGIN);

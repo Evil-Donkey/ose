@@ -1,7 +1,7 @@
 import { classifyImageResponse } from "./classify.mjs";
 import { STATIC_PATHS, SLUGS_QUERY, pathsFromGraphqlData } from "./discover.mjs";
 import { extractImagesFromHtml, extractInternalLinks, extractUnproxiedCmsUrls } from "./html.mjs";
-import { canonicalOrigin, pageUrl, proxyCheckUrl } from "./urls.mjs";
+import { canonicalOrigin, isImageLike, pageUrl, proxyCheckUrl } from "./urls.mjs";
 
 export const USER_AGENT = "OSE-BrokenImageBot/1.0 (+github-action)";
 
@@ -196,7 +196,9 @@ export async function runBrokenImageCheck({
     );
   }
 
-  const images = [...imageMap.entries()];
+  const images = [...imageMap.entries()].filter(([image]) =>
+    isImageLike(image, originBase)
+  );
   const broken = [];
 
   await mapPool(images, imageConcurrency, async ([image, pages]) => {
