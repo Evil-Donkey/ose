@@ -36,7 +36,7 @@ jobs:
           node-version: "22"
 
       - name: Unit tests
-        run: node --test scripts/broken-images/*.test.mjs
+        run: node --test scripts/broken-images/*.test.mjs src/lib/proxyImage.test.mjs
 
       - name: Scan production
         env:

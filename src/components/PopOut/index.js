@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../Button';
+import { proxyCmsHtmlImages } from '@/lib/proxyImage';
 
 const PopOut = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +50,7 @@ const PopOut = ({ data }) => {
           {popoutContent.map((content, index) => (
             <div key={index}>
               <div className="font-medium text-lg">{content.heading}</div>
-              <div className="mb-4" dangerouslySetInnerHTML={{ __html: content.copy }} />
+              <div className="mb-4" dangerouslySetInnerHTML={{ __html: proxyCmsHtmlImages(content.copy) }} />
               <Button href={content.ctaUrl}>{content.ctaLabel}</Button>
             </div>
           ))}

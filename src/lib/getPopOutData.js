@@ -1,4 +1,5 @@
 import getThemeSettings from './getThemeSettings';
+import { proxyCmsHtmlImages } from './proxyImage';
 
 const EMPTY_POPOUT_DATA = {
   popoutLabel: null,
@@ -20,6 +21,11 @@ export default async function getPopOutData() {
 
   return {
     popoutLabel: settings.popoutLabel,
-    popoutContent: settings.popoutContent,
+    popoutContent: Array.isArray(settings.popoutContent)
+      ? settings.popoutContent.map((item) => ({
+          ...item,
+          copy: proxyCmsHtmlImages(item.copy),
+        }))
+      : settings.popoutContent,
   };
 }

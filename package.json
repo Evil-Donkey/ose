@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:broken-images": "node --test scripts/broken-images/*.test.mjs",
+    "test:broken-images": "node --test scripts/broken-images/*.test.mjs src/lib/proxyImage.test.mjs",
     "check:broken-images": "node scripts/check-broken-images.mjs"
   },
   "dependencies": {
