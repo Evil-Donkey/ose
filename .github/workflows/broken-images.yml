@@ -1,0 +1,46 @@
+# Daily broken-image check against production.
+#
+# Setup (once):
+# 1. Slack → Apps → Incoming Webhooks → Add to a channel → copy the webhook URL
+# 2. GitHub repo → Settings → Secrets and variables → Actions
+#    → New repository secret named SLACK_WEBHOOK_URL
+#
+# Optional secrets / variables:
+#   SITE_ORIGIN              default https://www.oxfordscienceenterprises.com
+#   SLACK_NOTIFY_ON_SUCCESS  set to 1 to also ping Slack when nothing is broken
+#
+# Manual run: Actions → Broken images → Run workflow
+
+name: Broken images
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Scan production for broken images
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Unit tests
+        run: node --test scripts/broken-images/*.test.mjs
+
+      - name: Scan production
+        env:
+          SITE_ORIGIN: ${{ vars.SITE_ORIGIN || 'https://www.oxfordscienceenterprises.com' }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_NOTIFY_ON_SUCCESS: ${{ vars.SLACK_NOTIFY_ON_SUCCESS }}
+        run: node scripts/check-broken-images.mjs

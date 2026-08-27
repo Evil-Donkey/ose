@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:broken-images": "node --test scripts/broken-images/*.test.mjs",
+    "check:broken-images": "node scripts/check-broken-images.mjs"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.15",
