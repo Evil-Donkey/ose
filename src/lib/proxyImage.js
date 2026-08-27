@@ -33,6 +33,43 @@ export function proxyImageUrl(imageUrl, forceProxy = false) {
   return `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
 }
 
+function proxySrcset(value) {
+  return String(value)
+    .split(",")
+    .map((part) => {
+      const trimmed = part.trim();
+      if (!trimmed) return trimmed;
+      const bits = trimmed.split(/\s+/);
+      const src = bits.shift();
+      const proxied = proxyHtmlImageSrc(src);
+      return [proxied, ...bits].join(" ");
+    })
+    .join(", ");
+}
+
+function proxyHtmlImageSrc(src) {
+  if (!src) return src;
+  if (src.startsWith("data:") || src.startsWith("blob:")) return src;
+  if (src.startsWith("/api/image-proxy") || src.includes("/_next/image")) return src;
+  return proxyImageUrl(src);
+}
+
+/**
+ * Rewrite CMS <img> URLs inside WordPress WYSIWYG HTML so the browser
+ * fetches them via /api/image-proxy instead of hitting SiteGround.
+ */
+export function proxyCmsHtmlImages(html) {
+  if (!html) return html;
+
+  return String(html)
+    .replace(/(<img\b[^>]*\bsrc=["'])([^"']+)(["'])/gi, (_, pre, src, post) => {
+      return `${pre}${proxyHtmlImageSrc(src)}${post}`;
+    })
+    .replace(/(<img\b[^>]*\bsrcset=["'])([^"']+)(["'])/gi, (_, pre, srcset, post) => {
+      return `${pre}${proxySrcset(srcset)}${post}`;
+    });
+}
+
 /**
  * Get proxied background image style
  *
