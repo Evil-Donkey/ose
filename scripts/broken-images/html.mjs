@@ -1,6 +1,5 @@
-import { isCmsHost } from "./urls.mjs";
+import { isCmsHost, isImageLike } from "./urls.mjs";
 
-const IMAGE_EXT = /\.(avif|bmp|gif|ico|jpe?g|png|svg|webp)(?:$|\?)/i;
 const SKIP_ASSET = /\.(woff2?|ttf|otf|eot|css|js|mjs|json|map)(?:$|\?)/i;
 
 function decodePayload(html) {
@@ -8,16 +7,6 @@ function decodePayload(html) {
     .replace(/\\u002[fF]/g, "/")
     .replace(/\\\//g, "/")
     .replace(/&amp;/g, "&");
-}
-
-function isImageLike(url) {
-  const value = url.toLowerCase();
-  if (value.includes("/api/image-proxy")) return true;
-  if (value.includes("/_next/image")) return true;
-  if (value.includes("oxfordscienceenterprises-cms.com")) {
-    return value.includes("wp-content/uploads") || IMAGE_EXT.test(value);
-  }
-  return IMAGE_EXT.test(value);
 }
 
 function toAbsolute(raw, origin) {
@@ -30,7 +19,7 @@ function toAbsolute(raw, origin) {
 
   try {
     const absolute = new URL(cleaned, origin).href;
-    return isImageLike(absolute) ? absolute : null;
+    return isImageLike(absolute, origin) ? absolute : null;
   } catch {
     return null;
   }
