@@ -4,7 +4,7 @@ import getPortfolioBySlug from "@/lib/getPortfolioBySlug";
 import Container from "@/components/Container";
 import HeaderServer from "@/components/Header/HeaderServer";
 import ResponsiveImage from "@/components/ResponsiveImage";
-import { X as XIcon, LinkedIn as LinkedInIcon } from "@/components/Icons/Social";
+import { X as XIcon, LinkedIn as LinkedInIcon, Globe as GlobeIcon } from "@/components/Icons/Social";
 import { getOptimizedImageProps } from "@/lib/imageUtils";
 import { proxyImageUrl } from "@/lib/proxyImage";
 
@@ -135,6 +135,7 @@ export default async function PortfolioPreviewPage({ params }) {
                   <div className="flex flex-col gap-3 text-lg">
                     {websiteUrl && (
                       <div className="flex items-center gap-3 text-blue-02">
+                        <GlobeIcon />
                         <a
                           href={websiteUrl.startsWith("http") ? websiteUrl : `https://${websiteUrl}`}
                           target="_blank"

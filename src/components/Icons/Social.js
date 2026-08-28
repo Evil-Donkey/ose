@@ -28,3 +28,18 @@ export function LinkedIn() {
         </svg>
     )
 }
+
+export function Globe() {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.14 26.14" width={26} height={26} aria-hidden="true">
+            <circle cx="13.07" cy="13.07" r="13.07" style={{fill: '#00a0cc'}}/>
+            <g fill="none" stroke="#fff" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="13.07" cy="13.07" r="6.55"/>
+                <path d="M13.07 6.52c2.05 1.85 3.2 4.05 3.2 6.55s-1.15 4.7-3.2 6.55c-2.05-1.85-3.2-4.05-3.2-6.55s1.15-4.7 3.2-6.55z"/>
+                <path d="M6.52 13.07h13.1"/>
+                <path d="M7.55 10.05c1.7-.85 3.55-1.3 5.52-1.3s3.82.45 5.52 1.3"/>
+                <path d="M7.55 16.09c1.7.85 3.55 1.3 5.52 1.3s3.82-.45 5.52-1.3"/>
+            </g>
+        </svg>
+    )
+}
