@@ -32,13 +32,12 @@ export function LinkedIn() {
 export function Globe() {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.14 26.14" width={26} height={26} aria-hidden="true">
-            <circle cx="13.07" cy="13.07" r="13.07" style={{fill: '#00a0cc'}}/>
-            <g fill="none" stroke="#fff" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="13.07" cy="13.07" r="6.55"/>
-                <path d="M13.07 6.52c2.05 1.85 3.2 4.05 3.2 6.55s-1.15 4.7-3.2 6.55c-2.05-1.85-3.2-4.05-3.2-6.55s1.15-4.7 3.2-6.55z"/>
-                <path d="M6.52 13.07h13.1"/>
-                <path d="M7.55 10.05c1.7-.85 3.55-1.3 5.52-1.3s3.82.45 5.52 1.3"/>
-                <path d="M7.55 16.09c1.7.85 3.55 1.3 5.52 1.3s3.82-.45 5.52-1.3"/>
+            <g fill="none" stroke="#00a0cc" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="13.07" cy="13.07" r="13" />
+                <path d="M13.07.07c3.95 3.65 6.2 8.05 6.2 13s-2.25 9.35-6.2 13c-3.95-3.65-6.2-8.05-6.2-13s2.25-9.35 6.2-13z" />
+                <path d="M.07 13.07h26" />
+                <path d="M1.9 7.15c3.35-1.65 7.1-2.55 11.17-2.55s7.82.9 11.17 2.55" />
+                <path d="M1.9 18.99c3.35 1.65 7.1 2.55 11.17 2.55s7.82-.9 11.17-2.55" />
             </g>
         </svg>
     )
