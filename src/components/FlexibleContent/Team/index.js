@@ -9,6 +9,7 @@ import Link from 'next/link';
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import { proxyImageUrl } from '@/lib/proxyImage';
 import RetryImage from '@/components/RetryImage';
+import { TEAM_PAGE_SIZE, getTeamLoadMoreState } from './getTeamLoadMoreState';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,6 +54,7 @@ const Team = ({ data, teamData = null }) => {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(TEAM_PAGE_SIZE);
   
   const { sectionLabel } = data;
   const componentId = sectionLabel ? formatSectionLabel(sectionLabel) : undefined;
@@ -182,6 +184,11 @@ const Team = ({ data, teamData = null }) => {
     }
   }, [loading, componentId, sectionLabel]);
 
+  const handleSelectCategory = (slug) => {
+    setSelectedCategory(slug);
+    setVisibleCount(TEAM_PAGE_SIZE);
+  };
+
   // Refresh ScrollTrigger when the filtered list changes so downstream
   // lazy-load triggers recalculate against the new DOM height.
   useEffect(() => {
@@ -189,7 +196,7 @@ const Team = ({ data, teamData = null }) => {
       ScrollTrigger.refresh();
     });
     return () => cancelAnimationFrame(frame);
-  }, [selectedCategory]);
+  }, [selectedCategory, visibleCount]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -233,6 +240,12 @@ const Team = ({ data, teamData = null }) => {
       )
     : members;
 
+  const { visibleMembers, showLoadMore } = getTeamLoadMoreState({
+    filteredMembers,
+    selectedCategory,
+    visibleCount,
+  });
+
   // Get the current selected category object to access its description
   const selectedCategoryData = categories.find(cat => cat.slug === selectedCategory);
 
@@ -269,7 +282,7 @@ const Team = ({ data, teamData = null }) => {
                             <div
                                 className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${selectedCategory === '' ? "bg-white text-[#00A0CC] font-bold" : ""}`}
                                 onClick={() => {
-                                    setSelectedCategory('');
+                                    handleSelectCategory('');
                                     setOpenDropdown(null);
                                 }}
                             >
@@ -283,7 +296,7 @@ const Team = ({ data, teamData = null }) => {
                                     key={cat.slug}
                                     className={`flex items-center justify-between py-2 px-4 cursor-pointer font-normal text-lg hover:bg-blue-200 ${selectedCategory === cat.slug ? "bg-white text-[#00A0CC] font-bold" : ""}`}
                                     onClick={() => {
-                                        setSelectedCategory(cat.slug);
+                                        handleSelectCategory(cat.slug);
                                         setOpenDropdown(null);
                                     }}
                                 >
@@ -306,7 +319,7 @@ const Team = ({ data, teamData = null }) => {
                                 ? 'text-lightblue font-semibold'
                                 : 'text-blue-02 hover:text-darkblue'
                             }`}
-                            onClick={() => setSelectedCategory('')}
+                            onClick={() => handleSelectCategory('')}
                         >
                             All
                         </button>
@@ -319,7 +332,7 @@ const Team = ({ data, teamData = null }) => {
                                 ? 'text-lightblue font-semibold'
                                 : 'text-blue-02 hover:text-darkblue'
                             }`}
-                            onClick={() => setSelectedCategory(cat.slug)}
+                            onClick={() => handleSelectCategory(cat.slug)}
                         >
                             {cat.name}
                         </button>
@@ -342,7 +355,7 @@ const Team = ({ data, teamData = null }) => {
 
               {/* Grid */}
               <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredMembers.map((member, idx) => {
+                {visibleMembers.map((member, idx) => {
                 const cardImage = getTeamCardImage(member);
 
                 return (
@@ -378,6 +391,18 @@ const Team = ({ data, teamData = null }) => {
                 );
                 })}
               </section>
+
+              {showLoadMore && (
+                <div className="flex justify-center mt-12">
+                  <button
+                    type="button"
+                    onClick={() => setVisibleCount((count) => count + TEAM_PAGE_SIZE)}
+                    className="bg-lightblue text-white text-base font-normal px-8 py-3 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer"
+                  >
+                    Show more
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </Container>
