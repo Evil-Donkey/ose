@@ -362,6 +362,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             sectionLabel
             news {
               ... on Post {
+                __typename
                 id
                 date
                 link
@@ -375,6 +376,39 @@ const FLEXIBLE_CONTENT_QUERY = `
                     altText
                     caption
                     mediaItemUrl
+                  }
+                }
+              }
+              ... on Story {
+                __typename
+                id
+                title(format: RENDERED)
+                link
+                uri
+                slug
+                featuredImage {
+                  node {
+                    altText
+                    caption
+                    mediaItemUrl
+                  }
+                }
+              }
+              ... on PortfolioNewsItem {
+                __typename
+                id
+                databaseId
+                date
+                title(format: RENDERED)
+                portfolioNews {
+                  hashtag
+                  url
+                }
+                portfolioNewsCategories {
+                  nodes {
+                    id
+                    name
+                    slug
                   }
                 }
               }
