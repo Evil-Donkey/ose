@@ -108,6 +108,18 @@ export const MEGANAV_SECTIONS_FRAGMENT = `
     sectionLabel
     fieldGroupName
   }
+  ... on Page_Flexiblecontent_FlexibleContent_IconSteps {
+    sectionLabel
+    fieldGroupName
+  }
+  ... on Page_Flexiblecontent_FlexibleContent_HoverImageCards {
+    sectionLabel
+    fieldGroupName
+  }
+  ... on Page_Flexiblecontent_FlexibleContent_CenteredCta {
+    sectionLabel
+    fieldGroupName
+  }
 `;
 
 export const MEGANAV_PAGE_ALIASES = {

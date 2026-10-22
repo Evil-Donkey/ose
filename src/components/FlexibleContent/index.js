@@ -31,6 +31,9 @@ import TwoColumnsTitleCopy from "./TwoColumnsTitleCopy";
 import FullWidthLargeHeading from "./FullWidthLargeHeading";
 import Founders from "./Founders";
 import Advantages from "./Advantages";
+import IconSteps from "./IconSteps";
+import HoverImageCards from "./HoverImageCards";
+import CenteredCta from "./CenteredCta";
 
 const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title, foundersData = null, teamData = null }) => {
 
@@ -134,6 +137,15 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title, 
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_Advantages") {
             flexibleContentArray.push(<Advantages data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_IconSteps") {
+            flexibleContentArray.push(<IconSteps data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_HoverImageCards") {
+            flexibleContentArray.push(<HoverImageCards data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_CenteredCta") {
+            flexibleContentArray.push(<CenteredCta data={item} index={i} key={i.toString()} />);
         }
     })}
 
