@@ -109,14 +109,16 @@ const IconSteps = ({ data }) => {
                     className="flex flex-col items-center text-center max-w-70 md:max-w-55 lg:max-w-65 xl:max-w-70 opacity-0 translate-y-10"
                   >
                     {iconUrl && (
-                      <div className="relative w-36 h-36 lg:w-44 lg:h-44 xl:w-50 xl:h-50 mb-6 lg:mb-8">
-                        <Image
-                          src={iconUrl}
-                          alt={icon?.altText || heading || ""}
-                          fill
-                          className="object-contain"
-                          sizes="(max-width: 1024px) 144px, 200px"
-                        />
+                      <div className="relative flex items-center justify-center w-36 h-36 lg:w-44 lg:h-44 xl:w-50 xl:h-50 mb-6 lg:mb-8 rounded-full bg-[radial-gradient(circle_at_40%_35%,_#0A42A5_0%,_#00004D_72%)] p-8 lg:p-10 xl:p-12">
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={iconUrl}
+                            alt={icon?.altText || heading || ""}
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 1024px) 80px, 120px"
+                          />
+                        </div>
                       </div>
                     )}
                     {heading && (
