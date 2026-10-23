@@ -23,6 +23,7 @@ import SustainabilityPageView from "@/app/sustainability/SustainabilityPageView"
 import StoriesPageView from "@/app/stories/StoriesPageView";
 import UncoverPageView from "@/app/uncover/UncoverPageView";
 import ShareholderPortalSignupView from "@/app/shareholder-information-signup/ShareholderPortalSignupView";
+import FounderServicesPageView from "@/app/founder-services/FounderServicesPageView";
 
 export const metadata = { title: "Preview" };
 
@@ -77,6 +78,7 @@ const CUSTOM_PREVIEW_BY_DATABASE_ID = {
   1586: SustainabilityPageView,
   1254: StoriesPageView,
   1704: UncoverPageView,
+  4577: FounderServicesPageView,
 };
 
 export default async function PagePreviewPage({ params }) {

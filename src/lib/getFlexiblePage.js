@@ -620,6 +620,41 @@ const FLEXIBLE_CONTENT_QUERY = `
               heading
             }
           }
+          ... on Page_Flexiblecontent_FlexibleContent_IconSteps {
+            fieldGroupName
+            sectionLabel
+            title
+            steps {
+              heading
+              copy
+              icon {
+                mediaItemUrl
+                altText
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_HoverImageCards {
+            fieldGroupName
+            sectionLabel
+            title
+            copy
+            cards {
+              title
+              hoverCopy
+              image {
+                mediaItemUrl
+                altText
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_CenteredCta {
+            fieldGroupName
+            sectionLabel
+            title
+            copy
+            ctaLabel
+            ctaUrl
+          }
         }
       }
     }
