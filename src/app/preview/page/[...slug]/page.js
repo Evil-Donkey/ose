@@ -191,7 +191,7 @@ export default async function PagePreviewPage({ params }) {
       </FlexiblePageClient>
     );
     return PINK_BUTTON_PAGE_IDS.has(dbId) ? (
-      <PageThemeProvider variant="pink">
+      <PageThemeProvider variant="pink" compactSections>
         <CtaFormModalProvider showSectors={false}>{flexiblePage}</CtaFormModalProvider>
       </PageThemeProvider>
     ) : (

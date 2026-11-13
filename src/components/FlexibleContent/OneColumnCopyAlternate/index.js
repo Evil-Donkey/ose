@@ -8,6 +8,7 @@ import ResponsiveImage from "../../ResponsiveImage";
 import Container from "../../Container";
 import Button from "../../Button";
 import formatSectionLabel from '@/lib/formatSectionLabel';
+import { useCompactSections } from "@/components/PageTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,6 +25,7 @@ const COPY_PROSE_CLASSES = [
 ].join(" ");
 
 const OneColumnCopyAlternate = ({ data }) => {
+  const compact = useCompactSections();
 
     const { heading, headingSize, subheading, copy, ctaLabel, ctaLink, videoMp4, videoMp4Mobile, image, imageMobile, copyLast, backgroundMedia, darkOverlay, credits, sectionLabel } = data;
     
@@ -141,8 +143,8 @@ const OneColumnCopyAlternate = ({ data }) => {
             }
             
             <div className="min-h-[70vh] md:min-h-[100vh] h-full flex flex-col justify-end lg:justify-center lg:mt-20 relative z-60">
-                <Container className={`h-full py-15 md:py-15 2xl:py-25 relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between lg:items-center gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
-                    <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-3/5 xl:w-1/2" : "lg:w-1/2"} gap-5 lg:py-15`}>
+                <Container className={`h-full ${compact ? "py-12.75 md:py-12.75 2xl:py-21.25" : "py-15 md:py-15 2xl:py-25"} relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between lg:items-center gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
+                    <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-3/5 xl:w-1/2" : "lg:w-1/2"} gap-5 ${compact ? "lg:py-12.75" : "lg:py-15"}`}>
                         {/* {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />} */}
                         <h2 ref={titleMobileRef} className={`lg:hidden uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
                         {subheading && <h1 ref={el => contentRef.current[1] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: subheading }} />}

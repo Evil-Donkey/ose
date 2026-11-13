@@ -7,6 +7,7 @@ import Container from "@/components/Container";
 import RetryImage from "@/components/RetryImage";
 import formatSectionLabel from "@/lib/formatSectionLabel";
 import { proxyImageUrl } from "@/lib/proxyImage";
+import { useCompactSections } from "@/components/PageTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +18,7 @@ const COLUMN_GRID = {
 };
 
 const IconColumnsPanel = ({ data }) => {
+  const compact = useCompactSections();
   const { title, columns, sectionLabel } = data || {};
   const rootRef = useRef(null);
   const titleRef = useRef(null);
@@ -66,8 +68,8 @@ const IconColumnsPanel = ({ data }) => {
       ref={rootRef}
       id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}
     >
-      <Container className="py-10 lg:py-16 2xl:py-20">
-        <div className="rounded-2xl bg-[#E0E0E0] px-6 py-12 md:px-10 lg:px-16 lg:py-16 2xl:py-20">
+      <Container className={compact ? "py-8.5 lg:py-13.5 2xl:py-17" : "py-10 lg:py-16 2xl:py-20"}>
+        <div className={`rounded-2xl bg-[#E0E0E0] px-6 md:px-10 lg:px-16 ${compact ? "py-10 lg:py-13.5 2xl:py-17" : "py-12 lg:py-16 2xl:py-20"}`}>
           {title && (
             <h2
               ref={titleRef}

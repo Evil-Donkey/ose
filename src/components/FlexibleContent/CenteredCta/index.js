@@ -4,13 +4,14 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CtaButton, { useHasCtaModal } from "@/components/CtaFormModal/CtaButton";
-import { usePageTheme } from "@/components/PageTheme";
+import { usePageTheme, useCompactSections } from "@/components/PageTheme";
 import Container from "@/components/Container";
 import formatSectionLabel from "@/lib/formatSectionLabel";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const CenteredCta = ({ data }) => {
+  const compact = useCompactSections();
   const { title, copy, ctaLabel, ctaUrl, sectionLabel } = data || {};
   const pageTheme = usePageTheme();
   const hasModal = useHasCtaModal();
@@ -75,7 +76,7 @@ const CenteredCta = ({ data }) => {
 
   return (
     <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}>
-      <Container className="py-20 lg:py-30 2xl:py-40">
+      <Container className={compact ? "py-17 lg:py-25.5 2xl:py-34" : "py-20 lg:py-30 2xl:py-40"}>
         <div className="flex flex-col items-center text-center">
           {title && (
             <h2

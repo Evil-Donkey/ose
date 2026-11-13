@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import Container from "@/components/Container";
 import formatSectionLabel from "@/lib/formatSectionLabel";
 import { proxyImageUrl } from "@/lib/proxyImage";
+import { useCompactSections } from "@/components/PageTheme";
 
 const FALLBACK_BACKGROUND = "/hero-panel-graphic.jpg";
 
@@ -19,6 +20,7 @@ const BG_MAX_TRAVEL = 0.03;
  * carries a background graphic, a pink title and blue copy.
  */
 const HeroPanel = ({ data }) => {
+  const compact = useCompactSections();
   const {
     sectionLabel,
     heading,
@@ -101,12 +103,12 @@ const HeroPanel = ({ data }) => {
   return (
     <div
       id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}
-      className="hero-panel bg-cover bg-center bg-[url('/gradient.png')] pt-32 md:pt-40 2xl:pt-52 pb-10 md:pb-16 2xl:pb-20"
+      className={`hero-panel flex flex-col min-h-screen min-h-dvh bg-cover bg-center bg-[url('/gradient.png')] pt-32 md:pt-40 2xl:pt-44 ${compact ? "pb-8.5 md:pb-13.5 2xl:pb-17" : "pb-10 md:pb-16 2xl:pb-20"}`}
     >
-      <Container>
+      <Container className="flex flex-1 flex-col">
         <div
           ref={panelRef}
-          className="relative overflow-hidden rounded-2xl bg-[#f1f0f5] shadow-xl min-h-[420px] md:min-h-[480px] lg:min-h-[60vh] 2xl:min-h-[640px] flex items-center justify-center"
+          className="relative overflow-hidden rounded-2xl bg-[#f1f0f5] shadow-xl flex-1 min-h-[420px] flex items-center justify-center"
         >
           <div
             ref={bgLayerRef}
@@ -125,11 +127,11 @@ const HeroPanel = ({ data }) => {
             )}
           </div>
 
-          <div className="relative z-10 flex flex-col items-center text-center gap-6 lg:gap-8 px-6 py-16 md:px-16 lg:px-24 w-full max-w-4xl">
+          <div className="relative z-10 flex flex-col items-center text-center gap-6 lg:gap-8 px-6 py-16 md:px-16 lg:px-24 w-full max-w-5xl">
             {heading && (
               <h1
                 ref={headingRef}
-                className="text-balance font-light text-5xl/13 md:text-7xl/20 2xl:text-8xl/27 [@media(max-height:700px)_and_(min-width:992px)]:text-6xl/17 text-pink"
+                className="text-balance font-light text-5xl/13 md:text-6xl/17 lg:text-7xl/20 [@media(max-height:700px)_and_(min-width:992px)]:text-6xl/17 text-pink"
               >
                 {heading}
               </h1>

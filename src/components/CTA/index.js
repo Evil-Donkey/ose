@@ -9,10 +9,12 @@ import formatSectionLabel from '@/lib/formatSectionLabel';
 import { getOptimizedImageProps } from "../../lib/imageUtils";
 import CtaButton from "@/components/CtaFormModal/CtaButton";
 import Container from "../Container";
+import { useCompactSections } from "@/components/PageTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const CTA = ({ data, storiesData }) => {
+  const compact = useCompactSections();
     const ctaTitleRef = useRef([]);
     const ctaCopyRef = useRef(null);
     const ctaRef = useRef([]);
@@ -82,7 +84,7 @@ const CTA = ({ data, storiesData }) => {
     }, []); // Re-run when stories data changes
 
     return (
-        <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="py-20">
+        <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={compact ? "pt-0 pb-17" : "py-20"}>
             <div className="flex flex-col items-center text-center">
                 {title && <h2 ref={ctaTitleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{title}</h2>}
                 {copy && <div ref={ctaCopyRef} className="w-full md:w-2/5 text-center text-blue-02 mb-8">

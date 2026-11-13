@@ -31,7 +31,7 @@ export default async function BiologyDecodersPage() {
   const foundersData = hasFoundersComponent(flexibleContent) ? await getFounders() : null;
 
   return (
-    <PageThemeProvider variant="pink">
+    <PageThemeProvider variant="pink" compactSections>
       {/* Every CTA button on this page opens the enquiry form (minus the sector field) */}
       <CtaFormModalProvider showSectors={false}>
         <FlexiblePageClient

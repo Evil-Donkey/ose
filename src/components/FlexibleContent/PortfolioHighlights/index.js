@@ -8,6 +8,7 @@ import Container from "@/components/Container";
 import RetryImage from "@/components/RetryImage";
 import formatSectionLabel from "@/lib/formatSectionLabel";
 import { proxyImageUrl } from "@/lib/proxyImage";
+import { useCompactSections } from "@/components/PageTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,7 @@ const MAX_ITEMS = 4;
 const stripTags = (html) => (html ? html.replace(/<[^>]+>/g, "") : "");
 
 const PortfolioHighlights = ({ data }) => {
+  const compact = useCompactSections();
   const { sectionLabel, title, portfolio } = data || {};
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
@@ -66,11 +68,11 @@ const PortfolioHighlights = ({ data }) => {
       id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}
       className="bg-lightblue"
     >
-      <Container className="py-16 lg:py-24 2xl:py-30">
+      <Container className={compact ? "py-13.5 lg:py-20.5 2xl:py-25.5" : "py-16 lg:py-24 2xl:py-30"}>
         {title && (
           <h2
             ref={titleRef}
-            className="text-center text-white font-light text-4xl/11 md:text-5xl/14 2xl:text-6xl/17 mb-10 lg:mb-14"
+            className="uppercase tracking-widest text-lg md:text-xl text-center font-medium text-white mb-10 lg:mb-14"
           >
             {title}
           </h2>
@@ -114,7 +116,7 @@ const PortfolioHighlights = ({ data }) => {
                             alt={logo.altText || itemTitle}
                             width={logo.mediaDetails?.width || 200}
                             height={logo.mediaDetails?.height || 80}
-                            className="h-auto w-2/3 max-h-16 object-contain object-left"
+                            className="h-auto w-2/3 object-contain object-left"
                             unoptimized
                             fallback={
                               <span className="text-lg 2xl:text-xl font-bold drop-shadow">
