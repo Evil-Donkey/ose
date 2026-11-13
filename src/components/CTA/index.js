@@ -84,7 +84,7 @@ const CTA = ({ data, storiesData }) => {
     }, []); // Re-run when stories data changes
 
     return (
-        <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={compact ? "pt-0 pb-17" : "py-20"}>
+        <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={compact ? "py-17" : "py-20"}>
             <div className="flex flex-col items-center text-center">
                 {title && <h2 ref={ctaTitleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{title}</h2>}
                 {copy && <div ref={ctaCopyRef} className="w-full md:w-2/5 text-center text-blue-02 mb-8">

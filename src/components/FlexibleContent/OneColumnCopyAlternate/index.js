@@ -94,11 +94,15 @@ const OneColumnCopyAlternate = ({ data }) => {
         });
     }, []);
 
+    // On compact pages (biology decoders) a plain copy + image block drops the
+    // full-screen height and top spacing so stacked sections read as one.
+    const compactPlain = compact && !backgroundMedia;
+
     return (
-        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative min-h-[70vh] md:min-h-[100vh] h-full w-full overflow-hidden bg-white">
+        <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={`relative ${compactPlain ? "" : "min-h-[70vh] md:min-h-[100vh]"} h-full w-full overflow-hidden bg-white`}>
             
             {heading && (
-                <div className="hidden lg:flex flex-col items-center text-center pt-20 z-50 absolute top-0 left-0 w-full h-full">
+                <div className={compactPlain ? "hidden lg:flex flex-col items-center text-center mb-8 w-full" : "hidden lg:flex flex-col items-center text-center pt-20 z-50 absolute top-0 left-0 w-full h-full"}>
                     <h2 ref={titleRef} className={`uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 text-center font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
                 </div>
             )}
@@ -142,9 +146,9 @@ const OneColumnCopyAlternate = ({ data }) => {
                 </>
             }
             
-            <div className="min-h-[70vh] md:min-h-[100vh] h-full flex flex-col justify-end lg:justify-center lg:mt-20 relative z-60">
-                <Container className={`h-full ${compact ? "py-12.75 md:py-12.75 2xl:py-21.25" : "py-15 md:py-15 2xl:py-25"} relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between lg:items-center gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
-                    <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-3/5 xl:w-1/2" : "lg:w-1/2"} gap-5 ${compact ? "lg:py-12.75" : "lg:py-15"}`}>
+            <div className={`${compactPlain ? "" : "min-h-[70vh] md:min-h-[100vh] lg:mt-20"} h-full flex flex-col justify-end lg:justify-center relative z-60`}>
+                <Container className={`h-full ${compactPlain ? "pt-0 pb-10 lg:pb-12" : compact ? "py-12.75 md:py-12.75 2xl:py-21.25" : "py-15 md:py-15 2xl:py-25"} relative z-10 ${backgroundMedia ? "text-white" : "text-blue-00"} flex justify-between lg:items-center gap-10 lg:gap-25 ${copyLast ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"}`}>
+                    <div className={`flex flex-col w-full ${headingSize === "small" ? "lg:w-3/5 xl:w-1/2" : "lg:w-1/2"} gap-5 ${compactPlain ? "lg:py-0" : compact ? "lg:py-12.75" : "lg:py-15"}`}>
                         {/* {heading && <h1 ref={el => contentRef.current[0] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight font-light w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: heading }} />} */}
                         <h2 ref={titleMobileRef} className={`lg:hidden uppercase tracking-widest text:lg md:text-xl 2xl:mb-8 font-medium opacity-0 translate-x-full ${!backgroundMedia ? "text-darkblue" : "text-white"}`}>{heading}</h2>
                         {subheading && <h1 ref={el => contentRef.current[1] = el} className={`${size} ${!backgroundMedia ? "text-darkblue" : ""} tracking-tight w-full opacity-0 translate-y-5`} dangerouslySetInnerHTML={{ __html: subheading }} />}
@@ -169,14 +173,14 @@ const OneColumnCopyAlternate = ({ data }) => {
                         {credits && <div className={`lg:hidden text-xs 2xl:text-sm text-end mt-4 lg:mt-10 text-white`} dangerouslySetInnerHTML={{ __html: credits }} />}
                     </div>
                     {!backgroundMedia && image && (
-                        <div className="w-full lg:w-1/2 h-110 lg:h-auto overflow-hidden rounded-2xl relative one-column-copy-alternate__image">
+                        <div className={`w-full lg:w-1/2 ${compactPlain ? "aspect-square" : "h-110 lg:h-auto"} overflow-hidden rounded-2xl relative one-column-copy-alternate__image`}>
                             <ResponsiveImage 
                                 ref={imageRef} 
                                 src={image.mediaItemUrl} 
                                 alt={image.caption || image.altText || heading || ""} 
                                 width={image.mediaDetails?.width || 800} 
                                 height={image.mediaDetails?.height || 600} 
-                                className="object-cover scale-180 origin-top w-full h-full" 
+                                className={`object-cover scale-180 origin-top w-full h-full ${compactPlain ? "absolute inset-0" : ""}`} 
                                 sizes="(max-width: 1024px) 100vw, 50vw"
                                 quality={80}
                             />
@@ -184,7 +188,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                         </div>
                     )}
                     {!backgroundMedia && videoMp4 &&
-                        <div className="w-full lg:w-1/2 overflow-hidden rounded-2xl">
+                        <div className={`w-full lg:w-1/2 overflow-hidden rounded-2xl ${compactPlain ? "aspect-square" : ""}`}>
                             <video ref={videoRef} src={videoMp4.mediaItemUrl} autoPlay muted loop className="h-full w-full object-cover scale-180 origin-top" />
                         </div>
                     }

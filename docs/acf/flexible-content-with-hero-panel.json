@@ -6325,6 +6325,82 @@
                         ],
                         "min": "",
                         "max": ""
+                    },
+                    "layout_6915e1a7f3c10": {
+                        "key": "layout_6915e1a7f3c10",
+                        "name": "intro_heading_copy",
+                        "label": "Intro heading and copy",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_6915e1a7f3c11",
+                                "label": "Section label",
+                                "name": "section_label",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "show_in_graphql": 1,
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_6915e1a7f3c12",
+                                "label": "Heading",
+                                "name": "heading",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Large heading, same size as the One column copy alternate heading",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "50",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "show_in_graphql": 1,
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_6915e1a7f3c13",
+                                "label": "Copy",
+                                "name": "copy",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Centred under the heading",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "show_in_graphql": 1,
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
                     }
                 },
                 "min": "",

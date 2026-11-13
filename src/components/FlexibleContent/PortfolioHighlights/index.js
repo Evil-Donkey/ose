@@ -116,7 +116,7 @@ const PortfolioHighlights = ({ data }) => {
                             alt={logo.altText || itemTitle}
                             width={logo.mediaDetails?.width || 200}
                             height={logo.mediaDetails?.height || 80}
-                            className="h-auto w-2/3 object-contain object-left"
+                            className="h-auto w-5/6 object-contain object-left"
                             unoptimized
                             fallback={
                               <span className="text-lg 2xl:text-xl font-bold drop-shadow">

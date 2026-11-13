@@ -36,6 +36,7 @@ import HoverImageCards from "./HoverImageCards";
 import CenteredCta from "./CenteredCta";
 import CenteredCtaBlue from "./CenteredCtaBlue";
 import IconColumnsPanel from "./IconColumnsPanel";
+import IntroHeadingCopy from "./IntroHeadingCopy";
 import HeroPanel from "./HeroPanel";
 import PortfolioHighlights from "./PortfolioHighlights";
 
@@ -153,6 +154,9 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title, 
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_CenteredCtaBlue") {
             flexibleContentArray.push(<CenteredCtaBlue data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_IntroHeadingCopy") {
+            flexibleContentArray.push(<IntroHeadingCopy data={item} index={i} key={i.toString()} />);
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_IconColumnsPanel") {
             flexibleContentArray.push(<IconColumnsPanel data={item} index={i} key={i.toString()} />);

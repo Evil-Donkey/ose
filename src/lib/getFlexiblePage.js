@@ -663,6 +663,12 @@ const FLEXIBLE_CONTENT_QUERY = `
             ctaLabel
             ctaUrl
           }
+          ... on Page_Flexiblecontent_FlexibleContent_IntroHeadingCopy {
+            fieldGroupName
+            sectionLabel
+            heading
+            copy
+          }
           ... on Page_Flexiblecontent_FlexibleContent_IconColumnsPanel {
             fieldGroupName
             sectionLabel
