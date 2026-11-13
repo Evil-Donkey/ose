@@ -81,7 +81,7 @@ const CenteredCta = ({ data }) => {
           {title && (
             <h2
               ref={titleRef}
-              className={`uppercase tracking-widest text-lg md:text-xl mb-6 lg:mb-8 text-center font-medium text-darkblue opacity-0 translate-x-full`}
+              className={`uppercase tracking-widest text-lg md:text-xl mb-6 lg:mb-8 text-center font-medium ${pageTheme === "pink" ? "text-blue-02" : "text-darkblue"} opacity-0 translate-x-full`}
             >
               {title}
             </h2>
@@ -90,7 +90,7 @@ const CenteredCta = ({ data }) => {
           {copy && (
             <div
               ref={copyRef}
-              className={`w-full md:w-2/3 ${pageTheme === "pink" ? "" : "lg:w-1/2"} text-pretty text-base md:text-xl text-darkblue/80 mb-8 lg:mb-10 opacity-0 translate-y-5 [&_p+p]:mt-5 md:[&_p+p]:mt-6`}
+              className={`w-full md:w-2/3 ${pageTheme === "pink" ? "" : "lg:w-1/2"} text-pretty text-base md:text-xl ${pageTheme === "pink" ? "text-darkblue" : "text-darkblue/80"} mb-8 lg:mb-10 opacity-0 translate-y-5 [&_p+p]:mt-5 md:[&_p+p]:mt-6`}
               dangerouslySetInnerHTML={{ __html: copy }}
             />
           )}
