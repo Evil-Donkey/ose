@@ -87,7 +87,7 @@ const CTA = ({ data, storiesData }) => {
         <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={compact ? "py-17" : "py-20"}>
             <div className="flex flex-col items-center text-center">
                 {title && <h2 ref={ctaTitleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{title}</h2>}
-                {copy && <div ref={ctaCopyRef} className="w-full md:w-2/5 text-center text-blue-02 mb-8">
+                {copy && <div ref={ctaCopyRef} className={`w-full ${compact ? "md:w-3/5" : "md:w-2/5"} text-center text-blue-02 mb-8`}>
                     <div className="text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
                 </div>}
             </div>

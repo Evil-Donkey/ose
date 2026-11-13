@@ -55,7 +55,7 @@ const Faqs = ({ data }) => {
 
     return (
         <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="relative h-full w-full overflow-hidden faqs-section">
-            <Container className="py-20 2xl:pb-40">
+            <Container className="py-20 lg:pb-10 2xl:pb-20">
                 <div className="flex flex-col items-center text-center">
                     {title && <h2 ref={titleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium opacity-0 translate-x-full">{title}</h2>}
                     {copy && <div ref={el => copyRef.current[0] = el} className="w-full md:w-2/3 text-center text-blue-02 opacity-0 translate-y-20">
