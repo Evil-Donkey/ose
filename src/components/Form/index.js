@@ -5,7 +5,16 @@ import { useState } from "react";
 import Button from "@/components/Button";
 import Link from "next/link";
 
-const Form = () => {
+/**
+ * Research enquiry form (Contact Form 7).
+ *
+ * @param {boolean} showSectors - Show the "Relevant Sector" radios and require one (default true).
+ *   The landing-page modal passes false; every other field is identical.
+ * @param {string} submitLabel - Submit button text (default "Start the conversation").
+ * @param {string} source - Optional label of what triggered the form (e.g. the CTA text). Sent
+ *   as `cta-source`; Contact Form 7 ignores it unless a matching field exists.
+ */
+const Form = ({ showSectors = true, submitLabel = "Start the conversation", source = "" }) => {
 
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
     const [success, setSuccess] = useState(false);
@@ -39,25 +48,31 @@ const Form = () => {
         formData.append("challenge", data.challenge || "");
         formData.append("conversation", data.conversation || "");
         
-        // Handle sectors as comma-separated string for text field
-        let sectorsValue = "";
-        if (data.sectors) {
-            if (Array.isArray(data.sectors)) {
-                sectorsValue = data.sectors.join(", ");
-            } else {
-                sectorsValue = data.sectors;
+        if (source) {
+            formData.append("cta-source", source);
+        }
+
+        if (showSectors) {
+            // Handle sectors as comma-separated string for text field
+            let sectorsValue = "";
+            if (data.sectors) {
+                if (Array.isArray(data.sectors)) {
+                    sectorsValue = data.sectors.join(", ");
+                } else {
+                    sectorsValue = data.sectors;
+                }
             }
+
+            // Validate that at least one sector is selected
+            if (!sectorsValue) {
+                setError("Please select at least one sector");
+                setIsSubmitting(false);
+                return;
+            }
+
+            // Send sectors as a single comma-separated string
+            formData.append("sectors", sectorsValue);
         }
-        
-        // Validate that at least one sector is selected
-        if (!sectorsValue) {
-            setError("Please select at least one sector");
-            setIsSubmitting(false);
-            return;
-        }
-        
-        // Send sectors as a single comma-separated string
-        formData.append("sectors", sectorsValue);
 
         // Handle file upload
         if (data.file && data.file[0]) {
@@ -199,24 +214,26 @@ const Form = () => {
             {errors.conversation && <p className="text-red-500 text-sm">{errors.conversation.message}</p>}
         </div>
 
-        <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="sectors" className="text-sm">Relevant Sector (select one)*</label>
-            <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Deep Tech" />
-                    <span>Deep Tech</span>
-                </label>
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Health Tech" />
-                    <span>HealthTech</span>
-                </label>
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Life Sciences" />
-                    <span>Life Sciences</span>
-                </label>
-                {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
+        {showSectors && (
+            <div className="w-full flex flex-col gap-2 mb-5 px-4">
+                <label htmlFor="sectors" className="text-sm">Relevant Sector (select one)*</label>
+                <div className="flex flex-col gap-2">
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Deep Tech" />
+                        <span>Deep Tech</span>
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Health Tech" />
+                        <span>HealthTech</span>
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Life Sciences" />
+                        <span>Life Sciences</span>
+                    </label>
+                    {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
+                </div>
             </div>
-        </div>
+        )}
 
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
             <div className="text-sm font-bold mt-4">Supporting materials</div>
@@ -284,7 +301,7 @@ const Form = () => {
 
         <div className="w-full flex flex-col items-end gap-2 px-4">
             <Button disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Start the conversation"}
+                {isSubmitting ? "Submitting..." : submitLabel}
             </Button>
         </div>
 

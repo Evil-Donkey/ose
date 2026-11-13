@@ -7,26 +7,10 @@ import Image from "next/image";
 import ResponsiveImage from "../ResponsiveImage";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import { getOptimizedImageProps } from "../../lib/imageUtils";
-import Button from "@/components/Button";
+import CtaButton from "@/components/CtaFormModal/CtaButton";
 import Container from "../Container";
 
 gsap.registerPlugin(ScrollTrigger);
-
-// Helper function to detect if a URL is an email
-const isEmail = (url) => {
-    if (!url) return false;
-    // Check if it contains @ symbol and looks like an email
-    return url.includes('@') && !url.startsWith('http') && !url.startsWith('/');
-};
-
-// Helper function to format email URL
-const formatEmailUrl = (email) => {
-    if (!email) return '#';
-    // If it already starts with mailto:, return as is
-    if (email.startsWith('mailto:')) return email;
-    // Otherwise, add mailto: prefix
-    return `mailto:${email}`;
-};
 
 const CTA = ({ data, storiesData }) => {
     const ctaTitleRef = useRef([]);
@@ -138,20 +122,7 @@ const CTA = ({ data, storiesData }) => {
                                         </div>
                                         {copy && <div className="text-white mb-8 text-base md:text-lg flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />}
                                     </div>
-                                    {ctaLabel && (
-                                        isEmail(ctaUrl) ? (
-                                            <a 
-                                                href={formatEmailUrl(ctaUrl)} 
-                                                className="bg-lightblue text-white text-sm lg:text-xs xl:text-base font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer w-max uppercase"
-                                            >
-                                                {ctaLabel}
-                                            </a>
-                                        ) : (
-                                            <Button href={ctaUrl} variant="light">
-                                                {ctaLabel}
-                                            </Button>
-                                        )
-                                    )}
+                                    {ctaLabel && <CtaButton label={ctaLabel} href={ctaUrl} variant="light" />}
                                 </div>
                             </div>
                         )

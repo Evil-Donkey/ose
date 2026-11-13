@@ -34,6 +34,10 @@ import Advantages from "./Advantages";
 import IconSteps from "./IconSteps";
 import HoverImageCards from "./HoverImageCards";
 import CenteredCta from "./CenteredCta";
+import CenteredCtaBlue from "./CenteredCtaBlue";
+import IconColumnsPanel from "./IconColumnsPanel";
+import HeroPanel from "./HeroPanel";
+import PortfolioHighlights from "./PortfolioHighlights";
 
 const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title, foundersData = null, teamData = null }) => {
 
@@ -146,6 +150,18 @@ const PageFlexibleContent = memo(({ data, onPopupOpen, onVideoPopupOpen, title, 
         }
         if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_CenteredCta") {
             flexibleContentArray.push(<CenteredCta data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_CenteredCtaBlue") {
+            flexibleContentArray.push(<CenteredCtaBlue data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_IconColumnsPanel") {
+            flexibleContentArray.push(<IconColumnsPanel data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_HeroPanel") {
+            flexibleContentArray.push(<HeroPanel data={item} index={i} key={i.toString()} />);
+        }
+        if (fieldGroupName === "Page_Flexiblecontent_FlexibleContent_PortfolioHighlights") {
+            flexibleContentArray.push(<PortfolioHighlights data={item} index={i} key={i.toString()} />);
         }
     })}
 

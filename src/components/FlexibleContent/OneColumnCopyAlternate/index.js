@@ -11,6 +11,18 @@ import formatSectionLabel from '@/lib/formatSectionLabel';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Rich-text styling for the WYSIWYG copy (lists, links, headings, ...) matching the
+// prose treatment used elsewhere. Colours and sizes inherit from the section so it
+// works on both the light and the image/video backgrounds.
+const COPY_PROSE_CLASSES = [
+    "prose max-w-none",
+    "[--tw-prose-body:currentColor] [--tw-prose-headings:currentColor] [--tw-prose-bold:currentColor] [--tw-prose-links:currentColor] [--tw-prose-bullets:currentColor] [--tw-prose-counters:currentColor] [--tw-prose-quotes:currentColor]",
+    "prose-p:mt-0 prose-p:mb-4 [&>div>*:last-child]:mb-0",
+    "prose-a:underline",
+    "prose-ul:mt-0 prose-ul:mb-4 prose-ol:mt-0 prose-ol:mb-4 prose-li:my-1",
+    "prose-headings:mt-0 prose-headings:mb-3 prose-headings:font-medium",
+].join(" ");
+
 const OneColumnCopyAlternate = ({ data }) => {
 
     const { heading, headingSize, subheading, copy, ctaLabel, ctaLink, videoMp4, videoMp4Mobile, image, imageMobile, copyLast, backgroundMedia, darkOverlay, credits, sectionLabel } = data;
@@ -95,7 +107,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                         <ResponsiveImage 
                             ref={el => imageRef.current[0] = el} 
                             src={image.mediaItemUrl} 
-                            alt={heading} 
+                            alt={heading || ""} 
                             width={image.mediaDetails?.width || 1920} 
                             height={image.mediaDetails?.height || 1080} 
                             className={`absolute inset-0 w-full h-full object-cover scale-180 origin-top ${imageMobile ? "hidden lg:block" : ""}`} 
@@ -108,7 +120,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                         <ResponsiveImage 
                             ref={el => imageRef.current[1] = el} 
                             src={imageMobile.mediaItemUrl} 
-                            alt={heading} 
+                            alt={heading || ""} 
                             width={imageMobile.mediaDetails?.width || 768} 
                             height={imageMobile.mediaDetails?.height || 1024} 
                             className="absolute inset-0 w-full h-full object-cover scale-180 origin-top lg:hidden" 
@@ -138,7 +150,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                             {/* {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl lg:text-[1.8rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                 <div dangerouslySetInnerHTML={{ __html: subheading }} />
                             </div>} */}
-                            {copy && <div ref={el => contentRef.current[2] = el} className={`text-base md:text-xl ${!backgroundMedia ? "lg:text-[1.36rem]" : "lg:text-[1.45rem]"} flex flex-col gap-4 opacity-0 translate-y-5`}>
+                            {copy && <div ref={el => contentRef.current[2] = el} className={`text-base md:text-xl ${!backgroundMedia ? "lg:text-[1.36rem]" : "lg:text-[1.45rem]"} flex flex-col gap-4 opacity-0 translate-y-5 ${COPY_PROSE_CLASSES} ${!backgroundMedia ? "[--tw-prose-bullets:var(--color-lightblue)] [--tw-prose-counters:var(--color-lightblue)]" : ""}`}>
                                 <div dangerouslySetInnerHTML={{ __html: copy }} />
                             </div>}
                             {ctaLabel && 
@@ -159,7 +171,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                             <ResponsiveImage 
                                 ref={imageRef} 
                                 src={image.mediaItemUrl} 
-                                alt={image.caption || image.altText || heading} 
+                                alt={image.caption || image.altText || heading || ""} 
                                 width={image.mediaDetails?.width || 800} 
                                 height={image.mediaDetails?.height || 600} 
                                 className="object-cover scale-180 origin-top w-full h-full" 

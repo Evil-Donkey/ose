@@ -14,6 +14,8 @@ import FlexiblePageClient from "@/components/Templates/FlexiblePageClient";
 import HeaderServer from "@/components/Header/HeaderServer";
 import Container from "@/components/Container";
 import CTA from "@/components/CTA";
+import { PageThemeProvider } from "@/components/PageTheme";
+import { CtaFormModalProvider } from "@/components/CtaFormModal";
 import ShareholderPortalView from "@/app/shareholder-information/ShareholderPortalView";
 import FormPageView from "@/app/form/FormPageView";
 import ContactPageView from "@/app/contact/ContactPageView";
@@ -68,6 +70,9 @@ function pageSlugMatches(page, candidate) {
  * so the H1 lives inside the hero flexible block — not the standalone title strip in FlexiblePage.js.
  */
 const FLEX_TITLE_IN_HERO_PAGE_IDS = new Set([1215, 1249, 1251]);
+
+/** Landing pages whose CTA buttons use the pink theme (4640 = live, 3973 = local CMS). */
+const PINK_BUTTON_PAGE_IDS = new Set([4640, 3973]);
 
 const CUSTOM_PREVIEW_BY_DATABASE_ID = {
   1597: ShareholderPortalView,
@@ -165,7 +170,7 @@ export default async function PagePreviewPage({ params }) {
   };
 
   if (flexibleContent?.length) {
-    return (
+    const flexiblePage = (
       <FlexiblePageClient
         flexibleContent={flexibleContent}
         popOutData={popOutData}
@@ -181,8 +186,16 @@ export default async function PagePreviewPage({ params }) {
         teamData={teamData}
         foundersData={foundersData}
       >
-        <CTA data={ctaData} />
+        {/* Landing pages with their own CTA cards skip the site-wide footer CTA */}
+        {!PINK_BUTTON_PAGE_IDS.has(dbId) && <CTA data={ctaData} />}
       </FlexiblePageClient>
+    );
+    return PINK_BUTTON_PAGE_IDS.has(dbId) ? (
+      <PageThemeProvider variant="pink">
+        <CtaFormModalProvider showSectors={false}>{flexiblePage}</CtaFormModalProvider>
+      </PageThemeProvider>
+    ) : (
+      flexiblePage
     );
   }
 
