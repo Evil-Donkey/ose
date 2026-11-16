@@ -91,6 +91,8 @@ const PortfolioHighlights = ({ data }) => {
               return (
                 <Link
                   key={item.id}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   href={item.slug ? `/portfolio/${item.slug}` : "/portfolio"}
                   ref={(el) => (cardsRef.current[index] = el)}
                   className="group block"

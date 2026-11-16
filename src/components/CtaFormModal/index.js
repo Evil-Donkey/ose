@@ -16,6 +16,11 @@ export function useCtaFormModal() {
 
 const SLIDE_MS = 400;
 
+// Contact Form 7 clone used by the biology decoders landing page (no sector field,
+// own recipient). The container post is the landing page itself.
+const LANDING_FORM_ID = process.env.NEXT_PUBLIC_CF7_LANDING_FORM_ID || "4694";
+const LANDING_PAGE_ID = process.env.NODE_ENV === "development" ? "3973" : "4640";
+
 /**
  * Wraps a landing page so every CTA button on it opens the research enquiry form
  * in a bottom-up slide-over panel. The button label becomes the panel heading.
@@ -114,7 +119,13 @@ export function CtaFormModalProvider({ children, showSectors = false }) {
                     {label}
                   </h2>
                   {/* The panel unmounts on close, so the form state resets each time it opens */}
-                  <Form showSectors={showSectors} submitLabel={label || undefined} source={label} />
+                  <Form
+                        showSectors={showSectors}
+                        submitLabel={label || undefined}
+                        source={label}
+                        formId={LANDING_FORM_ID}
+                        containerPostId={LANDING_PAGE_ID}
+                      />
                 </div>
               </div>
             </div>
