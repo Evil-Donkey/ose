@@ -37,6 +37,7 @@ const PAGE_SLUG_TO_PATH = {
   "shareholder-information": "/shareholder-information",
   "shareholder-information-signup": "/shareholder-information-signup",
   form: "/form",
+  biologydecoders: "/biologydecoders",
 };
 
 function getPathsToRevalidate(postType, slug) {
