@@ -1,16 +1,37 @@
 'use client'
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Turnstile from "@/components/Turnstile";
 import Button from "@/components/Button";
 import Link from "next/link";
 
-const Form = () => {
+/**
+ * Research enquiry form (Contact Form 7).
+ *
+ * @param {boolean} showSectors - Show the "Relevant Sector" radios and require one (default true).
+ *   The landing-page modal passes false; every other field is identical.
+ * @param {string} submitLabel - Submit button text (default "Start the conversation").
+ * @param {string} formId - Contact Form 7 form ID to submit to (default: the /form page's form).
+ * @param {string} containerPostId - ID of the WordPress post/page that hosts the form (default: the /form page).
+ * @param {string} source - Optional label of what triggered the form (e.g. the CTA text). Sent
+ *   as `cta-source`; Contact Form 7 ignores it unless a matching field exists.
+ */
+const DEFAULT_FORM_ID = process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568";
+
+const Form = ({
+    showSectors = true,
+    submitLabel = "Start the conversation",
+    source = "",
+    formId = DEFAULT_FORM_ID,
+    containerPostId = "1566",
+}) => {
 
     const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const turnstileRef = useRef(null);
 
     const onSubmit = async (data) => {
         setIsSubmitting(true);
@@ -22,11 +43,11 @@ const Form = () => {
         const formData = new FormData();
 
         // Contact Form 7 required fields
-        formData.append("_wpcf7", process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568");
+        formData.append("_wpcf7", formId);
         formData.append("_wpcf7_version", "6.0.5");
         formData.append("_wpcf7_locale", "en_UK");
-        formData.append("_wpcf7_unit_tag", `wpcf7-f${process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568"}-p1566-o1`);
-        formData.append("_wpcf7_container_post", "1566");
+        formData.append("_wpcf7_unit_tag", `wpcf7-f${formId}-p${containerPostId}-o1`);
+        formData.append("_wpcf7_container_post", containerPostId);
 
         // Form fields - match exactly with WordPress Contact Form 7 field names
         formData.append("first-name", data.firstName);
@@ -39,25 +60,40 @@ const Form = () => {
         formData.append("challenge", data.challenge || "");
         formData.append("conversation", data.conversation || "");
         
-        // Handle sectors as comma-separated string for text field
-        let sectorsValue = "";
-        if (data.sectors) {
-            if (Array.isArray(data.sectors)) {
-                sectorsValue = data.sectors.join(", ");
-            } else {
-                sectorsValue = data.sectors;
-            }
+        if (source) {
+            formData.append("cta-source", source);
         }
-        
-        // Validate that at least one sector is selected
-        if (!sectorsValue) {
-            setError("Please select at least one sector");
+
+        if (showSectors) {
+            // Handle sectors as comma-separated string for text field
+            let sectorsValue = "";
+            if (data.sectors) {
+                if (Array.isArray(data.sectors)) {
+                    sectorsValue = data.sectors.join(", ");
+                } else {
+                    sectorsValue = data.sectors;
+                }
+            }
+
+            // Validate that at least one sector is selected
+            if (!sectorsValue) {
+                setError("Please select at least one sector");
+                setIsSubmitting(false);
+                return;
+            }
+
+            // Send sectors as a single comma-separated string
+            formData.append("sectors", sectorsValue);
+        }
+
+        // Cloudflare Turnstile token (verified by Contact Form 7)
+        const turnstileToken = (await turnstileRef.current?.getToken()) || "";
+        if (!turnstileToken) {
+            setError("Verification failed. Please refresh the page and try again.");
             setIsSubmitting(false);
             return;
         }
-        
-        // Send sectors as a single comma-separated string
-        formData.append("sectors", sectorsValue);
+        formData.append("_wpcf7_turnstile_response", turnstileToken);
 
         // Handle file upload
         if (data.file && data.file[0]) {
@@ -71,7 +107,7 @@ const Form = () => {
         }
 
         try {
-            const endpoint = `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/contact-form-7/v1/contact-forms/${process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568"}/feedback`;
+            const endpoint = `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/contact-form-7/v1/contact-forms/${formId}/feedback`;
             console.log("Submitting to endpoint:", endpoint);
 
             const response = await fetch(endpoint, {
@@ -117,6 +153,7 @@ const Form = () => {
             console.error("Form submission error:", err);
             setError("An error occurred. Please try again later.");
         } finally {
+            turnstileRef.current?.reset();
             setIsSubmitting(false);
         }
     };
@@ -199,24 +236,26 @@ const Form = () => {
             {errors.conversation && <p className="text-red-500 text-sm">{errors.conversation.message}</p>}
         </div>
 
-        <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="sectors" className="text-sm">Relevant Sector (select one)*</label>
-            <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Deep Tech" />
-                    <span>Deep Tech</span>
-                </label>
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Health Tech" />
-                    <span>HealthTech</span>
-                </label>
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Life Sciences" />
-                    <span>Life Sciences</span>
-                </label>
-                {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
+        {showSectors && (
+            <div className="w-full flex flex-col gap-2 mb-5 px-4">
+                <label htmlFor="sectors" className="text-sm">Relevant Sector (select one)*</label>
+                <div className="flex flex-col gap-2">
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Deep Tech" />
+                        <span>Deep Tech</span>
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Health Tech" />
+                        <span>HealthTech</span>
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Life Sciences" />
+                        <span>Life Sciences</span>
+                    </label>
+                    {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
+                </div>
             </div>
-        </div>
+        )}
 
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
             <div className="text-sm font-bold mt-4">Supporting materials</div>
@@ -283,8 +322,9 @@ const Form = () => {
         </div>
 
         <div className="w-full flex flex-col items-end gap-2 px-4">
+            <Turnstile ref={turnstileRef} />
             <Button disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Start the conversation"}
+                {isSubmitting ? "Submitting..." : submitLabel}
             </Button>
         </div>
 

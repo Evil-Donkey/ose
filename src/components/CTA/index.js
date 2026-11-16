@@ -7,28 +7,14 @@ import Image from "next/image";
 import ResponsiveImage from "../ResponsiveImage";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import { getOptimizedImageProps } from "../../lib/imageUtils";
-import Button from "@/components/Button";
+import CtaButton from "@/components/CtaFormModal/CtaButton";
 import Container from "../Container";
+import { useCompactSections } from "@/components/PageTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Helper function to detect if a URL is an email
-const isEmail = (url) => {
-    if (!url) return false;
-    // Check if it contains @ symbol and looks like an email
-    return url.includes('@') && !url.startsWith('http') && !url.startsWith('/');
-};
-
-// Helper function to format email URL
-const formatEmailUrl = (email) => {
-    if (!email) return '#';
-    // If it already starts with mailto:, return as is
-    if (email.startsWith('mailto:')) return email;
-    // Otherwise, add mailto: prefix
-    return `mailto:${email}`;
-};
-
 const CTA = ({ data, storiesData }) => {
+  const compact = useCompactSections();
     const ctaTitleRef = useRef([]);
     const ctaCopyRef = useRef(null);
     const ctaRef = useRef([]);
@@ -98,10 +84,10 @@ const CTA = ({ data, storiesData }) => {
     }, []); // Re-run when stories data changes
 
     return (
-        <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className="py-20">
+        <Container id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined} className={compact ? "py-17" : "py-20"}>
             <div className="flex flex-col items-center text-center">
                 {title && <h2 ref={ctaTitleRef} className="uppercase tracking-widest text:lg md:text-xl mb-8 text-center font-medium">{title}</h2>}
-                {copy && <div ref={ctaCopyRef} className="w-full md:w-2/5 text-center text-blue-02 mb-8">
+                {copy && <div ref={ctaCopyRef} className={`w-full ${compact ? "md:w-3/5" : "md:w-2/5"} text-center text-blue-02 mb-8`}>
                     <div className="text-base md:text-xl" dangerouslySetInnerHTML={{ __html: copy }} />
                 </div>}
             </div>
@@ -138,20 +124,7 @@ const CTA = ({ data, storiesData }) => {
                                         </div>
                                         {copy && <div className="text-white mb-8 text-base md:text-lg flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />}
                                     </div>
-                                    {ctaLabel && (
-                                        isEmail(ctaUrl) ? (
-                                            <a 
-                                                href={formatEmailUrl(ctaUrl)} 
-                                                className="bg-lightblue text-white text-sm lg:text-xs xl:text-base font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer w-max uppercase"
-                                            >
-                                                {ctaLabel}
-                                            </a>
-                                        ) : (
-                                            <Button href={ctaUrl} variant="light">
-                                                {ctaLabel}
-                                            </Button>
-                                        )
-                                    )}
+                                    {ctaLabel && <CtaButton label={ctaLabel} href={ctaUrl} variant="light" />}
                                 </div>
                             </div>
                         )

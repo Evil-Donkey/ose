@@ -120,6 +120,18 @@ export const MEGANAV_SECTIONS_FRAGMENT = `
     sectionLabel
     fieldGroupName
   }
+  ... on Page_Flexiblecontent_FlexibleContent_CenteredCtaBlue {
+    sectionLabel
+    fieldGroupName
+  }
+  ... on Page_Flexiblecontent_FlexibleContent_IntroHeadingCopy {
+    sectionLabel
+    fieldGroupName
+  }
+  ... on Page_Flexiblecontent_FlexibleContent_IconColumnsPanel {
+    sectionLabel
+    fieldGroupName
+  }
 `;
 
 export const MEGANAV_PAGE_ALIASES = {
