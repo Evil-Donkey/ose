@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CenteredCta = ({ data }) => {
   const compact = useCompactSections();
-  const { title, copy, ctaLabel, ctaUrl, sectionLabel } = data || {};
+  const { title, copy, ctaLabel, ctaUrl, modalForm, sectionLabel } = data || {};
   const pageTheme = usePageTheme();
   const hasModal = useHasCtaModal();
   const titleRef = useRef(null);
@@ -20,18 +20,24 @@ const CenteredCta = ({ data }) => {
   const buttonRef = useRef(null);
 
   useEffect(() => {
+    // Landing page (pink theme): reveal once as soon as the block nears the bottom of the
+    // viewport, instead of the slow scroll-scrubbed fade, so it isn't faded out on page load
+    // when it sits just below a short hero.
+    const isLanding = pageTheme === "pink";
+    const triggerFor = (el, start) =>
+      isLanding
+        ? { trigger: el, start: "top 98%", once: true, toggleActions: "play none none none" }
+        : { trigger: el, start, scrub: 1.5, invalidateOnRefresh: true };
+    const landingTiming = (delay) => (isLanding ? { duration: 1.2, delay } : {});
+
     if (titleRef.current) {
       gsap.to(titleRef.current, {
         x: 0,
         opacity: 1,
         duration: 2,
         ease: "power4.out",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
+        ...landingTiming(0),
+        scrollTrigger: triggerFor(titleRef.current, "top 90%"),
       });
     }
 
@@ -41,12 +47,8 @@ const CenteredCta = ({ data }) => {
         opacity: 1,
         duration: 1.5,
         ease: "power4.out",
-        scrollTrigger: {
-          trigger: copyRef.current,
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
+        ...landingTiming(0.15),
+        scrollTrigger: triggerFor(copyRef.current, "top 90%"),
       });
     }
 
@@ -56,19 +58,15 @@ const CenteredCta = ({ data }) => {
         opacity: 1,
         duration: 1.5,
         ease: "power4.out",
-        scrollTrigger: {
-          trigger: buttonRef.current,
-          start: "top 95%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
+        ...landingTiming(0.3),
+        scrollTrigger: triggerFor(buttonRef.current, "top 95%"),
       });
     }
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, []);
+  }, [pageTheme]);
 
   if (!title && !copy && !ctaLabel) {
     return null;
@@ -97,7 +95,7 @@ const CenteredCta = ({ data }) => {
 
           {ctaLabel && (ctaUrl || hasModal) && (
             <div ref={buttonRef} className="opacity-0 translate-y-5">
-              <CtaButton label={ctaLabel} href={ctaUrl} />
+              <CtaButton label={ctaLabel} href={ctaUrl} form={modalForm} />
             </div>
           )}
         </div>

@@ -102,7 +102,7 @@ const CTA = ({ data, storiesData }) => {
                     'md:grid-cols-2' // fallback
                 }`}>
                     {cta.map((cta, index) => {
-                        const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, backgroundImage } = cta;
+                        const { smallTitle, largeTitle, copy, ctaLabel, ctaUrl, modalForm, backgroundImage } = cta;
                         return (
                             <div key={index} ref={el => ctaRef.current[index] = el} className={`relative overflow-hidden rounded-3xl group p-6 xl:p-8 2xl:p-12 ${!ctaLabel ? 'min-h-[600px] md:min-h-auto' : ''}`}>
                                 {(() => {
@@ -124,7 +124,7 @@ const CTA = ({ data, storiesData }) => {
                                         </div>
                                         {copy && <div className="text-white mb-8 text-base md:text-lg flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: copy }} />}
                                     </div>
-                                    {ctaLabel && <CtaButton label={ctaLabel} href={ctaUrl} variant="light" />}
+                                    {ctaLabel && <CtaButton label={ctaLabel} href={ctaUrl} variant="light" colour="default" form={modalForm} />}
                                 </div>
                             </div>
                         )

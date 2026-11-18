@@ -156,7 +156,7 @@ const OneColumnCopyAlternate = ({ data }) => {
                             {/* {subheading && <div ref={el => contentRef.current[1] = el} className="text-xl md:text-3xl lg:text-[1.8rem]/10 2xl:text-[2.5rem]/12 opacity-0 translate-y-5">
                                 <div dangerouslySetInnerHTML={{ __html: subheading }} />
                             </div>} */}
-                            {copy && <div ref={el => contentRef.current[2] = el} className={`text-base md:text-xl ${!backgroundMedia ? "lg:text-[1.36rem]" : "lg:text-[1.45rem]"} flex flex-col gap-4 opacity-0 translate-y-5 ${COPY_PROSE_CLASSES} ${!backgroundMedia ? "[--tw-prose-bullets:var(--color-lightblue)] [--tw-prose-counters:var(--color-lightblue)]" : ""}`}>
+                            {copy && <div ref={el => contentRef.current[2] = el} className={`text-base md:text-xl ${compact ? "" : !backgroundMedia ? "lg:text-[1.36rem]" : "lg:text-[1.45rem]"} flex flex-col gap-4 opacity-0 translate-y-5 ${COPY_PROSE_CLASSES} ${!backgroundMedia ? "[--tw-prose-bullets:var(--color-lightblue)] [--tw-prose-counters:var(--color-lightblue)]" : ""}`}>
                                 <div dangerouslySetInnerHTML={{ __html: copy }} />
                             </div>}
                             {ctaLabel && 

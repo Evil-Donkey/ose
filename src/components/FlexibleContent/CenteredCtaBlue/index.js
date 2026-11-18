@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CenteredCtaBlue = ({ data }) => {
   const compact = useCompactSections();
-  const { title, copy, ctaLabel, ctaUrl, sectionLabel } = data || {};
+  const { title, copy, ctaLabel, ctaUrl, modalForm, sectionLabel } = data || {};
   const hasModal = useHasCtaModal();
   const rootRef = useRef(null);
   const titleRef = useRef(null);
@@ -89,7 +89,7 @@ const CenteredCtaBlue = ({ data }) => {
 
           {ctaLabel && (ctaUrl || hasModal) && (
             <div ref={buttonRef} className="opacity-0 translate-y-5">
-              <CtaButton label={ctaLabel} href={ctaUrl} />
+              <CtaButton label={ctaLabel} href={ctaUrl} form={modalForm} />
             </div>
           )}
         </div>

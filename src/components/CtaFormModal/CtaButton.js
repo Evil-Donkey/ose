@@ -24,15 +24,19 @@ export function useHasCtaModal() {
   return Boolean(useCtaFormModal());
 }
 
-const CtaButton = ({ label, href, variant }) => {
+// `colour` forces a button colour theme (e.g. "default" = cyan) regardless of the page theme.
+// `form` picks which form the modal opens ("default" | "interest"); it comes from the CMS and may
+// arrive as an array depending on the ACF select settings.
+const CtaButton = ({ label, href, variant, colour, form }) => {
   const modal = useCtaFormModal();
-  const theme = usePageTheme();
+  const pageTheme = usePageTheme();
+  const theme = colour ?? pageTheme;
 
   if (!label) return null;
 
   if (modal) {
     return (
-      <Button type="button" className="" onClick={() => modal.open(label)}>
+      <Button type="button" className="" colour={colour} onClick={() => modal.open(label, Array.isArray(form) ? form[0] : form)}>
         {label}
       </Button>
     );
@@ -50,7 +54,7 @@ const CtaButton = ({ label, href, variant }) => {
   }
 
   return (
-    <Button href={href} variant={variant}>
+    <Button href={href} variant={variant} colour={colour}>
       {label}
     </Button>
   );
