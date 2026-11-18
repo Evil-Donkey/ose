@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePageTheme, getButtonColourClasses } from '@/components/PageTheme';
 
-const Button = React.forwardRef(({ children, href, className, variant, ...props }, ref) => {
+const Button = React.forwardRef(({ children, href, className, variant, colour, ...props }, ref) => {
     const router = useRouter();
     const theme = usePageTheme();
-    const colourClasses = getButtonColourClasses(variant === 'pink' ? 'pink' : theme);
+    const colourClasses = getButtonColourClasses(colour ?? (variant === 'pink' ? 'pink' : theme));
     
     const handleClick = (e) => {
         if (href && href.includes('?')) {

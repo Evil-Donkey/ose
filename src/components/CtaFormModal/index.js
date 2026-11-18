@@ -7,7 +7,7 @@ import Form from "@/components/Form";
 const CtaFormModalContext = createContext(null);
 
 /**
- * Returns `{ open(label) }` when the page is wrapped in <CtaFormModalProvider>,
+ * Returns `{ open(label, form) }` when the page is wrapped in <CtaFormModalProvider>,
  * otherwise null (so CTA buttons fall back to their normal links).
  */
 export function useCtaFormModal() {
@@ -19,6 +19,17 @@ const SLIDE_MS = 400;
 // Contact Form 7 clone used by the biology decoders landing page (no sector field,
 // own recipient). The container post is the landing page itself.
 const LANDING_FORM_ID = process.env.NEXT_PUBLIC_CF7_LANDING_FORM_ID || "4694";
+// "Register your interest" has its own, shorter clone (no challenge / explore questions).
+const INTEREST_FORM_ID = process.env.NEXT_PUBLIC_CF7_INTEREST_FORM_ID || "4700";
+
+// Which form a CTA opens is chosen per button in the CMS ("Form" select -> `modalForm`).
+// Anything else (including empty) opens the default enquiry form.
+const FORMS = {
+  default: { id: LANDING_FORM_ID, showExploreFields: true },
+  interest: { id: INTEREST_FORM_ID, showExploreFields: false },
+};
+const getForm = (key) => FORMS[key] || FORMS.default;
+
 const LANDING_PAGE_ID = process.env.NODE_ENV === "development" ? "3973" : "4640";
 
 /**
@@ -27,6 +38,7 @@ const LANDING_PAGE_ID = process.env.NODE_ENV === "development" ? "3973" : "4640"
  */
 export function CtaFormModalProvider({ children, showSectors = false }) {
   const [label, setLabel] = useState("");
+  const [formKey, setFormKey] = useState("default");
   const [mounted, setMounted] = useState(false); // in the DOM
   const [visible, setVisible] = useState(false); // slid in
   const [portalReady, setPortalReady] = useState(false);
@@ -36,10 +48,11 @@ export function CtaFormModalProvider({ children, showSectors = false }) {
 
   useEffect(() => setPortalReady(true), []);
 
-  const open = useCallback((nextLabel) => {
+  const open = useCallback((nextLabel, nextForm) => {
     clearTimeout(closeTimerRef.current);
     lastFocusedRef.current = document.activeElement;
     setLabel(nextLabel || "");
+    setFormKey(nextForm || "default");
     setMounted(true);
     // Wait a frame so the panel mounts off-screen first, then transitions in.
     requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
@@ -123,7 +136,8 @@ export function CtaFormModalProvider({ children, showSectors = false }) {
                         showSectors={showSectors}
                         submitLabel={label || undefined}
                         source={label}
-                        formId={LANDING_FORM_ID}
+                        showExploreFields={getForm(formKey).showExploreFields}
+                        formId={getForm(formKey).id}
                         containerPostId={LANDING_PAGE_ID}
                       />
                 </div>

@@ -103,7 +103,7 @@ const HeroPanel = ({ data }) => {
   return (
     <div
       id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}
-      className={`hero-panel flex flex-col min-h-screen min-h-dvh bg-cover bg-center bg-[url('/gradient.png')] pt-32 md:pt-40 2xl:pt-44 ${compact ? "pb-8.5 md:pb-13.5 2xl:pb-17" : "pb-10 md:pb-16 2xl:pb-20"}`}
+      className={`hero-panel flex flex-col min-h-screen min-h-dvh xl:h-[850px] xl:min-h-auto 2xl:h-[950px] bg-cover bg-center bg-[url('/gradient.png')] pt-32 md:pt-40 2xl:pt-44 ${compact ? "pb-8.5 md:pb-13.5 2xl:pb-17" : "pb-10 md:pb-16 2xl:pb-20"}`}
     >
       <Container className="flex flex-1 flex-col">
         <div

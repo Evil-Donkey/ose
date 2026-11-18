@@ -1,0 +1,87 @@
+{
+    "_readme": "Add ONE select sub-field named modal_form (GraphQL: modalForm) to each of these three places in ACF, then update/sync the field group. Keys must be unique, so each has its own key. The Next.js queries request modalForm, so add these before deploying.",
+    "centered_cta (layout: Centered CTA)": {
+        "key": "field_6915d1a0b7c01",
+        "label": "Form (landing page popup)",
+        "name": "modal_form",
+        "aria-label": "",
+        "type": "select",
+        "instructions": "Which form the button opens when the page shows the enquiry popup (e.g. the Biology Decoders landing page). Ignored where the button is a normal link.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+        },
+        "show_in_graphql": 1,
+        "choices": {
+            "default": "Submit your idea (full form)",
+            "interest": "Register your interest (short form)"
+        },
+        "default_value": "default",
+        "return_format": "value",
+        "multiple": 0,
+        "allow_null": 0,
+        "allow_in_bindings": 0,
+        "ui": 0,
+        "ajax": 0,
+        "placeholder": ""
+    },
+    "centered_cta_blue (layout: Centered CTA (blue))": {
+        "key": "field_6915d1a0b7c02",
+        "label": "Form (landing page popup)",
+        "name": "modal_form",
+        "aria-label": "",
+        "type": "select",
+        "instructions": "Which form the button opens when the page shows the enquiry popup (e.g. the Biology Decoders landing page). Ignored where the button is a normal link.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+        },
+        "show_in_graphql": 1,
+        "choices": {
+            "default": "Submit your idea (full form)",
+            "interest": "Register your interest (short form)"
+        },
+        "default_value": "default",
+        "return_format": "value",
+        "multiple": 0,
+        "allow_null": 0,
+        "allow_in_bindings": 0,
+        "ui": 0,
+        "ajax": 0,
+        "placeholder": ""
+    },
+    "cta (layout: CTA -> the 'cta' repeater row sub-field, next to cta_label / cta_url)": {
+        "key": "field_6915d1a0b7c03",
+        "label": "Form (landing page popup)",
+        "name": "modal_form",
+        "aria-label": "",
+        "type": "select",
+        "instructions": "Which form the button opens when the page shows the enquiry popup (e.g. the Biology Decoders landing page). Ignored where the button is a normal link.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+        },
+        "show_in_graphql": 1,
+        "choices": {
+            "default": "Submit your idea (full form)",
+            "interest": "Register your interest (short form)"
+        },
+        "default_value": "default",
+        "return_format": "value",
+        "multiple": 0,
+        "allow_null": 0,
+        "allow_in_bindings": 0,
+        "ui": 0,
+        "ajax": 0,
+        "placeholder": ""
+    }
+}

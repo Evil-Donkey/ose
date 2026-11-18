@@ -76,7 +76,7 @@ const IntroHeadingCopy = ({ data }) => {
           {copy && (
             <div
               ref={copyRef}
-              className={`w-full md:w-2/3 text-pretty text-base md:text-xl lg:text-[1.45rem] ${heading ? "mt-6 lg:mt-8" : ""} ${COPY_PROSE_CLASSES}`}
+              className={`w-full md:w-2/3 text-pretty text-base md:text-xl ${heading ? "mt-6 lg:mt-8" : ""} ${COPY_PROSE_CLASSES}`}
               dangerouslySetInnerHTML={{ __html: copy }}
             />
           )}

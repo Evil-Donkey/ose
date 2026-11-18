@@ -246,6 +246,7 @@ const FLEXIBLE_CONTENT_QUERY = `
               copy
               ctaLabel
               ctaUrl
+              modalForm
               backgroundImage {
                 altText
                 caption
@@ -654,6 +655,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             copy
             ctaLabel
             ctaUrl
+            modalForm
           }
           ... on Page_Flexiblecontent_FlexibleContent_CenteredCtaBlue {
             fieldGroupName
@@ -662,6 +664,7 @@ const FLEXIBLE_CONTENT_QUERY = `
             copy
             ctaLabel
             ctaUrl
+            modalForm
           }
           ... on Page_Flexiblecontent_FlexibleContent_IntroHeadingCopy {
             fieldGroupName
