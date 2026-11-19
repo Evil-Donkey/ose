@@ -37,68 +37,76 @@ const FounderServicesHero = ({ title, content, videoData }) => {
   useEffect(() => {
     if (!heroRef.current) return;
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top bottom",
-        end: "center center",
-        scrub: false,
-      },
+    const videos = videoRef.current.filter(Boolean);
+    const texts = textRef.current.filter(Boolean);
+    const wrappers = textWrapperRef.current.filter(Boolean);
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top bottom",
+          end: "center center",
+          scrub: false,
+        },
+      });
+
+      if (videos.length) {
+        tl.to(videos, {
+          opacity: 1,
+          scale: 1,
+          duration: 1.5,
+          ease: "power4.out",
+        });
+      }
+
+      if (texts.length) {
+        tl.to(
+          texts,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 2,
+            ease: "power4.out",
+            stagger: 0.1,
+          },
+          "-=1"
+        );
+      }
+
+      if (buttonRef.current) {
+        tl.to(
+          buttonRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power4.out",
+          },
+          "-=1.5"
+        );
+      }
+
+      if (wrappers.length) {
+        gsap.to(wrappers, {
+          y: -10,
+          duration: 1,
+          stagger: {
+            amount: 0.5,
+            from: "start",
+            ease: "elastic.out(1,0.3)",
+          },
+          scrollTrigger: {
+            trigger: wrappers,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.4,
+          },
+        });
+      }
     });
 
-    if (videoRef.current.length) {
-      tl.to(videoRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 1.5,
-        ease: "power4.out",
-      });
-    }
-
-    if (textRef.current.length) {
-      tl.to(
-        textRef.current,
-        {
-          y: 0,
-          opacity: 1,
-          duration: 2,
-          ease: "power4.out",
-          stagger: 0.1,
-        },
-        "-=1"
-      );
-    }
-
-    if (buttonRef.current) {
-      tl.to(
-        buttonRef.current,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power4.out",
-        },
-        "-=1.5"
-      );
-    }
-
-    if (textWrapperRef.current.length) {
-      gsap.to(textWrapperRef.current, {
-        y: -10,
-        duration: 1,
-        stagger: {
-          amount: 0.5,
-          from: "start",
-          ease: "elastic.out(1,0.3)",
-        },
-        scrollTrigger: {
-          trigger: textWrapperRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.4,
-        },
-      });
-    }
+    return () => ctx.revert();
   }, [videoData]);
 
   const hasVideo =
@@ -114,8 +122,8 @@ const FounderServicesHero = ({ title, content, videoData }) => {
   return (
     <>
       <div className="bg-linear-to-t from-black/10 via-black/0 to-black/0 pb-16 md:pb-24 lg:pb-30">
-        <Container className="pt-45 lg:pt-50 2xl:pt-60">
-          <div className="text-center flex flex-col items-center gap-5 mb-12 lg:mb-16 xl:mb-20">
+        <Container className="pt-50 lg:pt-55 2xl:pt-65">
+          <div className="text-center flex flex-col items-center gap-8 mb-12 lg:mb-16 xl:mb-20">
             {title && (
               <h1 className="text-7xl/18 md:text-8xl/23 text-darkblue text-center">
                 {title}

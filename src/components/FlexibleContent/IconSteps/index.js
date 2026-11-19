@@ -38,40 +38,42 @@ const IconSteps = ({ data }) => {
   const stepsRef = useRef([]);
 
   useEffect(() => {
-    if (titleRef.current) {
-      gsap.to(titleRef.current, {
-        x: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
-      });
-    }
+    const steps = stepsRef.current.filter(Boolean);
 
-    if (stepsRef.current.length) {
-      gsap.to(stepsRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: stepsRef.current[0],
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
-      });
-    }
+    const ctx = gsap.context(() => {
+      if (titleRef.current) {
+        gsap.to(titleRef.current, {
+          x: 0,
+          opacity: 1,
+          duration: 2,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 90%",
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+      if (steps.length) {
+        gsap.to(steps, {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power4.out",
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: steps[0],
+            start: "top 90%",
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
+    });
+
+    return () => ctx.revert();
   }, []);
 
   if (!title && (!steps || steps.length === 0)) {

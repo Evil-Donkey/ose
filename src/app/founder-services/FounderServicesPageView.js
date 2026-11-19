@@ -1,6 +1,7 @@
 import getFlexiblePage from "@/lib/getFlexiblePage";
 import getPageTitleAndContent from "@/lib/getPageTitleAndContent";
 import getPopOutData from "@/lib/getPopOutData";
+import getFooterData from "@/lib/getFooterData";
 import getMeganavLinksLite from "@/lib/getMeganavLinksLite";
 import getMeganavDataLite from "@/lib/getMeganavDataLite";
 import FounderServicesClient from "./FounderServicesClient";
@@ -30,12 +31,14 @@ export default async function FounderServicesPageView({ preview = false }) {
     { title, content },
     flexibleContent,
     popOutData,
+    footerData,
     meganavLinks,
     meganavData,
   ] = await Promise.all([
     getPageTitleAndContent(PAGE_ID, preview),
     getFlexiblePage(PAGE_ID, preview),
     getPopOutData(),
+    getFooterData(),
     getMeganavLinksLite(),
     getMeganavDataLite(),
   ]);
@@ -49,6 +52,7 @@ export default async function FounderServicesPageView({ preview = false }) {
       content={content}
       videoData={videoData}
       flexibleContent={bodyFlexibleContent}
+      themeCta={footerData.cta}
       popOutData={popOutData}
       meganavLinks={meganavLinks}
       meganavData={meganavData}

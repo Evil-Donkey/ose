@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Button from "@/components/Button";
+import CTA from "@/components/CTA";
 import Container from "@/components/Container";
 import formatSectionLabel from "@/lib/formatSectionLabel";
 
@@ -20,70 +21,77 @@ const formatEmailUrl = (email) => {
   return `mailto:${email}`;
 };
 
-const CenteredCta = ({ data }) => {
+const CenteredCta = ({ data, themeCta = null }) => {
   const { title, copy, ctaLabel, ctaUrl, sectionLabel } = data || {};
   const titleRef = useRef(null);
   const copyRef = useRef(null);
   const buttonRef = useRef(null);
+  const hasThemeCtas = Array.isArray(themeCta) && themeCta.length > 0;
 
   useEffect(() => {
-    if (titleRef.current) {
-      gsap.to(titleRef.current, {
-        x: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
-      });
-    }
+    const ctx = gsap.context(() => {
+      if (titleRef.current) {
+        gsap.to(titleRef.current, {
+          x: 0,
+          opacity: 1,
+          duration: 2,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 90%",
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
 
-    if (copyRef.current) {
-      gsap.to(copyRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: copyRef.current,
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
-      });
-    }
+      if (copyRef.current) {
+        gsap.to(copyRef.current, {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: copyRef.current,
+            start: "top 90%",
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
 
-    if (buttonRef.current) {
-      gsap.to(buttonRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: buttonRef.current,
-          start: "top 95%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
-      });
-    }
+      if (buttonRef.current) {
+        gsap.to(buttonRef.current, {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: buttonRef.current,
+            start: "top 95%",
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
+    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+    return () => ctx.revert();
   }, []);
 
-  if (!title && !copy && !ctaLabel) {
+  if (!title && !copy && !ctaLabel && !hasThemeCtas) {
     return null;
   }
 
   return (
     <div id={sectionLabel ? formatSectionLabel(sectionLabel) : undefined}>
-      <Container className="py-20 lg:py-30 2xl:py-40">
+      <Container
+        className={
+          hasThemeCtas
+            ? "pt-20 lg:pt-30 2xl:pt-40 pb-0"
+            : "py-20 lg:py-30 2xl:py-40"
+        }
+      >
         <div className="flex flex-col items-center text-center">
           {title && (
             <h2
@@ -97,12 +105,14 @@ const CenteredCta = ({ data }) => {
           {copy && (
             <div
               ref={copyRef}
-              className="w-full md:w-2/3 lg:w-1/2 text-base md:text-xl text-darkblue/80 mb-8 lg:mb-10 opacity-0 translate-y-5"
+              className={`w-full md:w-2/3 lg:w-1/2 text-base md:text-xl text-darkblue/80 opacity-0 translate-y-5 ${
+                hasThemeCtas ? "mb-0" : "mb-8 lg:mb-10"
+              }`}
               dangerouslySetInnerHTML={{ __html: copy }}
             />
           )}
 
-          {ctaLabel && ctaUrl && (
+          {!hasThemeCtas && ctaLabel && ctaUrl && (
             <div ref={buttonRef} className="opacity-0 translate-y-5">
               {isEmail(ctaUrl) ? (
                 <a
@@ -118,6 +128,8 @@ const CenteredCta = ({ data }) => {
           )}
         </div>
       </Container>
+
+      {hasThemeCtas && <CTA data={{ cta: themeCta }} />}
     </div>
   );
 };
