@@ -131,7 +131,7 @@ const FounderServicesHero = ({ title, content, videoData }) => {
             )}
             {content && (
               <div
-                className="w-full xl:px-17 lg:w-200 text-xl md:text-2xl text-darkblue"
+                className="w-full xl:px-17 lg:w-250 text-xl md:text-2xl text-darkblue"
                 dangerouslySetInnerHTML={{ __html: content }}
               />
             )}
