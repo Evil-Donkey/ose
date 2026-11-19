@@ -1,16 +1,64 @@
 'use client'
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Turnstile from "@/components/Turnstile";
 import Button from "@/components/Button";
 import Link from "next/link";
 
-const Form = () => {
+/**
+ * Research enquiry form (Contact Form 7).
+ *
+ * @param {boolean} showSectors - Show the "Relevant Sector" radios and require one (default true).
+ *   The landing-page modal passes false; every other field is identical.
+ * @param {string} submitLabel - Submit button text (default "Start the conversation").
+ * @param {string} formId - Contact Form 7 form ID to submit to (default: the /form page's form).
+ * @param {string} containerPostId - ID of the WordPress post/page that hosts the form (default: the /form page).
+ * @param {boolean} showExploreFields - Show the "What challenge…" and "What do you hope to explore…"
+ *   textareas (default true). The "Register your interest" form leaves them out.
+ * @param {string} source - Optional label of what triggered the form (e.g. the CTA text). Sent
+ *   as `cta-source`; Contact Form 7 ignores it unless a matching field exists.
+ */
+const DEFAULT_FORM_ID = process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568";
 
-    const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
+// Longest text accepted by the long-answer fields. Contact Form 7 rejects anything over its own
+// limit with "too long input", so keep this at or below the maxlength set on the CF7 textareas.
+const TEXTAREA_MAX_LENGTH = 2000;
+
+// Contact Form 7 field names -> react-hook-form field names (to show server-side errors inline).
+const CF7_TO_FORM_FIELD = {
+    "first-name": "firstName",
+    "last-name": "lastName",
+    email: "email",
+    connection: "connection",
+    "other-connection": "otherConnection",
+    "university-department": "universityDepartment",
+    summary: "summary",
+    challenge: "challenge",
+    conversation: "conversation",
+    file: "file",
+};
+
+const tooLongMessage = `Please keep this to ${TEXTAREA_MAX_LENGTH} characters or fewer.`;
+const textareaRules = (required) => ({
+    ...(required ? { required: "Summary of your research is required" } : {}),
+    maxLength: { value: TEXTAREA_MAX_LENGTH, message: tooLongMessage },
+});
+
+const Form = ({
+    showSectors = true,
+    submitLabel = "Start the conversation",
+    showExploreFields = true,
+    source = "",
+    formId = DEFAULT_FORM_ID,
+    containerPostId = "1566",
+}) => {
+
+    const { register, handleSubmit, formState: { errors }, watch, reset, setError: setFieldError } = useForm();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const turnstileRef = useRef(null);
 
     const onSubmit = async (data) => {
         setIsSubmitting(true);
@@ -22,11 +70,11 @@ const Form = () => {
         const formData = new FormData();
 
         // Contact Form 7 required fields
-        formData.append("_wpcf7", process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568");
+        formData.append("_wpcf7", formId);
         formData.append("_wpcf7_version", "6.0.5");
         formData.append("_wpcf7_locale", "en_UK");
-        formData.append("_wpcf7_unit_tag", `wpcf7-f${process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568"}-p1566-o1`);
-        formData.append("_wpcf7_container_post", "1566");
+        formData.append("_wpcf7_unit_tag", `wpcf7-f${formId}-p${containerPostId}-o1`);
+        formData.append("_wpcf7_container_post", containerPostId);
 
         // Form fields - match exactly with WordPress Contact Form 7 field names
         formData.append("first-name", data.firstName);
@@ -36,28 +84,45 @@ const Form = () => {
         formData.append("other-connection", data.otherConnection || "");
         formData.append("university-department", data.universityDepartment || "");
         formData.append("summary", data.summary || "");
-        formData.append("challenge", data.challenge || "");
-        formData.append("conversation", data.conversation || "");
-        
-        // Handle sectors as comma-separated string for text field
-        let sectorsValue = "";
-        if (data.sectors) {
-            if (Array.isArray(data.sectors)) {
-                sectorsValue = data.sectors.join(", ");
-            } else {
-                sectorsValue = data.sectors;
-            }
+        if (showExploreFields) {
+            formData.append("challenge", data.challenge || "");
+            formData.append("conversation", data.conversation || "");
         }
         
-        // Validate that at least one sector is selected
-        if (!sectorsValue) {
-            setError("Please select at least one sector");
+        if (source) {
+            formData.append("cta-source", source);
+        }
+
+        if (showSectors) {
+            // Handle sectors as comma-separated string for text field
+            let sectorsValue = "";
+            if (data.sectors) {
+                if (Array.isArray(data.sectors)) {
+                    sectorsValue = data.sectors.join(", ");
+                } else {
+                    sectorsValue = data.sectors;
+                }
+            }
+
+            // Validate that at least one sector is selected
+            if (!sectorsValue) {
+                setError("Please select at least one sector");
+                setIsSubmitting(false);
+                return;
+            }
+
+            // Send sectors as a single comma-separated string
+            formData.append("sectors", sectorsValue);
+        }
+
+        // Cloudflare Turnstile token (verified by Contact Form 7)
+        const turnstileToken = (await turnstileRef.current?.getToken()) || "";
+        if (!turnstileToken) {
+            setError("Verification failed. Please refresh the page and try again.");
             setIsSubmitting(false);
             return;
         }
-        
-        // Send sectors as a single comma-separated string
-        formData.append("sectors", sectorsValue);
+        formData.append("_wpcf7_turnstile_response", turnstileToken);
 
         // Handle file upload
         if (data.file && data.file[0]) {
@@ -71,7 +136,7 @@ const Form = () => {
         }
 
         try {
-            const endpoint = `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/contact-form-7/v1/contact-forms/${process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568"}/feedback`;
+            const endpoint = `${process.env.NEXT_PUBLIC_WORDPRESS_ENDPOINT}/wp-json/contact-form-7/v1/contact-forms/${formId}/feedback`;
             console.log("Submitting to endpoint:", endpoint);
 
             const response = await fetch(endpoint, {
@@ -111,12 +176,27 @@ const Form = () => {
                     errorMessage = result.message;
                 }
                 
+                // Show Contact Form 7's per-field problems next to the fields themselves
+                if (Array.isArray(result.invalid_fields) && result.invalid_fields.length) {
+                    result.invalid_fields.forEach(({ field, message }) => {
+                        const name = CF7_TO_FORM_FIELD[field];
+                        if (!name) return;
+                        const tooLong = /too long/i.test(message || "");
+                        setFieldError(name, {
+                            type: "server",
+                            message: tooLong ? tooLongMessage : message,
+                        });
+                    });
+                    errorMessage = "Some answers need attention. Please check the highlighted fields and try again.";
+                }
+
                 setError(errorMessage);
             }
         } catch (err) {
             console.error("Form submission error:", err);
             setError("An error occurred. Please try again later.");
         } finally {
+            turnstileRef.current?.reset();
             setIsSubmitting(false);
         }
     };
@@ -182,41 +262,47 @@ const Form = () => {
         
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
             <div className="text-sm font-bold mt-4">Research summary</div>
-            <label htmlFor="summary" className="text-sm">Brief description of your research*</label>
-            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("summary", { required: "Summary of your research is required" })} />
+            <label htmlFor="summary" className="text-sm">Brief description of your research* (max {TEXTAREA_MAX_LENGTH} characters)</label>
+            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("summary", textareaRules(true))} />
             {errors.summary && <p className="text-red-500 text-sm">{errors.summary.message}</p>}
         </div>
         
+        {showExploreFields && (
+            <>
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="challenge" className="text-sm">What challenge does your work aim to solve?</label>
-            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("challenge")} />
+            <label htmlFor="challenge" className="text-sm">What challenge does your work aim to solve? (max {TEXTAREA_MAX_LENGTH} characters)</label>
+            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("challenge", textareaRules(false))} />
             {errors.challenge && <p className="text-red-500 text-sm">{errors.challenge.message}</p>}
         </div>
         
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="conversation" className="text-sm">What do you hope to explore through a conversation with OSE?</label>
-            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("conversation")} />
+            <label htmlFor="conversation" className="text-sm">What do you hope to explore through a conversation with OSE? (max {TEXTAREA_MAX_LENGTH} characters)</label>
+            <textarea rows="5" className="bg-white text-blue-02 border-blue-02 border-1 rounded-sm p-2" {...register("conversation", textareaRules(false))} />
             {errors.conversation && <p className="text-red-500 text-sm">{errors.conversation.message}</p>}
         </div>
+            </>
+        )}
 
-        <div className="w-full flex flex-col gap-2 mb-5 px-4">
-            <label htmlFor="sectors" className="text-sm">Relevant Sector (select one)*</label>
-            <div className="flex flex-col gap-2">
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Deep Tech" />
-                    <span>Deep Tech</span>
-                </label>
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Health Tech" />
-                    <span>HealthTech</span>
-                </label>
-                <label className="flex items-center gap-2 text-sm">
-                    <input type="radio" {...register("sectors")} value="Life Sciences" />
-                    <span>Life Sciences</span>
-                </label>
-                {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
+        {showSectors && (
+            <div className="w-full flex flex-col gap-2 mb-5 px-4">
+                <label htmlFor="sectors" className="text-sm">Relevant Sector (select one)*</label>
+                <div className="flex flex-col gap-2">
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Deep Tech" />
+                        <span>Deep Tech</span>
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Health Tech" />
+                        <span>HealthTech</span>
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                        <input type="radio" {...register("sectors")} value="Life Sciences" />
+                        <span>Life Sciences</span>
+                    </label>
+                    {errors.sectors && <p className="text-red-500 text-sm">{errors.sectors.message}</p>}
+                </div>
             </div>
-        </div>
+        )}
 
         <div className="w-full flex flex-col gap-2 mb-5 px-4">
             <div className="text-sm font-bold mt-4">Supporting materials</div>
@@ -283,8 +369,9 @@ const Form = () => {
         </div>
 
         <div className="w-full flex flex-col items-end gap-2 px-4">
+            <Turnstile ref={turnstileRef} />
             <Button disabled={isSubmitting}>
-                {isSubmitting ? "Submitting..." : "Start the conversation"}
+                {isSubmitting ? "Submitting..." : submitLabel}
             </Button>
         </div>
 

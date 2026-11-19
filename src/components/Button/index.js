@@ -3,9 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { usePageTheme, getButtonColourClasses } from '@/components/PageTheme';
 
-const Button = React.forwardRef(({ children, href, className, ...props }, ref) => {
+const Button = React.forwardRef(({ children, href, className, variant, colour, ...props }, ref) => {
     const router = useRouter();
+    const theme = usePageTheme();
+    const colourClasses = getButtonColourClasses(colour ?? (variant === 'pink' ? 'pink' : theme));
     
     const handleClick = (e) => {
         if (href && href.includes('?')) {
@@ -22,7 +25,7 @@ const Button = React.forwardRef(({ children, href, className, ...props }, ref) =
         <Link 
             href={href} 
             onClick={handleClick}
-            className={`bg-lightblue text-white text-sm lg:text-xs xl:text-base font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue text-center transition-colors cursor-pointer w-max uppercase ${className}`} 
+            className={`${colourClasses} text-white text-sm lg:text-xs xl:text-base font-normal px-6 py-3 rounded-full shadow text-center transition-colors cursor-pointer w-max uppercase ${className}`} 
             {...props}
         >
             {children}
@@ -30,7 +33,7 @@ const Button = React.forwardRef(({ children, href, className, ...props }, ref) =
     ) : (
         <button 
             ref={ref} 
-            className={`bg-lightblue text-white text-sm lg:text-xs xl:text-base font-normal px-6 py-3 rounded-full shadow hover:bg-darkblue transition-colors cursor-pointer w-max uppercase ${className}`}
+            className={`${colourClasses} text-white text-sm lg:text-xs xl:text-base font-normal px-6 py-3 rounded-full shadow transition-colors cursor-pointer w-max uppercase ${className}`}
             {...props}
         >{children}</button>
     )

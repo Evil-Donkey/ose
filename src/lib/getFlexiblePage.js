@@ -246,6 +246,7 @@ const FLEXIBLE_CONTENT_QUERY = `
               copy
               ctaLabel
               ctaUrl
+              modalForm
               backgroundImage {
                 altText
                 caption
@@ -654,6 +655,86 @@ const FLEXIBLE_CONTENT_QUERY = `
             copy
             ctaLabel
             ctaUrl
+            modalForm
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_CenteredCtaBlue {
+            fieldGroupName
+            sectionLabel
+            title
+            copy
+            ctaLabel
+            ctaUrl
+            modalForm
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_IntroHeadingCopy {
+            fieldGroupName
+            sectionLabel
+            heading
+            copy
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_IconColumnsPanel {
+            fieldGroupName
+            sectionLabel
+            title
+            columns {
+              copy
+              icon {
+                mediaItemUrl
+                altText
+              }
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_HeroPanel {
+            fieldGroupName
+            sectionLabel
+            heading
+            copy
+            backgroundImage {
+              mediaItemUrl
+            }
+            backgroundImageMobile {
+              mediaItemUrl
+            }
+          }
+          ... on Page_Flexiblecontent_FlexibleContent_PortfolioHighlights {
+            fieldGroupName
+            sectionLabel
+            title
+            portfolio {
+              ... on Portfolio {
+                id
+                slug
+                title(format: RENDERED)
+                featuredImage {
+                  node {
+                    altText
+                    mediaItemUrl
+                  }
+                }
+                portfolioFields {
+                  portfolioTitle
+                  logo {
+                    altText
+                    mediaItemUrl
+                    mediaDetails {
+                      height
+                      width
+                    }
+                  }
+                  logoThumbnail {
+                    altText
+                    mediaItemUrl
+                    mediaDetails {
+                      height
+                      width
+                    }
+                  }
+                  gridThumbnail {
+                    mediaItemUrl
+                  }
+                }
+              }
+            }
           }
         }
       }

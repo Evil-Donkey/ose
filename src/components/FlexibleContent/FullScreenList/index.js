@@ -6,10 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Container from "../../Container";
 import formatSectionLabel from '@/lib/formatSectionLabel';
 import { proxyImageUrl } from "@/lib/proxyImage";
+import { usePageTheme, useCompactSections } from "@/components/PageTheme";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const FullScreenList = ({ data }) => {
+  const compact = useCompactSections();
+  const pageTheme = usePageTheme();
 
     const { heading, copy, backgroundImage, backgroundImageMobile, list, listPosition, listCopy, sectionLabel } = data;
     const titleRef = useRef(null);
@@ -77,7 +80,7 @@ const FullScreenList = ({ data }) => {
                 />
             )}
             <div className="absolute top-0 left-0 w-full h-1/2 bg-transparent bg-linear-to-b from-black/70 to-black/0 hidden lg:block" />
-            <Container className="py-15 2xl:py-45 relative z-10 flex flex-col h-full">
+            <Container className={`${compact ? "py-12.75 2xl:py-38" : "py-15 2xl:py-45"} relative z-10 flex flex-col h-full`}>
                 <div className="flex flex-col items-center">
                     {heading && <h2 ref={titleRef} className="w-full text-center uppercase tracking-widest text-white text:lg md:text-xl mb-8 font-medium opacity-0 translate-x-full">{heading}</h2>}
                     {copy && <div ref={el => copyRef.current[0] = el} className="w-full md:w-180 text-center text-white opacity-0 translate-y-20">
@@ -93,7 +96,7 @@ const FullScreenList = ({ data }) => {
                                     {list.map((item, index) => (
                                         <li 
                                         key={index} 
-                                        className="flex flex-col mb-5 ps-4 relative before:content-[''] before:absolute before:left-0 before:top-3 before:w-2 before:h-2 before:rounded-full before:bg-lightblue">
+                                        className={`flex flex-col mb-5 ps-4 relative before:content-[''] before:absolute before:left-0 ${pageTheme === "pink" ? "before:top-2" : "before:top-3"} before:w-2 before:h-2 before:rounded-full before:bg-lightblue`}>
                                             <h3 className="text-lg 2xl:text-2xl font-medium">{item.title}</h3>
                                             <div className="text-base 2xl:text-xl" dangerouslySetInnerHTML={{ __html: item.description }} />
                                         </li>

@@ -1,7 +1,8 @@
 'use client'
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Turnstile from "@/components/Turnstile";
 import Button from "@/components/Button";
 import Link from "next/link";
 
@@ -11,6 +12,7 @@ const CoinvestorsContactForm = () => {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const turnstileRef = useRef(null);
 
     const onSubmit = async (data) => {
         setIsSubmitting(true);
@@ -33,6 +35,15 @@ const CoinvestorsContactForm = () => {
         formData.append("last-name", data.lastName);
         formData.append("email", data.email);
         formData.append("message", data.message);
+
+        // Cloudflare Turnstile token (verified by Contact Form 7)
+        const turnstileToken = (await turnstileRef.current?.getToken()) || "";
+        if (!turnstileToken) {
+            setError("Verification failed. Please refresh the page and try again.");
+            setIsSubmitting(false);
+            return;
+        }
+        formData.append("_wpcf7_turnstile_response", turnstileToken);
 
         // Debug: Log the FormData contents
         console.log("FormData contents:");
@@ -87,6 +98,7 @@ const CoinvestorsContactForm = () => {
             console.error("Form submission error:", err);
             setError("An error occurred. Please try again later.");
         } finally {
+            turnstileRef.current?.reset();
             setIsSubmitting(false);
         }
     };
@@ -132,6 +144,7 @@ const CoinvestorsContactForm = () => {
         </div>
 
         <div className="w-full flex flex-col items-end gap-2 px-4">
+            <Turnstile ref={turnstileRef} />
             <Button disabled={isSubmitting}>
                 {isSubmitting ? "Submitting..." : "Submit"}
             </Button>

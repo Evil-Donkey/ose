@@ -15,6 +15,8 @@
   --color-lightblue-02: #23CAF8;
   --color-darkblue: #0A42A5;
   --color-blue-02: #00004D;
+  --color-pink: #c52c84;
+  --color-pink-dark: #a32269;
   --bg-gradient: to right, #0a0f4b 0%, #003d80 50%, #00a2c6 100%;
   --breakpoint-client: 90rem;
 }
