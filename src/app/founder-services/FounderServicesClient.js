@@ -11,6 +11,7 @@ export default function FounderServicesClient({
   content,
   videoData,
   flexibleContent,
+  themeCta = null,
   popOutData,
   meganavLinks,
   meganavData,
@@ -32,7 +33,7 @@ export default function FounderServicesClient({
             videoData={videoData}
           />
           {flexibleContent?.length > 0 && (
-            <PageFlexibleContent data={flexibleContent} />
+            <PageFlexibleContent data={flexibleContent} themeCta={themeCta} />
           )}
         </div>
       </div>

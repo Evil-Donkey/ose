@@ -1,3 +1,4 @@
+import { draftMode } from "next/headers";
 import generateMetadataFromLib from "@/lib/generateMetadata";
 import FounderServicesPageView from "./FounderServicesPageView";
 
@@ -6,5 +7,6 @@ export async function generateMetadata() {
 }
 
 export default async function FounderServicesPage() {
-  return <FounderServicesPageView />;
+  const { isEnabled } = await draftMode();
+  return <FounderServicesPageView preview={isEnabled} />;
 }

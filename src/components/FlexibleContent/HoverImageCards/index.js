@@ -17,55 +17,57 @@ const HoverImageCards = ({ data }) => {
   const cardsRef = useRef([]);
 
   useEffect(() => {
-    if (titleRef.current) {
-      gsap.to(titleRef.current, {
-        x: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
-      });
-    }
+    const cards = cardsRef.current.filter(Boolean);
 
-    if (copyRef.current) {
-      gsap.to(copyRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: copyRef.current,
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
-      });
-    }
+    const ctx = gsap.context(() => {
+      if (titleRef.current) {
+        gsap.to(titleRef.current, {
+          x: 0,
+          opacity: 1,
+          duration: 2,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 90%",
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
 
-    if (cardsRef.current.length) {
-      gsap.to(cardsRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out",
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: cardsRef.current[0],
-          start: "top 90%",
-          scrub: 1.5,
-          invalidateOnRefresh: true,
-        },
-      });
-    }
+      if (copyRef.current) {
+        gsap.to(copyRef.current, {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: copyRef.current,
+            start: "top 90%",
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+      if (cards.length) {
+        gsap.to(cards, {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power4.out",
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: cards[0],
+            start: "top 90%",
+            scrub: 1.5,
+            invalidateOnRefresh: true,
+          },
+        });
+      }
+    });
+
+    return () => ctx.revert();
   }, []);
 
   if (!title && !copy && (!cards || cards.length === 0)) {
