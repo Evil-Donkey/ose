@@ -125,6 +125,7 @@ const Footer = ({ data }) => {
                                 <li><Link href="/stories" className="hover:text-lightblue">Stories</Link></li>
                                 <li><Link href="/news" className="hover:text-lightblue">News</Link></li>
                                 <li><Link href="/contact" className="hover:text-lightblue">Contact</Link></li>
+                                <li><a href="https://careers.oxfordscienceenterprises.com" className="hover:text-lightblue">Careers</a></li>
                                 <li><Link href="/shareholder-information" className="hover:text-lightblue">Shareholder Information</Link></li>
                             </ul>
                         </div>
