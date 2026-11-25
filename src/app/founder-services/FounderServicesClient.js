@@ -5,6 +5,7 @@ import FounderServicesHero from "@/components/FounderServicesHero";
 import PageFlexibleContent from "@/components/FlexibleContent";
 import PopOut from "@/components/PopOut/index";
 import LazyLoadInitializer from "@/lib/lazyLoader";
+import { CtaFormModalProvider } from "@/components/CtaFormModal";
 
 export default function FounderServicesClient({
   title,
@@ -18,7 +19,7 @@ export default function FounderServicesClient({
   children,
 }) {
   return (
-    <>
+    <CtaFormModalProvider showSectors formVariant="main">
       <LazyLoadInitializer />
       <HeaderWithMeganavLinks
         fixed={true}
@@ -39,6 +40,6 @@ export default function FounderServicesClient({
       </div>
       <PopOut data={popOutData} />
       {children}
-    </>
+    </CtaFormModalProvider>
   );
 }
