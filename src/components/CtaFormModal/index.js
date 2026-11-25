@@ -19,24 +19,38 @@ const SLIDE_MS = 400;
 // Contact Form 7 clone used by the biology decoders landing page (no sector field,
 // own recipient). The container post is the landing page itself.
 const LANDING_FORM_ID = process.env.NEXT_PUBLIC_CF7_LANDING_FORM_ID || "4694";
+// Main /form page Contact Form 7 ID (used when a page asks for that form in the modal).
+const MAIN_FORM_ID = process.env.NEXT_PUBLIC_CF7_FORM_ID || "1568";
+const MAIN_FORM_PAGE_ID = "1566";
 // "Register your interest" has its own, shorter clone (no challenge / explore questions).
 const INTEREST_FORM_ID = process.env.NEXT_PUBLIC_CF7_INTEREST_FORM_ID || "4700";
-
-// Which form a CTA opens is chosen per button in the CMS ("Form" select -> `modalForm`).
-// Anything else (including empty) opens the default enquiry form.
-const FORMS = {
-  default: { id: LANDING_FORM_ID, showExploreFields: true },
-  interest: { id: INTEREST_FORM_ID, showExploreFields: false },
-};
-const getForm = (key) => FORMS[key] || FORMS.default;
 
 const LANDING_PAGE_ID = process.env.NODE_ENV === "development" ? "3973" : "4640";
 
 /**
  * Wraps a landing page so every CTA button on it opens the research enquiry form
  * in a bottom-up slide-over panel. The button label becomes the panel heading.
+ *
+ * @param {boolean} showSectors - Pass through to Form (default false for landing pages).
+ * @param {"landing"|"main"} formVariant - Which CF7 form to open by default.
+ *   "landing" = biologydecoders clone; "main" = the same form as /form.
  */
-export function CtaFormModalProvider({ children, showSectors = false }) {
+export function CtaFormModalProvider({
+  children,
+  showSectors = false,
+  formVariant = "landing",
+}) {
+  const defaultFormId = formVariant === "main" ? MAIN_FORM_ID : LANDING_FORM_ID;
+  const defaultContainerPostId =
+    formVariant === "main" ? MAIN_FORM_PAGE_ID : LANDING_PAGE_ID;
+
+  // Which form a CTA opens is chosen per button in the CMS ("Form" select -> `modalForm`).
+  // Anything else (including empty) opens the default enquiry form for this page.
+  const forms = {
+    default: { id: defaultFormId, showExploreFields: true },
+    interest: { id: INTEREST_FORM_ID, showExploreFields: false },
+  };
+  const getForm = (key) => forms[key] || forms.default;
   const [label, setLabel] = useState("");
   const [formKey, setFormKey] = useState("default");
   const [mounted, setMounted] = useState(false); // in the DOM
@@ -138,7 +152,7 @@ export function CtaFormModalProvider({ children, showSectors = false }) {
                         source={label}
                         showExploreFields={getForm(formKey).showExploreFields}
                         formId={getForm(formKey).id}
-                        containerPostId={LANDING_PAGE_ID}
+                        containerPostId={defaultContainerPostId}
                       />
                 </div>
               </div>

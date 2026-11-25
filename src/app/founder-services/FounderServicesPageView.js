@@ -13,10 +13,7 @@ const HERO_VIDEO_FIELD =
 const CENTERED_CTA_FIELD =
   "Page_Flexiblecontent_FlexibleContent_CenteredCta";
 
-const FOUNDER_SERVICES_CTA = {
-  ctaLabel: "Start the conversation",
-  ctaUrl: "/form",
-};
+const FOUNDER_SERVICES_CTA_LABEL = "Start the conversation";
 
 function getHeroVideoBlock(flexibleContent) {
   if (!Array.isArray(flexibleContent)) return null;
@@ -31,12 +28,12 @@ function getBodyFlexibleContent(flexibleContent) {
   return flexibleContent
     .filter((item) => item?.fieldGroupName !== HERO_VIDEO_FIELD)
     .map((item) => {
-      // Prefer a single CTA button over the site-wide theme CTA boxes
+      // Force the single CTA label; the modal provider opens the /form enquiry form.
       if (item?.fieldGroupName !== CENTERED_CTA_FIELD) return item;
       return {
         ...item,
-        ctaLabel: item.ctaLabel || FOUNDER_SERVICES_CTA.ctaLabel,
-        ctaUrl: item.ctaUrl || FOUNDER_SERVICES_CTA.ctaUrl,
+        ctaLabel: FOUNDER_SERVICES_CTA_LABEL,
+        ctaUrl: item.ctaUrl || "/form",
       };
     });
 }
